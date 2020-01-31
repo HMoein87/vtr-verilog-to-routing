@@ -95,7 +95,7 @@ void connect_hard_block_and_alias(ast_node_t* hb_instance, char *instance_name_p
 void connect_module_instantiation_and_alias(short PASS, ast_node_t* module_instance, char *instance_name_prefix, sc_hierarchy *local_ref);
 signal_list_t * connect_function_instantiation_and_alias(short PASS, ast_node_t* module_instance, char *instance_name_prefix, sc_hierarchy *local_ref);
 signal_list_t *connect_task_instantiation_and_alias(short PASS, ast_node_t* task_instance, char *instance_name_prefix, sc_hierarchy *local_ref);
-int check_for_initial_reg_value(ast_node_t* var_declare, long *value);
+VNumber *copy_initial_reg_value(ast_node_t* var_declare);
 void define_latchs_initial_value_inside_initial_statement(ast_node_t *initial_node, sc_hierarchy *local_ref);
 
 signal_list_t *concatenate_signal_lists(signal_list_t **signal_lists, int num_signal_lists);
@@ -176,6 +176,7 @@ void create_netlist()
 	/* initialize the storage of the top level drivers.  Assigned in create_top_driver_nets */
 	verilog_netlist = allocate_netlist();
 
+	verilog_netlist->identifier = vtr::strdup(top_module->children[0]->types.identifier);
 	sc_hierarchy *top_sc_list = top_module->types.hierarchy;
 	oassert(top_sc_list);
 	top_sc_list->instance_name_prefix = vtr::strdup(top_module->children[0]->types.identifier);
@@ -1172,7 +1173,6 @@ void create_top_output_nodes(ast_node_t* module, char *instance_name_prefix, sc_
  *-------------------------------------------------------------------------------------------*/
 nnet_t* define_nets_with_driver(ast_node_t* var_declare, char *instance_name_prefix)
 {
-	int i;
 	char *temp_string = NULL;
 	long sc_spot;
 	nnet_t *new_net = NULL;
@@ -1200,10 +1200,9 @@ nnet_t* define_nets_with_driver(ast_node_t* var_declare, char *instance_name_pre
 		new_net->name = temp_string;
 
 		/* Check if this net should have an initial value */
-		if(var_declare->types.variable.is_initialized){
-			new_net->has_initial_value = true;
-			/* Initial net value should only be either 1 or 0 */
-			new_net->initial_value = var_declare->types.variable.initial_value ? 1 : 0;
+		if(var_declare->types.vnumber)
+		{			
+			new_net->initial_value = B_BITWISE_OR(*var_declare->types.vnumber);	
 		}
 	}
 	else if (var_declare->children[3] == NULL)
@@ -1228,15 +1227,9 @@ nnet_t* define_nets_with_driver(ast_node_t* var_declare, char *instance_name_pre
 					"Odin doesn't support negative number in index.");
 		}
 
-		/* Check if this array driver should have an initial value */
-		long initial_value = 0;
-		if(var_declare->types.variable.is_initialized){
-			initial_value = var_declare->types.variable.initial_value;
-		}
-
 		/* This register declaration is a range as opposed to a single bit so we need to define each element */
 		/* assume digit 1 is largest */
-		for (i = min_value; i <= max_value; i++)
+		for (int i = min_value; i <= max_value; i++)
 		{
 			/* create the net */
 			new_net = allocate_nnet();
@@ -1254,13 +1247,11 @@ nnet_t* define_nets_with_driver(ast_node_t* var_declare, char *instance_name_pre
 			output_nets_sc->data[sc_spot] = (void*)new_net;
 			new_net->name = temp_string;
 
-			/* Assign initial value to this net if it exists */
-			if(var_declare->types.variable.is_initialized){
-				new_net->has_initial_value = true;
-				/* Grab LSB */
-				new_net->initial_value = initial_value & 0x01;
-				/* Shift out lowest bit */
-				initial_value >>= 1;
+			/* Check if this net should have an initial value */
+			if(var_declare->types.vnumber)
+			{			
+				int offset = i - min_value;
+				new_net->initial_value = var_declare->types.vnumber->get_bit_from_lsb(offset);	
 			}
 		}
 	}
@@ -1501,10 +1492,13 @@ void create_symbol_table_for_scope(ast_node_t* module_items, sc_hierarchy *local
 
 					if (var_declare->types.variable.is_input 
 						&& var_declare->types.variable.is_reg)
-						{
-							error_message(NETLIST_ERROR, var_declare->line_number, var_declare->file_number, "%s",
-									"Input cannot be defined as a reg\n");
-						}
+					{
+						error_message(NETLIST_ERROR, var_declare->line_number, var_declare->file_number, "%s",
+								"Input cannot be defined as a reg\n");
+					}
+
+					/* check for an initial value and copy it over if found */
+					VNumber *var_initial_value = copy_initial_reg_value(var_declare);
 
 					/* make the string to add to the string cache */
 					temp_string = make_full_ref_name(NULL, NULL, NULL, var_declare->children[0]->types.identifier, -1);
@@ -1512,6 +1506,9 @@ void create_symbol_table_for_scope(ast_node_t* module_items, sc_hierarchy *local
 					sc_spot = sc_add_string(local_symbol_table_sc, temp_string);
 					if (local_symbol_table_sc->data[sc_spot] != NULL)
 					{
+						// set the initial value
+						((ast_node_t*)local_symbol_table_sc->data[sc_spot])->types.vnumber = var_initial_value;
+
 						/* ERROR checks here
 						 * output with reg is fine
 						 * output with wire is fine
@@ -1527,29 +1524,18 @@ void create_symbol_table_for_scope(ast_node_t* module_items, sc_hierarchy *local
 						else if (var_declare->types.variable.is_output)
 						{
 							/* copy all the reg and wire info over */
-							((ast_node_t*)local_symbol_table_sc->data[sc_spot])->types.variable.is_output = true;
-
-							/* check for an initial value and copy it over if found */
-							long initial_value;
-							if(check_for_initial_reg_value(var_declare, &initial_value)){
-								((ast_node_t*)local_symbol_table_sc->data[sc_spot])->types.variable.is_initialized = true;
-								((ast_node_t*)local_symbol_table_sc->data[sc_spot])->types.variable.initial_value = initial_value;
-							}
+							((ast_node_t*)local_symbol_table_sc->data[sc_spot])->types.variable.is_output = var_declare->types.variable.is_output;
 						}
-						else if ((var_declare->types.variable.is_reg) || (var_declare->types.variable.is_wire) 
-								|| (var_declare->types.variable.is_integer) || (var_declare->types.variable.is_genvar))
+						else if (  (var_declare->types.variable.is_reg) 
+								|| (var_declare->types.variable.is_wire) 
+								|| (var_declare->types.variable.is_integer) 
+								|| (var_declare->types.variable.is_genvar))
 						{
 							/* copy the output status over */
 							((ast_node_t*)local_symbol_table_sc->data[sc_spot])->types.variable.is_wire = var_declare->types.variable.is_wire;
 							((ast_node_t*)local_symbol_table_sc->data[sc_spot])->types.variable.is_reg = var_declare->types.variable.is_reg;
-
 							((ast_node_t*)local_symbol_table_sc->data[sc_spot])->types.variable.is_integer = var_declare->types.variable.is_integer;
-							/* check for an initial value and copy it over if found */
-							long initial_value;
-							if(check_for_initial_reg_value(var_declare, &initial_value)){
-								((ast_node_t*)local_symbol_table_sc->data[sc_spot])->types.variable.is_initialized = true;
-								((ast_node_t*)local_symbol_table_sc->data[sc_spot])->types.variable.initial_value = initial_value;
-							}
+							((ast_node_t*)local_symbol_table_sc->data[sc_spot])->types.variable.is_genvar = var_declare->types.variable.is_genvar;
 						}
 						else if (!var_declare->types.variable.is_integer)
 						{
@@ -1567,11 +1553,7 @@ void create_symbol_table_for_scope(ast_node_t* module_items, sc_hierarchy *local
 						num_local_symbol_table ++;
 
 						/* check for an initial value and store it if found */
-						long initial_value;
-						if(check_for_initial_reg_value(var_declare, &initial_value)){
-							var_declare->types.variable.is_initialized = true;
-							var_declare->types.variable.initial_value = initial_value;
-						}
+						var_declare->types.vnumber = var_initial_value;
 						module_items->children[i]->children[j] = NULL;
 
 					}
@@ -1668,14 +1650,16 @@ void create_symbol_table_for_scope(ast_node_t* module_items, sc_hierarchy *local
 }
 
 /*--------------------------------------------------------------------------
- * (function: check_for_initial_reg_value)
+ * (function: copy_initial_reg_value)
  * 	This function looks at a VAR_DECLARE AST node and checks to see
  *  if the register declaration includes an initial value.
  *  Returns the initial value in *value if one is found.
  *  Added by Conor
  *-------------------------------------------------------------------------*/
-int check_for_initial_reg_value(ast_node_t* var_declare, long *value)
+VNumber *copy_initial_reg_value(ast_node_t* var_declare)
 {
+	VNumber *to_return = NULL;
+
 	oassert(var_declare->type == VAR_DECLARE);
 
 	// Initial value is always the last child, if one exists
@@ -1683,8 +1667,7 @@ int check_for_initial_reg_value(ast_node_t* var_declare, long *value)
 	{
 		if(var_declare->children[5]->type == NUMBERS)
 		{
-			*value = var_declare->children[5]->types.vnumber->get_value();
-			return true;
+			to_return = new VNumber(var_declare->children[5]->types.vnumber);
 		}
 		else
 		{
@@ -1692,7 +1675,7 @@ int check_for_initial_reg_value(ast_node_t* var_declare, long *value)
 				"%s", "Could not resolve initial assignment to a constant value, skipping\n");
 		}
 	}
-	return false;
+	return to_return;
 }
 
 /*--------------------------------------------------------------------------
@@ -2307,8 +2290,10 @@ void connect_module_instantiation_and_alias(short PASS, ast_node_t* module_insta
 					nnet_t *output_net = (nnet_t*)output_nets_sc->data[sc_spot_output];
 					nnet_t *input_new_net = (nnet_t*)output_nets_sc->data[sc_spot_input_new];
 					if(output_net->driver_pin && output_net->driver_pin->node){
-						if(output_net->driver_pin->node->type == FF_NODE && input_new_net && input_new_net->has_initial_value){
-							output_net->driver_pin->node->has_initial_value = input_new_net->has_initial_value;
+						if (output_net->driver_pin->node->type == FF_NODE
+						&& input_new_net
+						&& bit_is_defined(input_new_net->initial_value))
+						{
 							output_net->driver_pin->node->initial_value = input_new_net->initial_value;
 						}
 					}
@@ -2660,9 +2645,12 @@ signal_list_t *connect_function_instantiation_and_alias(short PASS, ast_node_t* 
                 add_pin_to_signal_list(return_list, new_pin2);
 				nnet_t *input_new_net = (nnet_t*)output_nets_sc->data[sc_spot_input_new];
 
-				if(output_net->driver_pin && output_net->driver_pin->node){
-					if(output_net->driver_pin->node->type == FF_NODE && input_new_net->has_initial_value){
-						output_net->driver_pin->node->has_initial_value = input_new_net->has_initial_value;
+				if(output_net->driver_pin && output_net->driver_pin->node)
+				{
+					if(output_net->driver_pin->node->type == FF_NODE 
+						&& input_new_net
+						&& bit_is_defined(input_new_net->initial_value))
+					{
 						output_net->driver_pin->node->initial_value = input_new_net->initial_value;
 					}
 				}
@@ -3486,7 +3474,7 @@ void define_latchs_initial_value_inside_initial_statement(ast_node_t *initial_no
         	&& initial_node->children[i]->children[1]->type == NUMBERS)
         {
             //Value
-            int number = initial_node->children[i]->children[1]->types.vnumber->get_value();
+            VNumber *number = initial_node->children[i]->children[1]->types.vnumber;
 
             //Find corresponding register, set it's members to reflect initialization.
 			if(initial_node->children[i])
@@ -3495,12 +3483,13 @@ void define_latchs_initial_value_inside_initial_statement(ast_node_t *initial_no
 				sc_spot = sc_lookup_string(local_symbol_table_sc, initial_node->children[i]->children[0]->types.identifier);
 				if(sc_spot == -1)
 				{
-					warning_message(NETLIST_ERROR, initial_node->children[i]->children[0]->line_number, initial_node->children[i]->children[0]->file_number, "Register [%s] used in initial block is not declared.\n", initial_node->children[i]->children[0]->types.identifier);
+					warning_message(NETLIST_ERROR, initial_node->children[i]->children[0]->line_number, initial_node->children[i]->children[0]->file_number, 
+						"Register [%s] used in initial block is not declared.\n", 
+							initial_node->children[i]->children[0]->types.identifier);
 				}
 				else
 				{
-					local_symbol_table[sc_spot]->types.variable.is_initialized = 1;
-					local_symbol_table[sc_spot]->types.variable.initial_value = number;
+					local_symbol_table[sc_spot]->types.vnumber = new VNumber(number);
 				}
 			}
         }
@@ -3620,16 +3609,17 @@ void terminate_registered_assignment(ast_node_t *always_node, signal_list_t* ass
 			sc_spot = sc_lookup_string(local_symbol_table_sc, ref_string);
 			if(sc_spot != -1){
 
-				ff_node->has_initial_value = 1;
 				ff_node->initial_value = ((char *)(local_symbol_table_sc->data[sc_spot]))[0];
 			}
 			else{
 
 				sc_spot = sc_add_string(local_symbol_table_sc, ref_string);
 				local_symbol_table_sc->data[sc_spot] = (void *)ff_node;
-
-				ff_node->has_initial_value = net->has_initial_value;
-				ff_node->initial_value = net->initial_value;
+				if (net
+				&& bit_is_defined(net->initial_value))
+				{
+					ff_node->initial_value = net->initial_value;
+				}
 			}
 			/* free the reference string */
 			vtr::free(ref_string);

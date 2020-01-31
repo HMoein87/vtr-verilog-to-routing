@@ -152,7 +152,7 @@ void output_blif(const char *file_name, netlist_t *netlist)
 		error_message(NETLIST_ERROR, -1, -1, "Could not open output file %s\n", file_name);
 	}
 
-	fprintf(out, ".model %s\n", top_module->children[0]->types.identifier);
+	fprintf(out, ".model %s\n", netlist->identifier);
 
 
 	/* generate all the signals */
@@ -301,6 +301,11 @@ void depth_traverse_output_blif(nnode_t *node, int traverse_mark_number, FILE *f
  *------------------------------------------------------------------*/
 void output_node(nnode_t *node, short /*traverse_number*/, FILE *fp)
 {
+	if( ! bit_is_defined(node->initial_value) )
+	{
+		node->initial_value = BitSpace::_z; // default is unknown(3), z is equivalent
+	}
+
 	switch (node->type)
 	{
 		case GT:
@@ -530,24 +535,6 @@ void define_ff(nnode_t *node, FILE *out)
 	oassert(node->num_output_pins == 1);
 	oassert(node->num_input_pins == 2);
 
-
-	int initial_value = global_args.sim_initial_value;
-	if(node->has_initial_value)
-		initial_value = node->initial_value;
-	
-	/* By default, latches value are unknown, represented by 3 in a BLIF file
-	and by -1 internally in ODIN */
-	// TODO switch to default!! to avoid confusion
-	if(initial_value == -1)
-		initial_value = 3;
-
-	// grab the edge sensitivity of the flip flop
-	const char *edge_type_str = edge_type_blif_str(node); 
-
-	std::string input;
-	std::string output;
-	std::string clock_driver;
-
 	fprintf(out, ".latch");
 
 	/* input */
@@ -557,13 +544,13 @@ void define_ff(nnode_t *node, FILE *out)
 	print_output_pin(out,node);
 
 	/* sensitivity */
-	fprintf(out, " %s", edge_type_str);
+	fprintf(out, " %s", edge_type_blif_str(node));
 	
 	/* clock */
 	print_input_pin(out,node, 1);
 
 	/* initial value */
-	fprintf(out, " %d\n\n", initial_value);
+	fprintf(out, " %s\n\n", init_val_blif_str(node));
 }
 
 /*--------------------------------------------------------------------------

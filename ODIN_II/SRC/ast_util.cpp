@@ -141,23 +141,21 @@ void free_assignement_of_node_keep_tree(ast_node_t *node)
 	if(node){
 		int i;
 		vtr::free(node->types.identifier);
-		switch(node->type){
-			case NUMBERS:
-				if (node->types.vnumber != nullptr)
-					delete node->types.vnumber;
-				node->types.vnumber = nullptr;
-				break;
-
-			case CONCATENATE:
-				for(i=0; i<node->types.concat.num_bit_strings; i++){
-					if(node->types.concat.bit_strings[i])
-						vtr::free(node->types.concat.bit_strings[i]);
+		if (node->types.vnumber != nullptr)
+		{
+			delete node->types.vnumber;
+		}
+		node->types.vnumber = nullptr;
+		if(node->types.concat.bit_strings)
+		{
+			for(i=0; i<node->types.concat.num_bit_strings; i++)
+			{
+				if(node->types.concat.bit_strings[i])
+				{
+					vtr::free(node->types.concat.bit_strings[i]);
 				}
-				vtr::free(node->types.concat.bit_strings);
-				
-
-			default:
-				break;
+			}
+			vtr::free(node->types.concat.bit_strings);
 		}
 	}
 }

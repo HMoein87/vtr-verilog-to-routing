@@ -180,6 +180,16 @@ enum edge_type_e
 	edge_type_e_END
 };
 
+enum init_val_e
+{
+	UNDEFINED_INIT_VALUE,
+	LOW_INIT_VALUE,
+	HIGH_INIT_VALUE,
+	DONT_CARE_INIT_VALUE,
+	UNKNOWN_INIT_VALUE,
+	init_val_e_END
+};
+
 enum circuit_type_e
 {
 	COMBINATIONAL,
@@ -364,8 +374,6 @@ struct typ
 		short is_genvar;
 		short is_memory;
 		short is_signed;
-		short is_initialized; // should the variable be initialized with some value?
-		long initial_value;
 	} variable;
 	struct
 	{
@@ -467,22 +475,17 @@ struct nnode_t
 
 	short *associated_function;
 
-	char** bit_map; /*storing the bit map */
-	int bit_map_line_count;
+	std::vector<std::vector<BitSpace::bit_value_t>> bitmap[2]; // 0 is off-set 1 is on-set
 
 	// For simulation
 	int in_queue; // Flag used by the simulator to avoid double queueing.
 	npin_t **undriven_pins; // These pins have been found by the simulator to have no driver.
 	int num_undriven_pins;
 	int ratio; //clock ratio for clock nodes
-	signed char has_initial_value; // initial value assigned?
-	signed char initial_value; // initial net value
+	BitSpace::bit_value_t initial_value; // initial net value
 	bool internal_clk_warn= false;
 	edge_type_e edge_type; //
 	bool covered = false;
-	
-	//Generic gate output
-	unsigned char generic_output; //describes the output (1 or 0) of generic blocks
 };
 
 struct npin_t
@@ -528,8 +531,7 @@ struct nnet_t
 	// For simulation
 	std::shared_ptr<AtomicBuffer> values;
 
-	signed char has_initial_value; // initial value assigned?
-	signed char initial_value; // initial net value
+	BitSpace::bit_value_t initial_value; // initial net value
 	//////////////////////
 };
 
@@ -550,12 +552,15 @@ struct char_list_t
 
 struct netlist_t
 {
+	char *identifier;
 	nnode_t *gnd_node;
 	nnode_t *vcc_node;
 	nnode_t *pad_node;
+	nnode_t *default_clock_node;
 	nnet_t *zero_net;
 	nnet_t *one_net;
 	nnet_t *pad_net;
+	nnet_t *default_clock_net;
 	nnode_t** top_input_nodes;
 	int num_top_input_nodes;
 	nnode_t** top_output_nodes;
@@ -564,9 +569,6 @@ struct netlist_t
 	int num_ff_nodes;
 	nnode_t** internal_nodes;
 	int num_internal_nodes;
-	nnode_t** clocks;
-	int num_clocks;
-
 
 	/* netlist levelized structures */
 	nnode_t ***forward_levels;

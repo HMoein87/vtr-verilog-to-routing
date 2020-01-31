@@ -38,10 +38,8 @@ OTHER DEALINGS IN THE SOFTWARE.
 #include "vtr_util.h"
 #include "vtr_memory.h"
 
-#define TOKENS     " \t\n"
-#define GND_NAME   "gnd"
-#define VCC_NAME   "vcc"
-#define HBPAD_NAME "unconn"
+#define TOKENS		" \t\n"
+#define PAD_NAME	"unconn"
 
 #define READ_BLIF_BUFFER 1048576 // 1MB
 
@@ -88,7 +86,6 @@ struct hard_block_models{
 
 netlist_t * blif_netlist;
 bool static skip_reading_bit_map=false;
-bool insert_global_clock;
 
 
 void rb_create_top_driver_nets(const char *instance_name_prefix, Hashtable *output_nets_hash);
@@ -98,13 +95,11 @@ void rb_create_top_output_nodes(FILE *file);
 int read_tokens (char *buffer, hard_block_models *models, FILE *file, Hashtable *output_nets_hash);
 static void dum_parse (char *buffer, FILE *file);
 void create_internal_node_and_driver(FILE *file, Hashtable *output_nets_hash);
-operation_list assign_node_type_from_node_name(char * output_name);// function will decide the node->type of the given node
-operation_list read_bit_map_find_unknown_gate(int input_count, nnode_t * node, FILE *file);
+operation_list read_bit_map(int input_count, nnode_t * node, FILE *file);
 void create_latch_node_and_driver(FILE *file, Hashtable *output_nets_hash);
 void create_hard_block_nodes(hard_block_models *models, FILE *file, Hashtable *output_nets_hash);
 void hook_up_nets(Hashtable *output_nets_hash);
 void hook_up_node(nnode_t *node, Hashtable *output_nets_hash);
-char* search_clock_name(FILE *file);
 void free_hard_block_model(hard_block_model *model);
 char *get_hard_block_port_name(char *name);
 long get_hard_block_pin_number(char *original_name);
@@ -136,7 +131,6 @@ int count_blif_lines(FILE *file);
  */
 netlist_t *read_blif()
 {
-	insert_global_clock = true;
 	current_parse_file = 0;
 	blif_netlist = allocate_netlist();
 	/*Opening the blif file */
@@ -216,6 +210,7 @@ int read_tokens (char *buffer, hard_block_models *models, FILE *file, Hashtable 
 			else if (strcmp (token, ".names") == 0)
 			{
 				create_internal_node_and_driver(file, output_nets_hash);
+				skip_reading_bit_map = true;
 			}
 			else if (strcmp(token,".latch") == 0)
 			{
@@ -243,113 +238,95 @@ int read_tokens (char *buffer, hard_block_models *models, FILE *file, Hashtable 
 }
 
 
-/*---------------------------------------------------------------------------------------------
-   * function:assign_node_type_from_node_name(char *)
-     This function tries to assign the node->type by looking at the name
-     Else return GENERIC
-*-------------------------------------------------------------------------------------------*/
-operation_list assign_node_type_from_node_name(char * output_name)
-{
-	//variable to extract the type
-	operation_list result = GENERIC;
+/***************************************************************************************
+ * function:create_latch_node_and_driver
+ *   to create an ff node and driver from that node
+ *
+ *	Berkeley Logic Interchange Format (BLIF) p:4
+ *	The generic-latch construct can be used to create any type of latch or flip-flop (see also the library-gate section).
+ *	A generic-latch is declared as follows:
+ *
+ *	.latch <input> <output> [<type> <control>] [<init-val>]
+ *	- <input> 	is the data input to the latch.
+ *	- <output> 	is the output of the latch.
+ *	- <type>	is one of {fe, re, ah, al, as}, which correspond to 
+ * 		“falling edge”, “rising edge”, “active high”, “active low”, or “asynchronous.”
+ *	- <control> is the clocking signal for the latch. It can be a .clock of the model, 
+ *   	the output of any function in the model, or the word “NIL” for no clock.
+ *	- <init-val> is the initial state of the latch, which can be one of {0, 1, 2, 3}. “2” stands for “don’t care” and “3” is
+ *		“unknown.” Unspecified, it is assumed “3”.
+ *
+ * **If a latch does not have a controlling clock specified, it is assumed that it is actually controlled by a single
+ *	global clock. The behavior of this global clock may be interpreted differently by the various algorithms that may
+ *	manipulate the model after the model has been read in. Therefore, the user should be aware of these varying
+ *	interpretations if latches are specified with no controlling clocks. **
+ ***************************************************************************************/
+#define MAX_LATCH_TOKENS 5
+#define MIN_LATCH_TOKENS 2
 
-	int start, end;
-	int length_string = strlen(output_name);
-	for(start = length_string-1; (start >= 0) && (output_name[start] != '^'); start--);
-	for(end   = length_string-1; (end   >= 0) && (output_name[end]   != '~'); end--  );
-
-	if((start < end) && (end > 0))
-	{
-		// Stores the extracted string
-		char *extracted_string = (char*)vtr::calloc(end-start+2, sizeof(char));
-		int i, j;
-		for(i = start + 1, j = 0; i < end; i++, j++)
-		{
-			extracted_string[j] = output_name[i];
-		}
-
-		extracted_string[j]='\0';
-		for(i=0; i<operation_list_END; i++)
-		{
-			if(!strcmp(extracted_string,operation_list_STR[i][ODIN_LONG_STRING])
-			|| !strcmp(extracted_string,operation_list_STR[i][ODIN_SHORT_STRING]))
-			{
-				result = static_cast<operation_list>(i);
-				break;
-			}
-		}
-
-		vtr::free(extracted_string);
-	}
-	return result;
-}
-
-/*---------------------------------------------------------------------------------------------
-   * function:create_latch_node_and_driver
-     to create an ff node and driver from that node
-     format .latch <input> <output> [<type> <control/clock>] <initial val>
-*-------------------------------------------------------------------------------------------*/
 void create_latch_node_and_driver(FILE *file, Hashtable *output_nets_hash)
 {
-	/* Storing the names of the input and the final output in array names */
-	char ** names = NULL;       // Store the names of the tokens
-	int input_token_count = 0; /*to keep track whether controlling clock is specified or not */
-	/*input_token_count=3 it is not and =5 it is */
-	char *ptr = NULL;
 
-	char buffer[READ_BLIF_BUFFER];
-	while ((ptr = vtr::strtok (NULL, TOKENS, file, buffer)) != NULL)
-	{
-		input_token_count += 1;
-		names = (char**)vtr::realloc(names, (sizeof(char*))* (input_token_count));
-		
-		names[input_token_count-1] = vtr::strdup(ptr);
-	}
-
-	/* assigning the new_node */
-	if(input_token_count != 5)
-	{
-		/* supported added for the ABC .latch output without control */
-		if(input_token_count == 3)
-		{
-			input_token_count = 5;
-			names = (char**)vtr::realloc(names, sizeof(char*) * input_token_count);
-
-			names[3] = search_clock_name(file);
-			names[4] = names[2];
-			names[2] = vtr::strdup("re");
-		}
-		else
-		{
-			std::string line = "";
-			for(int i=0; i< input_token_count; i++)
-			{
-				line +=  names[i];
-				line += " ";
-			}
-
-			error_message(NETLIST_ERROR,file_line_number,current_parse_file, "This .latch Format not supported: <%s> \n\t required format :.latch <input> <output> [<type> <control/clock>] <initial val>",
-			line.c_str());
-		}
-	}
-
+	// set defaults
 	nnode_t *new_node = allocate_nnode();
 	new_node->related_ast_node = NULL;
 	new_node->type = FF_NODE;
-	new_node->edge_type = edge_type_blif_enum(names[2]);
 
-	/* Read in the initial value of the latch.
-	   Possible values from a blif file are:
-	   0: LOW
-	   1: HIGH
-	   2: DON'T CARE
-	   3: UNKNOWN
+	const char *latch_input = NULL;
+	const char *latch_output = NULL;
+	new_node->edge_type = RISING_EDGE_SENSITIVITY;
+	const char *latch_clock = DEFAULT_CLOCK_NAME;
+	new_node->initial_value = BitSpace::_init;
 
-	   2 and 3 are treated in the same way */
-	int initial_value = atoi(names[4]);
-	if(initial_value == 0 || initial_value == 1){
-		new_node->initial_value = initial_value;
-		new_node->has_initial_value = true;
+	std::vector<const char *> latch_token;
+	char *ptr = NULL;
+	char buffer[READ_BLIF_BUFFER] = { 0 };
+	while((ptr = vtr::strtok (NULL, TOKENS, file, buffer)) != NULL)
+	{
+		latch_token.push_back(ptr);
+	}
+
+	/* the .latch is invalid */
+	if ( latch_token.size() < MIN_LATCH_TOKENS || latch_token.size() > MAX_LATCH_TOKENS )
+	{
+		error_message(BLIF_ERROR, line_count, current_parse_file, 
+			"Malformed latch in blif file, got %d tokens, expected .latch <input> <output> [<type> <control>] [<init-val>]\n",
+				latch_token.size());
+	}
+
+	int current_token = 0;
+	latch_input = latch_token[current_token++];
+	latch_output = latch_token[current_token++];
+
+	if(current_token < latch_token.size())
+	{
+		edge_type_e temp_edge = edge_type_blif_enum(latch_token[current_token]);
+		if(temp_edge != UNDEFINED_SENSITIVITY)
+		{
+			current_token++;
+
+			new_node->edge_type = temp_edge;
+
+			// now parse the clock
+			latch_clock = latch_token[current_token++];
+		}
+	}
+
+	if(current_token < latch_token.size())
+	{
+		BitSpace::bit_value_t temp_init_val = parse_init_val_blif(latch_token[current_token]);
+		if(temp_init_val != (BitSpace::bit_value_t)-1)
+		{
+			current_token++;
+
+			new_node->initial_value = temp_init_val;
+		}
+	}
+
+	if(current_token < latch_token.size())
+	{
+		error_message(BLIF_ERROR, line_count, current_parse_file, "%s\n", 
+				"Malformed latch in blif file, unable to parse latch properly, expected .latch <input> <output> [<type> <control>] [<init-val>]");
 	}
 
 	/* allocate the output pin (there is always one output pin) */
@@ -367,18 +344,21 @@ void create_latch_node_and_driver(FILE *file, Hashtable *output_nets_hash)
 	}
 
 	/* add names and type information to the created input pins */
-	npin_t *new_pin = allocate_npin();
-	new_pin->name = vtr::strdup(names[0]);
+
+	npin_t *new_pin = NULL;
+
+	new_pin = allocate_npin();
+	new_pin->name = vtr::strdup(latch_input);
 	new_pin->type = INPUT;
 	add_input_pin_to_node(new_node, new_pin,0);
 
 	new_pin = allocate_npin();
-	new_pin->name = vtr::strdup(names[3]);
+	new_pin->name = vtr::strdup(latch_clock);
 	new_pin->type = INPUT;
 	add_input_pin_to_node(new_node, new_pin,1);
 
 	/* add a name for the node, keeping the name of the node same as the output */
-	new_node->name = make_full_ref_name(names[1],NULL, NULL, NULL,-1);
+	new_node->name = make_full_ref_name(latch_output,NULL, NULL, NULL,-1);
 
 	/*add this node to blif_netlist as an ff (flip-flop) node */
 	blif_netlist->ff_nodes = (nnode_t **)vtr::realloc(blif_netlist->ff_nodes, sizeof(nnode_t*)*(blif_netlist->num_ff_nodes+1));
@@ -397,101 +377,8 @@ void create_latch_node_and_driver(FILE *file, Hashtable *output_nets_hash)
 	add_driver_pin_to_net(new_net, new_pin);
 
 	output_nets_hash->add(new_node->name, new_net);
-
-	/* Free the char** names */
-	for (i = 0; i < input_token_count; i++)
-		vtr::free(names[i]);
-			
-	vtr::free(names);
 	vtr::free(ptr);
 }
-
-/*---------------------------------------------------------------------------------------------
-   * function: search_clock_name
-     to search the clock if the control in the latch
-     is not mentioned
-*-------------------------------------------------------------------------------------------*/
-char* search_clock_name(FILE* file)
-{
-	fpos_t pos;
-	int last_line = file_line_number;
-	fgetpos(file,&pos);
-	rewind(file);
-
-	char *to_return = NULL;
-	char ** input_names = NULL;
-	int input_names_count = 0;
-	int found = 0;
-	while(!found)
-	{
-		char buffer[READ_BLIF_BUFFER];
-		vtr::fgets(buffer,READ_BLIF_BUFFER,file);
-
-		// not sure if this is needed
-		if(feof(file))
-			break;
-
-		char *ptr = NULL;
-		if((ptr = vtr::strtok(buffer, TOKENS, file, buffer)))
-		{
-			if(!strcmp(ptr,".end"))
-				break;
-
-			if(!strcmp(ptr,".inputs"))
-			{
-				/* store the inputs in array of string */
-				while((ptr = vtr::strtok (NULL, TOKENS, file, buffer)))
-				{
-					input_names = (char**)vtr::realloc(input_names,sizeof(char*) * (input_names_count + 1));
-					input_names[input_names_count++] = vtr::strdup(ptr);
-				}
-			}
-			else if(!strcmp(ptr,".names") || !strcmp(ptr,".latch"))
-			{
-				while((ptr = vtr::strtok (NULL, TOKENS,file, buffer)))
-				{
-					int i;
-					for(i = 0; i < input_names_count; i++)
-					{
-						if(!strcmp(ptr,input_names[i]))
-						{
-							vtr::free(input_names[i]);
-							input_names[i] = input_names[--input_names_count];
-						}
-					}
-				}
-			}
-			else if(input_names_count == 1)
-			{
-				found = 1;
-			}
-		}
-	}
-	file_line_number = last_line;
-	fsetpos(file,&pos);
-
-	if (found)
-	{
-		to_return = input_names[0];
-	}
-	else
-	{
-		to_return = vtr::strdup(DEFAULT_CLOCK_NAME);
-		for(int i = 0; i < input_names_count; i++)
-		{
-			if(input_names[i])
-			{
-				vtr::free(input_names[i]);
-			}
-		}
-	}  
-			
-	vtr::free(input_names);   
-
-	return to_return; 
-}
-
-
 
 /*---------------------------------------------------------------------------------------------
    * function:create_hard_block_nodes
@@ -662,7 +549,6 @@ void create_hard_block_nodes(hard_block_models *models, FILE *file, Hashtable *o
    * function:create_internal_node_and_driver
      to create an internal node and driver from that node
 *-------------------------------------------------------------------------------------------*/
-
 void create_internal_node_and_driver(FILE *file, Hashtable *output_nets_hash)
 {
 	/* Storing the names of the input and the final output in array names */
@@ -680,442 +566,175 @@ void create_internal_node_and_driver(FILE *file, Hashtable *output_nets_hash)
 	nnode_t *new_node = allocate_nnode();
 	new_node->related_ast_node = NULL;
 
-	/* gnd vcc unconn already created as top module so ignore them */
-	if (
-			   !strcmp(names[input_count-1],"gnd")
-			|| !strcmp(names[input_count-1],"vcc")
-			|| !strcmp(names[input_count-1],"unconn")
-	)
+	new_node->type = GENERIC;
+	read_bit_map(input_count-1, new_node, file);
+
+	/* allocate the input pin (= input_count-1)*/
+	if (input_count-1 > 0) // check if there is any input pins
 	{
-		skip_reading_bit_map = true;
-		free_nnode(new_node);
+		allocate_more_input_pins(new_node, input_count-1);
+		for(int i = 0; i < input_count-1; i++)
+		{
+			add_input_port_information(new_node, 1);
+		}
 	}
-	else
+
+	/* add names and type information to the created input pins */
+	for(int i = 0; i <= input_count-2; i++)
 	{
-		/* assign the node type by seeing the name */
-		operation_list node_type = (operation_list)assign_node_type_from_node_name(names[input_count-1]);
-
-		if(node_type != GENERIC)
-		{
-			new_node->type = node_type;
-			skip_reading_bit_map = true;
-		}
-		/* Check for GENERIC type , change the node by reading the bit map */
-		else if(node_type == GENERIC)
-		{
-			new_node->type = (operation_list)read_bit_map_find_unknown_gate(input_count-1, new_node, file);
-			skip_reading_bit_map = true;
-		}
-
-		/* allocate the input pin (= input_count-1)*/
-		if (input_count-1 > 0) // check if there is any input pins
-		{
-			allocate_more_input_pins(new_node, input_count-1);
-
-			/* add the port information */
-			if(new_node->type == MUX_2)
-			{
-				add_input_port_information(new_node, (input_count-1)/2);
-				add_input_port_information(new_node, (input_count-1)/2);
-			}
-			else
-			{
-				int i;
-				for(i = 0; i < input_count-1; i++)
-					add_input_port_information(new_node, 1);
-			}
-		}
-
-		/* add names and type information to the created input pins */
-		int i;
-		for(i = 0; i <= input_count-2; i++)
-		{
-			npin_t *new_pin = allocate_npin();
-			new_pin->name = vtr::strdup(names[i]);
-			new_pin->type = INPUT;
-			add_input_pin_to_node(new_node, new_pin, i);
-		}
-
-		/* add information for the intermediate VCC and GND node (appears in ABC )*/
-		if(new_node->type == GND_NODE)
-		{
-			allocate_more_input_pins(new_node,1);
-			add_input_port_information(new_node, 1);
-
-			npin_t *new_pin = allocate_npin();
-			new_pin->name = vtr::strdup(GND_NAME);
-			new_pin->type = INPUT;
-			add_input_pin_to_node(new_node, new_pin,0);
-		}
-
-		if(new_node->type == VCC_NODE)
-		{
-			allocate_more_input_pins(new_node,1);
-			add_input_port_information(new_node, 1);
-
-			npin_t *new_pin = allocate_npin();
-			new_pin->name = vtr::strdup(VCC_NAME);
-			new_pin->type = INPUT;
-			add_input_pin_to_node(new_node, new_pin,0);
-		}
-
-		/* allocate the output pin (there is always one output pin) */
-		allocate_more_output_pins(new_node, 1);
-		add_output_port_information(new_node, 1);
-
-		/* add a name for the node, keeping the name of the node same as the output */
-		new_node->name = make_full_ref_name(names[input_count-1],NULL, NULL, NULL,-1);
-
-		/*add this node to blif_netlist as an internal node */
-		blif_netlist->internal_nodes = (nnode_t**)vtr::realloc(blif_netlist->internal_nodes, sizeof(nnode_t*)*(blif_netlist->num_internal_nodes+1));
-		blif_netlist->internal_nodes[blif_netlist->num_internal_nodes++] = new_node;
-		new_node->file_number = current_parse_file;
-		new_node->line_number = line_count;
-
-		/*add name information and a net(driver) for the output */
-
 		npin_t *new_pin = allocate_npin();
-		new_pin->name = new_node->name;
-		new_pin->type = OUTPUT;
-
-		add_output_pin_to_node(new_node, new_pin, 0);
-
-		nnet_t *new_net = allocate_nnet();
-		new_net->name = new_node->name;
-
-		add_driver_pin_to_net(new_net,new_pin);
-
-		output_nets_hash->add(new_node->name, new_net);
-
+		new_pin->name = vtr::strdup(names[i]);
+		new_pin->type = INPUT;
+		add_input_pin_to_node(new_node, new_pin, i);
 	}
+
+	/* allocate the output pin (there is always one output pin) */
+	allocate_more_output_pins(new_node, 1);
+	add_output_port_information(new_node, 1);
+
+	/* add a name for the node, keeping the name of the node same as the output */
+	new_node->name = make_full_ref_name(names[input_count-1],NULL, NULL, NULL,-1);
+
+	/*add this node to blif_netlist as an internal node */
+	blif_netlist->internal_nodes = (nnode_t**)vtr::realloc(blif_netlist->internal_nodes, sizeof(nnode_t*)*(blif_netlist->num_internal_nodes+1));
+	blif_netlist->internal_nodes[blif_netlist->num_internal_nodes++] = new_node;
+	new_node->file_number = current_parse_file;
+	new_node->line_number = line_count;
+
+	/*add name information and a net(driver) for the output */
+
+	npin_t *new_pin = allocate_npin();
+	new_pin->name = new_node->name;
+	new_pin->type = OUTPUT;
+
+	add_output_pin_to_node(new_node, new_pin, 0);
+
+	nnet_t *new_net = allocate_nnet();
+	new_net->name = new_node->name;
+
+	add_driver_pin_to_net(new_net,new_pin);
+
+	output_nets_hash->add(new_node->name, new_net);
+
 	/* Free the char** names */
 	for(int i = 0; i < input_count; i++)
+	{
 		vtr::free(names[i]);
+	}
 
 	vtr::free(names);
 }
 
-/*
-*---------------------------------------------------------------------------------------------
-   * function: read_bit_map_find_unknown_gate
-     read the bit map for simulation
-*-------------------------------------------------------------------------------------------*/
-operation_list read_bit_map_find_unknown_gate(int input_count, nnode_t *node, FILE *file)
-{
-	operation_list to_return = operation_list_END;
 
+static BitSpace::bit_value_t char_to_init_value(char input)
+{
+	switch(input)
+	{
+		case '0':	return BitSpace::_0;
+		case '1':	return BitSpace::_1;
+		case '-':	return BitSpace::_x;
+		default:	return BitSpace::_init;
+	}
+}
+/***************************************
+ * function: read_bit_map
+ * read the bit map for simulation
+ */
+operation_list read_bit_map(int input_count, nnode_t *node, FILE *file)
+{
 	fpos_t pos;
 	int last_line = file_line_number;
-	const char *One = "1";
-	const char *Zero = "0";
 	fgetpos(file,&pos);
 
-	char **bit_map = NULL;
-	char *output_bit_map = NULL;// to distinguish whether for the bit_map output is 1 or 0
-	int line_count_bitmap = 0; //stores the number of lines in a particular bit map
+	operation_list to_return = GENERIC;
 	char buffer[READ_BLIF_BUFFER];
 
-	if(!input_count)
+	bool done_parsing = false;
+	char *line = NULL;
+	while(NULL != (line = fgets (buffer, READ_BLIF_BUFFER, file)) && !done_parsing)
 	{
-		vtr::fgets (buffer, READ_BLIF_BUFFER, file);
+		char *output_bit = NULL;
+		char *bitset = NULL;
 
-		file_line_number = last_line;
-		fsetpos(file,&pos);
-
-		char *ptr = vtr::strtok(buffer,"\t\n", file, buffer);
-		if(!ptr) 				
+		char *token = strtok(buffer,TOKENS);
+		// default to ouptut gnd
+		if(!token)
 		{
-			to_return = GND_NODE;
+			break;
 		}
-		else if(!strcmp(ptr," 1")) 
-		{
-			to_return = VCC_NODE;
-		}
-		else if(!strcmp(ptr," 0"))
-		{
-			to_return = GND_NODE;
-		} 
-		else    
-		{
-			to_return = VCC_NODE;
-		}                    
-	}
-	else
-	{
-		while(1)
-		{
-			vtr::fgets (buffer, READ_BLIF_BUFFER, file);
-			if(!(buffer[0] == '0' || buffer[0] == '1' || buffer[0] == '-'))
-				break;
-
-			bit_map = (char**)vtr::realloc(bit_map,sizeof(char*) * (line_count_bitmap + 1));
-			bit_map[line_count_bitmap++] = vtr::strdup(vtr::strtok(buffer,TOKENS, file, buffer));
-			if (output_bit_map != NULL) vtr::free(output_bit_map);
-			output_bit_map = vtr::strdup(vtr::strtok(NULL,TOKENS, file, buffer));
-		}
-		
-		oassert(output_bit_map);
-
-		file_line_number = last_line;
-		fsetpos(file,&pos);
-
-		/*Patern recognition for faster simulation*/
-		if(!strcmp(output_bit_map, One))
-		{
-			//On-gate recognition
-			//TODO move off-logic parts to appropriate code block
-
-			vtr::free(output_bit_map);
-			output_bit_map = vtr::strdup(One);
-			node->generic_output = 1;
-
-			/* Single line bit map : */
-			if(line_count_bitmap == 1)
-			{
-				// GT
-				if(!strcmp(bit_map[0],"100"))
-				{
-					to_return = GT;
-				}
-
-				// LT
-				else if(!strcmp(bit_map[0],"010"))
-				{
-					to_return = LT;
-				}
-
-				/* LOGICAL_AND and LOGICAL_NAND for ABC*/
-				else
-				{
-					int i;
-					for(i = 0; i < input_count && bit_map[0][i] == '1'; i++);
-
-					if(i == input_count)
-					{
-						if (!strcmp(output_bit_map,"1"))
-						{
-							to_return = LOGICAL_AND;
-						}
-						else if (!strcmp(output_bit_map,"0"))
-						{
-							to_return = LOGICAL_NAND;
-						}
-					}
-
-					/* BITWISE_NOT */
-					if(!strcmp(bit_map[0],"0") && to_return == operation_list_END)
-					{
-						to_return = BITWISE_NOT;
-					}
-					/* LOGICAL_NOR and LOGICAL_OR for ABC */
-					for(i = 0; i < input_count && bit_map[0][i] == '0'; i++);
-
-					if(i == input_count && to_return == operation_list_END)
-					{
-						if (!strcmp(output_bit_map,"1"))
-						{
-							to_return = LOGICAL_NOR;
-						}
-						else if (!strcmp(output_bit_map,"0"))
-						{
-							to_return = LOGICAL_OR;
-						}
-					}
-				}
-			}
-			/* Assumption that bit map is in order when read from blif */
-			else if(line_count_bitmap == 2)
-			{
-				/* LOGICAL_XOR */
-				if((strcmp(bit_map[0],"01")==0) && (strcmp(bit_map[1],"10")==0))
-				{ 
-					to_return = LOGICAL_XOR;
-				}
-				/* LOGICAL_XNOR */
-				else if((strcmp(bit_map[0],"00")==0) && (strcmp(bit_map[1],"11")==0)) 
-				{
-					to_return = LOGICAL_XNOR;
-				}
-			}
-			else if (line_count_bitmap == 4)
-			{
-				/* ADDER_FUNC */
-				if (
-						(!strcmp(bit_map[0],"001"))
-						&& (!strcmp(bit_map[1],"010"))
-						&& (!strcmp(bit_map[2],"100"))
-						&& (!strcmp(bit_map[3],"111"))
-				)
-				{
-					to_return = ADDER_FUNC;
-				}
-				/* CARRY_FUNC */
-				else if(
-						(!strcmp(bit_map[0],"011"))
-						&& (!strcmp(bit_map[1],"101"))
-						&& (!strcmp(bit_map[2],"110"))
-						&& (!strcmp(bit_map[3],"111"))
-				)
-				{
-					to_return = 	CARRY_FUNC;
-				}
-				/* LOGICAL_XOR */
-				else if(
-						(!strcmp(bit_map[0],"001"))
-						&& (!strcmp(bit_map[1],"010"))
-						&& (!strcmp(bit_map[2],"100"))
-						&& (!strcmp(bit_map[3],"111"))
-				)
-				{
-					to_return = 	LOGICAL_XOR;
-				}
-				/* LOGICAL_XNOR */
-				else if(
-						(!strcmp(bit_map[0],"000"))
-						&& (!strcmp(bit_map[1],"011"))
-						&& (!strcmp(bit_map[2],"101"))
-						&& (!strcmp(bit_map[3],"110"))
-				)
-				{
-					to_return = 	LOGICAL_XNOR;
-				}
-			}
-
-
-			if(line_count_bitmap == input_count && to_return == operation_list_END)
-			{
-				/* LOGICAL_OR */
-				int i;
-				for(i = 0; i < line_count_bitmap; i++)
-				{
-					if(bit_map[i][i] == '1')
-					{
-						int j;
-						for(j = 1; j < input_count; j++)
-						{
-							if(bit_map[i][(i+j)% input_count]!='-')
-							{
-								break;
-							}
-						}
-
-						if(j != input_count)
-						{
-							break;
-						}
-					}
-					else
-					{
-						break;
-					}
-				}
-
-				if(i == line_count_bitmap)
-				{
-					to_return = LOGICAL_OR;
-				}
-				else
-				{
-
-					/* LOGICAL_NAND */
-					for(i = 0; i < line_count_bitmap; i++)
-					{
-						if(bit_map[i][i]=='0')
-						{
-							int j;
-							for(j = 1; j < input_count; j++)
-							{
-								if(bit_map[i][(i+j)% input_count]!='-')
-								{
-									break;
-								}
-							}
-
-							if(j != input_count) 
-							{
-								break;
-							}
-						}
-						else
-						{
-							break;
-						}
-					}
-
-					if(i == line_count_bitmap)
-					{
-						to_return = LOGICAL_NAND;
-					}
-				}
-			}
-
-			/* MUX_2 */
-			if(line_count_bitmap*2 == input_count && to_return == operation_list_END)
-			{
-				int i;
-				for(i = 0; i < line_count_bitmap; i++)
-				{
-					if((bit_map[i][i]=='1') && (bit_map[i][i+line_count_bitmap] =='1'))
-					{
-						int j;
-						for (j = 1; j < line_count_bitmap; j++)
-						{
-							if (
-									(bit_map[i][ (i+j) % line_count_bitmap] != '-')
-									|| (bit_map[i][((i+j) % line_count_bitmap) + line_count_bitmap] != '-')
-							)
-							{
-								break;
-							}
-						}
-
-						if(j != input_count)
-						{
-							break;
-						}
-					}
-					else
-					{
-						break;
-					}
-				}
-
-				if(i == line_count_bitmap)
-				{
-					to_return = MUX_2;
-				}
-			}
-		} 
 		else
 		{
-			//Off-gate recognition
-			//TODO
-
-			vtr::free(output_bit_map);
-			output_bit_map = vtr::strdup(Zero);
-			node->generic_output = 0;
+			output_bit = token;
 		}
 
-		/* assigning the bit_map to the node if it is GENERIC */
-		if(to_return == operation_list_END)
+		token = strtok(NULL,TOKENS);
+		if(token)
 		{
-			node->bit_map = bit_map;
-			node->bit_map_line_count = line_count_bitmap;
-			to_return = GENERIC;
+			bitset = output_bit;
+			output_bit = token;
+		}
+
+		token = strtok(NULL,TOKENS);
+		if(token)
+		{
+			break;
+		}
+
+		if(strlen(output_bit) != 1)
+		{
+			break;
+		}
+
+		BitSpace::bit_value_t output_val = char_to_init_value(output_bit[0]);
+		if(output_val != BitSpace::_0 && output_val != BitSpace::_1)
+		{
+			break;
+		}
+
+		node->bitmap[output_val].push_back(std::vector<BitSpace::bit_value_t>());
+		for (int i=0; bitset && i<strlen(bitset); i++)
+		{
+			output_val = char_to_init_value(bitset[i]);
+			if(bit_is_defined(output_val))
+			{
+				node->bitmap[output_val].back().push_back(char_to_init_value(bitset[i]));
+			}
+			else
+			{
+				// this was not a bitset so we remove the vector and break out since we are done parsing
+				node->bitmap[output_val].pop_back();
+				done_parsing = true;
+				break;
+			}
+		} 
+
+		if	(! node->bitmap[output_val].empty()
+		&&	node->bitmap[output_val].back().size() != input_count)
+		{
+			error_message(NETLIST_ERROR, file_line_number, current_parse_file,
+				"Unable to parse blif lut line, expected %d input, got %d", input_count, node->bitmap[output_val].back().size());
 		}
 	}
-	if(output_bit_map)
+
+	// default to GND if nothing is there
+	if(node->bitmap[0].size() == 0
+	&& node->bitmap[1].size() == 0)
 	{
-		vtr::free(output_bit_map);
-	}
-	if(bit_map)
-	{
-		for(int i = 0; i < line_count_bitmap; i++)
+		if (input_count == 0)
 		{
-			vtr::free(bit_map[i]);
+			node->bitmap[0].push_back(std::vector<BitSpace::bit_value_t>());
 		}
-		vtr::free(bit_map);
+		else
+		{
+			error_message(NETLIST_ERROR, file_line_number, current_parse_file,
+				"Expected a lut with bitmap of size %d but nothing was provided: %s", input_count, buffer);
+		}
+		
 	}
+	
+	file_line_number = last_line;
+	fsetpos(file,&pos);
+
 	return to_return;
 }
 
@@ -1172,17 +791,6 @@ static void build_top_input_node(const char *name_str, Hashtable *output_nets_ha
 
 void add_top_input_nodes(FILE *file, Hashtable *output_nets_hash)
 {
-	/**
-	 * insert a global clock for fall back. 
-	 * in case of undriven internal clocks, they will attach to the global clock
-	 * this also fix the issue of constant verilog (no input)
-	 * that cannot simulate due to empty input vector
-	 */
-	if(insert_global_clock)
-	{
-		insert_global_clock = false;
-		build_top_input_node(DEFAULT_CLOCK_NAME, output_nets_hash);
-	}
 
 	char *ptr;
 	char buffer[READ_BLIF_BUFFER];
@@ -1244,7 +852,7 @@ void rb_look_for_clocks()
 	int i;
 	for (i = 0; i < blif_netlist->num_ff_nodes; i++)
 	{
-		if (blif_netlist->ff_nodes[i]->input_pins[1]->net->driver_pin->node->type != CLOCK_NODE)
+		if (blif_netlist->ff_nodes[i]->input_pins[1]->net->driver_pin->node->type == INPUT_NODE)
 		{
 			blif_netlist->ff_nodes[i]->input_pins[1]->net->driver_pin->node->type = CLOCK_NODE;
 		}
@@ -1252,67 +860,42 @@ void rb_look_for_clocks()
 
 }
 
-/*
-----------------------------------------------------------------------------
+/*----------------------------------------------------------------------------
 function: Creates the drivers for the top module
    Top module is :
                 * Special as all inputs are actually drivers.
                 * Also make the 0 and 1 constant nodes at this point.
----------------------------------------------------------------------------
-*/
-
+---------------------------------------------------------------------------*/
 void rb_create_top_driver_nets(const char *instance_name_prefix, Hashtable *output_nets_hash)
 {
 	npin_t *new_pin;
 	/* create the constant nets */
 
-	/* ZERO net */
-	/* description given for the zero net is same for other two */
-	blif_netlist->zero_net = allocate_nnet(); // allocate memory to net pointer
-	blif_netlist->gnd_node = allocate_nnode(); // allocate memory to node pointer
-	blif_netlist->gnd_node->type = GND_NODE;  // mark the type
-	allocate_more_output_pins(blif_netlist->gnd_node, 1);// alloacate 1 output pin pointer to this node
-	add_output_port_information(blif_netlist->gnd_node, 1);// add port info. this port has 1 pin ,till now number of port for this is one
-	new_pin = allocate_npin();
-	add_output_pin_to_node(blif_netlist->gnd_node, new_pin, 0);// add this pin to output pin pointer array of this node
-	add_driver_pin_to_net(blif_netlist->zero_net,new_pin);// add this pin to net as driver pin
-
-	/*ONE net*/
-	blif_netlist->one_net = allocate_nnet();
-	blif_netlist->vcc_node = allocate_nnode();
-	blif_netlist->vcc_node->type = VCC_NODE;
-	allocate_more_output_pins(blif_netlist->vcc_node, 1);
-	add_output_port_information(blif_netlist->vcc_node, 1);
-	new_pin = allocate_npin();
-	add_output_pin_to_node(blif_netlist->vcc_node, new_pin, 0);
-	add_driver_pin_to_net(blif_netlist->one_net, new_pin);
-
 	/* Pad net */
 	blif_netlist->pad_net = allocate_nnet();
+	blif_netlist->pad_net->name = make_full_ref_name(instance_name_prefix, NULL, NULL, PAD_NAME, -1);
 	blif_netlist->pad_node = allocate_nnode();
+	blif_netlist->pad_node->name = vtr::strdup(PAD_NAME);
 	blif_netlist->pad_node->type = PAD_NODE;
 	allocate_more_output_pins(blif_netlist->pad_node, 1);
 	add_output_port_information(blif_netlist->pad_node, 1);
 	new_pin = allocate_npin();
 	add_output_pin_to_node(blif_netlist->pad_node, new_pin, 0);
 	add_driver_pin_to_net(blif_netlist->pad_net, new_pin);
+	output_nets_hash->add(PAD_NAME, blif_netlist->pad_net);
 
-	/* CREATE the driver for the ZERO */
-	blif_netlist->zero_net->name = make_full_ref_name(instance_name_prefix, NULL, NULL, zero_string, -1);
-	output_nets_hash->add(GND_NAME, blif_netlist->zero_net);
-
-	/* CREATE the driver for the ONE and store twice */
-	blif_netlist->one_net->name = make_full_ref_name(instance_name_prefix, NULL, NULL, one_string, -1);
-	output_nets_hash->add(VCC_NAME, blif_netlist->one_net);
-
-	/* CREATE the driver for the PAD */
-	blif_netlist->pad_net->name = make_full_ref_name(instance_name_prefix, NULL, NULL, pad_string, -1);
-	output_nets_hash->add(HBPAD_NAME, blif_netlist->pad_net);
-
-	blif_netlist->vcc_node->name = vtr::strdup(VCC_NAME);
-	blif_netlist->gnd_node->name = vtr::strdup(GND_NAME);
-	blif_netlist->pad_node->name = vtr::strdup(HBPAD_NAME);
-
+	/* Global Clock net */
+	blif_netlist->default_clock_net = allocate_nnet();
+	blif_netlist->default_clock_net->name = make_full_ref_name(instance_name_prefix, NULL, NULL, DEFAULT_CLOCK_NAME, -1);
+	blif_netlist->default_clock_node = allocate_nnode();
+	blif_netlist->default_clock_node->name = vtr::strdup(DEFAULT_CLOCK_NAME);
+	blif_netlist->default_clock_node->type = CLOCK_NODE;
+	allocate_more_output_pins(blif_netlist->default_clock_node, 1);
+	add_output_port_information(blif_netlist->default_clock_node, 1);
+	new_pin = allocate_npin();
+	add_output_pin_to_node(blif_netlist->default_clock_node, new_pin, 0);
+	add_driver_pin_to_net(blif_netlist->default_clock_net, new_pin);
+	output_nets_hash->add(DEFAULT_CLOCK_NAME, blif_netlist->default_clock_net);
 }
 
 /*---------------------------------------------------------------------------------------------

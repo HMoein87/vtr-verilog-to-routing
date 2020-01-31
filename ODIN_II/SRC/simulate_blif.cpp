@@ -24,6 +24,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 #include <algorithm>
 #include <unordered_map>
 #include <unordered_set>
+#include <vector>
 #include <cmath>
 #include "vtr_util.h"
 #include "vtr_memory.h"
@@ -40,9 +41,32 @@ OTHER DEALINGS IN THE SOFTWARE.
 #define CLOCK_INITIAL_VALUE 1
 #define MAX_REPEAT_SIM 128
 
-static inline signed char init_value(nnode_t *node)
+static signed char init_value(nnode_t *node)
 {
-	return (node && node->has_initial_value)? node->initial_value: global_args.sim_initial_value;
+	signed char to_return = -1;
+	if	(node)
+	{
+		switch(node->initial_value)
+		{
+			case BitSpace::_0:	
+				to_return = 0;
+				break;
+			case BitSpace::_1:	
+				to_return = 1;
+				break;
+			case BitSpace::_z:	
+				to_return = -1;
+				break;
+			default:
+				to_return = global_args.sim_initial_value;
+				break;
+		}
+	}
+	else
+	{
+		to_return = global_args.sim_initial_value;
+	}
+	return to_return;
 }
 
 enum edge_eval_e
@@ -54,7 +78,7 @@ enum edge_eval_e
 	UNK
 };
 
-inline static edge_eval_e get_edge_type(npin_t *clk, int cycle)
+static edge_eval_e get_edge_type(npin_t *clk, int cycle)
 {
 	if(!clk)
 		return UNK;
@@ -88,12 +112,12 @@ inline static bool ff_trigger(edge_type_e type, npin_t* clk, int cycle)
 
 inline static signed char get_D(npin_t* D, int cycle)
 {
-	return get_pin_value(D,cycle-1);
+	return get_pin_value(D,cycle -1);
 }
 
 inline static signed char get_Q(npin_t* Q, int cycle)
 {
-	return get_pin_value(Q,cycle-1);
+	return get_pin_value(Q,cycle -1);
 }
 
 inline static signed char compute_ff(bool trigger, signed char D_val, signed char Q_val, int /*cycle*/)
@@ -728,15 +752,10 @@ static stages_t *simulate_first_cycle(netlist_t *netlist, int cycle, lines_t *l)
 	}
 
 	// Enqueue constant nodes.
-	nnode_t *constant_nodes[] = {netlist->gnd_node, netlist->vcc_node, netlist->pad_node};
-	int num_constant_nodes = 3;
-	for (i = 0; i < num_constant_nodes; i++)
+	if(is_node_ready(netlist->pad_node, cycle))
 	{
-		if(is_node_ready(constant_nodes[i], cycle))
-		{
-			constant_nodes[i]->in_queue = true;
-			queue.push(constant_nodes[i]);
-		}
+		netlist->pad_node->in_queue = true;
+		queue.push(netlist->pad_node);
 	}
 
 	nnode_t **ordered_nodes = 0;
@@ -1138,17 +1157,10 @@ static bool compute_and_store_value(nnode_t *node, int cycle)
 			}
 			break;
 		}
-		case GND_NODE:
-			verify_i_o_availabilty(node, -1, 1);
-			update_pin_value(node->output_pins[0], 0, cycle);
-			break;
-		case VCC_NODE:
-			verify_i_o_availabilty(node, -1, 1);
-			update_pin_value(node->output_pins[0], 1, cycle);
-			break;
 		case PAD_NODE:
 			verify_i_o_availabilty(node, -1, 1);
-			update_pin_value(node->output_pins[0], 0, cycle);
+			// pad node are undriven so always x
+			update_pin_value(node->output_pins[0], -1, cycle);
 			break;
 		case INPUT_NODE:
 			break;
@@ -1198,18 +1210,14 @@ static bool compute_and_store_value(nnode_t *node, int cycle)
 	}
 
 	// Count number of ones and toggles for coverage estimation
-	bool covered = true;
-	bool skip_node_from_coverage = (
+	node->covered = true;
+
+	if (
 		type == INPUT_NODE ||
 		type == CLOCK_NODE ||
-		type == GND_NODE ||
-		type == VCC_NODE ||
-		type == PAD_NODE
-	);
-
-	if(!skip_node_from_coverage)
+		type == PAD_NODE )
 	{
-		for (int i = 0; i < node->num_output_pins && covered; i++) 
+		for (int i = 0; i < node->num_output_pins && node->covered; i++) 
 		{
 			signed char pin_value = get_pin_value(node->output_pins[i],cycle);
 			signed char last_pin_value = get_pin_value(node->output_pins[i],cycle-1);
@@ -1217,18 +1225,12 @@ static bool compute_and_store_value(nnode_t *node, int cycle)
 			// # of toggles
 			if ( ( pin_value != last_pin_value ) && (last_pin_value != -1 ) ) 
 			{
-				node->output_pins[i]->coverage++;
-				if(node->output_pins[i]->coverage < 2)
-					covered = false;
+				node->output_pins[i]->coverage += 1;
+				node->covered = (node->output_pins[i]->coverage > 2);
 			}
 		}
 	}
 
-	node->covered = (covered || skip_node_from_coverage);
-
-	//computation_time = wall_time() - computation_time;
-
-	//printf("Node %s typeof %ld spent %lf\n",node->name,type,computation_time);
 	return true;
 }
 
@@ -1630,8 +1632,6 @@ static void compute_mux_2_node(nnode_t *node, int cycle)
 	}
 }
 
-
-
 // TODO: Needs to be verified.
 static void compute_hard_ip_node(nnode_t *node, int cycle)
 {
@@ -1742,43 +1742,91 @@ static void compute_multiply_node(nnode_t *node, int cycle)
 
 }
 
-// TODO: Needs to be verified.
+/** 
+ * single-output-cover is, formally, 
+ * an n-input, 1-output PLA description of the logic function corresponding to the logic gate. 
+ * {0, 1, -} is used in the n-bit wide ``input plane'' and {0, 1} is used in the 1-bit wide ``output plane''. 
+ * 
+ * The ON-set is specified with 1's in the ``output plane,'' 
+ * and the OFF-set is specified with 0's in the ``output plane.''
+ * 
+ * In a given row of the single-output-cover, 
+ * 	1 means the input is used in uncomplemented form, 
+ *  0 means the input is complemented, 
+ *  - means not used. 
+ * 
+ * Elements of a row are ANDed together, 
+ * Then all rows are ORed
+ */
+static BitSpace::bit_value_t convert_internal_value(signed char input)
+{
+	switch(input)
+	{
+		case 0: return BitSpace::_0;
+		case 1: return BitSpace::_1;
+		default:return BitSpace::_z; // the verilog value for this has the same truth table than the blif unknown
+	}
+}
+
+static BitSpace::bit_value_t compute_generic_row(const std::vector<BitSpace::bit_value_t>& input_pins, const std::vector<BitSpace::bit_value_t>& bitmap_row)
+{
+	BitSpace::bit_value_t to_return = BitSpace::_1;
+	
+	for(int column=0; column < input_pins.size(); column += 1)
+	{
+		BitSpace::bit_value_t map_cell = bitmap_row[column];
+		// XNOR to take complement of input if bitmap is 0
+		BitSpace::bit_value_t xnored = BitSpace::l_xnor[map_cell][input_pins[column]];
+		// AND the values accros a row and store the result
+		to_return = BitSpace::l_and[to_return][xnored];
+		if (to_return == BitSpace::_0)
+		{
+			break;
+		}
+	}
+	return to_return;
+}
+
 static void compute_generic_node(nnode_t *node, int cycle)
 {
-	int line_count_bitmap = node->bit_map_line_count;
-	char **bit_map = node->bit_map;
-
-	int lut_size  = 0;
-	while (bit_map[0][lut_size] != 0)
-		lut_size++;
-
-	int found = 0;
-	int i;
-	for (i = 0; i < line_count_bitmap && (!found); i++)
+	// get the current input pin
+	std::vector<BitSpace::bit_value_t> input_pins;
+	for (int i=0; i < node->num_input_pins; i++ )
 	{
-		int j;
-		for (j = 0; j < lut_size; j++)
+		input_pins.push_back(convert_internal_value(get_pin_value(node->input_pins[i],cycle)));
+	}
+
+	BitSpace::bit_value_t value = BitSpace::_0;
+
+	for(auto rows: node->bitmap[0])
+	{
+		BitSpace::bit_value_t row_value = compute_generic_row(input_pins, rows);
+
+		// OR accross the resulting output
+		value = BitSpace::l_or[value][row_value];
+		if( value == BitSpace::_1)
 		{
-			if (get_pin_value(node->input_pins[j],cycle) < 0)
-			{
-				update_pin_value(node->output_pins[0], -1, cycle);
-				return;
-			}
-
-			if ((bit_map[i][j] != '-') && (bit_map[i][j]-'0' != get_pin_value(node->input_pins[j],cycle)))
-				break;
+			break;
 		}
-
-		if (j == lut_size) found = true;
 	}
 
-	if (node->generic_output == 1){
-		if (found) update_pin_value(node->output_pins[0], 1, cycle);
-		else       update_pin_value(node->output_pins[0], 0, cycle);
-	} else {
-		if (found) update_pin_value(node->output_pins[0], 0, cycle);
-		else       update_pin_value(node->output_pins[0], 1, cycle);
+	// if nothing has happened we continue on to comput the on bitmap
+	if( value == BitSpace::_0 )
+	{
+		for(auto rows: node->bitmap[1])
+		{
+			BitSpace::bit_value_t row_value = compute_generic_row(input_pins, rows);
+
+			// OR accross the resulting output
+			value = BitSpace::l_or[value][row_value];
+			if( value == BitSpace::_1)
+			{
+				break;
+			}
+		}
 	}
+
+	update_pin_value(node->output_pins[0], value, cycle);
 }
 
 /*

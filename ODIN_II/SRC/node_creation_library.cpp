@@ -269,13 +269,31 @@ edge_type_e edge_type_blif_enum(std::string edge_kind_str)
 	else if	(edge_kind_str == "ah")	return ACTIVE_HIGH_SENSITIVITY;
 	else if	(edge_kind_str == "al")	return ACTIVE_LOW_SENSITIVITY;
 	else if	(edge_kind_str == "as")	return ASYNCHRONOUS_SENSITIVITY;
-	else
-	{
-		error_message(NETLIST_ERROR, -1, -1,
-			"undefined sensitivity kind for flip flop %s", edge_kind_str.c_str());
+	else							return UNDEFINED_SENSITIVITY;
+}
 
-		return UNDEFINED_SENSITIVITY;
+const char *init_val_blif_str(nnode_t *node)
+{
+	if(node->type != FF_NODE)
+		return NULL;
+
+	switch(node->initial_value)
+	{
+		case BitSpace::_0:			return "0";
+		case BitSpace::_1:			return "1";
+		case BitSpace::_x:			return "2";
+		default:					return "3";
 	}
+}
+
+BitSpace::bit_value_t parse_init_val_blif(std::string init_val_kind_str)
+{
+
+	if		(init_val_kind_str == "0")	return BitSpace::_0;
+	else if	(init_val_kind_str == "1")	return BitSpace::_1;
+	else if	(init_val_kind_str == "2")	return BitSpace::_x;
+	else if	(init_val_kind_str == "3")	return BitSpace::_z;
+	else								return (BitSpace::bit_value_t)-1;
 }
 
 /*----------------------------------------------------------------------------

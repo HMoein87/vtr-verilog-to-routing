@@ -998,7 +998,7 @@ function run_suite() {
 				do
 					case "_${input_path}" in
 						_);;
-						*vtr_reg_*);;
+						_vtr_reg_*);;
 						*)
 							# bash expand when possible
 							input_path=$(ls -d -1 ${THIS_DIR}/${input_path} 2> /dev/null)
@@ -1016,8 +1016,9 @@ function run_suite() {
 			fi
 		else
 			case "_${current_input}" in
-				*vtr_reg_*)
+				_vtr_reg_*)
 					vtr_reg_list=( ${vtr_reg_list[@]} ${current_input} )
+					echo "${vtr_reg_list}"
 					;;
 
 				*)
@@ -1059,14 +1060,25 @@ then
 	_exit_with_code "-1"
 fi
 
-if [ "_${_TEST}" == "_" ]
-then
-	echo "No test is passed in must pass a test directory containing either a task_list.conf or a task.conf"
-	help
-	_exit_with_code "-1"
-fi
+case "_${_TEST}" in
+	_)
+		echo "No test is passed in must pass a test directory containing either a task_list.conf or a task.conf"
+		help
+		_exit_with_code "-1"
+		;;
+	_vtr_reg_*)
+		# keep the test as is
+		;;
+	_/*)
+		# absolute path and bash expand when possible
+		_TEST=$(ls -d -1 ${_TEST} 2> /dev/null)
+		;;
+	_*)
+		# relative path and bash expand when possible
+		_TEST=$(ls -d -1 ${THIS_DIR}/${_TEST} 2> /dev/null)
+		;;
+esac
 
-_TEST=$(readlink -f ${_TEST})
 _TEST_NAME=$(basename ${_TEST})
 
 echo "Task: ${_TEST_NAME} (${_TEST})"

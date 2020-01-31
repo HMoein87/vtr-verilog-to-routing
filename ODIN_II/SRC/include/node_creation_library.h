@@ -25,5 +25,7 @@ nnode_t *make_mult_block(nnode_t *node, short mark);
 
 edge_type_e edge_type_blif_enum(std::string edge_kind_str);
 const char *edge_type_blif_str(nnode_t *node);
+BitSpace::bit_value_t parse_init_val_blif(std::string init_val_kind_str);
+const char *init_val_blif_str(nnode_t *node);
 
 #endif
