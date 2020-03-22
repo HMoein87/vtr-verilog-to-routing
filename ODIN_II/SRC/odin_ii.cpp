@@ -61,6 +61,7 @@
 #include "vtr_util.h"
 #include "vtr_path.h"
 #include "vtr_memory.h"
+#include "registered_ga_items.h"
 
 #define DEFAULT_OUTPUT "."
 
@@ -165,6 +166,14 @@ static ODIN_ERROR_CODE synthesize_verilog() {
         printf("Performing Partial Map to target device\n");
         partial_map_top(verilog_netlist);
 
+        if (global_args.ga_partial_map.provenance() == argparse::Provenance::SPECIFIED) {
+            printf("Performing Partial Map to target device using Genetic Algorithm\n\titteration: %d\n\tgeneration size: %d\n\tmutation rate: %0.2lf\n",
+                   configuration.generation_count,
+                   configuration.generation_size,
+                   configuration.mutation_rate);
+        }
+        GA_partial_map_top(verilog_netlist);
+
         /* Find any unused logic in the netlist and remove it */
         remove_unused_logic(verilog_netlist);
 
@@ -212,6 +221,7 @@ netlist_t* start_odin_ii(int argc, char** argv) {
         zero_string = vtr::strdup(ZERO_GND_ZERO);
         pad_string = vtr::strdup(ZERO_PAD_ZERO);
 
+        srand(global_args.random_seed);
         printf("--------------------------------------------------------------------\n");
         printf("Welcome to ODIN II version 0.1 - the better High level synthesis tools++ targetting FPGAs (mainly VPR)\n");
         printf("Email: jamieson.peter@gmail.com and ken@unb.ca for support issues\n\n");
@@ -443,6 +453,31 @@ void get_options(int argc, char** argv) {
         .help("Allow to overwrite the top level module that odin would use")
         .metavar("TOP_LEVEL_MODULE_NAME");
 
+    other_grp.add_argument(global_args.ga_partial_map, "--GA")
+        .help("Activate Genetic Algorithm during partial mapping")
+        .default_value("2.0")
+        .metavar("FOOTPRINT_RATIO");
+
+    other_grp.add_argument(global_args.ga_partial_map_mr, "--GA-MR")
+        .help("SET MUTATION RATE PERCENTAGE")
+        .default_value("50")
+        .metavar("MUTATION_RATE");
+
+    other_grp.add_argument(global_args.ga_partial_map_gs, "--GA-GS")
+        .help("SET GENERATION SIZE")
+        .default_value("6")
+        .metavar("GENERATION_SIZE");
+
+    other_grp.add_argument(global_args.ga_partial_map_gc, "--GA-GC")
+        .help("SET GENERATION COUNT")
+        .default_value("32")
+        .metavar("GENERATION_COUNT");
+
+    other_grp.add_argument(global_args.random_seed, "-r")
+        .help("Random seed")
+        .default_value("0")
+        .metavar("SEED");
+
     auto& rand_sim_grp = parser.add_argument_group("random simulation options");
 
     rand_sim_grp.add_argument(global_args.sim_num_test_vectors, "-g")
@@ -457,11 +492,6 @@ void get_options(int argc, char** argv) {
         .help("using the g argument we will simulate in blocks until best coverage is attained")
         .default_value("false")
         .action(argparse::Action::STORE_TRUE);
-
-    rand_sim_grp.add_argument(global_args.sim_random_seed, "-r")
-        .help("Random seed")
-        .default_value("0")
-        .metavar("SEED");
 
     rand_sim_grp.add_argument(global_args.sim_hold_low, "-L")
         .help("list of primary inputs to hold high at cycle 0, and low for all subsequent cycles")
@@ -584,6 +614,21 @@ void get_options(int argc, char** argv) {
         configuration.output_ast_graphs = global_args.write_ast_as_dot;
     }
 
+    if (global_args.ga_partial_map.provenance() == argparse::Provenance::SPECIFIED) {
+        configuration.ga_partial_map = global_args.ga_partial_map;
+    } else {
+        global_args.ga_partial_map.set(configuration.ga_partial_map, argparse::Provenance::SPECIFIED);
+    }
+    if (global_args.ga_partial_map_mr.provenance() == argparse::Provenance::SPECIFIED) {
+        configuration.mutation_rate = global_args.ga_partial_map_mr / 100;
+    }
+    if (global_args.ga_partial_map_gs.provenance() == argparse::Provenance::SPECIFIED) {
+        configuration.generation_size = global_args.ga_partial_map_gs;
+    }
+    if (global_args.ga_partial_map_gc.provenance() == argparse::Provenance::SPECIFIED) {
+        configuration.generation_count = global_args.ga_partial_map_gc;
+    }
+
     if (global_args.adder_cin_global.provenance() == argparse::Provenance::SPECIFIED) {
         configuration.adder_cin_global = global_args.adder_cin_global;
     }
@@ -609,6 +654,12 @@ void set_default_config() {
     configuration.output_type = std::string("blif");
     configuration.output_ast_graphs = 0;
     configuration.output_netlist_graphs = 0;
+    configuration.mutation_rate = 0.5;
+    configuration.generation_size = 6;
+    configuration.generation_count = 32;
+    // by default we target twice as wide then deep
+    //
+    configuration.ga_partial_map = 2.0;
     configuration.print_parse_tokens = 0;
     configuration.output_preproc_source = 0; // TODO: unused
     configuration.debug_output_path = std::string(DEFAULT_OUTPUT);

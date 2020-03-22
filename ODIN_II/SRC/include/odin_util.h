@@ -19,6 +19,9 @@ const char* name_based_on_ids(ids op);
 const char* node_name_based_on_op(nnode_t* node);
 const char* ast_node_name_based_on_ids(ast_node_t* node);
 
+// high level block sub logic names
+const char* name_based_on_type(adder_type_e type);
+
 char* make_signal_name(char* signal_name, int bit);
 char* make_full_ref_name(const char* previous, const char* module_name, const char* module_instance_name, const char* signal_name, long bit);
 char* make_full_name_w_o_array_ref(const char* previous, const char* module_name, const char* module_instance_name);

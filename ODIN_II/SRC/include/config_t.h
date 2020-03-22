@@ -47,6 +47,12 @@ struct config_t {
     int soft_logic_memory_width_threshold;
 
     std::string arch_file; // Name of the FPGA architecture file
+
+    // for ga
+    double ga_partial_map;            // enable genetic algorithm for adder configuration
+    double mutation_rate;
+    int generation_size;
+    int generation_count;
 };
 
 extern config_t configuration;

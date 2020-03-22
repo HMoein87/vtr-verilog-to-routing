@@ -178,3 +178,9 @@ const char* ids_STR[] = {
     // EDDIE: new enum value for ids to replace MEMORY from operation_t
     "RAM",
     "ids_END"};
+
+const char* adder_type_STR[] = {
+    "RCA",     // default, ripple carry adder
+    "CSLA",    // carry select adder
+    "BE_CSLA", // binary excess carry select adder
+    "adder_type_END"};

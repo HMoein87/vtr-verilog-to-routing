@@ -129,6 +129,12 @@ const char* name_based_on_ids(ids op) {
     return ids_STR[op];
 }
 
+const char* name_based_on_type(adder_type_e type) {
+    oassert(type < adder_type_END && "OUT OF BOUND adder_type_e!");
+
+    return adder_type_STR[type];
+}
+
 /*---------------------------------------------------------------------------------------------
  * (function: node_name_based_on_op)
  * 	Get the string version of a node

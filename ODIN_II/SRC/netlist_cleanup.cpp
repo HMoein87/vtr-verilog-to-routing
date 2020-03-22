@@ -110,8 +110,10 @@ void traverse_forward(nnode_t* node, int toplevel, int remove_me) {
                 ADDER_START_NODE = VCC_NODE;
         }
         /* Check if we've found the head of an adder or subtractor chain */
-        if (node->input_pins[node->num_input_pins - 1]->net->driver_pin->node->type == ADDER_START_NODE) {
-            addsub_list_next = insert_node_list(addsub_list_next, node);
+        if (node->input_pins[node->num_input_pins - 1] != NULL){
+            if (node->input_pins[node->num_input_pins - 1]->net->driver_pin->node->type == ADDER_START_NODE) {
+                addsub_list_next = insert_node_list(addsub_list_next, node);
+            }
         }
     }
 
@@ -168,7 +170,8 @@ void remove_unused_nodes(node_list_t* remove) {
         int i;
         for (i = 0; i < remove->node->num_input_pins; i++) {
             npin_t* input_pin = remove->node->input_pins[i];
-            input_pin->net->fanout_pins[input_pin->pin_net_idx] = NULL; // Remove the fanout pin from the net
+            if(input_pin != NULL)
+                input_pin->net->fanout_pins[input_pin->pin_net_idx] = NULL; // Remove the fanout pin from the net
         }
         remove->node->node_data = VISITED_REMOVAL;
         remove = remove->next;
@@ -191,39 +194,40 @@ double sum_of_addsub_logs = 0.0;    // Sum of the logarithms of the add/sub chai
 double total_addsub_chain_count = 0.0;
 
 void calculate_addsub_statistics(node_list_t* addsub) {
-    while (addsub != NULL && addsub->node != NULL) {
-        int found_tail = false;
+    while (addsub != NULL) {
         nnode_t* node = addsub->node;
-        int chain_depth = 0;
-        while (!found_tail) {
-            if (node->node_data == VISITED_REMOVAL) {
-                found_tail = true;
-                break;
-            }
-            chain_depth += 1;
+        if (node) {
+            int chain_depth = 0;
+            while (node && node->node_data != VISITED_REMOVAL) {
+                chain_depth += 1;
 
-            /* Carry out is always output pin 0 */
-            nnet_t* carry_out_net = node->output_pins[0]->net;
-            if (carry_out_net == NULL || carry_out_net->fanout_pins[0] == NULL)
-                found_tail = true;
-            else
-                node = carry_out_net->fanout_pins[0]->node;
-        }
-        if (chain_depth > 0) {
-            if (node->type == ADD) {
-                adder_chain_count += 1;
-                total_adders += chain_depth;
-                if (chain_depth > longest_adder_chain) longest_adder_chain = chain_depth;
-            } else if (node->type == MINUS) {
-                subtractor_chain_count += 1;
-                total_subtractors += chain_depth;
-                if (chain_depth > longest_subtractor_chain) longest_subtractor_chain = chain_depth;
+                nnet_t* carry_out_net = node->output_pins[0]->net;
+
+                if (carry_out_net == NULL
+                    || carry_out_net->fanout_pins[0] == NULL) {
+                    break;
+                } else {
+                    node = carry_out_net->fanout_pins[0]->node;
+                }
             }
 
-            sum_of_addsub_logs += log(chain_depth);
-            total_addsub_chain_count += 1.0;
-        }
+            if (node && chain_depth > 0) {
+                if (node->type == ADD) {
+                    adder_chain_count += 1;
+                    total_adders += chain_depth;
+                    if (chain_depth > longest_adder_chain)
+                        longest_adder_chain = chain_depth;
+                } else if (node->type == MINUS) {
+                    subtractor_chain_count += 1;
+                    total_subtractors += chain_depth;
+                    if (chain_depth > longest_subtractor_chain)
+                        longest_subtractor_chain = chain_depth;
+                }
 
+                sum_of_addsub_logs += log(chain_depth);
+                total_addsub_chain_count += 1.0;
+            }
+        }
         addsub = addsub->next;
     }
     /* Calculate the geometric mean carry chain length */

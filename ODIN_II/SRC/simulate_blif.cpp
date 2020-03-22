@@ -313,8 +313,6 @@ sim_data_t* init_simulation(netlist_t* netlist) {
         }
         printf("Simulating %ld new vectors.\n", sim_data->num_vectors);
         fflush(stdout);
-
-        srand(global_args.sim_random_seed);
     }
 
     // Determine which edge(s) we are outputting.

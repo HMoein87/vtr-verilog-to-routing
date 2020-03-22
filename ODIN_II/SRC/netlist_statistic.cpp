@@ -1,5 +1,4 @@
 #include <algorithm>
-
 /* for hb */
 #include "memories.h"
 #include "adders.h"
@@ -13,9 +12,23 @@
 #include "vtr_memory.h"
 
 #define UNUSED_NODE_TYPE -1
+
+static void init(metric_values_t* m);
 static void init(metric_t* m);
-static void print_stats(metric_t* m);
+
+static void copy(metric_values_t* dest, metric_values_t* src);
 static void copy(metric_t* dest, metric_t* src);
+
+// static void print_stats(std::string prefix = "", metric_values_t* m);
+// static void print_stats(std::string prefix = "", metric_t* m);
+// void print_stats(std::string prefix = "", stat_t* m);
+
+static void combine(metric_values_t* dest, metric_values_t* a, metric_values_t* b);
+
+static void do_compute_metric(metric_t* dest, metric_t* src);
+static void finalize_compute_metric(metric_values_t* dest, long source_count);
+static void finalize_compute_metric(metric_t* dest, long source_count);
+static void aggregate(metric_t* dest, metric_t** sources, long long source_count);
 
 static void add_to_stat(metric_t* dest, long long branching_factor);
 static void count_node_type(nnode_t* node, netlist_t* netlist);
@@ -31,13 +44,6 @@ static metric_t* get_downward_stat(metric_t* destination, nnode_t** node_list, l
 static metric_t* get_upward_stat(metric_t* destination, nnode_t** node_list, long long node_count, netlist_t* netlist, uintptr_t traverse_mark_number);
 static metric_t* get_downward_stat(metric_t* destination, nnet_t** net_list, long long net_count, netlist_t* netlist, uintptr_t traverse_mark_number);
 static metric_t* get_upward_stat(metric_t* destination, nnet_t** net_list, long long net_count, netlist_t* netlist, uintptr_t traverse_mark_number);
-
-static void init(metric_t* m) {
-    m->min_depth = 0;
-    m->max_depth = 0;
-    m->avg_depth = 0;
-    m->avg_width = 0;
-}
 
 void init_stat(netlist_t* netlist) {
     for (int i = 0; i < operation_list_END; i++) {
@@ -69,25 +75,138 @@ void init_stat(netlist_t* netlist) {
     netlist->num_logic_element = 0;
 }
 
-static void print_stats(metric_t* m) {
-    printf("\n\t%s:%0.4lf\n\t%s: %0.4lf\n\t%s: %0.4lf\n\t%s: %0.4lf\n",
-           "shortest path", m->min_depth,
-           "critical path", m->max_depth,
-           "average path", m->avg_depth,
-           "overall fan-out", m->avg_width);
+static void init(metric_values_t* m) {
+    m->min = 0;
+    m->max = 0;
+    m->avg = 0;
 }
-_static_unused(print_stats) //quiet warning
 
-    static void copy(metric_t* dest, metric_t* src) {
-    if (dest) {
+static void init(metric_t* m) {
+    init(&m->depth);
+    init(&m->faning);
+}
+
+void init(stat_t* m) {
+    init(&m->upward);
+    init(&m->downward);
+}
+
+static void copy(metric_values_t* dest, metric_values_t* src) {
+    oassert(dest);
+    oassert(src);
+    dest->min = src->min;
+    dest->max = src->max;
+    dest->avg = src->avg;
+}
+
+static void copy(metric_t* dest, metric_t* src) {
+    if (src && dest) {
+        copy(&dest->depth, &src->depth);
+        copy(&dest->faning, &src->faning);
+    } else if (dest) {
         init(dest);
-        if (src) {
-            dest->min_depth = src->min_depth;
-            dest->max_depth = src->max_depth;
-            dest->avg_depth = src->avg_depth;
-            dest->avg_width = src->avg_width;
-        }
     }
+}
+
+static void combine(metric_values_t* dest, metric_values_t* a, metric_values_t* b) {
+    init(dest);
+    if (a) {
+        dest->min += a->min;
+        dest->max += a->max;
+        dest->avg += a->avg;
+    }
+    if (b) {
+        dest->min += b->min;
+        dest->max += b->max;
+        dest->avg += b->avg;
+    }
+}
+
+// static void print_stats(std::string prefix, metric_values_t* m) {
+//     printf("%s%s%0.4lf\n%s%s%0.4lf\n%s%s%0.4lf\n",
+//            prefix.c_str(), "Minimum:", m->min,
+//            prefix.c_str(), "Maximum:", m->max,
+//            prefix.c_str(), "Average:", m->avg);
+// }
+
+// static void print_stats(std::string prefix, metric_t* m) {
+//     printf("%sDepth:\n", prefix.c_str());
+//     print_stats(prefix + '\t', &m->depth);
+//     printf("%sFaning:\n", prefix.c_str());
+//     print_stats(prefix + '\t', &m->faning);
+// }
+
+// void print_stats(std::string prefix, stat_t* m) {
+//     printf("%sUpward:\n", prefix.c_str());
+//     print_stats(prefix + '\t', &m->upward);
+//     printf("%sDownward:\n", prefix.c_str());
+//     print_stats(prefix + '\t', &m->downward);
+// }
+
+static void do_compute_metric(metric_values_t* dest, metric_values_t* src) {
+    if (src) {
+        if (dest->min == 0) {
+            dest->min = src->min;
+        } else {
+            dest->min = std::min(src->min, dest->min);
+        }
+
+        if (dest->max == 0) {
+            dest->max = src->max;
+        } else {
+            dest->max = std::max(src->max, dest->max);
+        }
+
+        dest->avg += src->avg;
+    }
+}
+
+static void do_compute_metric(metric_t* dest, metric_t* src) {
+    if (src) {
+        do_compute_metric(&dest->depth, &src->depth);
+        do_compute_metric(&dest->faning, &src->faning);
+    }
+}
+
+void do_compute_metric(stat_t* dest, stat_t* src) {
+    if (src) {
+        do_compute_metric(&dest->upward, &src->upward);
+        do_compute_metric(&dest->downward, &src->downward);
+    }
+}
+
+static void finalize_compute_metric(metric_values_t* dest, long source_count) {
+    if (source_count) {
+        dest->avg /= source_count;
+    }
+}
+
+static void finalize_compute_metric(metric_t* dest, long source_count) {
+    finalize_compute_metric(&dest->depth, source_count);
+    finalize_compute_metric(&dest->faning, source_count);
+}
+
+void finalize_compute_metric(stat_t* dest, long source_count) {
+    finalize_compute_metric(&dest->upward, source_count);
+    finalize_compute_metric(&dest->downward, source_count);
+}
+
+// TODO: this doesnt really makes sense the way its done. maybe rethink
+double fitness_calc(netlist_t* netlist, stat_t* m) {
+    metric_t value;
+
+    combine(&value.faning, &m->downward.faning, &m->upward.faning);
+    combine(&value.depth, &m->downward.depth, &m->upward.depth);
+
+    long long node_count = netlist->num_of_node;
+    double area = value.depth.avg * value.faning.avg;
+
+    double area_efectness = value.depth.max / (area * node_count);
+    double fan_effectness = value.faning.max;
+    // printf("\n\n \t++node_count: %lld\n\t++area: %f\n\t++max_depth: %f\n\t++max_fan-in: %d\n\t++max_fan-out: %d\n\t++area_effectness: %f\n\t++fan_effectness: %f\n\n",
+    //       node_count, area, m->max_depth, m->max_fanin, m->max_fanout, area_efectness, fan_effectness);
+
+    return 1000000 * (area_efectness) / (fan_effectness);
 }
 
 static void aggregate(metric_t* dest, metric_t** sources, long long source_count) {
@@ -96,31 +215,23 @@ static void aggregate(metric_t* dest, metric_t** sources, long long source_count
 
     // compute stats from parent
     for (long long i = 0; sources && i < source_count; i += 1) {
-        metric_t* src = sources[i];
-        if (src) {
+        if (sources[i]) {
             actual_count += 1;
-            if (dest->min_depth == 0) {
-                dest->min_depth = src->min_depth;
-            } else {
-                dest->min_depth = std::min(src->min_depth, dest->min_depth);
-            }
-            dest->max_depth = std::max(src->max_depth, dest->max_depth);
-            dest->avg_depth += src->avg_depth;
-            dest->avg_width += src->avg_width;
+            do_compute_metric(dest, sources[i]);
         }
     }
+    finalize_compute_metric(dest, actual_count);
+}
 
-    if (actual_count) {
-        dest->avg_depth /= actual_count;
-        dest->avg_width /= actual_count;
-    }
+static void add_to_stat(metric_values_t* dest, double value) {
+    dest->min += value;
+    dest->max += value;
+    dest->avg += value;
 }
 
 static void add_to_stat(metric_t* dest, long long branching_factor) {
-    dest->min_depth += 1;
-    dest->max_depth += 1;
-    dest->avg_depth += 1;
-    dest->avg_width += branching_factor;
+    add_to_stat(&dest->depth, 1);
+    add_to_stat(&dest->faning, branching_factor);
 }
 
 static bool traverse(nnode_t* node, uintptr_t traverse_mark_number) {
@@ -141,6 +252,7 @@ static void increment_type_count(operation_list op, netlist_t* netlist) {
     }
     netlist->num_of_type[op] += 1;
 }
+
 static void count_node_type(operation_list op, nnode_t* node, netlist_t* netlist) {
     switch (op) {
         case GENERIC:
@@ -474,8 +586,8 @@ void compute_statistics(netlist_t* netlist, bool display) {
             }
             printf("%-42s%lld\n", "Total estimated number of lut: ", netlist->num_logic_element);
             printf("%-42s%lld\n", "Total number of node: ", netlist->num_of_node);
-            printf("%-42s%0.0f\n", "Longest path: ", netlist->output_node_stat.max_depth);
-            printf("%-42s%0.0f\n", "Average path: ", netlist->output_node_stat.avg_depth);
+            printf("%-42s%0.0f\n", "Longest path: ", netlist->output_node_stat.depth.max);
+            printf("%-42s%0.0f\n", "Average path: ", netlist->output_node_stat.depth.avg);
             printf("\n");
         }
     }

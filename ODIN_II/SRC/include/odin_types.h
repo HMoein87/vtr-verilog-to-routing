@@ -1,5 +1,6 @@
 #ifndef ODIN_TYPES_H
 #define ODIN_TYPES_H
+
 /*
  *
  * Permission is hereby granted, free of charge, to any person
@@ -57,6 +58,11 @@
 
 /* unique numbers to mark the nodes as we DFS traverse the netlist */
 #define PARTIAL_MAP_TRAVERSE_VALUE 10
+
+#define PARTIAL_MAP_TRAVERSE_VALUE_GA_ADDERS 11
+#define TRAVERSE_VALUE_CP_S2E 12
+#define TRAVERSE_VALUE_CP_E2S 13
+
 #define OUTPUT_TRAVERSE_VALUE 12
 #define COUNT_NODES 14 /* NOTE that you can't call countnodes one after the other or the mark will be incorrect */
 #define COMBO_LOOP 15
@@ -98,7 +104,11 @@ struct global_args_t {
     argparse::ArgValue<bool> all_warnings;
     argparse::ArgValue<bool> show_help;
 
-    argparse::ArgValue<std::string> adder_def; //DEPRECATED
+    argparse::ArgValue<std::string> adder_def; // DEPRECATED
+    argparse::ArgValue<double> ga_partial_map; // enable ga_partial_map
+    argparse::ArgValue<double> ga_partial_map_mr;
+    argparse::ArgValue<double> ga_partial_map_gs;
+    argparse::ArgValue<double> ga_partial_map_gc;
 
     // defines if the first cin of an adder/subtractor is connected to a global gnd/vdd
     // or generated using a dummy adder with both inputs set to gnd/vdd
@@ -136,7 +146,7 @@ struct global_args_t {
     argparse::ArgValue<bool> parralelized_simulation_in_batch;
     argparse::ArgValue<int> sim_initial_value;
     // The seed for creating random simulation vector
-    argparse::ArgValue<int> sim_random_seed;
+    argparse::ArgValue<int> random_seed;
 
     argparse::ArgValue<bool> interactive_simulation;
 };
@@ -156,6 +166,7 @@ extern const char* DUAL_PORT_RAM_string;
 extern const char* edge_type_e_STR[];
 extern const char* operation_list_STR[][2];
 extern const char* ids_STR[];
+extern const char* adder_type_STR[];
 
 enum file_extension_supported {
     VERILOG,
@@ -328,16 +339,31 @@ enum ids {
     ids_END
 };
 
-struct metric_t {
-    double min_depth;
-    double max_depth;
-    double avg_depth;
-    double avg_width;
+struct metric_values_t {
+    double min;
+    double max;
+    double avg;
 };
 
+struct metric_t {
+    metric_values_t depth;
+    metric_values_t faning;
+};
 struct stat_t {
     metric_t upward;
     metric_t downward;
+};
+
+enum adder_type_e {
+    RCA,     // default, ripple carry adder
+    CSLA,    // carry select adder
+    BE_CSLA, // binary excess carry select adder
+    adder_type_END
+};
+
+enum direction_e {
+    UPWARD,
+    DOWNWARD,
 };
 
 struct typ {
@@ -518,6 +544,7 @@ struct nnet_t {
 
     uintptr_t traverse_visited;
     stat_t stat;
+
     /////////////////////
     // For simulation
     std::shared_ptr<AtomicBuffer>
@@ -533,7 +560,7 @@ struct signal_list_t {
     long count;
 
     char is_memory;
-    char is_adder;
+    bool is_adder;
 };
 
 struct char_list_t {

@@ -13,5 +13,10 @@ stat_t* delete_stat(stat_t* stat);
 
 void init_stat(netlist_t* netlist);
 void compute_statistics(netlist_t* netlist, bool display);
+double fitness_calc(netlist_t* netlist, stat_t* m);
+void do_compute_metric(stat_t* dest, stat_t* src);
+void finalize_compute_metric(stat_t* src, long source_count);
+void init(stat_t* m);
+// void print_stats(std::string prefix = "", stat_t* m);
 
 #endif // NETLIST_STATISTIC_HPP
