@@ -11,6 +11,8 @@ import json
 
 import csv
 
+from collections import OrderedDict
+
 c_red='\033[31m'
 c_grn='\033[32m'
 c_org='\033[33m'
@@ -102,13 +104,15 @@ def parse_toml(toml_str):
         empty_lines_in_values=False
     )
     parser.read_string(toml_str)
+    # we use ordered dict to preserve ordering in older python version
+    toml_dict = OrderedDict()
     # default is always there
-    toml_dict = { _DFLT_HDR : { _K_DFLT: _DFLT_VALUE} }
+    toml_dict[_DFLT_HDR] = { _K_DFLT: _DFLT_VALUE }
     for _header in parser.sections():
 
         header = strip_str(_header)
         if header not in toml_dict:
-            toml_dict[header] = {}
+            toml_dict[header] = OrderedDict()
 
         for _key, _value in parser.items(_header):
             # drop extra whitespace
@@ -136,7 +140,7 @@ def load_toml(toml_file_name):
 # build initial table from toml
 def create_tbl(toml_dict):
     # set the defaults
-    input_values = { }
+    input_values = OrderedDict()
     for header in toml_dict:
 
         # initiate with fallback
@@ -270,7 +274,7 @@ def _parse(toml_file_name, log_file_name):
     toml_dict = load_toml(toml_file_name)
 
     # setup our output dict, print as csv expects a hashed table
-    parsed_dict = {}
+    parsed_dict = OrderedDict()
 
     #load log file and parse
     with open(log_file_name) as log:
@@ -294,7 +298,7 @@ def _parse(toml_file_name, log_file_name):
 def _join(toml_file_name, file_list):
     # load toml
     toml_dict = load_toml(toml_file_name)
-    parsed_files = {}
+    parsed_files = OrderedDict()
 
     for files in file_list:
         parsed_files.update(load_csv_into_tbl(toml_dict, files))
