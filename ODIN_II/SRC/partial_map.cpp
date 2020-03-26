@@ -601,7 +601,7 @@ void instantiate_add_w_carry(adder_type_e type, nnode_t* node, short mark, netli
     instantiate_add_w_carry_block(type, width, node, mark, netlist, 0);
 
     vtr::free(width);
-    free_nnode(node);
+    // free_nnode(node);
 }
 
 /*---------------------------------------------------------------------------------------------
@@ -629,7 +629,7 @@ void instantiate_sub_w_carry(adder_type_e type, nnode_t* node, short mark, netli
     instantiate_add_w_carry_block(type, width, node, mark, netlist, 1);
 
     vtr::free(width);
-    free_nnode(node);
+    // free_nnode(node);
 }
 
 /*---------------------------------------------------------------------------------------------
@@ -638,7 +638,6 @@ void instantiate_sub_w_carry(adder_type_e type, nnode_t* node, short mark, netli
  *-------------------------------------------------------------------------------------------*/
 void instantiate_unary_sub(adder_type_e type, nnode_t* node, short mark, netlist_t* netlist) {
     instantiate_sub_w_carry(type, node, mark, netlist);
-    free_nnode(node);
 }
 
 /*---------------------------------------------------------------------------------------------
