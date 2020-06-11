@@ -7,6 +7,8 @@ typedef short ga_type_e;
 typedef void (*instantiate_logic_fn_t)(ga_type_e, nnode_t*, short, netlist_t*);
 
 struct connection_t {
+    nnode_t* parent;
+
     signal_list_t* input;
     signal_list_t* output;
 };

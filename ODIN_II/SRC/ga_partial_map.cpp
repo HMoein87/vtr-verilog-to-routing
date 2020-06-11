@@ -157,6 +157,7 @@ connection_t* new_connection(nnode_t* parent) {
                 connection->output->pins[i] = parent->output_pins[i];
             }
         }
+    connection->parent = parent;
     }
 
     return connection;
@@ -187,6 +188,8 @@ void free_connection_subtree(connection_t* to_delete) {
 
 void free_connection(connection_t* to_delete) {
     if (to_delete) {
+        free_nnode(to_delete->parent);
+        to_delete->parent = NULL;
         free_signal_list(to_delete->input);
         to_delete->input = NULL;
         free_signal_list(to_delete->output);
