@@ -1034,6 +1034,18 @@ nnet_t* define_nets_with_driver(ast_node_t* var_declare, char* instance_name_pre
 
             if (var_declare->types.variable.initial_value) {
                 new_net->initial_value = (init_value_e)var_declare->types.variable.initial_value->get_bit_from_lsb(i);
+
+                npin_t* new_pin = allocate_npin();
+                if (new_net->initial_value == _0) {
+                    allocate_more_output_pins(verilog_netlist->gnd_node, 1);
+                    add_output_pin_to_node(verilog_netlist->gnd_node, new_pin, verilog_netlist->gnd_node->num_output_pins - 1);
+
+                } else if (new_net->initial_value == _1) {
+                    allocate_more_output_pins(verilog_netlist->vcc_node, 1);
+                    add_output_pin_to_node(verilog_netlist->vcc_node, new_pin, verilog_netlist->vcc_node->num_output_pins - 1);
+                }
+
+                add_driver_pin_to_net(new_net, new_pin);
             }
         }
     }
