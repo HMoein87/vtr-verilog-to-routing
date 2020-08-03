@@ -1035,17 +1035,41 @@ nnet_t* define_nets_with_driver(ast_node_t* var_declare, char* instance_name_pre
             if (var_declare->types.variable.initial_value) {
                 new_net->initial_value = (init_value_e)var_declare->types.variable.initial_value->get_bit_from_lsb(i);
 
-                npin_t* new_pin = allocate_npin();
-                if (new_net->initial_value == _0) {
-                    allocate_more_output_pins(verilog_netlist->gnd_node, 1);
-                    add_output_pin_to_node(verilog_netlist->gnd_node, new_pin, verilog_netlist->gnd_node->num_output_pins - 1);
+                npin_t* new_pad_pin = allocate_npin();
+            
+                allocate_more_output_pins(verilog_netlist->pad_node, 1);
+                add_output_pin_to_node(verilog_netlist->pad_node, new_pad_pin, verilog_netlist->pad_node->num_output_pins - 1);
+                add_driver_pin_to_net(new_net, new_pad_pin);
+            } else {
+                npin_t* new_pad_pin = allocate_npin();
+                
+                allocate_more_output_pins(verilog_netlist->pad_node, 1);
+                add_output_pin_to_node(verilog_netlist->pad_node, new_pad_pin, verilog_netlist->pad_node->num_output_pins - 1);
 
-                } else if (new_net->initial_value == _1) {
-                    allocate_more_output_pins(verilog_netlist->vcc_node, 1);
-                    add_output_pin_to_node(verilog_netlist->vcc_node, new_pin, verilog_netlist->vcc_node->num_output_pins - 1);
-                }
+                nnet_t* new_pad_net = allocate_nnet();
+                add_driver_pin_to_net(new_pad_net, new_pad_pin);
 
-                add_driver_pin_to_net(new_net, new_pin);
+                nnode_t* buf_node = allocate_nnode(var_declare->loc);
+                buf_node->type = BUF_NODE;
+                /* create the unique name for this gate */
+                buf_node->name = node_name(buf_node, instance_name_prefix);
+
+                buf_node->related_ast_node = var_declare;
+                /* allocate the pins needed */
+                allocate_more_input_pins(buf_node, 1);
+                add_input_port_information(buf_node, 1);
+                allocate_more_output_pins(buf_node, 1);
+                add_output_port_information(buf_node, 1);
+
+                npin_t* buf_input_pin = allocate_npin();
+                add_fanout_pin_to_net(new_pad_net, buf_input_pin);
+                add_input_pin_to_node(buf_node, buf_input_pin, 0);
+
+                /* finally hookup the output pin of the buffer to the orginal driver net */
+                npin_t* buf_output_pin = allocate_npin();
+                add_output_pin_to_node(buf_node, buf_output_pin, 0);
+
+                add_driver_pin_to_net(new_net, buf_output_pin);
             }
         }
     }
