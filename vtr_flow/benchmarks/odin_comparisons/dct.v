@@ -1,0 +1,5687 @@
+function [31:0] dct_cos_table(input [2:0] x,y,u,v); begin
+	//
+	// Table definition
+	//
+	// Function: cos( (2x +1) * u * pi)/16) * cos( (2y +1) * v * pi)/16)
+	//
+	// select bits:
+	// 11:9 - V
+	//  8:6 - U
+	//  5:3 - Y
+	//  2:0 - X
+
+	case ( {v,u} ) // synopsys full_case parallel_case
+		6'h00:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h01: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h02: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h03: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h04: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h05: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h06: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h07: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h08: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h09: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h0a: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h0b: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h0c: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h0d: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h0e: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h0f: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h10: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h11: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h12: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h13: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h14: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h15: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h16: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h17: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h18: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h19: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h1a: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h1b: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h1c: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h1d: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h1e: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h1f: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h20: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h21: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h22: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h23: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h24: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h25: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h26: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h27: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h28: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h29: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h2a: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h2b: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h2c: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h2d: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h2e: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h2f: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h30: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h31: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h32: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h33: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h34: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h35: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h36: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h37: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h38: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h39: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h3a: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h3b: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h3c: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h3d: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h3e: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h3f: dct_cos_table = 32'h20000000; // = +0.500000
+			endcase
+		6'h01:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h01: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h02: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h03: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h04: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h05: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h06: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h07: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h08: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h09: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h0a: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h0b: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h0c: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h0d: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h0e: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h0f: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h10: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h11: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h12: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h13: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h14: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h15: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h16: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h17: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h18: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h19: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h1a: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h1b: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h1c: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h1d: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h1e: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h1f: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h20: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h21: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h22: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h23: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h24: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h25: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h26: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h27: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h28: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h29: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h2a: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h2b: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h2c: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h2d: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h2e: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h2f: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h30: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h31: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h32: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h33: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h34: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h35: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h36: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h37: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h38: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h39: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h3a: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h3b: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h3c: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h3d: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h3e: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h3f: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+			endcase
+		6'h02:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h01: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h02: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h03: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h04: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h05: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h06: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h07: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h08: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h09: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h0a: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h0b: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h0c: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h0d: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h0e: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h0f: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h10: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h11: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h12: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h13: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h14: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h15: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h16: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h17: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h18: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h19: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h1a: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h1b: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h1c: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h1d: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h1e: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h1f: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h20: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h21: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h22: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h23: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h24: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h25: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h26: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h27: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h28: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h29: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h2a: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h2b: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h2c: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h2d: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h2e: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h2f: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h30: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h31: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h32: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h33: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h34: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h35: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h36: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h37: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h38: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h39: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h3a: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h3b: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h3c: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h3d: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h3e: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h3f: dct_cos_table = 32'h29cf5d22; // = +0.653281
+			endcase
+		6'h03:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h01: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h02: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h03: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h04: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h05: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h06: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h07: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h08: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h09: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h0a: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h0b: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h0c: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h0d: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h0e: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h0f: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h10: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h11: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h12: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h13: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h14: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h15: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h16: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h17: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h18: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h19: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h1a: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h1b: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h1c: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h1d: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h1e: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h1f: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h20: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h21: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h22: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h23: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h24: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h25: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h26: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h27: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h28: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h29: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h2a: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h2b: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h2c: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h2d: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h2e: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h2f: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h30: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h31: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h32: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h33: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h34: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h35: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h36: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h37: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h38: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h39: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h3a: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h3b: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h3c: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h3d: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h3e: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h3f: dct_cos_table = 32'hda5f3a21; // = -0.587938
+			endcase
+		6'h04:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h01: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h02: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h03: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h04: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h05: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h06: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h07: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h08: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h09: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h0a: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h0b: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h0c: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h0d: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h0e: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h0f: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h10: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h11: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h12: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h13: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h14: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h15: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h16: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h17: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h18: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h19: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h1a: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h1b: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h1c: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h1d: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h1e: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h1f: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h20: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h21: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h22: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h23: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h24: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h25: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h26: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h27: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h28: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h29: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h2a: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h2b: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h2c: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h2d: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h2e: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h2f: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h30: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h31: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h32: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h33: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h34: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h35: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h36: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h37: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h38: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h39: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h3a: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h3b: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h3c: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h3d: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h3e: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h3f: dct_cos_table = 32'h20000000; // = +0.500000
+			endcase
+		6'h05:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h01: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h02: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h03: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h04: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h05: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h06: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h07: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h08: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h09: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h0a: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h0b: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h0c: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h0d: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h0e: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h0f: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h10: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h11: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h12: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h13: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h14: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h15: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h16: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h17: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h18: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h19: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h1a: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h1b: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h1c: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h1d: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h1e: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h1f: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h20: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h21: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h22: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h23: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h24: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h25: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h26: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h27: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h28: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h29: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h2a: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h2b: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h2c: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h2d: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h2e: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h2f: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h30: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h31: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h32: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h33: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h34: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h35: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h36: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h37: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h38: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h39: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h3a: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h3b: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h3c: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h3d: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h3e: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h3f: dct_cos_table = 32'he6db9640; // = -0.392847
+			endcase
+		6'h06:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h01: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h02: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h03: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h04: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h05: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h06: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h07: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h08: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h09: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h0a: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h0b: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h0c: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h0d: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h0e: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h0f: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h10: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h11: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h12: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h13: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h14: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h15: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h16: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h17: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h18: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h19: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h1a: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h1b: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h1c: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h1d: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h1e: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h1f: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h20: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h21: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h22: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h23: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h24: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h25: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h26: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h27: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h28: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h29: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h2a: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h2b: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h2c: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h2d: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h2e: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h2f: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h30: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h31: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h32: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h33: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h34: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h35: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h36: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h37: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h38: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h39: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h3a: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h3b: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h3c: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h3d: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h3e: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h3f: dct_cos_table = 32'h11517a7b; // = +0.270598
+			endcase
+		6'h07:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h01: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h02: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h03: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h04: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h05: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h06: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h07: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h08: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h09: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h0a: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h0b: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h0c: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h0d: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h0e: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h0f: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h10: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h11: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h12: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h13: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h14: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h15: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h16: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h17: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h18: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h19: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h1a: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h1b: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h1c: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h1d: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h1e: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h1f: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h20: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h21: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h22: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h23: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h24: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h25: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h26: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h27: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h28: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h29: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h2a: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h2b: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h2c: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h2d: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h2e: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h2f: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h30: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h31: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h32: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h33: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h34: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h35: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h36: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h37: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h38: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h39: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h3a: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h3b: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h3c: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h3d: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h3e: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h3f: dct_cos_table = 32'hf72bd511; // = -0.137950
+			endcase
+		6'h08:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h01: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h02: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h03: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h04: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h05: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h06: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h07: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h08: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h09: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h0a: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h0b: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h0c: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h0d: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h0e: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h0f: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h10: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h11: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h12: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h13: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h14: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h15: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h16: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h17: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h18: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h19: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h1a: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h1b: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h1c: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h1d: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h1e: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h1f: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h20: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h21: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h22: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h23: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h24: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h25: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h26: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h27: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h28: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h29: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h2a: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h2b: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h2c: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h2d: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h2e: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h2f: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h30: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h31: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h32: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h33: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h34: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h35: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h36: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h37: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h38: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h39: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h3a: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h3b: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h3c: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h3d: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h3e: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h3f: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+			endcase
+		6'h09:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h3d906bcf; // = +0.961940
+				6'h01: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h02: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h03: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h04: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h05: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h06: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h07: dct_cos_table = 32'hc26f9431; // = -0.961940
+				6'h08: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h09: dct_cos_table = 32'h2c3ef153; // = +0.691342
+				6'h0a: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h0b: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h0c: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h0d: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h0e: dct_cos_table = 32'hd3c10ead; // = -0.691342
+				6'h0f: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h10: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h11: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h12: dct_cos_table = 32'h13c10eac; // = +0.308658
+				6'h13: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h14: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h15: dct_cos_table = 32'hec3ef154; // = -0.308658
+				6'h16: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h17: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h18: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h19: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h1a: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h1b: dct_cos_table = 32'h026f9430; // = +0.038060
+				6'h1c: dct_cos_table = 32'hfd906bd0; // = -0.038060
+				6'h1d: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h1e: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h1f: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h20: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h21: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h22: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h23: dct_cos_table = 32'hfd906bd0; // = -0.038060
+				6'h24: dct_cos_table = 32'h026f9430; // = +0.038060
+				6'h25: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h26: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h27: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h28: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h29: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h2a: dct_cos_table = 32'hec3ef154; // = -0.308658
+				6'h2b: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h2c: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h2d: dct_cos_table = 32'h13c10eac; // = +0.308658
+				6'h2e: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h2f: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h30: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h31: dct_cos_table = 32'hd3c10ead; // = -0.691342
+				6'h32: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h33: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h34: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h35: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h36: dct_cos_table = 32'h2c3ef153; // = +0.691342
+				6'h37: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h38: dct_cos_table = 32'hc26f9431; // = -0.961940
+				6'h39: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h3a: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h3b: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h3c: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h3d: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h3e: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h3f: dct_cos_table = 32'h3d906bcf; // = +0.961940
+			endcase
+		6'h0a:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h01: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h02: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h03: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h04: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h05: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h06: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h07: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h08: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h09: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h0a: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h0b: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h0c: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h0d: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h0e: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h0f: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h10: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h11: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h12: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h13: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h14: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h15: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h16: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h17: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h18: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h19: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h1a: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h1b: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h1c: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h1d: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h1e: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h1f: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h20: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h21: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h22: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h23: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h24: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h25: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h26: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h27: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h28: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h29: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h2a: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h2b: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h2c: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h2d: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h2e: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h2f: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h30: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h31: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h32: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h33: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h34: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h35: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h36: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h37: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h38: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h39: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h3a: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h3b: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h3c: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h3d: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h3e: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h3f: dct_cos_table = 32'hc6020207; // = -0.906127
+			endcase
+		6'h0b:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h01: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h02: dct_cos_table = 32'hc26f9431; // = -0.961940
+				6'h03: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h04: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h05: dct_cos_table = 32'h3d906bcf; // = +0.961940
+				6'h06: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h07: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h08: dct_cos_table = 32'h2c3ef153; // = +0.691342
+				6'h09: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h0a: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h0b: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h0c: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h0d: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h0e: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h0f: dct_cos_table = 32'hd3c10ead; // = -0.691342
+				6'h10: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h11: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h12: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h13: dct_cos_table = 32'hec3ef154; // = -0.308658
+				6'h14: dct_cos_table = 32'h13c10eac; // = +0.308658
+				6'h15: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h16: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h17: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h18: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h19: dct_cos_table = 32'hfd906bd0; // = -0.038060
+				6'h1a: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h1b: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h1c: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h1d: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h1e: dct_cos_table = 32'h026f9430; // = +0.038060
+				6'h1f: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h20: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h21: dct_cos_table = 32'h026f9430; // = +0.038060
+				6'h22: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h23: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h24: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h25: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h26: dct_cos_table = 32'hfd906bd0; // = -0.038060
+				6'h27: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h28: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h29: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h2a: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h2b: dct_cos_table = 32'h13c10eac; // = +0.308658
+				6'h2c: dct_cos_table = 32'hec3ef154; // = -0.308658
+				6'h2d: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h2e: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h2f: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h30: dct_cos_table = 32'hd3c10ead; // = -0.691342
+				6'h31: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h32: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h33: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h34: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h35: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h36: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h37: dct_cos_table = 32'h2c3ef153; // = +0.691342
+				6'h38: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h39: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h3a: dct_cos_table = 32'h3d906bcf; // = +0.961940
+				6'h3b: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h3c: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h3d: dct_cos_table = 32'hc26f9431; // = -0.961940
+				6'h3e: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h3f: dct_cos_table = 32'h34310a35; // = +0.815493
+			endcase
+		6'h0c:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h01: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h02: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h03: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h04: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h05: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h06: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h07: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h08: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h09: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h0a: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h0b: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h0c: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h0d: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h0e: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h0f: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h10: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h11: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h12: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h13: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h14: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h15: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h16: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h17: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h18: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h19: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h1a: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h1b: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h1c: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h1d: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h1e: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h1f: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h20: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h21: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h22: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h23: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h24: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h25: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h26: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h27: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h28: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h29: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h2a: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h2b: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h2c: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h2d: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h2e: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h2f: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h30: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h31: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h32: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h33: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h34: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h35: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h36: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h37: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h38: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h39: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h3a: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h3b: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h3c: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h3d: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h3e: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h3f: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+			endcase
+		6'h0d:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h01: dct_cos_table = 32'hc26f9431; // = -0.961940
+				6'h02: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h03: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h04: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h05: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h06: dct_cos_table = 32'h3d906bcf; // = +0.961940
+				6'h07: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h08: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h09: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h0a: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h0b: dct_cos_table = 32'h2c3ef153; // = +0.691342
+				6'h0c: dct_cos_table = 32'hd3c10ead; // = -0.691342
+				6'h0d: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h0e: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h0f: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h10: dct_cos_table = 32'h13c10eac; // = +0.308658
+				6'h11: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h12: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h13: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h14: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h15: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h16: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h17: dct_cos_table = 32'hec3ef154; // = -0.308658
+				6'h18: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h19: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h1a: dct_cos_table = 32'h026f9430; // = +0.038060
+				6'h1b: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h1c: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h1d: dct_cos_table = 32'hfd906bd0; // = -0.038060
+				6'h1e: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h1f: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h20: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h21: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h22: dct_cos_table = 32'hfd906bd0; // = -0.038060
+				6'h23: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h24: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h25: dct_cos_table = 32'h026f9430; // = +0.038060
+				6'h26: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h27: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h28: dct_cos_table = 32'hec3ef154; // = -0.308658
+				6'h29: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h2a: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h2b: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h2c: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h2d: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h2e: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h2f: dct_cos_table = 32'h13c10eac; // = +0.308658
+				6'h30: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h31: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h32: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h33: dct_cos_table = 32'hd3c10ead; // = -0.691342
+				6'h34: dct_cos_table = 32'h2c3ef153; // = +0.691342
+				6'h35: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h36: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h37: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h38: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h39: dct_cos_table = 32'h3d906bcf; // = +0.961940
+				6'h3a: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h3b: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h3c: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h3d: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h3e: dct_cos_table = 32'hc26f9431; // = -0.961940
+				6'h3f: dct_cos_table = 32'h22df8fb9; // = +0.544895
+			endcase
+		6'h0e:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h01: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h02: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h03: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h04: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h05: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h06: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h07: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h08: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h09: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h0a: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h0b: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h0c: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h0d: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h0e: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h0f: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h10: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h11: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h12: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h13: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h14: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h15: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h16: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h17: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h18: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h19: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h1a: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h1b: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h1c: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h1d: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h1e: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h1f: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h20: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h21: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h22: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h23: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h24: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h25: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h26: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h27: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h28: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h29: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h2a: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h2b: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h2c: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h2d: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h2e: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h2f: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h30: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h31: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h32: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h33: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h34: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h35: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h36: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h37: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h38: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h39: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h3a: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h3b: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h3c: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h3d: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h3e: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h3f: dct_cos_table = 32'he7fa96b8; // = -0.375330
+			endcase
+		6'h0f:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h01: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h02: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h03: dct_cos_table = 32'hc26f9431; // = -0.961940
+				6'h04: dct_cos_table = 32'h3d906bcf; // = +0.961940
+				6'h05: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h06: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h07: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h08: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h09: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h0a: dct_cos_table = 32'h2c3ef153; // = +0.691342
+				6'h0b: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h0c: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h0d: dct_cos_table = 32'hd3c10ead; // = -0.691342
+				6'h0e: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h0f: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h10: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h11: dct_cos_table = 32'hec3ef154; // = -0.308658
+				6'h12: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h13: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h14: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h15: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h16: dct_cos_table = 32'h13c10eac; // = +0.308658
+				6'h17: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h18: dct_cos_table = 32'h026f9430; // = +0.038060
+				6'h19: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h1a: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h1b: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h1c: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h1d: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h1e: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h1f: dct_cos_table = 32'hfd906bd0; // = -0.038060
+				6'h20: dct_cos_table = 32'hfd906bd0; // = -0.038060
+				6'h21: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h22: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h23: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h24: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h25: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h26: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h27: dct_cos_table = 32'h026f9430; // = +0.038060
+				6'h28: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h29: dct_cos_table = 32'h13c10eac; // = +0.308658
+				6'h2a: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h2b: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h2c: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h2d: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h2e: dct_cos_table = 32'hec3ef154; // = -0.308658
+				6'h2f: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h30: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h31: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h32: dct_cos_table = 32'hd3c10ead; // = -0.691342
+				6'h33: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h34: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h35: dct_cos_table = 32'h2c3ef153; // = +0.691342
+				6'h36: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h37: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h38: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h39: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h3a: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h3b: dct_cos_table = 32'h3d906bcf; // = +0.961940
+				6'h3c: dct_cos_table = 32'hc26f9431; // = -0.961940
+				6'h3d: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h3e: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h3f: dct_cos_table = 32'h0c3ef153; // = +0.191342
+			endcase
+		6'h10:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h01: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h02: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h03: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h04: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h05: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h06: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h07: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h08: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h09: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h0a: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h0b: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h0c: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h0d: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h0e: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h0f: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h10: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h11: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h12: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h13: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h14: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h15: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h16: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h17: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h18: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h19: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h1a: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h1b: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h1c: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h1d: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h1e: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h1f: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h20: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h21: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h22: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h23: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h24: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h25: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h26: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h27: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h28: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h29: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h2a: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h2b: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h2c: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h2d: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h2e: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h2f: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h30: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h31: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h32: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h33: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h34: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h35: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h36: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h37: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h38: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h39: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h3a: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h3b: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h3c: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h3d: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h3e: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h3f: dct_cos_table = 32'h29cf5d22; // = +0.653281
+			endcase
+		6'h11:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h01: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h02: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h03: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h04: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h05: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h06: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h07: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h08: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h09: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h0a: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h0b: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h0c: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h0d: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h0e: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h0f: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h10: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h11: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h12: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h13: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h14: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h15: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h16: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h17: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h18: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h19: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h1a: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h1b: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h1c: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h1d: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h1e: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h1f: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h20: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h21: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h22: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h23: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h24: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h25: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h26: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h27: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h28: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h29: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h2a: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h2b: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h2c: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h2d: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h2e: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h2f: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h30: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h31: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h32: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h33: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h34: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h35: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h36: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h37: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h38: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h39: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h3a: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h3b: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h3c: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h3d: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h3e: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h3f: dct_cos_table = 32'hc6020207; // = -0.906127
+			endcase
+		6'h12:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h36a09e66; // = +0.853553
+				6'h01: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h02: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h03: dct_cos_table = 32'hc95f619a; // = -0.853553
+				6'h04: dct_cos_table = 32'hc95f619a; // = -0.853553
+				6'h05: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h06: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h07: dct_cos_table = 32'h36a09e66; // = +0.853553
+				6'h08: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h09: dct_cos_table = 32'h095f6199; // = +0.146447
+				6'h0a: dct_cos_table = 32'hf6a09e67; // = -0.146447
+				6'h0b: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h0c: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h0d: dct_cos_table = 32'hf6a09e67; // = -0.146447
+				6'h0e: dct_cos_table = 32'h095f6199; // = +0.146447
+				6'h0f: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h10: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h11: dct_cos_table = 32'hf6a09e67; // = -0.146447
+				6'h12: dct_cos_table = 32'h095f6199; // = +0.146447
+				6'h13: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h14: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h15: dct_cos_table = 32'h095f6199; // = +0.146447
+				6'h16: dct_cos_table = 32'hf6a09e67; // = -0.146447
+				6'h17: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h18: dct_cos_table = 32'hc95f619a; // = -0.853553
+				6'h19: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h1a: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h1b: dct_cos_table = 32'h36a09e66; // = +0.853553
+				6'h1c: dct_cos_table = 32'h36a09e66; // = +0.853553
+				6'h1d: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h1e: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h1f: dct_cos_table = 32'hc95f619a; // = -0.853553
+				6'h20: dct_cos_table = 32'hc95f619a; // = -0.853553
+				6'h21: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h22: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h23: dct_cos_table = 32'h36a09e66; // = +0.853553
+				6'h24: dct_cos_table = 32'h36a09e66; // = +0.853553
+				6'h25: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h26: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h27: dct_cos_table = 32'hc95f619a; // = -0.853553
+				6'h28: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h29: dct_cos_table = 32'hf6a09e67; // = -0.146447
+				6'h2a: dct_cos_table = 32'h095f6199; // = +0.146447
+				6'h2b: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h2c: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h2d: dct_cos_table = 32'h095f6199; // = +0.146447
+				6'h2e: dct_cos_table = 32'hf6a09e67; // = -0.146447
+				6'h2f: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h30: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h31: dct_cos_table = 32'h095f6199; // = +0.146447
+				6'h32: dct_cos_table = 32'hf6a09e67; // = -0.146447
+				6'h33: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h34: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h35: dct_cos_table = 32'hf6a09e67; // = -0.146447
+				6'h36: dct_cos_table = 32'h095f6199; // = +0.146447
+				6'h37: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h38: dct_cos_table = 32'h36a09e66; // = +0.853553
+				6'h39: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h3a: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h3b: dct_cos_table = 32'hc95f619a; // = -0.853553
+				6'h3c: dct_cos_table = 32'hc95f619a; // = -0.853553
+				6'h3d: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h3e: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h3f: dct_cos_table = 32'h36a09e66; // = +0.853553
+			endcase
+		6'h13:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h01: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h02: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h03: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h04: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h05: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h06: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h07: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h08: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h09: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h0a: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h0b: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h0c: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h0d: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h0e: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h0f: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h10: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h11: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h12: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h13: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h14: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h15: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h16: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h17: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h18: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h19: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h1a: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h1b: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h1c: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h1d: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h1e: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h1f: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h20: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h21: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h22: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h23: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h24: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h25: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h26: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h27: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h28: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h29: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h2a: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h2b: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h2c: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h2d: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h2e: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h2f: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h30: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h31: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h32: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h33: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h34: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h35: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h36: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h37: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h38: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h39: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h3a: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h3b: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h3c: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h3d: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h3e: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h3f: dct_cos_table = 32'hced62cf7; // = -0.768178
+			endcase
+		6'h14:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h01: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h02: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h03: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h04: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h05: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h06: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h07: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h08: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h09: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h0a: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h0b: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h0c: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h0d: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h0e: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h0f: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h10: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h11: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h12: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h13: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h14: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h15: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h16: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h17: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h18: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h19: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h1a: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h1b: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h1c: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h1d: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h1e: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h1f: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h20: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h21: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h22: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h23: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h24: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h25: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h26: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h27: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h28: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h29: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h2a: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h2b: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h2c: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h2d: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h2e: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h2f: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h30: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h31: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h32: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h33: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h34: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h35: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h36: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h37: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h38: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h39: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h3a: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h3b: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h3c: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h3d: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h3e: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h3f: dct_cos_table = 32'h29cf5d22; // = +0.653281
+			endcase
+		6'h15:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h01: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h02: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h03: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h04: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h05: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h06: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h07: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h08: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h09: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h0a: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h0b: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h0c: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h0d: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h0e: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h0f: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h10: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h11: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h12: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h13: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h14: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h15: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h16: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h17: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h18: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h19: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h1a: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h1b: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h1c: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h1d: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h1e: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h1f: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h20: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h21: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h22: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h23: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h24: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h25: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h26: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h27: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h28: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h29: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h2a: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h2b: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h2c: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h2d: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h2e: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h2f: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h30: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h31: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h32: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h33: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h34: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h35: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h36: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h37: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h38: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h39: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h3a: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h3b: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h3c: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h3d: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h3e: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h3f: dct_cos_table = 32'hdf266bc8; // = -0.513280
+			endcase
+		6'h16:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h01: dct_cos_table = 32'hc95f619a; // = -0.853553
+				6'h02: dct_cos_table = 32'h36a09e66; // = +0.853553
+				6'h03: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h04: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h05: dct_cos_table = 32'h36a09e66; // = +0.853553
+				6'h06: dct_cos_table = 32'hc95f619a; // = -0.853553
+				6'h07: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h08: dct_cos_table = 32'h095f6199; // = +0.146447
+				6'h09: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h0a: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h0b: dct_cos_table = 32'hf6a09e67; // = -0.146447
+				6'h0c: dct_cos_table = 32'hf6a09e67; // = -0.146447
+				6'h0d: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h0e: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h0f: dct_cos_table = 32'h095f6199; // = +0.146447
+				6'h10: dct_cos_table = 32'hf6a09e67; // = -0.146447
+				6'h11: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h12: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h13: dct_cos_table = 32'h095f6199; // = +0.146447
+				6'h14: dct_cos_table = 32'h095f6199; // = +0.146447
+				6'h15: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h16: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h17: dct_cos_table = 32'hf6a09e67; // = -0.146447
+				6'h18: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h19: dct_cos_table = 32'h36a09e66; // = +0.853553
+				6'h1a: dct_cos_table = 32'hc95f619a; // = -0.853553
+				6'h1b: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h1c: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h1d: dct_cos_table = 32'hc95f619a; // = -0.853553
+				6'h1e: dct_cos_table = 32'h36a09e66; // = +0.853553
+				6'h1f: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h20: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h21: dct_cos_table = 32'h36a09e66; // = +0.853553
+				6'h22: dct_cos_table = 32'hc95f619a; // = -0.853553
+				6'h23: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h24: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h25: dct_cos_table = 32'hc95f619a; // = -0.853553
+				6'h26: dct_cos_table = 32'h36a09e66; // = +0.853553
+				6'h27: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h28: dct_cos_table = 32'hf6a09e67; // = -0.146447
+				6'h29: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h2a: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h2b: dct_cos_table = 32'h095f6199; // = +0.146447
+				6'h2c: dct_cos_table = 32'h095f6199; // = +0.146447
+				6'h2d: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h2e: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h2f: dct_cos_table = 32'hf6a09e67; // = -0.146447
+				6'h30: dct_cos_table = 32'h095f6199; // = +0.146447
+				6'h31: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h32: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h33: dct_cos_table = 32'hf6a09e67; // = -0.146447
+				6'h34: dct_cos_table = 32'hf6a09e67; // = -0.146447
+				6'h35: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h36: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h37: dct_cos_table = 32'h095f6199; // = +0.146447
+				6'h38: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h39: dct_cos_table = 32'hc95f619a; // = -0.853553
+				6'h3a: dct_cos_table = 32'h36a09e66; // = +0.853553
+				6'h3b: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h3c: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h3d: dct_cos_table = 32'h36a09e66; // = +0.853553
+				6'h3e: dct_cos_table = 32'hc95f619a; // = -0.853553
+				6'h3f: dct_cos_table = 32'h16a09e66; // = +0.353553
+			endcase
+		6'h17:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h01: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h02: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h03: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h04: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h05: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h06: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h07: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h08: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h09: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h0a: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h0b: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h0c: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h0d: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h0e: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h0f: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h10: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h11: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h12: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h13: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h14: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h15: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h16: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h17: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h18: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h19: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h1a: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h1b: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h1c: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h1d: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h1e: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h1f: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h20: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h21: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h22: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h23: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h24: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h25: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h26: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h27: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h28: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h29: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h2a: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h2b: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h2c: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h2d: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h2e: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h2f: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h30: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h31: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h32: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h33: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h34: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h35: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h36: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h37: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h38: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h39: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h3a: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h3b: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h3c: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h3d: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h3e: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h3f: dct_cos_table = 32'hf476f2d6; // = -0.180240
+			endcase
+		6'h18:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h01: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h02: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h03: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h04: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h05: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h06: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h07: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h08: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h09: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h0a: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h0b: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h0c: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h0d: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h0e: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h0f: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h10: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h11: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h12: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h13: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h14: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h15: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h16: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h17: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h18: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h19: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h1a: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h1b: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h1c: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h1d: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h1e: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h1f: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h20: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h21: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h22: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h23: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h24: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h25: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h26: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h27: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h28: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h29: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h2a: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h2b: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h2c: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h2d: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h2e: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h2f: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h30: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h31: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h32: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h33: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h34: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h35: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h36: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h37: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h38: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h39: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h3a: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h3b: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h3c: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h3d: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h3e: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h3f: dct_cos_table = 32'hda5f3a21; // = -0.587938
+			endcase
+		6'h19:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h01: dct_cos_table = 32'h2c3ef153; // = +0.691342
+				6'h02: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h03: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h04: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h05: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h06: dct_cos_table = 32'hd3c10ead; // = -0.691342
+				6'h07: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h08: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h09: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h0a: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h0b: dct_cos_table = 32'hfd906bd0; // = -0.038060
+				6'h0c: dct_cos_table = 32'h026f9430; // = +0.038060
+				6'h0d: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h0e: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h0f: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h10: dct_cos_table = 32'hc26f9431; // = -0.961940
+				6'h11: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h12: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h13: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h14: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h15: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h16: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h17: dct_cos_table = 32'h3d906bcf; // = +0.961940
+				6'h18: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h19: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h1a: dct_cos_table = 32'hec3ef154; // = -0.308658
+				6'h1b: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h1c: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h1d: dct_cos_table = 32'h13c10eac; // = +0.308658
+				6'h1e: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h1f: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h20: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h21: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h22: dct_cos_table = 32'h13c10eac; // = +0.308658
+				6'h23: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h24: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h25: dct_cos_table = 32'hec3ef154; // = -0.308658
+				6'h26: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h27: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h28: dct_cos_table = 32'h3d906bcf; // = +0.961940
+				6'h29: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h2a: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h2b: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h2c: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h2d: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h2e: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h2f: dct_cos_table = 32'hc26f9431; // = -0.961940
+				6'h30: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h31: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h32: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h33: dct_cos_table = 32'h026f9430; // = +0.038060
+				6'h34: dct_cos_table = 32'hfd906bd0; // = -0.038060
+				6'h35: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h36: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h37: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h38: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h39: dct_cos_table = 32'hd3c10ead; // = -0.691342
+				6'h3a: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h3b: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h3c: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h3d: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h3e: dct_cos_table = 32'h2c3ef153; // = +0.691342
+				6'h3f: dct_cos_table = 32'h34310a35; // = +0.815493
+			endcase
+		6'h1a:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h01: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h02: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h03: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h04: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h05: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h06: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h07: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h08: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h09: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h0a: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h0b: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h0c: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h0d: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h0e: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h0f: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h10: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h11: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h12: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h13: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h14: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h15: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h16: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h17: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h18: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h19: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h1a: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h1b: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h1c: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h1d: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h1e: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h1f: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h20: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h21: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h22: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h23: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h24: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h25: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h26: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h27: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h28: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h29: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h2a: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h2b: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h2c: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h2d: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h2e: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h2f: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h30: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h31: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h32: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h33: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h34: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h35: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h36: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h37: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h38: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h39: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h3a: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h3b: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h3c: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h3d: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h3e: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h3f: dct_cos_table = 32'hced62cf7; // = -0.768178
+			endcase
+		6'h1b:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h2c3ef153; // = +0.691342
+				6'h01: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h02: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h03: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h04: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h05: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h06: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h07: dct_cos_table = 32'hd3c10ead; // = -0.691342
+				6'h08: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h09: dct_cos_table = 32'h026f9430; // = +0.038060
+				6'h0a: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h0b: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h0c: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h0d: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h0e: dct_cos_table = 32'hfd906bd0; // = -0.038060
+				6'h0f: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h10: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h11: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h12: dct_cos_table = 32'h3d906bcf; // = +0.961940
+				6'h13: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h14: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h15: dct_cos_table = 32'hc26f9431; // = -0.961940
+				6'h16: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h17: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h18: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h19: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h1a: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h1b: dct_cos_table = 32'h13c10eac; // = +0.308658
+				6'h1c: dct_cos_table = 32'hec3ef154; // = -0.308658
+				6'h1d: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h1e: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h1f: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h20: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h21: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h22: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h23: dct_cos_table = 32'hec3ef154; // = -0.308658
+				6'h24: dct_cos_table = 32'h13c10eac; // = +0.308658
+				6'h25: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h26: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h27: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h28: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h29: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h2a: dct_cos_table = 32'hc26f9431; // = -0.961940
+				6'h2b: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h2c: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h2d: dct_cos_table = 32'h3d906bcf; // = +0.961940
+				6'h2e: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h2f: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h30: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h31: dct_cos_table = 32'hfd906bd0; // = -0.038060
+				6'h32: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h33: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h34: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h35: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h36: dct_cos_table = 32'h026f9430; // = +0.038060
+				6'h37: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h38: dct_cos_table = 32'hd3c10ead; // = -0.691342
+				6'h39: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h3a: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h3b: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h3c: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h3d: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h3e: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h3f: dct_cos_table = 32'h2c3ef153; // = +0.691342
+			endcase
+		6'h1c:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h01: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h02: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h03: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h04: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h05: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h06: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h07: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h08: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h09: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h0a: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h0b: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h0c: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h0d: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h0e: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h0f: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h10: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h11: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h12: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h13: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h14: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h15: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h16: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h17: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h18: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h19: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h1a: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h1b: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h1c: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h1d: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h1e: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h1f: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h20: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h21: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h22: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h23: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h24: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h25: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h26: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h27: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h28: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h29: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h2a: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h2b: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h2c: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h2d: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h2e: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h2f: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h30: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h31: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h32: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h33: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h34: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h35: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h36: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h37: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h38: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h39: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h3a: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h3b: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h3c: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h3d: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h3e: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h3f: dct_cos_table = 32'hda5f3a21; // = -0.587938
+			endcase
+		6'h1d:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h01: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h02: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h03: dct_cos_table = 32'h2c3ef153; // = +0.691342
+				6'h04: dct_cos_table = 32'hd3c10ead; // = -0.691342
+				6'h05: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h06: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h07: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h08: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h09: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h0a: dct_cos_table = 32'hfd906bd0; // = -0.038060
+				6'h0b: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h0c: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h0d: dct_cos_table = 32'h026f9430; // = +0.038060
+				6'h0e: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h0f: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h10: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h11: dct_cos_table = 32'h3d906bcf; // = +0.961940
+				6'h12: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h13: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h14: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h15: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h16: dct_cos_table = 32'hc26f9431; // = -0.961940
+				6'h17: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h18: dct_cos_table = 32'hec3ef154; // = -0.308658
+				6'h19: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h1a: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h1b: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h1c: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h1d: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h1e: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h1f: dct_cos_table = 32'h13c10eac; // = +0.308658
+				6'h20: dct_cos_table = 32'h13c10eac; // = +0.308658
+				6'h21: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h22: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h23: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h24: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h25: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h26: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h27: dct_cos_table = 32'hec3ef154; // = -0.308658
+				6'h28: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h29: dct_cos_table = 32'hc26f9431; // = -0.961940
+				6'h2a: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h2b: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h2c: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h2d: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h2e: dct_cos_table = 32'h3d906bcf; // = +0.961940
+				6'h2f: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h30: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h31: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h32: dct_cos_table = 32'h026f9430; // = +0.038060
+				6'h33: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h34: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h35: dct_cos_table = 32'hfd906bd0; // = -0.038060
+				6'h36: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h37: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h38: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h39: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h3a: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h3b: dct_cos_table = 32'hd3c10ead; // = -0.691342
+				6'h3c: dct_cos_table = 32'h2c3ef153; // = +0.691342
+				6'h3d: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h3e: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h3f: dct_cos_table = 32'h1d906bcf; // = +0.461940
+			endcase
+		6'h1e:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h01: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h02: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h03: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h04: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h05: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h06: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h07: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h08: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h09: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h0a: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h0b: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h0c: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h0d: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h0e: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h0f: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h10: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h11: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h12: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h13: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h14: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h15: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h16: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h17: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h18: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h19: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h1a: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h1b: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h1c: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h1d: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h1e: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h1f: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h20: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h21: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h22: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h23: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h24: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h25: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h26: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h27: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h28: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h29: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h2a: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h2b: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h2c: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h2d: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h2e: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h2f: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h30: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h31: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h32: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h33: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h34: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h35: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h36: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h37: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h38: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h39: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h3a: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h3b: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h3c: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h3d: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h3e: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h3f: dct_cos_table = 32'heba2c7e7; // = -0.318190
+			endcase
+		6'h1f:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h01: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h02: dct_cos_table = 32'h2c3ef153; // = +0.691342
+				6'h03: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h04: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h05: dct_cos_table = 32'hd3c10ead; // = -0.691342
+				6'h06: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h07: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h08: dct_cos_table = 32'hfd906bd0; // = -0.038060
+				6'h09: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h0a: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h0b: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h0c: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h0d: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h0e: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h0f: dct_cos_table = 32'h026f9430; // = +0.038060
+				6'h10: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h11: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h12: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h13: dct_cos_table = 32'h3d906bcf; // = +0.961940
+				6'h14: dct_cos_table = 32'hc26f9431; // = -0.961940
+				6'h15: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h16: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h17: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h18: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h19: dct_cos_table = 32'h13c10eac; // = +0.308658
+				6'h1a: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h1b: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h1c: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h1d: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h1e: dct_cos_table = 32'hec3ef154; // = -0.308658
+				6'h1f: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h20: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h21: dct_cos_table = 32'hec3ef154; // = -0.308658
+				6'h22: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h23: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h24: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h25: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h26: dct_cos_table = 32'h13c10eac; // = +0.308658
+				6'h27: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h28: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h29: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h2a: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h2b: dct_cos_table = 32'hc26f9431; // = -0.961940
+				6'h2c: dct_cos_table = 32'h3d906bcf; // = +0.961940
+				6'h2d: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h2e: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h2f: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h30: dct_cos_table = 32'h026f9430; // = +0.038060
+				6'h31: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h32: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h33: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h34: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h35: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h36: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h37: dct_cos_table = 32'hfd906bd0; // = -0.038060
+				6'h38: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h39: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h3a: dct_cos_table = 32'hd3c10ead; // = -0.691342
+				6'h3b: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h3c: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h3d: dct_cos_table = 32'h2c3ef153; // = +0.691342
+				6'h3e: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h3f: dct_cos_table = 32'h0a61ad13; // = +0.162212
+			endcase
+		6'h20:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h01: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h02: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h03: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h04: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h05: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h06: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h07: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h08: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h09: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h0a: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h0b: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h0c: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h0d: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h0e: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h0f: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h10: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h11: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h12: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h13: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h14: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h15: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h16: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h17: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h18: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h19: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h1a: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h1b: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h1c: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h1d: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h1e: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h1f: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h20: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h21: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h22: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h23: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h24: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h25: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h26: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h27: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h28: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h29: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h2a: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h2b: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h2c: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h2d: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h2e: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h2f: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h30: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h31: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h32: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h33: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h34: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h35: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h36: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h37: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h38: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h39: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h3a: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h3b: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h3c: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h3d: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h3e: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h3f: dct_cos_table = 32'h20000000; // = +0.500000
+			endcase
+		6'h21:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h01: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h02: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h03: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h04: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h05: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h06: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h07: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h08: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h09: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h0a: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h0b: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h0c: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h0d: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h0e: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h0f: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h10: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h11: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h12: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h13: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h14: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h15: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h16: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h17: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h18: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h19: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h1a: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h1b: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h1c: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h1d: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h1e: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h1f: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h20: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h21: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h22: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h23: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h24: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h25: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h26: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h27: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h28: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h29: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h2a: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h2b: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h2c: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h2d: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h2e: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h2f: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h30: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h31: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h32: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h33: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h34: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h35: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h36: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h37: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h38: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h39: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h3a: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h3b: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h3c: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h3d: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h3e: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h3f: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+			endcase
+		6'h22:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h01: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h02: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h03: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h04: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h05: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h06: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h07: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h08: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h09: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h0a: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h0b: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h0c: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h0d: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h0e: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h0f: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h10: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h11: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h12: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h13: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h14: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h15: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h16: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h17: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h18: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h19: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h1a: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h1b: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h1c: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h1d: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h1e: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h1f: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h20: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h21: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h22: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h23: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h24: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h25: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h26: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h27: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h28: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h29: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h2a: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h2b: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h2c: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h2d: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h2e: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h2f: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h30: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h31: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h32: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h33: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h34: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h35: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h36: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h37: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h38: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h39: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h3a: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h3b: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h3c: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h3d: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h3e: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h3f: dct_cos_table = 32'h29cf5d22; // = +0.653281
+			endcase
+		6'h23:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h01: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h02: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h03: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h04: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h05: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h06: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h07: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h08: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h09: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h0a: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h0b: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h0c: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h0d: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h0e: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h0f: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h10: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h11: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h12: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h13: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h14: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h15: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h16: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h17: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h18: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h19: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h1a: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h1b: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h1c: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h1d: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h1e: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h1f: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h20: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h21: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h22: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h23: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h24: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h25: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h26: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h27: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h28: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h29: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h2a: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h2b: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h2c: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h2d: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h2e: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h2f: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h30: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h31: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h32: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h33: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h34: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h35: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h36: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h37: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h38: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h39: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h3a: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h3b: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h3c: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h3d: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h3e: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h3f: dct_cos_table = 32'hda5f3a21; // = -0.587938
+			endcase
+		6'h24:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h1fffffff; // = +0.500000
+				6'h01: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h02: dct_cos_table = 32'he0000001; // = -0.500000
+				6'h03: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h04: dct_cos_table = 32'h1fffffff; // = +0.500000
+				6'h05: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h06: dct_cos_table = 32'he0000001; // = -0.500000
+				6'h07: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h08: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h09: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h0a: dct_cos_table = 32'h1fffffff; // = +0.500000
+				6'h0b: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h0c: dct_cos_table = 32'he0000001; // = -0.500000
+				6'h0d: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h0e: dct_cos_table = 32'h1fffffff; // = +0.500000
+				6'h0f: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h10: dct_cos_table = 32'he0000001; // = -0.500000
+				6'h11: dct_cos_table = 32'h1fffffff; // = +0.500000
+				6'h12: dct_cos_table = 32'h1fffffff; // = +0.500000
+				6'h13: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h14: dct_cos_table = 32'he0000001; // = -0.500000
+				6'h15: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h16: dct_cos_table = 32'h1fffffff; // = +0.500000
+				6'h17: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h18: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h19: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h1a: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h1b: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h1c: dct_cos_table = 32'h1fffffff; // = +0.500000
+				6'h1d: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h1e: dct_cos_table = 32'he0000001; // = -0.500000
+				6'h1f: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h20: dct_cos_table = 32'h1fffffff; // = +0.500000
+				6'h21: dct_cos_table = 32'he0000001; // = -0.500000
+				6'h22: dct_cos_table = 32'he0000001; // = -0.500000
+				6'h23: dct_cos_table = 32'h1fffffff; // = +0.500000
+				6'h24: dct_cos_table = 32'h1fffffff; // = +0.500000
+				6'h25: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h26: dct_cos_table = 32'he0000001; // = -0.500000
+				6'h27: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h28: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h29: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h2a: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h2b: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h2c: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h2d: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h2e: dct_cos_table = 32'h1fffffff; // = +0.500000
+				6'h2f: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h30: dct_cos_table = 32'he0000001; // = -0.500000
+				6'h31: dct_cos_table = 32'h1fffffff; // = +0.500000
+				6'h32: dct_cos_table = 32'h1fffffff; // = +0.500000
+				6'h33: dct_cos_table = 32'he0000001; // = -0.500000
+				6'h34: dct_cos_table = 32'he0000001; // = -0.500000
+				6'h35: dct_cos_table = 32'h1fffffff; // = +0.500000
+				6'h36: dct_cos_table = 32'h1fffffff; // = +0.500000
+				6'h37: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h38: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h39: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h3a: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h3b: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h3c: dct_cos_table = 32'h20000000; // = +0.500000
+				6'h3d: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h3e: dct_cos_table = 32'he0000000; // = -0.500000
+				6'h3f: dct_cos_table = 32'h20000000; // = +0.500000
+			endcase
+		6'h25:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h01: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h02: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h03: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h04: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h05: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h06: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h07: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h08: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h09: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h0a: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h0b: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h0c: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h0d: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h0e: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h0f: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h10: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h11: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h12: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h13: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h14: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h15: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h16: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h17: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h18: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h19: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h1a: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h1b: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h1c: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h1d: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h1e: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h1f: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h20: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h21: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h22: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h23: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h24: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h25: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h26: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h27: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h28: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h29: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h2a: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h2b: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h2c: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h2d: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h2e: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h2f: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h30: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h31: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h32: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h33: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h34: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h35: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h36: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h37: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h38: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h39: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h3a: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h3b: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h3c: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h3d: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h3e: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h3f: dct_cos_table = 32'he6db9640; // = -0.392847
+			endcase
+		6'h26:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h01: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h02: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h03: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h04: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h05: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h06: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h07: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h08: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h09: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h0a: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h0b: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h0c: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h0d: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h0e: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h0f: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h10: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h11: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h12: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h13: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h14: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h15: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h16: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h17: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h18: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h19: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h1a: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h1b: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h1c: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h1d: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h1e: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h1f: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h20: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h21: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h22: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h23: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h24: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h25: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h26: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h27: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h28: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h29: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h2a: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h2b: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h2c: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h2d: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h2e: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h2f: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h30: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h31: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h32: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h33: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h34: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h35: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h36: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h37: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h38: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h39: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h3a: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h3b: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h3c: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h3d: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h3e: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h3f: dct_cos_table = 32'h11517a7b; // = +0.270598
+			endcase
+		6'h27:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h01: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h02: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h03: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h04: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h05: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h06: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h07: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h08: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h09: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h0a: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h0b: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h0c: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h0d: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h0e: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h0f: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h10: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h11: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h12: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h13: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h14: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h15: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h16: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h17: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h18: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h19: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h1a: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h1b: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h1c: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h1d: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h1e: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h1f: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h20: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h21: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h22: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h23: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h24: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h25: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h26: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h27: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h28: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h29: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h2a: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h2b: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h2c: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h2d: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h2e: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h2f: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h30: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h31: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h32: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h33: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h34: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h35: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h36: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h37: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h38: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h39: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h3a: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h3b: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h3c: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h3d: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h3e: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h3f: dct_cos_table = 32'hf72bd511; // = -0.137950
+			endcase
+		6'h28:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h01: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h02: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h03: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h04: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h05: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h06: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h07: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h08: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h09: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h0a: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h0b: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h0c: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h0d: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h0e: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h0f: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h10: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h11: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h12: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h13: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h14: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h15: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h16: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h17: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h18: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h19: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h1a: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h1b: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h1c: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h1d: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h1e: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h1f: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h20: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h21: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h22: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h23: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h24: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h25: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h26: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h27: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h28: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h29: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h2a: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h2b: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h2c: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h2d: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h2e: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h2f: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h30: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h31: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h32: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h33: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h34: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h35: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h36: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h37: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h38: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h39: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h3a: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h3b: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h3c: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h3d: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h3e: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h3f: dct_cos_table = 32'he6db9640; // = -0.392847
+			endcase
+		6'h29:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h01: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h02: dct_cos_table = 32'h13c10eac; // = +0.308658
+				6'h03: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h04: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h05: dct_cos_table = 32'hec3ef154; // = -0.308658
+				6'h06: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h07: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h08: dct_cos_table = 32'hc26f9431; // = -0.961940
+				6'h09: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h0a: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h0b: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h0c: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h0d: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h0e: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h0f: dct_cos_table = 32'h3d906bcf; // = +0.961940
+				6'h10: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h11: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h12: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h13: dct_cos_table = 32'h026f9430; // = +0.038060
+				6'h14: dct_cos_table = 32'hfd906bd0; // = -0.038060
+				6'h15: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h16: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h17: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h18: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h19: dct_cos_table = 32'h2c3ef153; // = +0.691342
+				6'h1a: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h1b: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h1c: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h1d: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h1e: dct_cos_table = 32'hd3c10ead; // = -0.691342
+				6'h1f: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h20: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h21: dct_cos_table = 32'hd3c10ead; // = -0.691342
+				6'h22: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h23: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h24: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h25: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h26: dct_cos_table = 32'h2c3ef153; // = +0.691342
+				6'h27: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h28: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h29: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h2a: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h2b: dct_cos_table = 32'hfd906bd0; // = -0.038060
+				6'h2c: dct_cos_table = 32'h026f9430; // = +0.038060
+				6'h2d: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h2e: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h2f: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h30: dct_cos_table = 32'h3d906bcf; // = +0.961940
+				6'h31: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h32: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h33: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h34: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h35: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h36: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h37: dct_cos_table = 32'hc26f9431; // = -0.961940
+				6'h38: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h39: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h3a: dct_cos_table = 32'hec3ef154; // = -0.308658
+				6'h3b: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h3c: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h3d: dct_cos_table = 32'h13c10eac; // = +0.308658
+				6'h3e: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h3f: dct_cos_table = 32'h22df8fb9; // = +0.544895
+			endcase
+		6'h2a:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h01: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h02: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h03: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h04: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h05: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h06: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h07: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h08: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h09: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h0a: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h0b: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h0c: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h0d: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h0e: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h0f: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h10: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h11: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h12: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h13: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h14: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h15: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h16: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h17: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h18: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h19: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h1a: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h1b: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h1c: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h1d: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h1e: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h1f: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h20: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h21: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h22: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h23: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h24: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h25: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h26: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h27: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h28: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h29: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h2a: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h2b: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h2c: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h2d: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h2e: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h2f: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h30: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h31: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h32: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h33: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h34: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h35: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h36: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h37: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h38: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h39: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h3a: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h3b: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h3c: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h3d: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h3e: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h3f: dct_cos_table = 32'hdf266bc8; // = -0.513280
+			endcase
+		6'h2b:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h01: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h02: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h03: dct_cos_table = 32'hec3ef154; // = -0.308658
+				6'h04: dct_cos_table = 32'h13c10eac; // = +0.308658
+				6'h05: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h06: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h07: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h08: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h09: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h0a: dct_cos_table = 32'h3d906bcf; // = +0.961940
+				6'h0b: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h0c: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h0d: dct_cos_table = 32'hc26f9431; // = -0.961940
+				6'h0e: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h0f: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h10: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h11: dct_cos_table = 32'hfd906bd0; // = -0.038060
+				6'h12: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h13: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h14: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h15: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h16: dct_cos_table = 32'h026f9430; // = +0.038060
+				6'h17: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h18: dct_cos_table = 32'h2c3ef153; // = +0.691342
+				6'h19: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h1a: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h1b: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h1c: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h1d: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h1e: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h1f: dct_cos_table = 32'hd3c10ead; // = -0.691342
+				6'h20: dct_cos_table = 32'hd3c10ead; // = -0.691342
+				6'h21: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h22: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h23: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h24: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h25: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h26: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h27: dct_cos_table = 32'h2c3ef153; // = +0.691342
+				6'h28: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h29: dct_cos_table = 32'h026f9430; // = +0.038060
+				6'h2a: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h2b: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h2c: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h2d: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h2e: dct_cos_table = 32'hfd906bd0; // = -0.038060
+				6'h2f: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h30: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h31: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h32: dct_cos_table = 32'hc26f9431; // = -0.961940
+				6'h33: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h34: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h35: dct_cos_table = 32'h3d906bcf; // = +0.961940
+				6'h36: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h37: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h38: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h39: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h3a: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h3b: dct_cos_table = 32'h13c10eac; // = +0.308658
+				6'h3c: dct_cos_table = 32'hec3ef154; // = -0.308658
+				6'h3d: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h3e: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h3f: dct_cos_table = 32'h1d906bcf; // = +0.461940
+			endcase
+		6'h2c:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h01: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h02: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h03: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h04: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h05: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h06: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h07: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h08: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h09: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h0a: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h0b: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h0c: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h0d: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h0e: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h0f: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h10: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h11: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h12: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h13: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h14: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h15: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h16: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h17: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h18: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h19: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h1a: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h1b: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h1c: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h1d: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h1e: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h1f: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h20: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h21: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h22: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h23: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h24: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h25: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h26: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h27: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h28: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h29: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h2a: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h2b: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h2c: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h2d: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h2e: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h2f: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h30: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h31: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h32: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h33: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h34: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h35: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h36: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h37: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h38: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h39: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h3a: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h3b: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h3c: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h3d: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h3e: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h3f: dct_cos_table = 32'he6db9640; // = -0.392847
+			endcase
+		6'h2d:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h13c10eac; // = +0.308658
+				6'h01: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h02: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h03: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h04: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h05: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h06: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h07: dct_cos_table = 32'hec3ef154; // = -0.308658
+				6'h08: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h09: dct_cos_table = 32'h3d906bcf; // = +0.961940
+				6'h0a: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h0b: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h0c: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h0d: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h0e: dct_cos_table = 32'hc26f9431; // = -0.961940
+				6'h0f: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h10: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h11: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h12: dct_cos_table = 32'h026f9430; // = +0.038060
+				6'h13: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h14: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h15: dct_cos_table = 32'hfd906bd0; // = -0.038060
+				6'h16: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h17: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h18: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h19: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h1a: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h1b: dct_cos_table = 32'h2c3ef153; // = +0.691342
+				6'h1c: dct_cos_table = 32'hd3c10ead; // = -0.691342
+				6'h1d: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h1e: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h1f: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h20: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h21: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h22: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h23: dct_cos_table = 32'hd3c10ead; // = -0.691342
+				6'h24: dct_cos_table = 32'h2c3ef153; // = +0.691342
+				6'h25: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h26: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h27: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h28: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h29: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h2a: dct_cos_table = 32'hfd906bd0; // = -0.038060
+				6'h2b: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h2c: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h2d: dct_cos_table = 32'h026f9430; // = +0.038060
+				6'h2e: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h2f: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h30: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h31: dct_cos_table = 32'hc26f9431; // = -0.961940
+				6'h32: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h33: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h34: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h35: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h36: dct_cos_table = 32'h3d906bcf; // = +0.961940
+				6'h37: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h38: dct_cos_table = 32'hec3ef154; // = -0.308658
+				6'h39: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h3a: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h3b: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h3c: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h3d: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h3e: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h3f: dct_cos_table = 32'h13c10eac; // = +0.308658
+			endcase
+		6'h2e:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h01: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h02: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h03: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h04: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h05: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h06: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h07: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h08: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h09: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h0a: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h0b: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h0c: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h0d: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h0e: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h0f: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h10: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h11: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h12: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h13: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h14: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h15: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h16: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h17: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h18: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h19: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h1a: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h1b: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h1c: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h1d: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h1e: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h1f: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h20: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h21: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h22: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h23: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h24: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h25: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h26: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h27: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h28: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h29: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h2a: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h2b: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h2c: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h2d: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h2e: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h2f: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h30: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h31: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h32: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h33: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h34: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h35: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h36: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h37: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h38: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h39: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h3a: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h3b: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h3c: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h3d: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h3e: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h3f: dct_cos_table = 32'hf264a36a; // = -0.212608
+			endcase
+		6'h2f:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h01: dct_cos_table = 32'hec3ef154; // = -0.308658
+				6'h02: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h03: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h04: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h05: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h06: dct_cos_table = 32'h13c10eac; // = +0.308658
+				6'h07: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h08: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h09: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h0a: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h0b: dct_cos_table = 32'h3d906bcf; // = +0.961940
+				6'h0c: dct_cos_table = 32'hc26f9431; // = -0.961940
+				6'h0d: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h0e: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h0f: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h10: dct_cos_table = 32'h026f9430; // = +0.038060
+				6'h11: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h12: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h13: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h14: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h15: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h16: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h17: dct_cos_table = 32'hfd906bd0; // = -0.038060
+				6'h18: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h19: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h1a: dct_cos_table = 32'h2c3ef153; // = +0.691342
+				6'h1b: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h1c: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h1d: dct_cos_table = 32'hd3c10ead; // = -0.691342
+				6'h1e: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h1f: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h20: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h21: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h22: dct_cos_table = 32'hd3c10ead; // = -0.691342
+				6'h23: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h24: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h25: dct_cos_table = 32'h2c3ef153; // = +0.691342
+				6'h26: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h27: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h28: dct_cos_table = 32'hfd906bd0; // = -0.038060
+				6'h29: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h2a: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h2b: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h2c: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h2d: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h2e: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h2f: dct_cos_table = 32'h026f9430; // = +0.038060
+				6'h30: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h31: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h32: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h33: dct_cos_table = 32'hc26f9431; // = -0.961940
+				6'h34: dct_cos_table = 32'h3d906bcf; // = +0.961940
+				6'h35: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h36: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h37: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h38: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h39: dct_cos_table = 32'h13c10eac; // = +0.308658
+				6'h3a: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h3b: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h3c: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h3d: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h3e: dct_cos_table = 32'hec3ef154; // = -0.308658
+				6'h3f: dct_cos_table = 32'h06efcd68; // = +0.108386
+			endcase
+		6'h30:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h01: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h02: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h03: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h04: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h05: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h06: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h07: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h08: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h09: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h0a: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h0b: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h0c: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h0d: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h0e: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h0f: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h10: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h11: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h12: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h13: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h14: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h15: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h16: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h17: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h18: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h19: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h1a: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h1b: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h1c: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h1d: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h1e: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h1f: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h20: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h21: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h22: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h23: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h24: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h25: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h26: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h27: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h28: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h29: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h2a: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h2b: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h2c: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h2d: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h2e: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h2f: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h30: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h31: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h32: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h33: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h34: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h35: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h36: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h37: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h38: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h39: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h3a: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h3b: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h3c: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h3d: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h3e: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h3f: dct_cos_table = 32'h11517a7b; // = +0.270598
+			endcase
+		6'h31:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h01: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h02: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h03: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h04: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h05: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h06: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h07: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h08: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h09: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h0a: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h0b: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h0c: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h0d: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h0e: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h0f: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h10: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h11: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h12: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h13: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h14: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h15: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h16: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h17: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h18: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h19: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h1a: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h1b: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h1c: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h1d: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h1e: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h1f: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h20: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h21: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h22: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h23: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h24: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h25: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h26: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h27: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h28: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h29: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h2a: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h2b: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h2c: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h2d: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h2e: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h2f: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h30: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h31: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h32: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h33: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h34: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h35: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h36: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h37: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h38: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h39: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h3a: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h3b: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h3c: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h3d: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h3e: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h3f: dct_cos_table = 32'he7fa96b8; // = -0.375330
+			endcase
+		6'h32:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h01: dct_cos_table = 32'h095f6199; // = +0.146447
+				6'h02: dct_cos_table = 32'hf6a09e67; // = -0.146447
+				6'h03: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h04: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h05: dct_cos_table = 32'hf6a09e67; // = -0.146447
+				6'h06: dct_cos_table = 32'h095f6199; // = +0.146447
+				6'h07: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h08: dct_cos_table = 32'hc95f619a; // = -0.853553
+				6'h09: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h0a: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h0b: dct_cos_table = 32'h36a09e66; // = +0.853553
+				6'h0c: dct_cos_table = 32'h36a09e66; // = +0.853553
+				6'h0d: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h0e: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h0f: dct_cos_table = 32'hc95f619a; // = -0.853553
+				6'h10: dct_cos_table = 32'h36a09e66; // = +0.853553
+				6'h11: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h12: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h13: dct_cos_table = 32'hc95f619a; // = -0.853553
+				6'h14: dct_cos_table = 32'hc95f619a; // = -0.853553
+				6'h15: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h16: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h17: dct_cos_table = 32'h36a09e66; // = +0.853553
+				6'h18: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h19: dct_cos_table = 32'hf6a09e67; // = -0.146447
+				6'h1a: dct_cos_table = 32'h095f6199; // = +0.146447
+				6'h1b: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h1c: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h1d: dct_cos_table = 32'h095f6199; // = +0.146447
+				6'h1e: dct_cos_table = 32'hf6a09e67; // = -0.146447
+				6'h1f: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h20: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h21: dct_cos_table = 32'hf6a09e67; // = -0.146447
+				6'h22: dct_cos_table = 32'h095f6199; // = +0.146447
+				6'h23: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h24: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h25: dct_cos_table = 32'h095f6199; // = +0.146447
+				6'h26: dct_cos_table = 32'hf6a09e67; // = -0.146447
+				6'h27: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h28: dct_cos_table = 32'h36a09e66; // = +0.853553
+				6'h29: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h2a: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h2b: dct_cos_table = 32'hc95f619a; // = -0.853553
+				6'h2c: dct_cos_table = 32'hc95f619a; // = -0.853553
+				6'h2d: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h2e: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h2f: dct_cos_table = 32'h36a09e66; // = +0.853553
+				6'h30: dct_cos_table = 32'hc95f619a; // = -0.853553
+				6'h31: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h32: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h33: dct_cos_table = 32'h36a09e66; // = +0.853553
+				6'h34: dct_cos_table = 32'h36a09e66; // = +0.853553
+				6'h35: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h36: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h37: dct_cos_table = 32'hc95f619a; // = -0.853553
+				6'h38: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h39: dct_cos_table = 32'h095f6199; // = +0.146447
+				6'h3a: dct_cos_table = 32'hf6a09e67; // = -0.146447
+				6'h3b: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h3c: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h3d: dct_cos_table = 32'hf6a09e67; // = -0.146447
+				6'h3e: dct_cos_table = 32'h095f6199; // = +0.146447
+				6'h3f: dct_cos_table = 32'h16a09e66; // = +0.353553
+			endcase
+		6'h33:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h01: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h02: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h03: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h04: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h05: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h06: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h07: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h08: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h09: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h0a: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h0b: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h0c: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h0d: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h0e: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h0f: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h10: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h11: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h12: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h13: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h14: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h15: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h16: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h17: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h18: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h19: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h1a: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h1b: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h1c: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h1d: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h1e: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h1f: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h20: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h21: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h22: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h23: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h24: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h25: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h26: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h27: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h28: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h29: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h2a: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h2b: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h2c: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h2d: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h2e: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h2f: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h30: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h31: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h32: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h33: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h34: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h35: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h36: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h37: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h38: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h39: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h3a: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h3b: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h3c: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h3d: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h3e: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h3f: dct_cos_table = 32'heba2c7e7; // = -0.318190
+			endcase
+		6'h34:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h01: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h02: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h03: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h04: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h05: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h06: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h07: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h08: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h09: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h0a: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h0b: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h0c: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h0d: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h0e: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h0f: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h10: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h11: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h12: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h13: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h14: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h15: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h16: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h17: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h18: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h19: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h1a: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h1b: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h1c: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h1d: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h1e: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h1f: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h20: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h21: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h22: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h23: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h24: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h25: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h26: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h27: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h28: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h29: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h2a: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h2b: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h2c: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h2d: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h2e: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h2f: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h30: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h31: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h32: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h33: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h34: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h35: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h36: dct_cos_table = 32'h29cf5d22; // = +0.653281
+				6'h37: dct_cos_table = 32'hd630a2de; // = -0.653281
+				6'h38: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h39: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h3a: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h3b: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h3c: dct_cos_table = 32'h11517a7b; // = +0.270598
+				6'h3d: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h3e: dct_cos_table = 32'heeae8585; // = -0.270598
+				6'h3f: dct_cos_table = 32'h11517a7b; // = +0.270598
+			endcase
+		6'h35:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h01: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h02: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h03: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h04: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h05: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h06: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h07: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h08: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h09: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h0a: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h0b: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h0c: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h0d: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h0e: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h0f: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h10: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h11: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h12: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h13: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h14: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h15: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h16: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h17: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h18: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h19: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h1a: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h1b: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h1c: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h1d: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h1e: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h1f: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h20: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h21: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h22: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h23: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h24: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h25: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h26: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h27: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h28: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h29: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h2a: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h2b: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h2c: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h2d: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h2e: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h2f: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h30: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h31: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h32: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h33: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h34: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h35: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h36: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h37: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h38: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h39: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h3a: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h3b: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h3c: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h3d: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h3e: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h3f: dct_cos_table = 32'hf264a36a; // = -0.212608
+			endcase
+		6'h36:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h095f6199; // = +0.146447
+				6'h01: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h02: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h03: dct_cos_table = 32'hf6a09e67; // = -0.146447
+				6'h04: dct_cos_table = 32'hf6a09e67; // = -0.146447
+				6'h05: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h06: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h07: dct_cos_table = 32'h095f6199; // = +0.146447
+				6'h08: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h09: dct_cos_table = 32'h36a09e66; // = +0.853553
+				6'h0a: dct_cos_table = 32'hc95f619a; // = -0.853553
+				6'h0b: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h0c: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h0d: dct_cos_table = 32'hc95f619a; // = -0.853553
+				6'h0e: dct_cos_table = 32'h36a09e66; // = +0.853553
+				6'h0f: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h10: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h11: dct_cos_table = 32'hc95f619a; // = -0.853553
+				6'h12: dct_cos_table = 32'h36a09e66; // = +0.853553
+				6'h13: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h14: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h15: dct_cos_table = 32'h36a09e66; // = +0.853553
+				6'h16: dct_cos_table = 32'hc95f619a; // = -0.853553
+				6'h17: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h18: dct_cos_table = 32'hf6a09e67; // = -0.146447
+				6'h19: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h1a: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h1b: dct_cos_table = 32'h095f6199; // = +0.146447
+				6'h1c: dct_cos_table = 32'h095f6199; // = +0.146447
+				6'h1d: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h1e: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h1f: dct_cos_table = 32'hf6a09e67; // = -0.146447
+				6'h20: dct_cos_table = 32'hf6a09e67; // = -0.146447
+				6'h21: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h22: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h23: dct_cos_table = 32'h095f6199; // = +0.146447
+				6'h24: dct_cos_table = 32'h095f6199; // = +0.146447
+				6'h25: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h26: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h27: dct_cos_table = 32'hf6a09e67; // = -0.146447
+				6'h28: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h29: dct_cos_table = 32'hc95f619a; // = -0.853553
+				6'h2a: dct_cos_table = 32'h36a09e66; // = +0.853553
+				6'h2b: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h2c: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h2d: dct_cos_table = 32'h36a09e66; // = +0.853553
+				6'h2e: dct_cos_table = 32'hc95f619a; // = -0.853553
+				6'h2f: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h30: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h31: dct_cos_table = 32'h36a09e66; // = +0.853553
+				6'h32: dct_cos_table = 32'hc95f619a; // = -0.853553
+				6'h33: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h34: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h35: dct_cos_table = 32'hc95f619a; // = -0.853553
+				6'h36: dct_cos_table = 32'h36a09e66; // = +0.853553
+				6'h37: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h38: dct_cos_table = 32'h095f6199; // = +0.146447
+				6'h39: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h3a: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h3b: dct_cos_table = 32'hf6a09e67; // = -0.146447
+				6'h3c: dct_cos_table = 32'hf6a09e67; // = -0.146447
+				6'h3d: dct_cos_table = 32'h16a09e66; // = +0.353553
+				6'h3e: dct_cos_table = 32'he95f619a; // = -0.353553
+				6'h3f: dct_cos_table = 32'h095f6199; // = +0.146447
+			endcase
+		6'h37:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h01: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h02: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h03: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h04: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h05: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h06: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h07: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h08: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h09: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h0a: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h0b: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h0c: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h0d: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h0e: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h0f: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h10: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h11: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h12: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h13: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h14: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h15: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h16: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h17: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h18: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h19: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h1a: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h1b: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h1c: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h1d: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h1e: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h1f: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h20: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h21: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h22: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h23: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h24: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h25: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h26: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h27: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h28: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h29: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h2a: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h2b: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h2c: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h2d: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h2e: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h2f: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h30: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h31: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h32: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h33: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h34: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h35: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h36: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h37: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h38: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h39: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h3a: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h3b: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h3c: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h3d: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h3e: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h3f: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+			endcase
+		6'h38:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h01: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h02: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h03: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h04: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h05: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h06: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h07: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h08: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h09: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h0a: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h0b: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h0c: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h0d: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h0e: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h0f: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h10: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h11: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h12: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h13: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h14: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h15: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h16: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h17: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h18: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h19: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h1a: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h1b: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h1c: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h1d: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h1e: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h1f: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h20: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h21: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h22: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h23: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h24: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h25: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h26: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h27: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h28: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h29: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h2a: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h2b: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h2c: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h2d: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h2e: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h2f: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h30: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h31: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h32: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h33: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h34: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h35: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h36: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h37: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h38: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h39: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h3a: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h3b: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h3c: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h3d: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h3e: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h3f: dct_cos_table = 32'hf72bd511; // = -0.137950
+			endcase
+		6'h39:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h01: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h02: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h03: dct_cos_table = 32'h026f9430; // = +0.038060
+				6'h04: dct_cos_table = 32'hfd906bd0; // = -0.038060
+				6'h05: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h06: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h07: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h08: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h09: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h0a: dct_cos_table = 32'hec3ef154; // = -0.308658
+				6'h0b: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h0c: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h0d: dct_cos_table = 32'h13c10eac; // = +0.308658
+				6'h0e: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h0f: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h10: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h11: dct_cos_table = 32'h2c3ef153; // = +0.691342
+				6'h12: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h13: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h14: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h15: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h16: dct_cos_table = 32'hd3c10ead; // = -0.691342
+				6'h17: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h18: dct_cos_table = 32'hc26f9431; // = -0.961940
+				6'h19: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h1a: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h1b: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h1c: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h1d: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h1e: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h1f: dct_cos_table = 32'h3d906bcf; // = +0.961940
+				6'h20: dct_cos_table = 32'h3d906bcf; // = +0.961940
+				6'h21: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h22: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h23: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h24: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h25: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h26: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h27: dct_cos_table = 32'hc26f9431; // = -0.961940
+				6'h28: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h29: dct_cos_table = 32'hd3c10ead; // = -0.691342
+				6'h2a: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h2b: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h2c: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h2d: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h2e: dct_cos_table = 32'h2c3ef153; // = +0.691342
+				6'h2f: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h30: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h31: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h32: dct_cos_table = 32'h13c10eac; // = +0.308658
+				6'h33: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h34: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h35: dct_cos_table = 32'hec3ef154; // = -0.308658
+				6'h36: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h37: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h38: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h39: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h3a: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h3b: dct_cos_table = 32'hfd906bd0; // = -0.038060
+				6'h3c: dct_cos_table = 32'h026f9430; // = +0.038060
+				6'h3d: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h3e: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h3f: dct_cos_table = 32'h0c3ef153; // = +0.191342
+			endcase
+		6'h3a:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h01: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h02: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h03: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h04: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h05: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h06: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h07: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h08: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h09: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h0a: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h0b: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h0c: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h0d: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h0e: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h0f: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h10: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h11: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h12: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h13: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h14: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h15: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h16: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h17: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h18: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h19: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h1a: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h1b: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h1c: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h1d: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h1e: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h1f: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h20: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h21: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h22: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h23: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h24: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h25: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h26: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h27: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h28: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h29: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h2a: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h2b: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h2c: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h2d: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h2e: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h2f: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h30: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h31: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h32: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h33: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h34: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h35: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h36: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h37: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h38: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h39: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h3a: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h3b: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h3c: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h3d: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h3e: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h3f: dct_cos_table = 32'hf476f2d6; // = -0.180240
+			endcase
+		6'h3b:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h01: dct_cos_table = 32'hfd906bd0; // = -0.038060
+				6'h02: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h03: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h04: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h05: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h06: dct_cos_table = 32'h026f9430; // = +0.038060
+				6'h07: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h08: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h09: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h0a: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h0b: dct_cos_table = 32'h13c10eac; // = +0.308658
+				6'h0c: dct_cos_table = 32'hec3ef154; // = -0.308658
+				6'h0d: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h0e: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h0f: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h10: dct_cos_table = 32'h2c3ef153; // = +0.691342
+				6'h11: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h12: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h13: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h14: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h15: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h16: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h17: dct_cos_table = 32'hd3c10ead; // = -0.691342
+				6'h18: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h19: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h1a: dct_cos_table = 32'h3d906bcf; // = +0.961940
+				6'h1b: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h1c: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h1d: dct_cos_table = 32'hc26f9431; // = -0.961940
+				6'h1e: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h1f: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h20: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h21: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h22: dct_cos_table = 32'hc26f9431; // = -0.961940
+				6'h23: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h24: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h25: dct_cos_table = 32'h3d906bcf; // = +0.961940
+				6'h26: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h27: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h28: dct_cos_table = 32'hd3c10ead; // = -0.691342
+				6'h29: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h2a: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h2b: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h2c: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h2d: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h2e: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h2f: dct_cos_table = 32'h2c3ef153; // = +0.691342
+				6'h30: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h31: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h32: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h33: dct_cos_table = 32'hec3ef154; // = -0.308658
+				6'h34: dct_cos_table = 32'h13c10eac; // = +0.308658
+				6'h35: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h36: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h37: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h38: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h39: dct_cos_table = 32'h026f9430; // = +0.038060
+				6'h3a: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h3b: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h3c: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h3d: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h3e: dct_cos_table = 32'hfd906bd0; // = -0.038060
+				6'h3f: dct_cos_table = 32'h0a61ad13; // = +0.162212
+			endcase
+		6'h3c:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h01: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h02: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h03: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h04: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h05: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h06: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h07: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h08: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h09: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h0a: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h0b: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h0c: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h0d: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h0e: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h0f: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h10: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h11: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h12: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h13: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h14: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h15: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h16: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h17: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h18: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h19: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h1a: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h1b: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h1c: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h1d: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h1e: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h1f: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h20: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h21: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h22: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h23: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h24: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h25: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h26: dct_cos_table = 32'hd39d5e9e; // = -0.693520
+				6'h27: dct_cos_table = 32'h2c62a162; // = +0.693520
+				6'h28: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h29: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h2a: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h2b: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h2c: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h2d: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h2e: dct_cos_table = 32'h25a0c5df; // = +0.587938
+				6'h2f: dct_cos_table = 32'hda5f3a21; // = -0.587938
+				6'h30: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h31: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h32: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h33: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h34: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h35: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h36: dct_cos_table = 32'he6db9640; // = -0.392847
+				6'h37: dct_cos_table = 32'h192469c0; // = +0.392847
+				6'h38: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h39: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h3a: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h3b: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h3c: dct_cos_table = 32'hf72bd511; // = -0.137950
+				6'h3d: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h3e: dct_cos_table = 32'h08d42aef; // = +0.137950
+				6'h3f: dct_cos_table = 32'hf72bd511; // = -0.137950
+			endcase
+		6'h3d:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h01: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h02: dct_cos_table = 32'h026f9430; // = +0.038060
+				6'h03: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h04: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h05: dct_cos_table = 32'hfd906bd0; // = -0.038060
+				6'h06: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h07: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h08: dct_cos_table = 32'hec3ef154; // = -0.308658
+				6'h09: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h0a: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h0b: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h0c: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h0d: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h0e: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h0f: dct_cos_table = 32'h13c10eac; // = +0.308658
+				6'h10: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h11: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h12: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h13: dct_cos_table = 32'h2c3ef153; // = +0.691342
+				6'h14: dct_cos_table = 32'hd3c10ead; // = -0.691342
+				6'h15: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h16: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h17: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h18: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h19: dct_cos_table = 32'h3d906bcf; // = +0.961940
+				6'h1a: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h1b: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h1c: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h1d: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h1e: dct_cos_table = 32'hc26f9431; // = -0.961940
+				6'h1f: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h20: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h21: dct_cos_table = 32'hc26f9431; // = -0.961940
+				6'h22: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h23: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h24: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h25: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h26: dct_cos_table = 32'h3d906bcf; // = +0.961940
+				6'h27: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h28: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h29: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h2a: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h2b: dct_cos_table = 32'hd3c10ead; // = -0.691342
+				6'h2c: dct_cos_table = 32'h2c3ef153; // = +0.691342
+				6'h2d: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h2e: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h2f: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h30: dct_cos_table = 32'h13c10eac; // = +0.308658
+				6'h31: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h32: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h33: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h34: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h35: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h36: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h37: dct_cos_table = 32'hec3ef154; // = -0.308658
+				6'h38: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h39: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h3a: dct_cos_table = 32'hfd906bd0; // = -0.038060
+				6'h3b: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h3c: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h3d: dct_cos_table = 32'h026f9430; // = +0.038060
+				6'h3e: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h3f: dct_cos_table = 32'h06efcd68; // = +0.108386
+			endcase
+		6'h3e:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h01: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h02: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h03: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h04: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h05: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h06: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h07: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h08: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h09: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h0a: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h0b: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h0c: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h0d: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h0e: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h0f: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h10: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h11: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h12: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h13: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h14: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h15: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h16: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h17: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h18: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h19: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h1a: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h1b: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h1c: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h1d: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h1e: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h1f: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h20: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h21: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h22: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h23: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h24: dct_cos_table = 32'he7fa96b8; // = -0.375330
+				6'h25: dct_cos_table = 32'h39fdfdf9; // = +0.906127
+				6'h26: dct_cos_table = 32'hc6020207; // = -0.906127
+				6'h27: dct_cos_table = 32'h18056948; // = +0.375330
+				6'h28: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h29: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h2a: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h2b: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h2c: dct_cos_table = 32'h145d3819; // = +0.318190
+				6'h2d: dct_cos_table = 32'hced62cf7; // = -0.768178
+				6'h2e: dct_cos_table = 32'h3129d309; // = +0.768178
+				6'h2f: dct_cos_table = 32'heba2c7e7; // = -0.318190
+				6'h30: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h31: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h32: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h33: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h34: dct_cos_table = 32'hf264a36a; // = -0.212608
+				6'h35: dct_cos_table = 32'h20d99438; // = +0.513280
+				6'h36: dct_cos_table = 32'hdf266bc8; // = -0.513280
+				6'h37: dct_cos_table = 32'h0d9b5c96; // = +0.212608
+				6'h38: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+				6'h39: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h3a: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h3b: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h3c: dct_cos_table = 32'h04c731a6; // = +0.074658
+				6'h3d: dct_cos_table = 32'hf476f2d6; // = -0.180240
+				6'h3e: dct_cos_table = 32'h0b890d2a; // = +0.180240
+				6'h3f: dct_cos_table = 32'hfb38ce5a; // = -0.074658
+			endcase
+		6'h3f:
+			case ( {y,x} )	// synopsys full_case parallel_case
+				6'h00: dct_cos_table = 32'h026f9430; // = +0.038060
+				6'h01: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h02: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h03: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h04: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h05: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h06: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h07: dct_cos_table = 32'hfd906bd0; // = -0.038060
+				6'h08: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h09: dct_cos_table = 32'h13c10eac; // = +0.308658
+				6'h0a: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h0b: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h0c: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h0d: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h0e: dct_cos_table = 32'hec3ef154; // = -0.308658
+				6'h0f: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h10: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h11: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h12: dct_cos_table = 32'h2c3ef153; // = +0.691342
+				6'h13: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h14: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h15: dct_cos_table = 32'hd3c10ead; // = -0.691342
+				6'h16: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h17: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h18: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h19: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h1a: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h1b: dct_cos_table = 32'h3d906bcf; // = +0.961940
+				6'h1c: dct_cos_table = 32'hc26f9431; // = -0.961940
+				6'h1d: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h1e: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h1f: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h20: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h21: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h22: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h23: dct_cos_table = 32'hc26f9431; // = -0.961940
+				6'h24: dct_cos_table = 32'h3d906bcf; // = +0.961940
+				6'h25: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h26: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h27: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h28: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h29: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h2a: dct_cos_table = 32'hd3c10ead; // = -0.691342
+				6'h2b: dct_cos_table = 32'h34310a35; // = +0.815493
+				6'h2c: dct_cos_table = 32'hcbcef5cb; // = -0.815493
+				6'h2d: dct_cos_table = 32'h2c3ef153; // = +0.691342
+				6'h2e: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h2f: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h30: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h31: dct_cos_table = 32'hec3ef154; // = -0.308658
+				6'h32: dct_cos_table = 32'h1d906bcf; // = +0.461940
+				6'h33: dct_cos_table = 32'hdd207047; // = -0.544895
+				6'h34: dct_cos_table = 32'h22df8fb9; // = +0.544895
+				6'h35: dct_cos_table = 32'he26f9431; // = -0.461940
+				6'h36: dct_cos_table = 32'h13c10eac; // = +0.308658
+				6'h37: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h38: dct_cos_table = 32'hfd906bd0; // = -0.038060
+				6'h39: dct_cos_table = 32'h06efcd68; // = +0.108386
+				6'h3a: dct_cos_table = 32'hf59e52ed; // = -0.162212
+				6'h3b: dct_cos_table = 32'h0c3ef153; // = +0.191342
+				6'h3c: dct_cos_table = 32'hf3c10ead; // = -0.191342
+				6'h3d: dct_cos_table = 32'h0a61ad13; // = +0.162212
+				6'h3e: dct_cos_table = 32'hf9103298; // = -0.108386
+				6'h3f: dct_cos_table = 32'h026f9430; // = +0.038060
+			endcase
+	endcase
+
+end
+endfunction
+
+/////////////////////////////////////////////////////////////////////
+////                                                             ////
+////  Discrete Cosine Transform, Parallel implementation         ////
+////                                                             ////
+////  Author: Richard Herveille                                  ////
+////          richard@asics.ws                                   ////
+////          www.asics.ws                                       ////
+////                                                             ////
+/////////////////////////////////////////////////////////////////////
+////                                                             ////
+//// Copyright (C) 2002 Richard Herveille                        ////
+////                    richard@asics.ws                         ////
+////                                                             ////
+//// This source file may be used and distributed without        ////
+//// restriction provided that this copyright statement is not   ////
+//// removed from the file and that any derivative work contains ////
+//// the original copyright notice and the associated disclaimer.////
+////                                                             ////
+////     THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY     ////
+//// EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED   ////
+//// TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS   ////
+//// FOR A PARTICULAR PURPOSE. IN NO EVENT SHALL THE AUTHOR      ////
+//// OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,         ////
+//// INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES    ////
+//// (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE   ////
+//// GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR        ////
+//// BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF  ////
+//// LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT  ////
+//// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT  ////
+//// OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         ////
+//// POSSIBILITY OF SUCH DAMAGE.                                 ////
+////                                                             ////
+/////////////////////////////////////////////////////////////////////
+
+//  CVS Log
+//
+//  $Id: dct.v,v 1.3 2002/10/31 12:50:03 rherveille Exp $
+//
+//  $Date: 2002/10/31 12:50:03 $
+//  $Revision: 1.3 $
+//  $Author: rherveille $
+//  $Locker:  $
+//  $State: Exp $
+//
+// Change History:
+//               $Log: dct.v,v $
+//               Revision 1.3  2002/10/31 12:50:03  rherveille
+//               *** empty log message ***
+//
+//               Revision 1.2  2002/10/23 09:06:59  rherveille
+//               Improved many files.
+//               Fixed some bugs in Run-Length-Encoder.
+//               Removed dependency on ud_cnt and ro_cnt.
+//               Started (Motion)JPEG hardware encoder project.
+//
+
+//synopsys translate_off
+//synopsys translate_on
+
+module dct(
+	clk,
+	ena,
+	rst,
+	dstrb,
+	din,
+	dout_00, dout_01, dout_02, dout_03, dout_04, dout_05, dout_06, dout_07,
+	dout_10, dout_11, dout_12, dout_13, dout_14, dout_15, dout_16, dout_17,
+	dout_20, dout_21, dout_22, dout_23, dout_24, dout_25, dout_26, dout_27,
+	dout_30, dout_31, dout_32, dout_33, dout_34, dout_35, dout_36, dout_37,
+	dout_40, dout_41, dout_42, dout_43, dout_44, dout_45, dout_46, dout_47,
+	dout_50, dout_51, dout_52, dout_53, dout_54, dout_55, dout_56, dout_57,
+	dout_60, dout_61, dout_62, dout_63, dout_64, dout_65, dout_66, dout_67,
+	dout_70, dout_71, dout_72, dout_73, dout_74, dout_75, dout_76, dout_77,
+	douten
+);
+
+	//
+	// parameters
+	//
+	// Worst case errors (Din = 64* -128) remain in decimal bit
+	// when using 13bit coefficients
+	//
+	// For ultra-high
+	parameter coef_width = 11;
+	parameter di_width = 8;
+	parameter do_width = 12;
+
+	//
+	// inputs & outputs
+	//
+
+	input clk;
+	input ena;
+	input rst;   // active low asynchronous reset
+
+	input dstrb; // data-strobe. Present dstrb 1clk-cycle before data block
+	input  [di_width:1] din;
+	output [do_width:1]
+		dout_00, dout_01, dout_02, dout_03, dout_04, dout_05, dout_06, dout_07,
+		dout_10, dout_11, dout_12, dout_13, dout_14, dout_15, dout_16, dout_17,
+		dout_20, dout_21, dout_22, dout_23, dout_24, dout_25, dout_26, dout_27,
+		dout_30, dout_31, dout_32, dout_33, dout_34, dout_35, dout_36, dout_37,
+		dout_40, dout_41, dout_42, dout_43, dout_44, dout_45, dout_46, dout_47,
+		dout_50, dout_51, dout_52, dout_53, dout_54, dout_55, dout_56, dout_57,
+		dout_60, dout_61, dout_62, dout_63, dout_64, dout_65, dout_66, dout_67,
+		dout_70, dout_71, dout_72, dout_73, dout_74, dout_75, dout_76, dout_77;
+
+	output douten; // data-out enable
+	reg douten;
+
+	//
+	// variables
+	//
+	reg go, dgo, ddgo, ddcnt, dddcnt;
+	reg [di_width:1] ddin;
+
+	//
+	// module body
+	//
+
+	// generate sample counter
+	reg  [5:0] sample_cnt;
+	wire       dcnt     = &sample_cnt;
+
+	always @(posedge clk or negedge rst)
+	  if (~rst)
+	     sample_cnt <= #1 6'h0;
+	  else if (ena)
+	    if(dstrb)
+	      sample_cnt <= #1 6'h0;
+	    else if(~dcnt)
+	      sample_cnt <= #1 sample_cnt + 6'h1;
+
+	// internal signals
+	always @(posedge clk or negedge rst)
+	  if (~rst)
+	  begin
+	      go     <= #1 1'b0;
+		  dgo    <= #1 1'b0;
+		  ddgo   <= #1 1'b0;
+		  ddin   <= #1 0;
+
+	      douten <= #1 1'b0;
+	      ddcnt  <= #1 1'b1;
+	      dddcnt <= #1 1'b1;
+	  end
+	  else if (ena)
+	  begin
+	      go     <= #1 dstrb;
+	      dgo    <= #1 go;
+	      ddgo   <= #1 dgo;
+	      ddin   <= #1 din;
+
+	      ddcnt  <= #1 dcnt;
+	      dddcnt <= #1 ddcnt;
+
+	      douten <= #1 ddcnt & ~dddcnt;
+	  end
+
+	// Hookup DCT units
+
+	// V = 0
+	dctub #(coef_width, di_width, 3'h0)
+	dct_block_0 (
+		.clk(clk),
+		.ena(ena),
+		.ddgo(ddgo),
+		.x(sample_cnt[2:0]),
+		.y(sample_cnt[5:3]),
+		.ddin(ddin),
+		.dout0(dout_00), // (U,V) = (0,0)
+		.dout1(dout_01), // (U,V) = (0,1)
+		.dout2(dout_02), // (U,V) = (0,2)
+		.dout3(dout_03), // (U,V) = (0,3)
+		.dout4(dout_04), // (U,V) = (0,4)
+		.dout5(dout_05), // (U,V) = (0,5)
+		.dout6(dout_06), // (U,V) = (0,6)
+		.dout7(dout_07)  // (U,V) = (0,7)
+	);
+
+	// V = 1
+	dctub #(coef_width, di_width, 3'h1)
+	dct_block_1 (
+		.clk(clk),
+		.ena(ena),
+		.ddgo(ddgo),
+		.x(sample_cnt[2:0]),
+		.y(sample_cnt[5:3]),
+		.ddin(ddin),
+		.dout0(dout_10), // (U,V) = (1,0)
+		.dout1(dout_11), // (U,V) = (1,1)
+		.dout2(dout_12), // (U,V) = (1,2)
+		.dout3(dout_13), // (U,V) = (1,3)
+		.dout4(dout_14), // (U,V) = (1,4)
+		.dout5(dout_15), // (U,V) = (1,5)
+		.dout6(dout_16), // (U,V) = (1,6)
+		.dout7(dout_17)  // (U,V) = (1,7)
+	);
+
+	// V = 2
+	dctub #(coef_width, di_width, 3'h2)
+	dct_block_2 (
+		.clk(clk),
+		.ena(ena),
+		.ddgo(ddgo),
+		.x(sample_cnt[2:0]),
+		.y(sample_cnt[5:3]),
+		.ddin(ddin),
+		.dout0(dout_20), // (U,V) = (2,0)
+		.dout1(dout_21), // (U,V) = (2,1)
+		.dout2(dout_22), // (U,V) = (2,2)
+		.dout3(dout_23), // (U,V) = (2,3)
+		.dout4(dout_24), // (U,V) = (2,4)
+		.dout5(dout_25), // (U,V) = (2,5)
+		.dout6(dout_26), // (U,V) = (2,6)
+		.dout7(dout_27)  // (U,V) = (2,7)
+	);
+
+	// V = 3
+	dctub #(coef_width, di_width, 3'h3)
+	dct_block_3 (
+		.clk(clk),
+		.ena(ena),
+		.ddgo(ddgo),
+		.x(sample_cnt[2:0]),
+		.y(sample_cnt[5:3]),
+		.ddin(ddin),
+		.dout0(dout_30), // (U,V) = (3,0)
+		.dout1(dout_31), // (U,V) = (3,1)
+		.dout2(dout_32), // (U,V) = (3,2)
+		.dout3(dout_33), // (U,V) = (3,3)
+		.dout4(dout_34), // (U,V) = (3,4)
+		.dout5(dout_35), // (U,V) = (3,5)
+		.dout6(dout_36), // (U,V) = (3,6)
+		.dout7(dout_37)  // (U,V) = (3,7)
+	);
+
+	// V = 4
+	dctub #(coef_width, di_width, 3'h4)
+	dct_block_4 (
+		.clk(clk),
+		.ena(ena),
+		.ddgo(ddgo),
+		.x(sample_cnt[2:0]),
+		.y(sample_cnt[5:3]),
+		.ddin(ddin),
+		.dout0(dout_40), // (U,V) = (4,0)
+		.dout1(dout_41), // (U,V) = (4,1)
+		.dout2(dout_42), // (U,V) = (4,2)
+		.dout3(dout_43), // (U,V) = (4,3)
+		.dout4(dout_44), // (U,V) = (4,4)
+		.dout5(dout_45), // (U,V) = (4,5)
+		.dout6(dout_46), // (U,V) = (4,6)
+		.dout7(dout_47)  // (U,V) = (4,7)
+	);
+
+	// V = 5
+	dctub #(coef_width, di_width, 3'h5)
+	dct_block_5 (
+		.clk(clk),
+		.ena(ena),
+		.ddgo(ddgo),
+		.x(sample_cnt[2:0]),
+		.y(sample_cnt[5:3]),
+		.ddin(ddin),
+		.dout0(dout_50), // (U,V) = (5,0)
+		.dout1(dout_51), // (U,V) = (5,1)
+		.dout2(dout_52), // (U,V) = (5,2)
+		.dout3(dout_53), // (U,V) = (5,3)
+		.dout4(dout_54), // (U,V) = (5,4)
+		.dout5(dout_55), // (U,V) = (5,5)
+		.dout6(dout_56), // (U,V) = (5,6)
+		.dout7(dout_57)  // (U,V) = (5,7)
+	);
+
+	// V = 6
+	dctub #(coef_width, di_width, 3'h6)
+	dct_block_6 (
+		.clk(clk),
+		.ena(ena),
+		.ddgo(ddgo),
+		.x(sample_cnt[2:0]),
+		.y(sample_cnt[5:3]),
+		.ddin(ddin),
+		.dout0(dout_60), // (U,V) = (6,0)
+		.dout1(dout_61), // (U,V) = (6,1)
+		.dout2(dout_62), // (U,V) = (6,2)
+		.dout3(dout_63), // (U,V) = (6,3)
+		.dout4(dout_64), // (U,V) = (6,4)
+		.dout5(dout_65), // (U,V) = (6,5)
+		.dout6(dout_66), // (U,V) = (6,6)
+		.dout7(dout_67)  // (U,V) = (6,7)
+	);
+
+	// V = 7
+	dctub #(coef_width, di_width, 3'h7)
+	dct_block_7 (
+		.clk(clk),
+		.ena(ena),
+		.ddgo(ddgo),
+		.x(sample_cnt[2:0]),
+		.y(sample_cnt[5:3]),
+		.ddin(ddin),
+		.dout0(dout_70), // (U,V) = (7,0)
+		.dout1(dout_71), // (U,V) = (7,1)
+		.dout2(dout_72), // (U,V) = (7,2)
+		.dout3(dout_73), // (U,V) = (7,3)
+		.dout4(dout_74), // (U,V) = (7,4)
+		.dout5(dout_75), // (U,V) = (7,5)
+		.dout6(dout_76), // (U,V) = (7,6)
+		.dout7(dout_77)  // (U,V) = (7,7)
+	);
+endmodule
+
+/////////////////////////////////////////////////////////////////////
+////                                                             ////
+////  Discrete Cosine Transform, MAC unit                        ////
+////                                                             ////
+////  Virtex-II: Block-Multiplier is used                        ////
+////                                                             ////
+////  Author: Richard Herveille                                  ////
+////          richard@asics.ws                                   ////
+////          www.asics.ws                                       ////
+////                                                             ////
+/////////////////////////////////////////////////////////////////////
+////                                                             ////
+//// Copyright (C) 2001 Richard Herveille                        ////
+////                    richard@asics.ws                         ////
+////                                                             ////
+//// This source file may be used and distributed without        ////
+//// restriction provided that this copyright statement is not   ////
+//// removed from the file and that any derivative work contains ////
+//// the original copyright notice and the associated disclaimer.////
+////                                                             ////
+////     THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY     ////
+//// EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED   ////
+//// TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS   ////
+//// FOR A PARTICULAR PURPOSE. IN NO EVENT SHALL THE AUTHOR      ////
+//// OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,         ////
+//// INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES    ////
+//// (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE   ////
+//// GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR        ////
+//// BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF  ////
+//// LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT  ////
+//// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT  ////
+//// OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         ////
+//// POSSIBILITY OF SUCH DAMAGE.                                 ////
+////                                                             ////
+/////////////////////////////////////////////////////////////////////
+
+//  CVS Log
+//
+//  $Id: dct_mac.v,v 1.3 2002/10/31 12:50:03 rherveille Exp $
+//
+//  $Date: 2002/10/31 12:50:03 $
+//  $Revision: 1.3 $
+//  $Author: rherveille $
+//  $Locker:  $
+//  $State: Exp $
+//
+// Change History:
+//               $Log: dct_mac.v,v $
+//               Revision 1.3  2002/10/31 12:50:03  rherveille
+//               *** empty log message ***
+//
+//               Revision 1.2  2002/10/23 09:06:59  rherveille
+//               Improved many files.
+//               Fixed some bugs in Run-Length-Encoder.
+//               Removed dependency on ud_cnt and ro_cnt.
+//               Started (Motion)JPEG hardware encoder project.
+//
+
+//synopsys translate_off
+//synopsys translate_on
+
+module dct_mac(clk, ena, dclr, din, coef, result);
+
+	//
+	// parameters
+	//
+	parameter dwidth = 8;
+	parameter cwidth = 11;
+	parameter mwidth = dwidth + cwidth;  // multiplier result
+	parameter rwidth = mwidth +3;        // add 3 bits for growth
+
+	//
+	// inputs & outputs
+	//
+	input               clk;    // clock input
+	input               ena;    // clock enable
+	input               dclr;   // start new mac (delayed 1 cycle)
+	input  [dwidth-1:0] din;    // data input
+	input  [cwidth-1:0] coef;   // coefficient input
+	output [rwidth-1:0] result; // mac-result
+	reg [rwidth -1:0] result;
+
+	//
+	// variables
+	//
+	wire [mwidth-2:0] idin;
+	wire [mwidth-2:0] icoef;
+
+	wire [mwidth-1:0] mult_out;
+
+	reg  [mwidth -1:0] mult_res /* synthesis syn_multstyle="block_mult" syn_pipeline=1*/ ;
+	wire [rwidth -1:0] ext_mult_res;
+
+    assign mult_out = idin * icoef;
+    /*
+	lpm_mult	lpm_mult_component (
+				.dataa (idin),
+				.datab (icoef),
+				.result (mult_out));
+	defparam
+		lpm_mult_component.lpm_widtha = mwidth-1,
+		lpm_mult_component.lpm_widthb = mwidth-1,
+		lpm_mult_component.lpm_widthp = mwidth,
+		lpm_mult_component.lpm_widths = mwidth,
+		lpm_mult_component.lpm_type = "LPM_MULT",
+		lpm_mult_component.lpm_representation = "UNSIGNED",
+	        lpm_mult_component.lpm_hint = "DEDICATED_MULTIPLIER_CIRCUITRY=YES,MAXIMIZE_SPEED=6";
+	        */
+	//
+	// module body
+	//
+	assign icoef = { {(mwidth-cwidth-1){coef[cwidth-1]}}, coef};
+	assign idin  = { {(mwidth-dwidth-1){din[dwidth-1]}}, din};
+
+	// generate multiplier structure
+	always @(posedge clk)
+	  if(ena)
+            mult_res <= #1 mult_out;
+	    // mult_res <= #1 icoef * idin;
+
+	assign ext_mult_res = { {3{mult_res[mwidth-1]}}, mult_res};
+
+	// generate adder structure
+	always @(posedge clk)
+	  if(ena)
+	    if(dclr)
+	      result <= #1 ext_mult_res;
+	    else
+	      result <= #1 ext_mult_res + result;
+endmodule
+
+
+
+
+
+
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////
+////                                                             ////
+////  Discrete Cosine Transform Synthesis Test                   ////
+////                                                             ////
+////  Author: Richard Herveille                                  ////
+////          richard@asics.ws                                   ////
+////          www.asics.ws                                       ////
+////                                                             ////
+////  Synthesis results:                                         ////
+////                                                             ////
+////                                                             ////
+////                                                             ////
+/////////////////////////////////////////////////////////////////////
+////                                                             ////
+//// Copyright (C) 2002 Richard Herveille                        ////
+////                    richard@asics.ws                         ////
+////                                                             ////
+//// This source file may be used and distributed without        ////
+//// restriction provided that this copyright statement is not   ////
+//// removed from the file and that any derivative work contains ////
+//// the original copyright notice and the associated disclaimer.////
+////                                                             ////
+////     THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY     ////
+//// EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED   ////
+//// TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS   ////
+//// FOR A PARTICULAR PURPOSE. IN NO EVENT SHALL THE AUTHOR      ////
+//// OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,         ////
+//// INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES    ////
+//// (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE   ////
+//// GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR        ////
+//// BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF  ////
+//// LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT  ////
+//// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT  ////
+//// OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         ////
+//// POSSIBILITY OF SUCH DAMAGE.                                 ////
+////                                                             ////
+/////////////////////////////////////////////////////////////////////
+
+//  CVS Log
+//
+//  $Id: dct_syn.v,v 1.3 2002/10/31 12:50:03 rherveille Exp $
+//
+//  $Date: 2002/10/31 12:50:03 $
+//  $Revision: 1.3 $
+//  $Author: rherveille $
+//  $Locker:  $
+//  $State: Exp $
+//
+// Change History:
+//               $Log: dct_syn.v,v $
+//               Revision 1.3  2002/10/31 12:50:03  rherveille
+//               *** empty log message ***
+//
+//               Revision 1.2  2002/10/23 09:06:59  rherveille
+//               Improved many files.
+//               Fixed some bugs in Run-Length-Encoder.
+//               Removed dependency on ud_cnt and ro_cnt.
+//               Started (Motion)JPEG hardware encoder project.
+//
+//
+
+// synopsys translate_off
+// synopsys translate_on
+
+module dct_syn(clk, ena, rst, dstrb, din, dout, den);
+
+	input clk;
+	input ena;
+	input rst;
+
+	input dstrb;
+	input [7:0] din;
+
+	output [11:0] dout;
+	output den;
+
+	//
+	// DCT unit
+	//
+
+	// As little as 11bits coefficients can be used while
+	// all errors remain in the decimal bit range (dout[0])
+	// total errors =  5(14bit resolution)
+	//              = 12(13bit resolution)
+	//              = 26(12bit resolution)
+	//              = 54(11bit resolution)
+	fdct #(11) dut (
+		.clk(clk),
+		.ena(1'b1),
+		.rst(rst),
+		.dstrb(dstrb),
+		.din(din),
+		.dout(dout),
+		.douten(den)
+	);
+
+endmodule
+
+/////////////////////////////////////////////////////////////////////
+////                                                             ////
+////  Discrete Cosine Transform Unit                             ////
+////                                                             ////
+////  Author: Richard Herveille                                  ////
+////          richard@asics.ws                                   ////
+////          www.asics.ws                                       ////
+////                                                             ////
+/////////////////////////////////////////////////////////////////////
+////                                                             ////
+//// Copyright (C) 2001 Richard Herveille                        ////
+////                    richard@asics.ws                         ////
+////                                                             ////
+//// This source file may be used and distributed without        ////
+//// restriction provided that this copyright statement is not   ////
+//// removed from the file and that any derivative work contains ////
+//// the original copyright notice and the associated disclaimer.////
+////                                                             ////
+////     THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY     ////
+//// EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED   ////
+//// TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS   ////
+//// FOR A PARTICULAR PURPOSE. IN NO EVENT SHALL THE AUTHOR      ////
+//// OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,         ////
+//// INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES    ////
+//// (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE   ////
+//// GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR        ////
+//// BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF  ////
+//// LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT  ////
+//// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT  ////
+//// OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         ////
+//// POSSIBILITY OF SUCH DAMAGE.                                 ////
+////                                                             ////
+/////////////////////////////////////////////////////////////////////
+
+//  CVS Log
+//
+//  $Id: dctu.v,v 1.3 2002/10/31 12:50:03 rherveille Exp $
+//
+//  $Date: 2002/10/31 12:50:03 $
+//  $Revision: 1.3 $
+//  $Author: rherveille $
+//  $Locker:  $
+//  $State: Exp $
+//
+// Change History:
+//               $Log: dctu.v,v $
+//               Revision 1.3  2002/10/31 12:50:03  rherveille
+//               *** empty log message ***
+//
+//               Revision 1.2  2002/10/23 09:06:59  rherveille
+//               Improved many files.
+//               Fixed some bugs in Run-Length-Encoder.
+//               Removed dependency on ud_cnt and ro_cnt.
+//               Started (Motion)JPEG hardware encoder project.
+//
+
+
+//synopsys translate_off
+//synopsys translate_on
+
+module dctu(clk, ena, ddgo, x, y, ddin, dout);
+
+	parameter coef_width = 16;
+	parameter di_width = 8;
+	parameter [2:0] v = 0;
+	parameter [2:0] u = 0;
+
+	//
+	// inputs & outputs
+	//
+
+	input clk;
+	input ena;
+	input ddgo;               // double delayed go signal
+	input [2:0] x, y;
+
+	input  [di_width:1] ddin; // delayed data input
+	output [11:0] dout;
+	//
+	// variables
+	//
+	reg [      31:0] coef;
+
+	wire [coef_width +10:0] result;
+	//
+	// module body
+	//
+
+	// hookup cosine-table
+	always @(posedge clk)
+	  if(ena)
+	    coef <= #1 dct_cos_table(x, y, u, v);
+
+	// hookup dct-mac unit
+	dct_mac #(8, coef_width)
+	macu (
+		.clk(clk),
+		.ena(ena),
+		.dclr(ddgo),
+		.din(ddin),
+		.coef( coef[31:31 -coef_width +1] ),
+		.result(result)
+	);
+
+	assign dout = result[coef_width +10: coef_width -1];
+endmodule
+
+/////////////////////////////////////////////////////////////////////
+////                                                             ////
+////  Discrete Cosine Transform, DCT unit block                  ////
+////                                                             ////
+////  Author: Richard Herveille                                  ////
+////          richard@asics.ws                                   ////
+////          www.asics.ws                                       ////
+////                                                             ////
+/////////////////////////////////////////////////////////////////////
+////                                                             ////
+//// Copyright (C) 2001 Richard Herveille                        ////
+////                    richard@asics.ws                         ////
+////                                                             ////
+//// This source file may be used and distributed without        ////
+//// restriction provided that this copyright statement is not   ////
+//// removed from the file and that any derivative work contains ////
+//// the original copyright notice and the associated disclaimer.////
+////                                                             ////
+////     THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY     ////
+//// EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED   ////
+//// TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS   ////
+//// FOR A PARTICULAR PURPOSE. IN NO EVENT SHALL THE AUTHOR      ////
+//// OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,         ////
+//// INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES    ////
+//// (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE   ////
+//// GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR        ////
+//// BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF  ////
+//// LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT  ////
+//// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT  ////
+//// OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         ////
+//// POSSIBILITY OF SUCH DAMAGE.                                 ////
+////                                                             ////
+/////////////////////////////////////////////////////////////////////
+
+//  CVS Log
+//
+//  $Id: dctub.v,v 1.3 2002/10/31 12:50:03 rherveille Exp $
+//
+//  $Date: 2002/10/31 12:50:03 $
+//  $Revision: 1.3 $
+//  $Author: rherveille $
+//  $Locker:  $
+//  $State: Exp $
+//
+// Change History:
+//               $Log: dctub.v,v $
+//               Revision 1.3  2002/10/31 12:50:03  rherveille
+//               *** empty log message ***
+//
+//               Revision 1.2  2002/10/23 09:06:59  rherveille
+//               Improved many files.
+//               Fixed some bugs in Run-Length-Encoder.
+//               Removed dependency on ud_cnt and ro_cnt.
+//               Started (Motion)JPEG hardware encoder project.
+//
+
+
+//synopsys translate_off
+//synopsys translate_on
+
+module dctub(clk, ena, ddgo, x, y, ddin,
+		dout0, dout1, dout2, dout3, dout4, dout5, dout6, dout7);
+
+	parameter coef_width = 11;
+	parameter di_width = 8;
+	parameter [2:0] v = 3'h0;
+
+	//
+	// inputs & outputs
+	//
+	input clk;
+	input ena;
+	input ddgo;               // double delayed go strobe
+	input [2:0] x, y;
+
+	input  [di_width:1] ddin; // delayed data input
+	output [11:0] dout0, dout1, dout2, dout3, dout4, dout5, dout6, dout7;
+
+	//
+	// module body
+	//
+
+	// Hookup DCT units
+	dctu #(coef_width, di_width, v, 3'h0)
+	dct_unit_0 (
+		.clk(clk),
+		.ena(ena),
+		.ddgo(ddgo),
+		.x(x),
+		.y(y),
+		.ddin(ddin),
+		.dout(dout0)
+	);
+
+	dctu #(coef_width, di_width, v, 3'h1)
+	dct_unit_1 (
+		.clk(clk),
+		.ena(ena),
+		.ddgo(ddgo),
+		.x(x),
+		.y(y),
+		.ddin(ddin),
+		.dout(dout1)
+	);
+
+	dctu #(coef_width, di_width, v, 3'h2)
+	dct_unit_2 (
+		.clk(clk),
+		.ena(ena),
+		.ddgo(ddgo),
+		.x(x),
+		.y(y),
+		.ddin(ddin),
+		.dout(dout2)
+	);
+
+	dctu #(coef_width, di_width, v, 3'h3)
+	dct_unit_3 (
+		.clk(clk),
+		.ena(ena),
+		.ddgo(ddgo),
+		.x(x),
+		.y(y),
+		.ddin(ddin),
+		.dout(dout3)
+	);
+
+	dctu #(coef_width, di_width, v, 3'h4)
+	dct_unit_4 (
+		.clk(clk),
+		.ena(ena),
+		.ddgo(ddgo),
+		.x(x),
+		.y(y),
+		.ddin(ddin),
+		.dout(dout4)
+	);
+
+	dctu #(coef_width, di_width, v, 3'h5)
+	dct_unit_5 (
+		.clk(clk),
+		.ena(ena),
+		.ddgo(ddgo),
+		.x(x),
+		.y(y),
+		.ddin(ddin),
+		.dout(dout5)
+	);
+
+	dctu #(coef_width, di_width, v, 3'h6)
+	dct_unit_6 (
+		.clk(clk),
+		.ena(ena),
+		.ddgo(ddgo),
+		.x(x),
+		.y(y),
+		.ddin(ddin),
+		.dout(dout6)
+	);
+
+	dctu #(coef_width, di_width, v, 3'h7)
+	dct_unit_7 (
+		.clk(clk),
+		.ena(ena),
+		.ddgo(ddgo),
+		.x(x),
+		.y(y),
+		.ddin(ddin),
+		.dout(dout7)
+	);
+endmodule
+
+/////////////////////////////////////////////////////////////////////
+////                                                             ////
+////  Forward Discrete Cosine Transform and ZigZag unit          ////
+////                                                             ////
+////  Author: Richard Herveille                                  ////
+////          richard@asics.ws                                   ////
+////          www.asics.ws                                       ////
+////                                                             ////
+/////////////////////////////////////////////////////////////////////
+////                                                             ////
+//// Copyright (C) 2002 Richard Herveille                        ////
+////                    richard@asics.ws                         ////
+////                                                             ////
+//// This source file may be used and distributed without        ////
+//// restriction provided that this copyright statement is not   ////
+//// removed from the file and that any derivative work contains ////
+//// the original copyright notice and the associated disclaimer.////
+////                                                             ////
+////     THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY     ////
+//// EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED   ////
+//// TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS   ////
+//// FOR A PARTICULAR PURPOSE. IN NO EVENT SHALL THE AUTHOR      ////
+//// OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,         ////
+//// INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES    ////
+//// (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE   ////
+//// GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR        ////
+//// BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF  ////
+//// LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT  ////
+//// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT  ////
+//// OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         ////
+//// POSSIBILITY OF SUCH DAMAGE.                                 ////
+////                                                             ////
+/////////////////////////////////////////////////////////////////////
+
+//  CVS Log
+//
+//  $Id: fdct.v,v 1.3 2002/10/31 12:50:03 rherveille Exp $
+//
+//  $Date: 2002/10/31 12:50:03 $
+//  $Revision: 1.3 $
+//  $Author: rherveille $
+//  $Locker:  $
+//  $State: Exp $
+//
+// Change History:
+//               $Log: fdct.v,v $
+//               Revision 1.3  2002/10/31 12:50:03  rherveille
+//               *** empty log message ***
+//
+//               Revision 1.2  2002/10/23 09:06:59  rherveille
+//               Improved many files.
+//               Fixed some bugs in Run-Length-Encoder.
+//               Removed dependency on ud_cnt and ro_cnt.
+//               Started (Motion)JPEG hardware encoder project.
+//
+
+
+//synopsys translate_off
+//synopsys translate_on
+
+module fdct(clk, ena, rst, dstrb, din, dout, douten);
+
+	//
+	// parameters
+	//
+
+	////////////////////////////////////////////////////////////////////
+	//                                                                //
+	// ITU-T.81, ITU-T.83 & Coefficient resolution notes              //
+	//                                                                //
+	////////////////////////////////////////////////////////////////////
+	//                                                                //
+	// Worst case error (all input values -128) is                    //
+	// zero (i.e. no errors) when using 15bit coefficients            //
+	//                                                                //
+	// Using less bits for the coefficients produces a biterror       //
+	// approx. equal to (15 - used_coefficient-bits).                 //
+	// i.e. 14bit coefficients, errors in dout-bit[0] only            //
+	//      13bit coefficients, errors in dout-bits[1:0]              //
+	//      12bit coefficients, errors in dout-bits[2:0] etc.         //
+	// Tests with real non-continous tone image data have shown that  //
+	// even when using 13bit coefficients errors remain in the lsb    //
+	// only (i.e. dout-bit[0]                                         //
+	//                                                                //
+	// The amount of coefficient-bits needed is dependent on the      //
+	// desired quality.                                               //
+	// The JPEG-standard compliance specs.(ITU-T.83) prescribe        //
+	// that the output of the combined DCT AND Quantization unit      //
+	// shall not exceed 1 for the desired quality.                    //
+	//                                                                //
+	// This means for high quantization levels, lesser bits           //
+	// for the DCT unit can be used.                                  //
+	//                                                                //
+	// Looking at the recommended "quantization tables for generic    //
+	// compliance testing of DCT-based processes" (ITU-T.83 annex B)  //
+	// it can be noticed that relatively large quantization values    //
+	// are being used. Errors in the lower-order bits should          //
+	// therefore not be visible.                                      //
+	// For certain applications some of the lower-order bits could    //
+	// actually be discarded. When looking at the luminance and       //
+	// chrominance example quantization tables (ITU-T.81 annex K)     //
+	// it can be seen that the smallest quantization value is ten     //
+	// (qnt_val_min = 10). This means that the lowest 2bits can be    //
+	// discarded (set to zero '0') without having any effect on the   //
+	// final result. In this example 11 bit or 12 bit coefficients    //
+	// would be sufficient.                                           //
+	//                                                                //
+	////////////////////////////////////////////////////////////////////
+
+	parameter coef_width = 11;
+	parameter di_width = 8;
+	parameter do_width = 12;
+
+	//
+	// inputs & outputs
+	//
+	input clk;                    // system clock
+	input ena;                    // clock enable
+	input rst;                    // active low asynchronous reset
+
+	input dstrb;                  // data-strobe. Present dstrb 1clk-cycle before data block
+	input  [di_width-1:0] din;
+	output [do_width-1:0] dout;
+	output                douten; // data-out enable
+	//
+	// variables
+	//
+
+	wire doe;
+
+	wire [do_width -1:0]  // results from DCT module
+		res00, res01, res02, res03, res04, res05, res06, res07,
+		res10, res11, res12, res13, res14, res15, res16, res17,
+		res20, res21, res22, res23, res24, res25, res26, res27,
+		res30, res31, res32, res33, res34, res35, res36, res37,
+		res40, res41, res42, res43, res44, res45, res46, res47,
+		res50, res51, res52, res53, res54, res55, res56, res57,
+		res60, res61, res62, res63, res64, res65, res66, res67,
+		res70, res71, res72, res73, res74, res75, res76, res77;
+
+
+	//
+	// module body
+	//
+
+	// Hookup DCT module
+	dct #(coef_width, di_width, do_width)
+	dct_mod(
+		.clk(clk),
+		.ena(ena),
+		.rst(rst),
+		.dstrb(dstrb),
+		.din(din),
+		.dout_00(res00),
+		.dout_01(res01),
+		.dout_02(res02),
+		.dout_03(res03),
+		.dout_04(res04),
+		.dout_05(res05),
+		.dout_06(res06),
+		.dout_07(res07),
+		.dout_10(res10),
+		.dout_11(res11),
+		.dout_12(res12),
+		.dout_13(res13),
+		.dout_14(res14),
+		.dout_15(res15),
+		.dout_16(res16),
+		.dout_17(res17),
+		.dout_20(res20),
+		.dout_21(res21),
+		.dout_22(res22),
+		.dout_23(res23),
+		.dout_24(res24),
+		.dout_25(res25),
+		.dout_26(res26),
+		.dout_27(res27),
+		.dout_30(res30),
+		.dout_31(res31),
+		.dout_32(res32),
+		.dout_33(res33),
+		.dout_34(res34),
+		.dout_35(res35),
+		.dout_36(res36),
+		.dout_37(res37),
+		.dout_40(res40),
+		.dout_41(res41),
+		.dout_42(res42),
+		.dout_43(res43),
+		.dout_44(res44),
+		.dout_45(res45),
+		.dout_46(res46),
+		.dout_47(res47),
+		.dout_50(res50),
+		.dout_51(res51),
+		.dout_52(res52),
+		.dout_53(res53),
+		.dout_54(res54),
+		.dout_55(res55),
+		.dout_56(res56),
+		.dout_57(res57),
+		.dout_60(res60),
+		.dout_61(res61),
+		.dout_62(res62),
+		.dout_63(res63),
+		.dout_64(res64),
+		.dout_65(res65),
+		.dout_66(res66),
+		.dout_67(res67),
+		.dout_70(res70),
+		.dout_71(res71),
+		.dout_72(res72),
+		.dout_73(res73),
+		.dout_74(res74),
+		.dout_75(res75),
+		.dout_76(res76),
+		.dout_77(res77),
+		.douten(doe)
+	);
+
+	// Hookup ZigZag unit
+	zigzag zigzag_mod(
+		.clk(clk),
+		.ena(ena),
+		.dstrb(doe),
+		.din_00(res00),
+		.din_01(res01),
+		.din_02(res02),
+		.din_03(res03),
+		.din_04(res04),
+		.din_05(res05),
+		.din_06(res06),
+		.din_07(res07),
+		.din_10(res10),
+		.din_11(res11),
+		.din_12(res12),
+		.din_13(res13),
+		.din_14(res14),
+		.din_15(res15),
+		.din_16(res16),
+		.din_17(res17),
+		.din_20(res20),
+		.din_21(res21),
+		.din_22(res22),
+		.din_23(res23),
+		.din_24(res24),
+		.din_25(res25),
+		.din_26(res26),
+		.din_27(res27),
+		.din_30(res30),
+		.din_31(res31),
+		.din_32(res32),
+		.din_33(res33),
+		.din_34(res34),
+		.din_35(res35),
+		.din_36(res36),
+		.din_37(res37),
+		.din_40(res40),
+		.din_41(res41),
+		.din_42(res42),
+		.din_43(res43),
+		.din_44(res44),
+		.din_45(res45),
+		.din_46(res46),
+		.din_47(res47),
+		.din_50(res50),
+		.din_51(res51),
+		.din_52(res52),
+		.din_53(res53),
+		.din_54(res54),
+		.din_55(res55),
+		.din_56(res56),
+		.din_57(res57),
+		.din_60(res60),
+		.din_61(res61),
+		.din_62(res62),
+		.din_63(res63),
+		.din_64(res64),
+		.din_65(res65),
+		.din_66(res66),
+		.din_67(res67),
+		.din_70(res70),
+		.din_71(res71),
+		.din_72(res72),
+		.din_73(res73),
+		.din_74(res74),
+		.din_75(res75),
+		.din_76(res76),
+		.din_77(res77),
+		.dout(dout),
+		.douten(douten)
+	);
+endmodule
+
+// megafunction wizard: %LPM_MULT%
+// GENERATION: STANDARD
+// VERSION: WM1.0
+// MODULE: lpm_mult
+
+// ============================================================
+// File Name: mult.v
+// Megafunction Name(s):
+// 			lpm_mult
+// ============================================================
+// ************************************************************
+// THIS IS A WIZARD-GENERATED FILE. DO NOT EDIT THIS FILE!
+// ************************************************************
+
+// ============================================================
+// CNX file retrieval info
+// ============================================================
+// Retrieval info: PRIVATE: WidthA NUMERIC "8"
+// Retrieval info: PRIVATE: WidthB NUMERIC "8"
+// Retrieval info: PRIVATE: WidthS NUMERIC "16"
+// Retrieval info: PRIVATE: WidthP NUMERIC "16"
+// Retrieval info: PRIVATE: OptionalSum NUMERIC "0"
+// Retrieval info: PRIVATE: AutoSizeResult NUMERIC "1"
+// Retrieval info: PRIVATE: B_isConstant NUMERIC "0"
+// Retrieval info: PRIVATE: SignedMult NUMERIC "0"
+// Retrieval info: PRIVATE: ConstantB NUMERIC "0"
+// Retrieval info: PRIVATE: ValidConstant NUMERIC "0"
+// Retrieval info: PRIVATE: Latency NUMERIC "0"
+// Retrieval info: PRIVATE: aclr NUMERIC "0"
+// Retrieval info: PRIVATE: clken NUMERIC "0"
+// Retrieval info: PRIVATE: LPM_PIPELINE NUMERIC "0"
+// Retrieval info: PRIVATE: optimize NUMERIC "0"
+// Retrieval info: CONSTANT: LPM_WIDTHA NUMERIC "8"
+// Retrieval info: CONSTANT: LPM_WIDTHB NUMERIC "8"
+// Retrieval info: CONSTANT: LPM_WIDTHP NUMERIC "16"
+// Retrieval info: CONSTANT: LPM_WIDTHS NUMERIC "16"
+// Retrieval info: CONSTANT: LPM_TYPE STRING "LPM_MULT"
+// Retrieval info: CONSTANT: LPM_REPRESENTATION STRING "UNSIGNED"
+// Retrieval info: CONSTANT: LPM_HINT STRING "DEDICATED_MULTIPLIER_CIRCUITRY=YES,MAXIMIZE_SPEED=6"
+// Retrieval info: USED_PORT: dataa 0 0 8 0 INPUT NODEFVAL dataa[7..0]
+// Retrieval info: USED_PORT: result 0 0 16 0 OUTPUT NODEFVAL result[15..0]
+// Retrieval info: USED_PORT: datab 0 0 8 0 INPUT NODEFVAL datab[7..0]
+// Retrieval info: CONNECT: @dataa 0 0 8 0 dataa 0 0 8 0
+// Retrieval info: CONNECT: result 0 0 16 0 @result 0 0 16 0
+// Retrieval info: CONNECT: @datab 0 0 8 0 datab 0 0 8 0
+// Retrieval info: LIBRARY: lpm lpm.lpm_components.all
+
+/////////////////////////////////////////////////////////////////////
+////                                                             ////
+////  Zig-Zag Unit                                               ////
+////  Performs zigzag-ing, as used by many DCT based encoders    ////
+////                                                             ////
+////  Author: Richard Herveille                                  ////
+////          richard@asics.ws                                   ////
+////          www.asics.ws                                       ////
+////                                                             ////
+/////////////////////////////////////////////////////////////////////
+////                                                             ////
+//// Copyright (C) 2002 Richard Herveille                        ////
+////                    richard@asics.ws                         ////
+////                                                             ////
+//// This source file may be used and distributed without        ////
+//// restriction provided that this copyright statement is not   ////
+//// removed from the file and that any derivative work contains ////
+//// the original copyright notice and the associated disclaimer.////
+////                                                             ////
+////     THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY     ////
+//// EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED   ////
+//// TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS   ////
+//// FOR A PARTICULAR PURPOSE. IN NO EVENT SHALL THE AUTHOR      ////
+//// OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,         ////
+//// INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES    ////
+//// (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE   ////
+//// GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR        ////
+//// BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF  ////
+//// LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT  ////
+//// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT  ////
+//// OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         ////
+//// POSSIBILITY OF SUCH DAMAGE.                                 ////
+////                                                             ////
+/////////////////////////////////////////////////////////////////////
+
+//  CVS Log
+//
+//  $Id: zigzag.v,v 1.2 2002/10/23 09:06:59 rherveille Exp $
+//
+//  $Date: 2002/10/23 09:06:59 $
+//  $Revision: 1.2 $
+//  $Author: rherveille $
+//  $Locker:  $
+//  $State: Exp $
+//
+// Change History:
+//               $Log: zigzag.v,v $
+//               Revision 1.2  2002/10/23 09:06:59  rherveille
+//               Improved many files.
+//               Fixed some bugs in Run-Length-Encoder.
+//               Removed dependency on ud_cnt and ro_cnt.
+//               Started (Motion)JPEG hardware encoder project.
+//
+
+
+// synopsys translate_off
+// synopsys translate_on
+
+module zigzag(
+	clk,
+	ena,
+	dstrb,
+	din_00, din_01, din_02, din_03, din_04, din_05, din_06, din_07,
+	din_10, din_11, din_12, din_13, din_14, din_15, din_16, din_17,
+	din_20, din_21, din_22, din_23, din_24, din_25, din_26, din_27,
+	din_30, din_31, din_32, din_33, din_34, din_35, din_36, din_37,
+	din_40, din_41, din_42, din_43, din_44, din_45, din_46, din_47,
+	din_50, din_51, din_52, din_53, din_54, din_55, din_56, din_57,
+	din_60, din_61, din_62, din_63, din_64, din_65, din_66, din_67,
+	din_70, din_71, din_72, din_73, din_74, din_75, din_76, din_77,
+	dout,
+	douten
+);
+
+	//
+	// inputs & outputs
+	//
+
+	input clk;                    // system clock
+	input ena;                    // clock enable
+
+	input dstrb;                  // data-strobe. Present dstrb 1clk-cycle before data block
+	input [11:0]
+		din_00, din_01, din_02, din_03, din_04, din_05, din_06, din_07,
+		din_10, din_11, din_12, din_13, din_14, din_15, din_16, din_17,
+		din_20, din_21, din_22, din_23, din_24, din_25, din_26, din_27,
+		din_30, din_31, din_32, din_33, din_34, din_35, din_36, din_37,
+		din_40, din_41, din_42, din_43, din_44, din_45, din_46, din_47,
+		din_50, din_51, din_52, din_53, din_54, din_55, din_56, din_57,
+		din_60, din_61, din_62, din_63, din_64, din_65, din_66, din_67,
+		din_70, din_71, din_72, din_73, din_74, din_75, din_76, din_77;
+	output [11:0] dout;
+	output        douten; // data-out enable
+
+	//
+	// variables
+	//
+
+	reg ld_zigzag;
+	reg [11:0] sresult [63:0]; // store results for zig-zagging
+
+	//
+	// module body
+	//
+
+	always @(posedge clk)
+	  if(ena)
+	    ld_zigzag <= #1 dstrb;
+
+	assign douten = ld_zigzag;
+
+
+	//
+	// Generate zig-zag structure
+	//
+	// This implicates that the quantization step be performed after
+	// the zig-zagging.
+	//
+	//    0: 1: 2: 3: 4: 5: 6: 7:		0: 1: 2: 3: 4: 5: 6: 7:
+	// 0: 63 62 58 57 49 48 36 35		3f 3e 3a 39 31 30 24 23
+	// 1: 61 59 56 50 47 37 34 21		3d 3b 38 32 2f 25 22 15
+	// 2: 60 55 51 46 38 33 22 20		3c 37 33 2e 26 21 16 14
+	// 3: 54 52 45 39 32 23 19 10		36 34 2d 27 20 17 13 0a
+	// 4: 53 44 40 31 24 18 11 09		35 2c 28 1f 18 12 0b 09
+	// 5: 43 41 30 25 17 12 08 03		2b 29 1e 19 11 0c 08 03
+	// 6: 42 29 26 16 13 07 04 02		2a 1d 1a 10 0d 07 04 02
+	// 7: 28 27 15 14 06 05 01 00		1c 1b 0f 0e 06 05 01 00
+	//
+	// zig-zag the DCT results
+	integer n;
+
+	always @(posedge clk)
+	  if(ena)
+	    if(ld_zigzag)   // reload results-register file
+	    begin
+	        sresult[63] <= #1 din_00;
+	        sresult[62] <= #1 din_01;
+	        sresult[61] <= #1 din_10;
+	        sresult[60] <= #1 din_20;
+	        sresult[59] <= #1 din_11;
+	        sresult[58] <= #1 din_02;
+	        sresult[57] <= #1 din_03;
+	        sresult[56] <= #1 din_12;
+	        sresult[55] <= #1 din_21;
+	        sresult[54] <= #1 din_30;
+	        sresult[53] <= #1 din_40;
+	        sresult[52] <= #1 din_31;
+	        sresult[51] <= #1 din_22;
+	        sresult[50] <= #1 din_13;
+	        sresult[49] <= #1 din_04;
+	        sresult[48] <= #1 din_05;
+	        sresult[47] <= #1 din_14;
+	        sresult[46] <= #1 din_23;
+	        sresult[45] <= #1 din_32;
+	        sresult[44] <= #1 din_41;
+	        sresult[43] <= #1 din_50;
+	        sresult[42] <= #1 din_60;
+	        sresult[41] <= #1 din_51;
+	        sresult[40] <= #1 din_42;
+	        sresult[39] <= #1 din_33;
+	        sresult[38] <= #1 din_24;
+	        sresult[37] <= #1 din_15;
+	        sresult[36] <= #1 din_06;
+	        sresult[35] <= #1 din_07;
+	        sresult[34] <= #1 din_16;
+	        sresult[33] <= #1 din_25;
+	        sresult[32] <= #1 din_34;
+	        sresult[31] <= #1 din_43;
+	        sresult[30] <= #1 din_52;
+	        sresult[29] <= #1 din_61;
+	        sresult[28] <= #1 din_70;
+	        sresult[27] <= #1 din_71;
+	        sresult[26] <= #1 din_62;
+	        sresult[25] <= #1 din_53;
+	        sresult[24] <= #1 din_44;
+	        sresult[23] <= #1 din_35;
+	        sresult[22] <= #1 din_26;
+	        sresult[21] <= #1 din_17;
+	        sresult[20] <= #1 din_27;
+	        sresult[19] <= #1 din_36;
+	        sresult[18] <= #1 din_45;
+	        sresult[17] <= #1 din_54;
+	        sresult[16] <= #1 din_63;
+	        sresult[15] <= #1 din_72;
+	        sresult[14] <= #1 din_73;
+	        sresult[13] <= #1 din_64;
+	        sresult[12] <= #1 din_55;
+	        sresult[11] <= #1 din_46;
+	        sresult[10] <= #1 din_37;
+	        sresult[09] <= #1 din_47;
+	        sresult[08] <= #1 din_56;
+	        sresult[07] <= #1 din_65;
+	        sresult[06] <= #1 din_74;
+	        sresult[05] <= #1 din_75;
+	        sresult[04] <= #1 din_66;
+	        sresult[03] <= #1 din_57;
+	        sresult[02] <= #1 din_67;
+	        sresult[01] <= #1 din_76;
+	        sresult[00] <= #1 din_77;
+	    end
+	  else       // shift results out
+	    for (n=1; n<=63; n=n+1) // do not change sresult[0]
+	       sresult[n] <= #1 sresult[n -1];
+
+	assign dout = sresult[63];
+endmodule

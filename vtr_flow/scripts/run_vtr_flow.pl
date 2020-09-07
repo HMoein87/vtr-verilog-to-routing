@@ -136,6 +136,13 @@ my $crit_path_router_iterations = 150; #We set a higher routing iterations (vs 5
                                        #will help avoids them.
 my $show_failures = 0;
 
+my $yosys = undef;
+my $yosys_script = undef;
+my $yosys_abc = undef;
+
+my $latch_map_script = undef;
+my $vpr_exe = undef;
+
 
 ##########
 # ABC flow modifiers
@@ -255,6 +262,51 @@ while ( scalar(@ARGV) != 0 ) { #While non-empty
 	elsif ( $token eq "-check_incremental_sta_consistency" ){
 		$check_incremental_sta_consistency = 1;
 	}
+	elsif( $token eq "-yosys" ) {
+        $yosys = expand_user_path(shift(@ARGV));
+		if( !-e $yosys ){
+			$yosys = "${vtr_flow_path}/${yosys}"
+		}
+		if( !-e $yosys ){
+			die "Could not find yosys exectuable"
+		}
+    }
+    elsif( $token eq "-yosys_script" ){
+        $yosys_script = expand_user_path(shift(@ARGV));
+		if( !-e $yosys_script ){
+			$yosys_script = "${vtr_flow_path}/$yosys_script"
+		}
+		if( !-e $yosys_script ){
+			die "Could not find yosys script"
+		}
+	}
+    elsif( $token eq "-yosys_abc" ){
+		$yosys_abc = expand_user_path(shift(@ARGV));
+		if( !-e $yosys_abc ){
+			$yosys_abc = "${vtr_flow_path}/$yosys_abc"
+		}
+		if( !-e $yosys_abc ){
+			die "Could not find yosys abc script"
+		}
+	}
+    elsif( $token eq "-latch_map_script" ){
+		$latch_map_script = expand_user_path(shift(@ARGV));
+		if( !-e $latch_map_script ){
+			$latch_map_script = "${vtr_flow_path}/$latch_map_script"
+		}
+		if( !-e $latch_map_script ){
+			die "Could not find latch map script " . $latch_map_script;
+		}
+	}
+    elsif( $token eq "-vpr_exe" ){
+		$vpr_exe = expand_user_path(shift(@ARGV));
+		if( !-e $vpr_exe ){
+			$vpr_exe = "${vtr_flow_path}/$vpr_exe"
+		}
+		if( !-e $vpr_exe ){
+			die "Could not find latch map script " . $vpr_exe;
+		}
+	}
     # else forward the argument
 	else {
         push @forwarded_vpr_args, $token;
@@ -311,7 +363,9 @@ my $inputs_per_cluster = -1;
   or die "Architecture file not found ($architecture_file_path)";
 
 my $vpr_path;
-if ( $stage_idx_vpr >= $starting_stage and $stage_idx_vpr <= $ending_stage ) {
+if(defined($vpr_exe)) {
+	$vpr_path = $vpr_exe;
+} elsif ( $stage_idx_vpr >= $starting_stage and $stage_idx_vpr <= $ending_stage ) {
 	$vpr_path = exe_for_platform("$vtr_flow_path/../vpr/vpr");
 	( -r $vpr_path or -r "${vpr_path}.exe" ) or die "Cannot find vpr exectuable ($vpr_path)";
 }
@@ -412,6 +466,16 @@ my $abc_raw_output_file_path = "$temp_dir$abc_raw_output_file_name";
 my $abc_output_file_name = "$benchmark_name" . file_ext_for_stage($stage_idx_abc, $circuit_suffix);
 my $abc_output_file_path = "$temp_dir$abc_output_file_name";
 
+my $abc_clock_restore_file_name = $abc_output_file_name;
+my $abc_clock_restore_file_path = $abc_output_file_path;
+
+if(defined($latch_map_script))
+{
+	#The processed ABC output with clocks restored
+	$abc_clock_restore_file_name = "$benchmark_name" . ".vanilla_clocks" . file_ext_for_stage($stage_idx_abc, $circuit_suffix);
+	$abc_clock_restore_file_path = "$temp_dir$abc_clock_restore_file_name";
+}
+
 #Clock information for ACE
 my $ace_clk_file_name = "ace_clk.txt";
 my $ace_clk_file_path = "$temp_dir$ace_clk_file_name";
@@ -484,35 +548,72 @@ if ( $starting_stage <= $stage_idx_odin and !$error_code ) {
 	#system "sed 's/ZZZ/$odin_output_file_path/g' < temp2.xml > temp3.xml";
 	#system "sed 's/PPP/$mem_size/g' < temp3.xml > circuit_config.xml";
 
-	file_find_and_replace( $odin_config_file_path, "XXX", $circuit_file_name );
-	file_find_and_replace( $odin_config_file_path, "YYY", $architecture_file_name );
-	file_find_and_replace( $odin_config_file_path, "ZZZ", $odin_output_file_name );
-	file_find_and_replace( $odin_config_file_path, "PPP", $mem_size );
-	file_find_and_replace( $odin_config_file_path, "MMM", $min_hard_mult_size );
-	file_find_and_replace( $odin_config_file_path, "AAA", $min_hard_adder_size );
+    if( defined $yosys ){
+        defined $yosys_script or die "Requested yosys being used but no script file provided";
 
-	if ( !$error_code ) {
-		if ( $use_odin_xml_config ) {
-			$q = &system_with_timeout( "$odin2_path", "odin.out", $timeout, $temp_dir,
-				"-c", $odin_config_file_name,
-				"--adder_type", $odin_adder_config_path,
-                $odin_adder_cin_global,
-				"-U0");
-		} else {
-			$q = &system_with_timeout( "$odin2_path", "odin.out", $timeout, $temp_dir,
-				"--adder_type", $odin_adder_config_path,
-				"-a", $temp_dir . $architecture_file_name,
-				"-V", $temp_dir . $circuit_file_name,
-				"-o", $temp_dir . $odin_output_file_name,
-                $odin_adder_cin_global,
-				"-U0");
-		}
+		my $yosys_script_temp = $temp_dir . "yosys_script.ys";
+		copy( $yosys_script, $yosys_script_temp );
 
-		if ( ! -e $odin_output_file_path or $q ne "success") {
-			$error_status = "failed: odin";
-			$error_code = 1;
+		file_find_and_replace($yosys_script_temp, "XXX", $circuit_file_name);
+		file_find_and_replace($yosys_script_temp, "ZZZ", "$temp_dir$abc_output_file_name");
+		if( defined $yosys_abc ){
+			my $yosys_abc_temp = "$temp_dir" . "yosys_abc_script";
+			copy( $yosys_abc, $yosys_abc_temp );
+			file_find_and_replace($yosys_script_temp, "YYY", "-script $yosys_abc_temp");
+
+			# Get lut size if undefined
+			if (!defined $lut_size) {
+				$lut_size = xml_find_LUT_Kvalue($xml_tree);
+			}
+			if ( $lut_size < 1 ) {
+				$error_status = "failed: cannot determine arch LUT k-value";
+				$error_code = 1;
+			}
+			file_find_and_replace($yosys_abc_temp, "XXX", "${lut_size}");
+		}else{
+			file_find_and_replace($yosys_script_temp, "YYY", "");
 		}
-	}
+		unlink("$temp_dir$abc_output_file_name"); # Delete the old file
+
+        $q = &system_with_timeout("$yosys", "yosys.out", $timeout, $temp_dir,
+            "-s", $yosys_script_temp,
+			"-Q", "-T");
+        if (!-e "$temp_dir$abc_output_file_name" or $q ne "success") {
+            $error_status = "failed: yosys";
+            $error_code = 1;
+        }
+    } else {
+        file_find_and_replace($odin_config_file_path, "XXX", $circuit_file_name);
+        file_find_and_replace($odin_config_file_path, "YYY", $architecture_file_name);
+        file_find_and_replace($odin_config_file_path, "ZZZ", $odin_output_file_name);
+        file_find_and_replace($odin_config_file_path, "PPP", $mem_size);
+        file_find_and_replace($odin_config_file_path, "MMM", $min_hard_mult_size);
+        file_find_and_replace($odin_config_file_path, "AAA", $min_hard_adder_size);
+
+        if (!$error_code) {
+            if ($use_odin_xml_config) {
+                $q = &system_with_timeout("$odin2_path", "odin.out", $timeout, $temp_dir,
+                    "-c", $odin_config_file_name,
+                    "--adder_type", $odin_adder_config_path,
+                    $odin_adder_cin_global,
+                    "-U0");
+            }
+            else {
+                $q = &system_with_timeout("$odin2_path", "odin.out", $timeout, $temp_dir,
+                    "--adder_type", $odin_adder_config_path,
+                    "-a", $temp_dir . $architecture_file_name,
+                    "-V", $temp_dir . $circuit_file_name,
+                    "-o", $temp_dir . $odin_output_file_name,
+                    $odin_adder_cin_global,
+                    "-U0");
+            }
+
+            if (!-e $odin_output_file_path or $q ne "success") {
+                $error_status = "failed: odin";
+                $error_code = 1;
+            }
+        }
+    }
 }
 
 #################################################################################
@@ -521,7 +622,8 @@ if ( $starting_stage <= $stage_idx_odin and !$error_code ) {
 
 if (    $starting_stage <= $stage_idx_abc
 	and $ending_stage >= $stage_idx_abc
-	and !$error_code )
+	and !$error_code
+    and !defined $yosys )
 {
 	#	this is not made mandatory since some hardblocks are not recognized by odin
 	#	we let odin figure out the best number of vector to simulate for best coverage
@@ -551,7 +653,8 @@ if (    $starting_stage <= $stage_idx_abc
 
 if (    $starting_stage <= $stage_idx_abc
 	and $ending_stage >= $stage_idx_abc
-	and !$error_code )
+	and !$error_code
+    and !defined $yosys ) # Yosys already did ABC
 {
 	#added so that valgrind will not run on abc and perl because of existing memory errors
 	my $skip_valgrind = $valgrind;
@@ -619,7 +722,7 @@ if (    $starting_stage <= $stage_idx_abc
 	{
 		my $pre_abc_blif = $domain_itter."_".$odin_output_file_name;
 		my $post_abc_raw_blif = $domain_itter."_".$abc_raw_output_file_name;
-		my $post_abc_blif = $domain_itter."_".$abc_output_file_name;
+		my $post_abc_blif = $domain_itter."_".$abc_clock_restore_file_name;
 
 		if( $flow_type == 3 )
 		{
@@ -784,13 +887,25 @@ if (    $starting_stage <= $stage_idx_abc
 
 	#return all clocks to vanilla clocks
 	$q = &system_with_timeout($blackbox_latches_script, "vanilla_restore_clocks.out", $timeout, $temp_dir,
-			"--input", $input_blif, "--output", $abc_output_file_name, "--vanilla");
+			"--input", $input_blif, "--output", $abc_clock_restore_file_name, "--vanilla");
 
 	if ($q ne "success") {
 		$error_status = "failed: to return to vanilla.\n";
 		$error_code = 1;
 	}
 
+	if(defined($latch_map_script)) {
+		my $latch_map_script_temp = $temp_dir . "latch_map.py";
+		my $rv = system( "cp", "-p", $latch_map_script, $latch_map_script_temp );
+		if($rv ne 0) {
+			die "Failed to create temp latch map script"
+		}
+		$q = &system_with_timeout($latch_map_script_temp, "latch_map.out", $timeout, $temp_dir, $abc_clock_restore_file_name, $abc_output_file_name);
+		if ($q ne "success") {
+			$error_status = "failed: to map latches.\n";
+			$error_code = 1;
+		}
+	}
 
 	################
 	#	Cleanup
@@ -814,7 +929,9 @@ if (    $starting_stage <= $stage_idx_abc
 
 if (    $starting_stage <= $stage_idx_abc
 	and $ending_stage >= $stage_idx_abc
-	and !$error_code )
+	and !$error_code
+	and !defined $yosys
+	and !defined $latch_map_script)
 {
 	if($odin_run_simulation)  {
 

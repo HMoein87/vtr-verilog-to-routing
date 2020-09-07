@@ -12,5 +12,6 @@ void archfpga_throw(const char* filename, int line, const char* fmt, ...) {
 
     va_end(va_args);
 
-    throw ArchFpgaError(msg, filename, line);
+    fprintf(stderr, "Ooops unexpected stuff: %s\n", msg.c_str());
+    //throw ArchFpgaError(msg, filename, line);
 }

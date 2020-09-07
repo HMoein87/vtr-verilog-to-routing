@@ -692,10 +692,14 @@ char_list_t* get_name_of_pins(ast_node_t* var_node, char* instance_name_prefix, 
         return_string = (char**)vtr::malloc(sizeof(char*));
 
         rnode[1] = var_node->children[0];
-        oassert(rnode[1] && rnode[1]->type == NUMBERS);
-        oassert(var_node->identifier_node != NULL);
-
-        return_string[0] = make_full_ref_name(NULL, NULL, NULL, var_node->identifier_node->types.identifier, rnode[1]->types.vnumber->get_value());
+        if(!rnode[1] || rnode[1]->type != NUMBERS)
+        {
+            error_message(AST, var_node->loc, "%s", "Odin II does not support dynamic array references");
+        }
+        else {
+            oassert(var_node->identifier_node != NULL);
+            return_string[0] = make_full_ref_name(NULL, NULL, NULL, var_node->identifier_node->types.identifier, rnode[1]->types.vnumber->get_value());
+        }
     } else if (var_node->type == RANGE_REF) {
         rnode[0] = var_node->identifier_node;
         rnode[1] = var_node->children[0];

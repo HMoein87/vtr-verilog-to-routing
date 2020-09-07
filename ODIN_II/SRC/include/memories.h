@@ -34,7 +34,7 @@ extern t_model* single_port_rams;
 extern t_model* dual_port_rams;
 
 #define HARD_RAM_ADDR_LIMIT 33
-#define SOFT_RAM_ADDR_LIMIT 10
+#define SOFT_RAM_ADDR_LIMIT 16
 
 struct t_memory {
     long size_d1;

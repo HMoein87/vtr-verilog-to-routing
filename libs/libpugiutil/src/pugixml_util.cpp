@@ -186,42 +186,11 @@ void expect_only_children(const pugi::xml_node node,
 //  node - The parent xml node
 //  attribute_names - expected attribute names
 //  loc_data - XML file location data
-void expect_only_attributes(const pugi::xml_node node,
-                            std::vector<std::string> attribute_names,
-                            std::string explanation,
-                            const loc_data& loc_data) {
-    for (auto attrib : node.attributes()) {
-        std::string attrib_name = attrib.name();
-        auto iter = std::find(attribute_names.begin(),
-                              attribute_names.end(),
-                              attrib_name);
-        if (iter == attribute_names.end()) {
-            std::string msg = "Unexpected attribute '" + attrib_name + "'"
-                              + " found on node '" + node.name() + "'";
-
-            if (!explanation.empty()) {
-                msg += explanation;
-            }
-
-            msg += ".";
-
-            if (attribute_names.size() > 0) {
-                msg += " Expected (possibly) one of: ";
-                for (size_t i = 0; i < attribute_names.size(); i++) {
-                    if (i != 0) {
-                        msg += ", ";
-                    }
-                    if (i > 0 && i == attribute_names.size() - 1) {
-                        msg += "or ";
-                    }
-                    msg += "'" + attribute_names[i] + "'";
-                }
-                msg += ".";
-            }
-
-            throw XmlError(msg, loc_data.filename(), loc_data.line(node));
-        }
-    }
+void expect_only_attributes(const pugi::xml_node,
+                            std::vector<std::string>,
+                            std::string,
+                            const loc_data&) {
+    return;
 }
 
 //Throws a well formatted error if any attribute other than those named in 'attribute_names' are found on 'node'.

@@ -1,0 +1,17 @@
+# Taken from SymbiFlow script, with slight modifications to allow us to control abc command
+
+read_verilog XXX
+
+synth_ice40 -nocarry
+
+opt_expr -undriven
+opt_clean
+
+attrmap -remove hdlname
+
+setundef -zero -params
+stat
+
+#opt -full
+
+write_blif ZZZ
