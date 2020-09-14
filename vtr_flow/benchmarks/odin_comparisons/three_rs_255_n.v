@@ -1653,27 +1653,12 @@ endmodule
 
 module absolute_values (
 	data,
-	result,
-	overflow);
+	result);
 
 	input	[9:0]  data;
 	output	[9:0]  result;
-	output	  overflow;
 
-	wire  sub_wire0;
-	wire [9:0] sub_wire1;
-	wire  overflow = sub_wire0;
-	wire [9:0] result = sub_wire1[9:0];
-
-	lpm_abs	lpm_abs_component (
-				.data (data),
-				.overflow (sub_wire0),
-				.result (sub_wire1));
-	defparam
-		lpm_abs_component.lpm_width = 10,
-		lpm_abs_component.lpm_type = "LPM_ABS";
-
-
+    assign output = data[9] ? -data : data;
 endmodule
 
 // ============================================================
