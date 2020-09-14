@@ -1732,7 +1732,7 @@ module decoder_erasure_flags_1 (
 	wire [0:0] sub_wire0;
 	wire [0:0] q = sub_wire0[0:0];
 
-		RAMB18E1_VPR altsyncram_component(
+		RAMB18E1 altsyncram_component(
     		.DOBDO(sub_wire0),
     		.DOADO(),
     		.DOPBDOP(),
@@ -1933,7 +1933,7 @@ module decoder_erasure_flags_2 (
 
 	wire [0:0] sub_wire0;
 	wire [0:0] q = sub_wire0[0:0];
-	RAMB18E1_VPR altsyncram_component(
+	RAMB18E1 altsyncram_component(
 		.DOBDO(sub_wire0),
 		.DOADO(),
 		.DOPBDOP(),
@@ -2135,7 +2135,7 @@ module decoder_erasure_flags (
 	wire [0:0] sub_wire0;
 	wire [0:0] q = sub_wire0[0:0];
 
-	RAMB18E1_VPR altsyncram_component(
+	RAMB18E1 altsyncram_component(
 		.DOBDO(sub_wire0),
 		.DOADO(),
 		.DOPBDOP(),
@@ -2337,7 +2337,7 @@ module decoder_input_buffer (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
-	RAMB18E1_VPR altsyncram_component(
+	RAMB18E1 altsyncram_component(
 		.DOBDO(sub_wire0),
 		.DOADO(),
 		.DOPBDOP(),
@@ -2539,7 +2539,7 @@ module delay_buffer (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
-	RAMB18E1_VPR altsyncram_component(
+	RAMB18E1 altsyncram_component(
 		.DOBDO(sub_wire0),
 		.DOADO(),
 		.DOPBDOP(),
@@ -2740,7 +2740,7 @@ module derivative_buffer_1 (
 
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
-	RAMB18E1_VPR altsyncram_component(
+	RAMB18E1 altsyncram_component(
 		.DOBDO(sub_wire0),
 		.DOADO(),
 		.DOPBDOP(),
@@ -2942,7 +2942,7 @@ module derivative_buffer_2 (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
-	RAMB18E1_VPR altsyncram_component(
+	RAMB18E1 altsyncram_component(
 		.DOBDO(sub_wire0),
 		.DOADO(),
 		.DOPBDOP(),
@@ -3143,7 +3143,7 @@ module derivative_buffer (
 
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
-	RAMB18E1_VPR altsyncram_component(
+	RAMB18E1 altsyncram_component(
 		.DOBDO(sub_wire0),
 		.DOADO(),
 		.DOPBDOP(),
@@ -3875,7 +3875,7 @@ module fading (
 
 	wire [9:0] sub_wire0;
 	wire [9:0] q = sub_wire0[9:0];
-	RAMB18E1_VPR altsyncram_component(
+	RAMB18E1 altsyncram_component(
 		.DOBDO(sub_wire0),
 		.DOADO(),
 		.DOPBDOP(),
@@ -4192,7 +4192,7 @@ module input_buffer (
 	wire [9:0] sub_wire0;
 	wire [9:0] q = sub_wire0[9:0];
 
-	RAMB18E1_VPR altsyncram_component(
+	RAMB18E1 altsyncram_component(
 		.DOBDO(sub_wire0),
 		.DOADO(),
 		.DOPBDOP(),
@@ -4377,7 +4377,7 @@ module L_buffer_1 (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
-	RAMB18E1_VPR altsyncram_component(
+	RAMB18E1 altsyncram_component(
 		.DOBDO(sub_wire0),
 		.DOADO(),
 		.DOPBDOP(),
@@ -4611,7 +4611,7 @@ module L_buffer_2 (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
-	RAMB18E1_VPR altsyncram_component(
+	RAMB18E1 altsyncram_component(
 		.DOBDO(sub_wire0),
 		.DOADO(),
 		.DOPBDOP(),
@@ -4845,7 +4845,7 @@ module L_buffer (
 
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
-	RAMB18E1_VPR altsyncram_component(
+	RAMB18E1 altsyncram_component(
 		.DOBDO(sub_wire0),
 		.DOADO(),
 		.DOPBDOP(),
@@ -5081,7 +5081,7 @@ module L_Polynomial_1 (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
-	RAMB18E1_VPR altsyncram_component(
+	RAMB18E1 altsyncram_component(
 		.DOBDO(sub_wire0),
 		.DOADO(),
 		.DOPBDOP(),
@@ -5315,7 +5315,7 @@ module L_Polynomial_2 (
 
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
-	RAMB18E1_VPR altsyncram_component(
+	RAMB18E1 altsyncram_component(
 		.DOBDO(sub_wire0),
 		.DOADO(),
 		.DOPBDOP(),
@@ -5550,7 +5550,7 @@ module L_Polynomial (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
-	RAMB18E1_VPR altsyncram_component(
+	RAMB18E1 altsyncram_component(
 		.DOBDO(sub_wire0),
 		.DOADO(),
 		.DOPBDOP(),
@@ -7954,7 +7954,7 @@ module omega_buffer (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
-	RAMB18E1_VPR altsyncram_component(
+	RAMB18E1 altsyncram_component(
 		.DOBDO(sub_wire0),
 		.DOADO(),
 		.DOPBDOP(),
@@ -8156,7 +8156,7 @@ module Q_buffer_1 (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
-	RAMB18E1_VPR altsyncram_component(
+	RAMB18E1 altsyncram_component(
 		.DOBDO(sub_wire0),
 		.DOADO(),
 		.DOPBDOP(),
@@ -8391,7 +8391,7 @@ module Q_buffer_2 (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
-	RAMB18E1_VPR altsyncram_component(
+	RAMB18E1 altsyncram_component(
 		.DOBDO(sub_wire0),
 		.DOADO(),
 		.DOPBDOP(),
@@ -8626,7 +8626,7 @@ module Q_buffer (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
-	RAMB18E1_VPR altsyncram_component(
+	RAMB18E1 altsyncram_component(
 		.DOBDO(sub_wire0),
 		.DOADO(),
 		.DOPBDOP(),
@@ -8860,7 +8860,7 @@ module Q_Polynomial_1 (
 
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
-	RAMB18E1_VPR altsyncram_component(
+	RAMB18E1 altsyncram_component(
 		.DOBDO(sub_wire0),
 		.DOADO(),
 		.DOPBDOP(),
@@ -9095,7 +9095,7 @@ module Q_Polynomial_2 (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
-	RAMB18E1_VPR altsyncram_component(
+	RAMB18E1 altsyncram_component(
 		.DOBDO(sub_wire0),
 		.DOADO(),
 		.DOPBDOP(),
@@ -9330,7 +9330,7 @@ module Q_Polynomial (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
-	RAMB18E1_VPR altsyncram_component(
+	RAMB18E1 altsyncram_component(
 		.DOBDO(sub_wire0),
 		.DOADO(),
 		.DOPBDOP(),
@@ -9565,7 +9565,7 @@ module R_buffer_1 (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
-	RAMB18E1_VPR altsyncram_component(
+	RAMB18E1 altsyncram_component(
 		.DOBDO(sub_wire0),
 		.DOADO(),
 		.DOPBDOP(),
@@ -9800,7 +9800,7 @@ module R_buffer_2 (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
-	RAMB18E1_VPR altsyncram_component(
+	RAMB18E1 altsyncram_component(
 		.DOBDO(sub_wire0),
 		.DOADO(),
 		.DOPBDOP(),
@@ -10035,7 +10035,7 @@ module R_buffer (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
-	RAMB18E1_VPR altsyncram_component(
+	RAMB18E1 altsyncram_component(
 		.DOBDO(sub_wire0),
 		.DOADO(),
 		.DOPBDOP(),
@@ -10270,7 +10270,7 @@ module R_Polynomial_1 (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
-	RAMB18E1_VPR altsyncram_component(
+	RAMB18E1 altsyncram_component(
 		.DOBDO(sub_wire0),
 		.DOADO(),
 		.DOPBDOP(),
@@ -10505,7 +10505,7 @@ module R_Polynomial_2 (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
-	RAMB18E1_VPR altsyncram_component(
+	RAMB18E1 altsyncram_component(
 		.DOBDO(sub_wire0),
 		.DOADO(),
 		.DOPBDOP(),
@@ -10740,7 +10740,7 @@ module R_Polynomial (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
-	RAMB18E1_VPR altsyncram_component(
+	RAMB18E1 altsyncram_component(
 		.DOBDO(sub_wire0),
 		.DOADO(),
 		.DOPBDOP(),
@@ -10976,7 +10976,7 @@ module sigma_buffer_1 (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
-	RAMB18E1_VPR altsyncram_component(
+	RAMB18E1 altsyncram_component(
 		.DOBDO(sub_wire0),
 		.DOADO(),
 		.DOPBDOP(),
@@ -11178,7 +11178,7 @@ module sigma_buffer_2 (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
-	RAMB18E1_VPR altsyncram_component(
+	RAMB18E1 altsyncram_component(
 		.DOBDO(sub_wire0),
 		.DOADO(),
 		.DOPBDOP(),
@@ -11380,7 +11380,7 @@ module sigma_buffer (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
-	RAMB18E1_VPR altsyncram_component(
+	RAMB18E1 altsyncram_component(
 		.DOBDO(sub_wire0),
 		.DOADO(),
 		.DOPBDOP(),
@@ -13342,7 +13342,7 @@ module U_buffer_1 (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
-	RAMB18E1_VPR altsyncram_component(
+	RAMB18E1 altsyncram_component(
 		.DOBDO(sub_wire0),
 		.DOADO(),
 		.DOPBDOP(),
@@ -13577,7 +13577,7 @@ module U_buffer_2 (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
-	RAMB18E1_VPR altsyncram_component(
+	RAMB18E1 altsyncram_component(
 		.DOBDO(sub_wire0),
 		.DOADO(),
 		.DOPBDOP(),
@@ -13812,7 +13812,7 @@ module U_buffer (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
-	RAMB18E1_VPR altsyncram_component(
+	RAMB18E1 altsyncram_component(
 		.DOBDO(sub_wire0),
 		.DOADO(),
 		.DOPBDOP(),
@@ -14243,7 +14243,7 @@ module U_Polynomial_1 (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
-	RAMB18E1_VPR altsyncram_component(
+	RAMB18E1 altsyncram_component(
 		.DOBDO(sub_wire0),
 		.DOADO(),
 		.DOPBDOP(),
@@ -14478,7 +14478,7 @@ module U_Polynomial_2 (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
-	RAMB18E1_VPR altsyncram_component(
+	RAMB18E1 altsyncram_component(
 		.DOBDO(sub_wire0),
 		.DOADO(),
 		.DOPBDOP(),
@@ -14713,7 +14713,7 @@ module U_Polynomial (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
-	RAMB18E1_VPR altsyncram_component(
+	RAMB18E1 altsyncram_component(
 		.DOBDO(sub_wire0),
 		.DOADO(),
 		.DOPBDOP(),
