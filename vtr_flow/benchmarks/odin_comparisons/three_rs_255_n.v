@@ -68,7 +68,7 @@ module chien_search_alg(
 						chien_wren_omega
 						);
 
-									
+
 parameter width = 5;
 parameter number_of_coefs = 16;
 parameter number_of_even_roots = 8;
@@ -117,7 +117,7 @@ wire [7:0] q_sigma_derivative_0,q_sigma_derivative_1,q_sigma_derivative_2;
 wire [7:0] q_omega;
 reg [7:0] q_sigma;
 //define galois field multiplier
-task gf_multiplier;
+task gf_multiplier_chien;
 
 input[7:0] a,b;
 output[7:0] y;
@@ -212,9 +212,9 @@ reg [7:0] cw_error;
 reg zero_sigma_derv;
 reg corrected_cw_ready;
 
-integer j,k,m;
+reg[31:0] j,k,m;
 
-//DPRAM stores the 255 evaluated values of the errata (error and erasure) magnitude polynomial 
+//DPRAM stores the 255 evaluated values of the errata (error and erasure) magnitude polynomial
 omega_buffer		buffer0(
 							.wraddress		(chien_wraddress_omega),
 							.wren			(chien_wren_omega),
@@ -222,7 +222,7 @@ omega_buffer		buffer0(
 							.rden			(chien_rden_omega),
 							.rdaddress		(chien_rdaddress_omega),
 							.clock			(clock),
-							.q				(q_omega)  
+							.q				(q_omega)
 							);
 
 //DPRAM stores the 255 evaluated values of the errata(error and erasure) locator polynomial for DECODER 0
@@ -233,7 +233,7 @@ sigma_buffer		buffer1_0(
 							.rden			(chien_rden_0),
 							.rdaddress		(chien_rdaddress),
 							.clock			(clock),
-							.q				(q_sigma_0) 
+							.q				(q_sigma_0)
 							);
 
 //DPRAM stores the 255 evaluated values of the errata(error and erasure) locator polynomial for DECODER 1
@@ -244,7 +244,7 @@ sigma_buffer_1		buffer1_1(
 							.rden			(chien_rden_1),
 							.rdaddress		(chien_rdaddress),
 							.clock			(clock),
-							.q				(q_sigma_1) 
+							.q				(q_sigma_1)
 							);
 
 //DPRAM stores the 255 evaluated values of the errata(error and erasure) locator polynomial for DECODER 2
@@ -255,10 +255,10 @@ sigma_buffer_2		buffer1_2(
 							.rden			(chien_rden_2),
 							.rdaddress		(chien_rdaddress),
 							.clock			(clock),
-							.q				(q_sigma_2) 
+							.q				(q_sigma_2)
 							);
 
-//DPRAM stores the 255 evaluated values of the derivative of errata(error and erasure) locator polynomial for DECODER 0											
+//DPRAM stores the 255 evaluated values of the derivative of errata(error and erasure) locator polynomial for DECODER 0
 derivative_buffer	buffer3_0(
 							.wraddress		(chien_wraddress),
 							.wren			(chien_wren),
@@ -266,10 +266,10 @@ derivative_buffer	buffer3_0(
 							.rden			(chien_rden_0),
 							.rdaddress		(delayed_chien_rdaddress),
 							.clock			(clock),
-							.q				(q_sigma_derivative_0) 
+							.q				(q_sigma_derivative_0)
 							);
 
-//DPRAM stores the 255 evaluated values of the derivative of errata(error and erasure) locator polynomial for DECODER 1											
+//DPRAM stores the 255 evaluated values of the derivative of errata(error and erasure) locator polynomial for DECODER 1
 derivative_buffer_1		buffer3_1(
 							.wraddress		(chien_wraddress),
 							.wren			(chien_wren),
@@ -277,10 +277,10 @@ derivative_buffer_1		buffer3_1(
 							.rden			(chien_rden_1),
 							.rdaddress		(delayed_chien_rdaddress),
 							.clock			(clock),
-							.q				(q_sigma_derivative_1) 
+							.q				(q_sigma_derivative_1)
 							);
 
-//DPRAM stores the 255 evaluated values of the derivative of errata(error and erasure) locator polynomial for DECODER 2							
+//DPRAM stores the 255 evaluated values of the derivative of errata(error and erasure) locator polynomial for DECODER 2
 derivative_buffer_2		buffer3_2(
 							.wraddress		(chien_wraddress),
 							.wren			(chien_wren),
@@ -288,7 +288,7 @@ derivative_buffer_2		buffer3_2(
 							.rden			(chien_rden_2),
 							.rdaddress		(delayed_chien_rdaddress),
 							.clock			(clock),
-							.q				(q_sigma_derivative_2) 
+							.q				(q_sigma_derivative_2)
 							);
 
 /**handshaking requesting for the coefficients of errata magnitude & errata locator polynomial**/
@@ -307,7 +307,7 @@ chien_regs_initialized_1 = 1'b0;
 send_magnitude_errata_coefs_2=1'b0;
 send_loc_errata_coefs_2=1'b0;
 chien_regs_initialized_2 = 1'b0;
-end 
+end
 else begin
 		if(MEA_compute_done_0==1'b1 && errata_loc_addr_0 <= locator_degree_0)//load_chien_regs
 			begin
@@ -316,11 +316,11 @@ else begin
 			end
 		else if (errata_loc_addr_0 > locator_degree_0)
 			begin
-				chien_regs_initialized_0 = 1'b1; 
+				chien_regs_initialized_0 = 1'b1;
 				send_magnitude_errata_coefs_0 = 1'b0;
 				send_loc_errata_coefs_0 = 1'b0;
 			end
-		
+
 		if(MEA_compute_done_1==1'b1 && errata_loc_addr_1 <= locator_degree_1)//load_chien_regs
 			begin
 				send_magnitude_errata_coefs_1 = 1'b1;
@@ -328,11 +328,11 @@ else begin
 			end
 		else if (errata_loc_addr_1 > locator_degree_1)
 			begin
-				chien_regs_initialized_1 = 1'b1; 
+				chien_regs_initialized_1 = 1'b1;
 				send_magnitude_errata_coefs_1 = 1'b0;
 				send_loc_errata_coefs_1 = 1'b0;
 			end
-		
+
 		if(MEA_compute_done_2==1'b1 && errata_loc_addr_2 <= locator_degree_2)//load_chien_regs
 			begin
 				send_magnitude_errata_coefs_2 = 1'b1;
@@ -340,7 +340,7 @@ else begin
 			end
 		else if (errata_loc_addr_2 > locator_degree_2)
 			begin
-				chien_regs_initialized_2 = 1'b1; 
+				chien_regs_initialized_2 = 1'b1;
 				send_magnitude_errata_coefs_2 = 1'b0;
 				send_loc_errata_coefs_2 = 1'b0;
 			end
@@ -351,7 +351,7 @@ end
 always @(posedge clock)
 begin
 if (reset==1'b1)
-begin 
+begin
 	chien_search_done=1'b0;
 	read_alpha_inverse =1'b0;
 	corrected_cw_ready =1'b0;
@@ -362,7 +362,7 @@ begin
 	start_forney_and_err_corrector = 1'b0;
 	chien_clock_cycle = 0;
 	symbol_cycle =0;
-	
+
 	/*chien roots are the generator polynomial roots with even powers  */
 	/*Refer to a Galois field table GF(256) to find the values of the roots*/
 	/*The GF table is generated by primitive polynomial p(x)= 1 + x^2 + x^3 + x^4 + x^8*/
@@ -377,8 +377,8 @@ else begin
 	if(errata_magnitude_coef_ready_0==1'b1)//loading error-&-erasure magnitude polynomial
 		begin
 		temp_error_magnitude_0[errata_magnitude_addr_0]= errata_magnitude_coefs_0;
-		end	
-	
+		end
+
 	if(errata_loc_coef_ready_1==1'b1)//loading errors-&-erasure locator polynomial
 		begin
 		temp_error_loc_1[errata_loc_addr_1]= errata_loc_coefs_1;
@@ -386,8 +386,8 @@ else begin
 	if(errata_magnitude_coef_ready_1==1'b1)//loading error-&-erasure magnitude polynomial
 		begin
 		temp_error_magnitude_1[errata_magnitude_addr_1]=errata_magnitude_coefs_1;
-		end	
-	
+		end
+
 	if(errata_loc_coef_ready_2==1'b1)//loading errors-&-erasure locator polynomial
 		begin
 		temp_error_loc_2[errata_loc_addr_2]= errata_loc_coefs_2;
@@ -395,30 +395,30 @@ else begin
 	if(errata_magnitude_coef_ready_2==1'b1)//loading error-&-erasure magnitude polynomial
 		begin
 		temp_error_magnitude_2[errata_magnitude_addr_2]=errata_magnitude_coefs_2;
-		end	
+		end
 /************************** chien search algorithm**************************/
 /*1.Determine the roots of the errata locator polynomial (codeword error locations)
   2. Determine and evaluate the derivative of errata locator polynomial
   3. Evaluate the errata magnitude polynomial
-****************************************************************************/	
+****************************************************************************/
 	if(chien_regs_initialized_0 == 1'b1 && chien_regs_initialized_1 == 1'b1 && chien_regs_initialized_2 == 1'b1)//start_chien_alg==1'b1
 		begin
 			if(chien_clock_cycle==1'd0)
 				chien_odd_reg = 8'd1;
 			else if(chien_clock_cycle==1'd1)
 				chien_odd_reg = 8'd2;
-			else 
-				gf_multiplier(chien_odd_reg,8'd2,chien_odd_reg);
+			else
+				gf_multiplier_chien(chien_odd_reg,8'd2,chien_odd_reg);
 			if(decoder_output_cycle==1'd0)
 				chien_odd_reg_out = 8'd1;
 			else if(decoder_output_cycle==1'd1)
 				chien_odd_reg_out = 8'd2;
-			else 
-				gf_multiplier(chien_odd_reg_out,8'd2,chien_odd_reg_out);
-			
-			/*It takes 255 cycles to evaluate errata locator polynomial and its derivative*/					
+			else
+				gf_multiplier_chien(chien_odd_reg_out,8'd2,chien_odd_reg_out);
+
+			/*It takes 255 cycles to evaluate errata locator polynomial and its derivative*/
 			if (chien_clock_cycle <= 255 && corrected_cw_ready==1'b0)
-				begin 
+				begin
 					even_sum_of_sigma_0 = (temp_error_loc_0[0]^temp_error_loc_0[2])^(temp_error_loc_0[4]^temp_error_loc_0[6])^(temp_error_loc_0[8]^temp_error_loc_0[10])^(temp_error_loc_0[12]^temp_error_loc_0[14])^temp_error_loc_0[16];
 					even_sum_of_sigma_1 = (temp_error_loc_1[0]^temp_error_loc_1[2])^(temp_error_loc_1[4]^temp_error_loc_1[6])^(temp_error_loc_1[8]^temp_error_loc_1[10])^(temp_error_loc_1[12]^temp_error_loc_1[14])^temp_error_loc_1[16];
 					even_sum_of_sigma_2 = (temp_error_loc_2[0]^temp_error_loc_2[2])^(temp_error_loc_2[4]^temp_error_loc_2[6])^(temp_error_loc_2[8]^temp_error_loc_2[10])^(temp_error_loc_2[12]^temp_error_loc_2[14])^temp_error_loc_2[16];
@@ -430,24 +430,24 @@ else begin
 						begin
 							k = j * 2;
 							m = k + 1;
-							gf_multiplier(chien_roots[j],temp_error_loc_0[k],temp_error_loc_0[k]);
-							gf_multiplier(chien_roots[j],temp_error_loc_1[k],temp_error_loc_1[k]);
-							gf_multiplier(chien_roots[j],temp_error_loc_2[k],temp_error_loc_2[k]);
+							gf_multiplier_chien(chien_roots[j],temp_error_loc_0[k],temp_error_loc_0[k]);
+							gf_multiplier_chien(chien_roots[j],temp_error_loc_1[k],temp_error_loc_1[k]);
+							gf_multiplier_chien(chien_roots[j],temp_error_loc_2[k],temp_error_loc_2[k]);
 							if(j<number_of_even_roots)
 								begin
-									gf_multiplier(chien_roots[j],temp_error_loc_0[m],temp_error_loc_0[m]);
-									gf_multiplier(chien_roots[j],temp_error_loc_1[m],temp_error_loc_1[m]);
-									gf_multiplier(chien_roots[j],temp_error_loc_2[m],temp_error_loc_2[m]);
+									gf_multiplier_chien(chien_roots[j],temp_error_loc_0[m],temp_error_loc_0[m]);
+									gf_multiplier_chien(chien_roots[j],temp_error_loc_1[m],temp_error_loc_1[m]);
+									gf_multiplier_chien(chien_roots[j],temp_error_loc_2[m],temp_error_loc_2[m]);
 								end
 						end
-				
-					gf_multiplier(sigma_derivative_0,chien_odd_reg,alpha_1_mult_sigma_deriv_0);
-					gf_multiplier(sigma_derivative_1,chien_odd_reg,alpha_1_mult_sigma_deriv_1);
-					gf_multiplier(sigma_derivative_2,chien_odd_reg,alpha_1_mult_sigma_deriv_2);
+
+					gf_multiplier_chien(sigma_derivative_0,chien_odd_reg,alpha_1_mult_sigma_deriv_0);
+					gf_multiplier_chien(sigma_derivative_1,chien_odd_reg,alpha_1_mult_sigma_deriv_1);
+					gf_multiplier_chien(sigma_derivative_2,chien_odd_reg,alpha_1_mult_sigma_deriv_2);
 
 					sigma_0 = alpha_1_mult_sigma_deriv_0 ^ even_sum_of_sigma_0;
-					sigma_1 = alpha_1_mult_sigma_deriv_1 ^ even_sum_of_sigma_1;			
-					sigma_2 = alpha_1_mult_sigma_deriv_2 ^ even_sum_of_sigma_2;			
+					sigma_1 = alpha_1_mult_sigma_deriv_1 ^ even_sum_of_sigma_1;
+					sigma_2 = alpha_1_mult_sigma_deriv_2 ^ even_sum_of_sigma_2;
 					if(sigma_0 == 8'd0) error_counter_0 = error_counter_0 + 1;
 					if(sigma_1 == 8'd0) error_counter_1 = error_counter_1 + 1;
 					if(sigma_2 == 8'd0) error_counter_2 = error_counter_2 + 1;
@@ -465,7 +465,7 @@ else begin
 					begin
 						if(error_counter_0 != locator_degree_0 && error_counter_1 != locator_degree_1 && error_counter_2 != locator_degree_2)
 							decoder_fail_flag = 1'b1;//decoder 0, 1 and 1 error statistics comparison don't match
-						else 
+						else
 							begin
 								decoder_fail_flag = 1'b0;
 								chien_clock_cycle = 9'd257;//chien_clock_cycle + 1;
@@ -479,15 +479,15 @@ else begin
 										q_sigma = q_sigma_0;
 										even_omega = (temp_error_magnitude_0[0]^temp_error_magnitude_0[2])^(temp_error_magnitude_0[4]^temp_error_magnitude_0[6])^(temp_error_magnitude_0[8]^temp_error_magnitude_0[10])^(temp_error_magnitude_0[12]^temp_error_magnitude_0[14])^temp_error_magnitude_0[16];
 										odd_omega = (temp_error_magnitude_0[1]^temp_error_magnitude_0[3])^(temp_error_magnitude_0[5]^temp_error_magnitude_0[7])^(temp_error_magnitude_0[9]^temp_error_magnitude_0[11])^(temp_error_magnitude_0[13]^temp_error_magnitude_0[15]);
-					
+
 										for(j = 0;j <= number_of_even_roots;j = j + 1)
 											begin
 												k = j * 2;
 												m = k + 1;
-												gf_multiplier(chien_roots[j],temp_error_magnitude_0[k],temp_error_magnitude_0[k]);
+												gf_multiplier_chien(chien_roots[j],temp_error_magnitude_0[k],temp_error_magnitude_0[k]);
 												if(j<number_of_even_roots)
 													begin
-														gf_multiplier(chien_roots[j],temp_error_magnitude_0[m],temp_error_magnitude_0[m]);
+														gf_multiplier_chien(chien_roots[j],temp_error_magnitude_0[m],temp_error_magnitude_0[m]);
 													end
 											end
 									end
@@ -497,15 +497,15 @@ else begin
 											q_sigma = q_sigma_1;
 											even_omega = (temp_error_magnitude_1[0]^temp_error_magnitude_1[2])^(temp_error_magnitude_1[4]^temp_error_magnitude_1[6])^(temp_error_magnitude_1[8]^temp_error_magnitude_1[10])^(temp_error_magnitude_1[12]^temp_error_magnitude_1[14])^temp_error_magnitude_1[16];
 											odd_omega = (temp_error_magnitude_1[1]^temp_error_magnitude_1[3])^(temp_error_magnitude_1[5]^temp_error_magnitude_1[7])^(temp_error_magnitude_1[9]^temp_error_magnitude_1[11])^(temp_error_magnitude_1[13]^temp_error_magnitude_1[15]);
-					
+
 											for(j = 0;j <= number_of_even_roots;j = j + 1)
 												begin
 													k = j * 2;
 													m = k + 1;
-													gf_multiplier(chien_roots[j],temp_error_magnitude_1[k],temp_error_magnitude_1[k]);
+													gf_multiplier_chien(chien_roots[j],temp_error_magnitude_1[k],temp_error_magnitude_1[k]);
 													if(j<number_of_even_roots)
 														begin
-															gf_multiplier(chien_roots[j],temp_error_magnitude_1[m],temp_error_magnitude_1[m]);
+															gf_multiplier_chien(chien_roots[j],temp_error_magnitude_1[m],temp_error_magnitude_1[m]);
 														end
 												end
 										end
@@ -515,27 +515,27 @@ else begin
 											q_sigma = q_sigma_2;
 											even_omega = (temp_error_magnitude_2[0]^temp_error_magnitude_2[2])^(temp_error_magnitude_2[4]^temp_error_magnitude_2[6])^(temp_error_magnitude_2[8]^temp_error_magnitude_2[10])^(temp_error_magnitude_2[12]^temp_error_magnitude_2[14])^temp_error_magnitude_2[16];
 											odd_omega = (temp_error_magnitude_2[1]^temp_error_magnitude_2[3])^(temp_error_magnitude_2[5]^temp_error_magnitude_2[7])^(temp_error_magnitude_2[9]^temp_error_magnitude_2[11])^(temp_error_magnitude_2[13]^temp_error_magnitude_2[15]);
-					
+
 											for(j = 0;j <= number_of_even_roots;j = j + 1)
 												begin
 													k = j * 2;
 													m = k + 1;
-													gf_multiplier(chien_roots[j],temp_error_magnitude_2[k],temp_error_magnitude_2[k]);
+													gf_multiplier_chien(chien_roots[j],temp_error_magnitude_2[k],temp_error_magnitude_2[k]);
 													if(j<number_of_even_roots)
 														begin
-															gf_multiplier(chien_roots[j],temp_error_magnitude_2[m],temp_error_magnitude_2[m]);
+															gf_multiplier_chien(chien_roots[j],temp_error_magnitude_2[m],temp_error_magnitude_2[m]);
 														end
 												end
-										end	
-				
-									gf_multiplier(odd_omega,chien_odd_reg_out,alpha_1_mult_odd_omega);
+										end
+
+									gf_multiplier_chien(odd_omega,chien_odd_reg_out,alpha_1_mult_odd_omega);
 									omega = alpha_1_mult_odd_omega ^ even_omega;//omega is the error magnitude
-					
+
 									chien_wren_omega = 1'b1;
 									chien_wraddress_omega = decoder_output_cycle;
 									decoder_output_cycle = decoder_output_cycle + 1;
 							end //end of decoder_fail_flag == 1'b0 && chien_clock_cycle > 255
-					
+
 						/*Forney and error correction (occurs every clock cycle)*/
 						/*1. Read the evaluated derivatives (q_sigma_derivative) from the DPRAM*/
 						/*2. Send derivative to GF(256) lookup table to retrieve it's inverse (alpha_inverse)*/
@@ -546,7 +546,7 @@ else begin
 						/*					This is the corrected codeword symbol which is the decoder output.
 						/*				ii) If q_sigma = 1 , it means that the codeword symbol in that location correct.*/
 						/*					The read symbol (q) from the delay buffer FIFO is left unchanged and output as is*/
-				
+
 						if (chien_search_done==1'b0 && decoder_output_cycle >= 8'd2)
 							begin
 								chien_rden_omega = 1'b1;
@@ -560,19 +560,19 @@ else begin
 										chien_rdaddress = output_cycle;
 										rdaddress = output_cycle;
 									end
-									
+
 								if (error_counter_0 == locator_degree_0)
 									err_loc_derivativative = q_sigma_derivative_0;
 								else if(error_counter_1 == locator_degree_1)
 									err_loc_derivativative = q_sigma_derivative_1;
-								else	
+								else
 									err_loc_derivativative = q_sigma_derivative_2;
-									
+
 								if (output_cycle>8'd6)
 									corrected_cw_ready = 1'b1;
 								if(gf_table_ready==1'b1)
 									begin
-										gf_multiplier(alpha_inverse,q_omega,cw_error);
+										gf_multiplier_chien(alpha_inverse,q_omega,cw_error);
 											if(q_sigma==8'd0)
 												corrected_cw = q ^ cw_error;
 											else if(q_sigma!=8'd0)
@@ -583,11 +583,11 @@ else begin
 							chien_search_done=1'b1;
 					end//end else
 			end//end of start_chien_alg
-	
+
 /**1. If the syndrome==0, the recieved codeword in FIFO is error free therefore Chien search algorithm and the succeding computations are not executed.**/
 /**2. If both the decoders fail to locate all the errors during the evaluation of errata locator polynomial,**/
 /**		all the succeeding computions are skipped**/
-/** In both (1) and (2) the codeword in the FIFO is left as is and sent to the output**/	
+/** In both (1) and (2) the codeword in the FIFO is left as is and sent to the output**/
 		if (deactivate_chien_serach==1'b1 || decoder_fail_flag == 1'b1)//cw is error free or decoder failed
 			begin
 				rden_delay_buffer = 1'b1;//rden
@@ -596,7 +596,7 @@ else begin
 				corrected_cw = q;
 				if(symbol_cycle > 256)rden_delay_buffer = 1'b0;
 			end
-		
+
 	end
 end
 
@@ -611,7 +611,7 @@ assign cycle = decoder_output_cycle;//clock_cycle;
 assign chien_regs_initialized = chien_regs_initialized_0;
 
 endmodule
-	
+
 
 /*Error detection unit (Syndrome computation)*/
 module syndromes (
@@ -663,7 +663,7 @@ reg[7:0]syndr;
 reg[width-1:0]syndrome_addr,unmodified_syndr_addr_0,unmodified_syndr_addr_1,unmodified_syndr_addr_2;
 
 //define galois field multiplier
-task gf_multiplier;
+task gf_multiplier_syndromes;
 
 input[7:0] a,b;
 output[7:0] y;
@@ -735,7 +735,7 @@ endtask
 
 
 
-integer byte_count,count,i,k;
+reg[31:0] byte_count,count,i,k;
 
 /*synd_alpha[] are the roots of generator polynomial(from alpha_to_power_1 to alpha_to_power_number of parity)*/
 /*Refer to a Galois field table GF(256) to find the values of the roots*/
@@ -764,7 +764,7 @@ begin
 	begin
 	for(i=1;i<=number_of_coefs;i=i+1)//generation of syndrome s(x)
 		begin
-			gf_multiplier(temp_data[i],synd_alpha[i],data_out[i]);
+			gf_multiplier_syndromes(temp_data[i],synd_alpha[i],data_out[i]);
 			temp_data[i]<=data_out[i]^recd[7:0];
 		end
 	byte_count = byte_count+1;
@@ -775,7 +775,7 @@ begin
 			syndrom[k]<=temp_data[k];
 			codeword_end_flag=1'b1;
 	end
-end	
+end
 end
 
 always @(posedge clock)
@@ -799,7 +799,7 @@ syndrome_ready=1'b0;
 			syndr = syndrom[syndr_coef_addr];
 			syndrome_addr = syndrome_addr+1;
 			syndrome_ready = 1'b1;
-		end	
+		end
 	else if (send_syndromes==1'b0)
 		begin
 		syndrome_ready = 1'b0;
@@ -809,25 +809,25 @@ syndrome_ready=1'b0;
 			unmodified_syndr_coef_addr_0 = unmodified_syndr_addr_0;
 			unmodified_syndr_polyn_0 = syndrom[unmodified_syndr_coef_addr_0+1];
 			unmodified_syndr_addr_0 = unmodified_syndr_addr_0+1;
-			unmodified_syndrome_ready_0 = 1'b1;		
+			unmodified_syndrome_ready_0 = 1'b1;
 	end
 	else if (send_unmodified_syndr_polyn_0==1'b0)begin unmodified_syndrome_ready_0 = 1'b0; end
-	
+
 	if((output_syndrome==1'b1)&&(send_unmodified_syndr_polyn_1==1'b1))
 	begin
 			unmodified_syndr_coef_addr_1 = unmodified_syndr_addr_1;
 			unmodified_syndr_polyn_1 = syndrom[unmodified_syndr_coef_addr_1+1];
 			unmodified_syndr_addr_1 = unmodified_syndr_addr_1+1;
-			unmodified_syndrome_ready_1 = 1'b1;		
+			unmodified_syndrome_ready_1 = 1'b1;
 	end
 	else if (send_unmodified_syndr_polyn_1==1'b0)begin unmodified_syndrome_ready_1 = 1'b0; end
-	
+
 	if((output_syndrome==1'b1)&&(send_unmodified_syndr_polyn_2==1'b1))
 	begin
 			unmodified_syndr_coef_addr_2 = unmodified_syndr_addr_2;
 			unmodified_syndr_polyn_2 = syndrom[unmodified_syndr_coef_addr_2+1];
 			unmodified_syndr_addr_2 = unmodified_syndr_addr_2+1;
-			unmodified_syndrome_ready_2 = 1'b1;		
+			unmodified_syndrome_ready_2 = 1'b1;
 	end
 	else if (send_unmodified_syndr_polyn_2==1'b0)begin unmodified_syndrome_ready_2 = 1'b0; end
 end
@@ -855,7 +855,7 @@ module modified_syndrome_polyn(
 							send_syndromes,
 							erase_position_0,
 							erase_position_1,
-							erase_position_2,							
+							erase_position_2,
 							send_erasure_positions_for_synd_0,
 							send_erasure_positions_for_synd_1,
 							send_erasure_positions_for_synd_2,
@@ -893,7 +893,7 @@ module modified_syndrome_polyn(
 							);
 parameter width = 5;
 parameter number_of_coefs = 16;
-							
+
 input clock,reset,start_modified_syndrome_polyn_compute;
 input erasure_ready_0,erasure_ready_1,erasure_ready_2;
 input codeword_end_flag,syndrome_ready;
@@ -935,10 +935,10 @@ reg [width-1:0] mod_syndrome_addr_counter_2;
 reg [width-1:0]no_of_erasures_0,no_of_erasures_1,no_of_erasures_2,non_zero_coef_count;
 
 
-integer i,count,j,k,m,p,q;
+reg[31:0] i,count,j,k,m,p,q;
 
 //define galois field multiplier
-task gf_multiplier;
+task gf_multiplier_syndrom_polyn;
 
 input[7:0] a,b;
 output[7:0] y;
@@ -1018,7 +1018,7 @@ if(reset==1'b1)
 	current_syndrome_1[1]=8'd0;
 	current_syndrome_2[1]=8'd0;
 	end
-end	
+end
 
 always @(posedge clock)
 begin
@@ -1027,21 +1027,21 @@ begin
 load_non_zero_syndrome_done=1'b0;
 send_syndromes=1'b0;
 error_free_codeword=1'b0;
-end	
+end
 else//if(reset==1'b0)
-begin	
+begin
 	if (codeword_end_flag==1'b1 && syndr_coef_addr <= no_of_parity)//requesting for the syndromes
 		begin
 			send_syndromes=1'b1;
-		end 
+		end
 		else if(syndr_coef_addr > no_of_parity )
-			begin 
+			begin
 				send_syndromes=1'b0;
 				if(non_zero_coef_count != 0)
 					load_non_zero_syndrome_done=1'b1;
 				else if(non_zero_coef_count == 0)
 					error_free_codeword=1'b1;
-					
+
 			 end
 end
 end
@@ -1059,13 +1059,13 @@ modified_syndrome_polyn_compute_done_reg_2=1'b0;
 
 end
 else if(reset==1'b0)
-begin	
+begin
 	if (start_modified_syndrome_polyn_compute==1'b1)
 		begin
 			send_erasure_positions_for_synd_0=1'b1;
 			send_erasure_positions_for_synd_1=1'b1;
 			send_erasure_positions_for_synd_2=1'b1;
-			
+
 			if(no_of_erasures_0 > number_of_erasures_0)//requesting for erasure positions from erasure-position calculator
 				begin
 				modified_syndrome_polyn_compute_done_reg_0=1'b1;
@@ -1074,8 +1074,8 @@ begin
 			else
 				begin
 				modified_syndrome_polyn_compute_done_reg_0=1'b0;
-				end 
-			
+				end
+
 			if(no_of_erasures_1 > number_of_erasures_1)//requesting for erasure positions from erasure-position calculator
 				begin
 				modified_syndrome_polyn_compute_done_reg_1=1'b1;
@@ -1084,8 +1084,8 @@ begin
 			else
 				begin
 				modified_syndrome_polyn_compute_done_reg_1=1'b0;
-				end 
-			
+				end
+
 			if(no_of_erasures_2 > number_of_erasures_2)//requesting for erasure positions from erasure-position calculator
 				begin
 				modified_syndrome_polyn_compute_done_reg_2=1'b1;
@@ -1094,9 +1094,9 @@ begin
 			else
 				begin
 				modified_syndrome_polyn_compute_done_reg_2=1'b0;
-				end 
-		end	
-end	
+				end
+		end
+end
 end
 
 always @(posedge clock)
@@ -1111,7 +1111,7 @@ begin
 							syndrom_0[syndr_coef_addr]=syndrome; //loading the syndromes
 							syndrom_1[syndr_coef_addr]=syndrome;
 							syndrom_2[syndr_coef_addr]=syndrome;
-							if(syndrome != 8'd0)non_zero_coef_count = non_zero_coef_count +1; 
+							if(syndrome != 8'd0)non_zero_coef_count = non_zero_coef_count +1;
 							prev_syndr_coef_addr = next_syndr_coef_addr;
 						end
 				end
@@ -1122,15 +1122,15 @@ begin
 						begin
 							no_of_erasures_0=no_of_erasures_0+6'd1;
 							prev_erasures_0 = erasure_reg_0;
-							for(i=1;i<=number_of_coefs;i=i+1)//ARRAY 0 IS NOT BEING USED 	
+							for(i=1;i<=number_of_coefs;i=i+1)//ARRAY 0 IS NOT BEING USED
 								begin
 									j = i + 1;
-									gf_multiplier(erasure_reg_0,syndrom_0[i],current_syndrome_0[j]);//modifying syndrome using erasures
+									gf_multiplier_syndrom_polyn(erasure_reg_0,syndrom_0[i],current_syndrome_0[j]);//modifying syndrome using erasures
 									syndrom_0[i]<= syndrom_0[i]^current_syndrome_0[i];
 								end
-			  			end	
+			  			end
 				end
-				
+
 			if(erasure_ready_1==1'b1)
 				begin
 					erasure_reg_1=erase_position_1;
@@ -1138,15 +1138,15 @@ begin
 						begin
 							no_of_erasures_1=no_of_erasures_1+6'd1;
 							prev_erasures_1 = erasure_reg_1;
-							for(k=1;k<=number_of_coefs;k=k+1)//ARRAY 0 IS NOT BEING USED 	
+							for(k=1;k<=number_of_coefs;k=k+1)//ARRAY 0 IS NOT BEING USED
 								begin
 									m = k + 1;
-									gf_multiplier(erasure_reg_1,syndrom_1[k],current_syndrome_1[m]);//modifying syndrome using erasures
+									gf_multiplier_syndrom_polyn(erasure_reg_1,syndrom_1[k],current_syndrome_1[m]);//modifying syndrome using erasures
 									syndrom_1[k]<= syndrom_1[k]^current_syndrome_1[k];
 								end
-			  			end	
+			  			end
 				end
-			
+
 			if(erasure_ready_2==1'b1)
 				begin
 					erasure_reg_2=erase_position_2;
@@ -1154,13 +1154,13 @@ begin
 						begin
 							no_of_erasures_2=no_of_erasures_2+6'd1;
 							prev_erasures_2 = erasure_reg_2;
-							for(p=1;p<=number_of_coefs;p=p+1)//ARRAY 0 IS NOT BEING USED 	
+							for(p=1;p<=number_of_coefs;p=p+1)//ARRAY 0 IS NOT BEING USED
 								begin
 									q = p + 1;
-									gf_multiplier(erasure_reg_2,syndrom_2[p],current_syndrome_2[q]);//modifying syndrome using erasures
+									gf_multiplier_syndrom_polyn(erasure_reg_2,syndrom_2[p],current_syndrome_2[q]);//modifying syndrome using erasures
 									syndrom_2[p]<= syndrom_2[p]^current_syndrome_2[p];
 								end
-			  			end	
+			  			end
 				end
 		end
 	else if(reset==1'b1)
@@ -1180,7 +1180,7 @@ begin
 		begin
 			syndr_coef_ready_0=1'b0;
 			syndr_coef_ready_1=1'b0;
-			syndr_coef_ready_2=1'b0;			
+			syndr_coef_ready_2=1'b0;
 			if(send_syndr_polyn_0==1'b1)
 				begin
 					modified_syndr_coef_addr_0 = mod_syndrome_addr_counter_0;
@@ -1189,10 +1189,10 @@ begin
 					syndr_coef_ready_0=1'b1;
 				end
 			else if (send_syndr_polyn_0==1'b0)
-				begin 
+				begin
 					syndr_coef_ready_0 = 1'b0;
 				end
-			
+
 			if(send_syndr_polyn_1==1'b1)
 				begin
 					modified_syndr_coef_addr_1 = mod_syndrome_addr_counter_1;
@@ -1201,10 +1201,10 @@ begin
 					syndr_coef_ready_1=1'b1;
 				end
 			else if (send_syndr_polyn_1==1'b0)
-				begin 
+				begin
 					syndr_coef_ready_1 = 1'b0;
 				end
-				
+
 			if(send_syndr_polyn_2==1'b1)
 				begin
 					modified_syndr_coef_addr_2 = mod_syndrome_addr_counter_2;
@@ -1213,12 +1213,12 @@ begin
 					syndr_coef_ready_2=1'b1;
 				end
 			else if (send_syndr_polyn_2==1'b0)
-				begin 
+				begin
 					syndr_coef_ready_2 = 1'b0;
 				end
 		end
-	else 
-		begin 
+	else
+		begin
 			mod_syndrome_addr_counter_0 = 0;
 			mod_syndrome_addr_counter_1 = 0;
 			mod_syndrome_addr_counter_2 = 0;
@@ -1248,10 +1248,10 @@ module erasure_locator_polyn(
 							send_erasure_polyn,
 							erase_coef_addr,
 							erase_pos_done);
-							
+
 parameter width = 5;
 parameter number_of_coefs = 16;
-							
+
 input clock,reset,start_erasure_polyn_compute,erasure_ready,send_erasure_polyn;
 input erase_pos_done;
 input [7:0] erase_position;
@@ -1273,10 +1273,10 @@ reg [width-1:0] erasure_reg;
 reg [width-1:0]erasure_coef_addr;
 reg [width-1:0]no_of_erasures;
 
-integer i,j;
+reg[31:0] i,j;
 
 //define galois field multiplier
-task gf_multiplier;
+task gf_multiplier_locator_polyn;
 
 input[7:0] a,b;
 output[7:0] y;
@@ -1354,7 +1354,7 @@ if(reset)
 	begin
 	current_erasure_location_polyn[0]=8'd1;
 	end
-end	
+end
 
 always @(posedge clock)
 begin
@@ -1363,7 +1363,7 @@ begin
 send_erasure_positions_for_loc=1'b0;
 erasure_polyn_compute_done_reg=1'b0;
 end
-else begin			
+else begin
 if (start_erasure_polyn_compute==1'b1)//sending for the erasure positions from erasure-position calculator
 	begin
 	send_erasure_positions_for_loc = 1'b1;
@@ -1376,7 +1376,7 @@ if (start_erasure_polyn_compute==1'b1)//sending for the erasure positions from e
 	else begin
 		erasure_polyn_compute_done_reg=1'b0;
 		no_of_erasures=no_of_erasures+1;
-		end				
+		end
 	end
 end
 end
@@ -1391,7 +1391,7 @@ begin
 			begin
 			j = i - 1;
 			current_erasure_location_polyn[i] = erasure_location_polyn[i];
-		    gf_multiplier(erase_position,current_erasure_location_polyn[j],temp_polyn[i]);
+		    gf_multiplier_locator_polyn(erase_position,current_erasure_location_polyn[j],temp_polyn[i]);
 			erasure_location_polyn[i]= temp_polyn[i]^prev_erasure_location_polyn[i];
 			prev_erasure_location_polyn[i]= erasure_location_polyn[i];
 			end
@@ -1414,7 +1414,7 @@ if(send_erasure_polyn==1'b1)
 	erasure_coef_ready=1'b1;
 	end
 else if(send_erasure_polyn==1'b0)erasure_coef_ready=1'b0;
-end	
+end
 //end
 
 assign no_of_erasure_coefs = erasure_reg;
@@ -1440,10 +1440,10 @@ module erasure_locator_polyn_0(
 							send_erasure_polyn,
 							erase_coef_addr,
 							erase_pos_done);
-							
+
 parameter width = 5;
 parameter number_of_coefs = 16;
-							
+
 input clock,reset,start_erasure_polyn_compute,erasure_ready,send_erasure_polyn;
 input erase_pos_done;
 input [7:0] erase_position;
@@ -1465,10 +1465,10 @@ reg [width-1:0] erasure_reg;
 reg [width-1:0]erasure_coef_addr;
 reg [width-1:0]no_of_erasures;
 
-integer i,j;
+reg[31:0] i,j;
 
 //define galois field multiplier
-task gf_multiplier;
+task gf_multiplier_locator_polyn_0;
 
 input[7:0] a,b;
 output[7:0] y;
@@ -1546,7 +1546,7 @@ if(reset)
 	begin
 	current_erasure_location_polyn[0]=8'd1;
 	end
-end	
+end
 
 always @(posedge clock)
 begin
@@ -1555,7 +1555,7 @@ begin
 send_erasure_positions_for_loc=1'b0;
 erasure_polyn_compute_done_reg=1'b0;
 end
-else begin			
+else begin
 if (start_erasure_polyn_compute==1'b1)//sending for the erasure positions from erasure-position calculator
 	begin
 	send_erasure_positions_for_loc = 1'b1;
@@ -1568,7 +1568,7 @@ if (start_erasure_polyn_compute==1'b1)//sending for the erasure positions from e
 	else begin
 		erasure_polyn_compute_done_reg=1'b0;
 		no_of_erasures=no_of_erasures+1;
-		end				
+		end
 	end
 end
 end
@@ -1583,7 +1583,7 @@ begin
 			begin
 			j = i - 1;
 			current_erasure_location_polyn[i] = erasure_location_polyn[i];
-		    gf_multiplier(erase_position,current_erasure_location_polyn[j],temp_polyn[i]);
+		    gf_multiplier_locator_polyn_0(erase_position,current_erasure_location_polyn[j],temp_polyn[i]);
 			erasure_location_polyn[i]= temp_polyn[i]^prev_erasure_location_polyn[i];
 			prev_erasure_location_polyn[i]= erasure_location_polyn[i];
 			end
@@ -1606,7 +1606,7 @@ if(send_erasure_polyn==1'b1)
 	erasure_coef_ready=1'b1;
 	end
 else if(send_erasure_polyn==1'b0)erasure_coef_ready=1'b0;
-end	
+end
 //end
 
 assign no_of_erasure_coefs = erasure_reg;
@@ -1618,7 +1618,7 @@ endmodule
 // megafunction wizard: %LPM_ABS%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: lpm_abs 
+// MODULE: lpm_abs
 
 // ============================================================
 // File Name: absolute_values.v
@@ -1694,7 +1694,7 @@ endmodule
 // megafunction wizard: %LPM_RAM_DP%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: altsyncram 
+// MODULE: altsyncram
 
 // ============================================================
 // File Name: decoder_erasure_flags_1.v
@@ -1869,7 +1869,7 @@ endmodule
 // megafunction wizard: %LPM_RAM_DP%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: altsyncram 
+// MODULE: altsyncram
 
 // ============================================================
 // File Name: decoder_erasure_flags_2.v
@@ -2044,7 +2044,7 @@ endmodule
 // megafunction wizard: %LPM_RAM_DP%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: altsyncram 
+// MODULE: altsyncram
 
 // ============================================================
 // File Name: decoder_erasure_flags.v
@@ -2219,7 +2219,7 @@ endmodule
 // megafunction wizard: %LPM_RAM_DP%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: altsyncram 
+// MODULE: altsyncram
 
 // ============================================================
 // File Name: decoder_input_buffer.v
@@ -2394,7 +2394,7 @@ endmodule
 // megafunction wizard: %LPM_RAM_DP%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: altsyncram 
+// MODULE: altsyncram
 
 // ============================================================
 // File Name: delay_buffer.v
@@ -2569,7 +2569,7 @@ endmodule
 // megafunction wizard: %LPM_RAM_DP%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: altsyncram 
+// MODULE: altsyncram
 
 // ============================================================
 // File Name: derivative_buffer_1.v
@@ -2744,7 +2744,7 @@ endmodule
 // megafunction wizard: %LPM_RAM_DP%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: altsyncram 
+// MODULE: altsyncram
 
 // ============================================================
 // File Name: derivative_buffer_2.v
@@ -2919,7 +2919,7 @@ endmodule
 // megafunction wizard: %LPM_RAM_DP%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: altsyncram 
+// MODULE: altsyncram
 
 // ============================================================
 // File Name: derivative_buffer.v
@@ -3142,7 +3142,7 @@ output [3:0] signal_count;
 
 output wire [A_width-1:0] normalized_signal;
 output wire [A_width-1:0]norm_sigma_square;
-reg [A_width-1:0] quotient; 
+reg [A_width-1:0] quotient;
 output wire [width-1:0]sigma_square;
 output wire [width-1:0]q,q_fade;
 wire [width-1:0]absolute_value;
@@ -3168,16 +3168,16 @@ reg [7:0] addr1;
 reg [width-1:0] variance;
 reg [width-1:0] unreliable_signal,exact_recvd_signal;
 reg [4:0] prev_sigma_value;
-output reg [A_width-1:0]channel_char; 
+output reg [A_width-1:0]channel_char;
 
-integer approx_distance,norm_exact_signal,actual_distance;
+reg[31:0] approx_distance,norm_exact_signal,actual_distance;
 
-integer i,j,k,m;
-   
-
+reg[31:0] i,j,k,m;
 
 
-//signals for the Dpram storing the 10-bit quantized channel output 
+
+
+//signals for the Dpram storing the 10-bit quantized channel output
 //Dpram size = 8 x 255 x 10 bits
 input_buffer		buffer(
 							.wraddress		(wraddress),//address not used  ;
@@ -3186,11 +3186,11 @@ input_buffer		buffer(
 							.rden			(rden),
 							.rdaddress		(rdaddress),//[10:0]
 							.clock			(clk),
-							.q				(q)//;[9:0]  
+							.q				(q)//;[9:0]
 							);
-							
-//signals for the Dpram storing the 10-bit quantized channel fading gain 
-//Dpram size = 255 x 10 bits							
+
+//signals for the Dpram storing the 10-bit quantized channel fading gain
+//Dpram size = 255 x 10 bits
 fading				fade(
 						.wraddress		(wraddress),//address not used  ;
 						.wren			(wren),//write enable not used
@@ -3198,10 +3198,10 @@ fading				fade(
 						.rden			(rden),
 						.rdaddress		(rdaddress_fade),//[10:0]
 						.clock			(clk),
-						.q				(q_fade)//;[9:0]q_fade  
+						.q				(q_fade)//;[9:0]q_fade
 							);
 
-							
+
 signed_multiplier3	s_mult3	(
 							.dataa			(normalized_signal),
 							.datab			(approx_distance),
@@ -3236,14 +3236,14 @@ absolute_values		compute_abs(
 							.data		(exact_recvd_signal),
 							.result		(absolute_value)
 							);
-							
+
 signed_multiplier	s_mult1	(
 							.dataa			(channel_char),//variance-divide-by-fading gain
 							.datab			(threshold_0),//pre-determined erasure threshold values
 							.result			(cutoff_threshold_0),//product
 							.clock			(clk)
 							);
-						
+
 signed_multiplier2		s_mult2	(
 								.dataa			(channel_char),//variance-divide-by-fading gain
 								.datab			(threshold_1),//pre-determined erasure threshold values
@@ -3257,13 +3257,13 @@ signed_multiplier4		s_mult4	(
 								.result			(cutoff_threshold_2),//
 								.clock			(clk)
 								);
-							
+
 /*Erasure generator samples 8 10-bit quantized signals and a 10-bit fading gain for the 8 signals, at a time
   from the input buffers*/
 /*recieved signals are quantized with 0.01 precision*/
 /* floating point threshold values represented as fixed point values*/
 /*Erasure_threshold_value = ln((1/(1-threshold)-1)*/
-/*The valid value of threshold is between 0 and 1, however the optimum threshold values, T are 
+/*The valid value of threshold is between 0 and 1, however the optimum threshold values, T are
 based on the simulations. See the thesis document for T values*/
 always @(posedge clk)
 begin
@@ -3287,7 +3287,7 @@ else begin
 						begin
 					 		rdaddress <= addr;
 					 		addr <= addr+1;
-						end	
+						end
 					if(signal_count == 4'd2)//get the fading gain of the 8 sampled signals
 						begin
 							new_channel_char=1'b0;
@@ -3305,7 +3305,7 @@ else begin
 									minimum_value = absolute_value;
 									index = signal_count-3;
 								end
-						end						
+						end
 					if(rdaddress == 2)//compute the variance of the noise
 						begin
 							if(sigma_value!=prev_sigma_value)
@@ -3316,7 +3316,7 @@ else begin
 						end
 					if(rdaddress == 4)
 							norm_variance <=norm_sigma_square;
-					/*Perform hard decision-estimation to find recieved symbol (byte) estimation*/		
+					/*Perform hard decision-estimation to find recieved symbol (byte) estimation*/
 					/*The codeword byte estimation determined using the sign bit*/
 					if(signal_count >= 4'd2 && signal_count < 4'd10)
 						begin
@@ -3343,7 +3343,7 @@ else begin
 		end
 	end
 end
-  
+
 always @(posedge clk)
 begin
 	if(reset==1'b1)
@@ -3359,7 +3359,7 @@ else begin
 			threshold_0 <= erasure_threshold_value_0;
 			threshold_1 <= erasure_threshold_value_1;
 			threshold_2 <= erasure_threshold_value_2;
-			
+
 			exact_smallest = minimum_value;
 			unreliable_signal = exact_signals[index];
 			second_best_negated_signal= best_approx_signal[index];
@@ -3376,7 +3376,7 @@ else begin
 						else erasure_flag_1=1'b0;//signed comparator
 					if({~modified_actual_dist[23], modified_actual_dist[22:0]} >= {~cutoff_threshold_2[23],cutoff_threshold_2[22:0]})erasure_flag_2=1'b1;
 						else erasure_flag_2=1'b0;//signed comparator
-				end			
+				end
 		end
 	end
 end
@@ -3406,8 +3406,8 @@ module erasure_position_calc(
 						send_erasure_positions_for_loc_1,
 						send_erasure_positions_for_loc_2,
 						send_erasure_positions_for_synd_0,
-						send_erasure_positions_for_synd_1,						
-						send_erasure_positions_for_synd_2,						
+						send_erasure_positions_for_synd_1,
+						send_erasure_positions_for_synd_2,
 						number_of_erasures_0,
 						number_of_erasures_1,
 						number_of_erasures_2,
@@ -3416,7 +3416,7 @@ module erasure_position_calc(
 						erase_pos_done_2,
 						decoder_rd_addr
 						);
-						
+
 parameter width = 5;
 parameter max_number_of_erasures = 16;
 
@@ -3449,10 +3449,10 @@ reg[7:0] erasures_2[0:max_number_of_erasures-1];
 reg [width-1:0] erasure_addr_counter_0,erasure_addr_counter_1,erasure_addr_counter_2;
 
 reg [7:0] count_0,count_1,count_2;
-integer i,cw_byte_count;
+reg[31:0] i,cw_byte_count;
 
 //define galois field multiplier
-task gf_multiplier;
+task gf_multiplier_position_calc;
 
 input[7:0] a,b;
 output[7:0] y;
@@ -3531,11 +3531,11 @@ if(reset==1'b1)
 begin
 	inverse_alpha_one [7:0]<= 8'b10001110;//this is alpha_to_254
 	current_erasure <= 8'd1;
-end	
-else begin				
+end
+else begin
 	if (new_data==1'b1 && cw_byte_count<255)
 	begin
-		gf_multiplier(inverse_alpha_one,current_erasure,temp_current_erasure);//determining erasure positions
+		gf_multiplier_position_calc(inverse_alpha_one,current_erasure,temp_current_erasure);//determining erasure positions
 		current_erasure<=temp_current_erasure;
 		cw_byte_count= cw_byte_count+1;//counts the number of codeword bytes
 	end
@@ -3594,7 +3594,7 @@ begin
 		erasure_ready_0=1'b1;
 	end
 	else begin erasure_ready_0=1'b0; erase_pos_done_0=1'b0; end
-	
+
 	if(send_erasure_positions_for_loc_1==1'b1 && send_erasure_positions_for_synd_1==1'b1)
 	begin
 		erase_position_reg_1 = erasures_1[erasure_addr_counter_1];
@@ -3603,7 +3603,7 @@ begin
 		erasure_ready_1=1'b1;
 	end
 	else begin erasure_ready_1=1'b0; erase_pos_done_1=1'b0;end
-	
+
 	if(send_erasure_positions_for_loc_2==1'b1 && send_erasure_positions_for_synd_2==1'b1)
 	begin
 		erase_position_reg_2 = erasures_2[erasure_addr_counter_2];
@@ -3611,7 +3611,7 @@ begin
 		if(erasure_addr_counter_2==no_of_erasures_2)erase_pos_done_2=1'b1;
 		erasure_ready_2=1'b1;
 	end
-	else begin erasure_ready_2=1'b0; erase_pos_done_2=1'b0;end 
+	else begin erasure_ready_2=1'b0; erase_pos_done_2=1'b0;end
 end
 end
 
@@ -3626,7 +3626,7 @@ endmodule
 // megafunction wizard: %LPM_RAM_DP%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: altsyncram 
+// MODULE: altsyncram
 
 // ============================================================
 // File Name: fading.v
@@ -3641,17 +3641,17 @@ endmodule
 
 
 //Copyright (C) 1991-2005 Altera Corporation
-//Your use of Altera Corporation's design tools, logic functions 
-//and other software and tools, and its AMPP partner logic       
-//functions, and any output files any of the foregoing           
-//(including device programming or simulation files), and any    
-//associated documentation or information are expressly subject  
-//to the terms and conditions of the Altera Program License      
-//Subscription Agreement, Altera MegaCore Function License       
-//Agreement, or other applicable license agreement, including,   
-//without limitation, that your use is for the sole purpose of   
-//programming logic devices manufactured by Altera and sold by   
-//Altera or its authorized distributors.  Please refer to the    
+//Your use of Altera Corporation's design tools, logic functions
+//and other software and tools, and its AMPP partner logic
+//functions, and any output files any of the foregoing
+//(including device programming or simulation files), and any
+//associated documentation or information are expressly subject
+//to the terms and conditions of the Altera Program License
+//Subscription Agreement, Altera MegaCore Function License
+//Agreement, or other applicable license agreement, including,
+//without limitation, that your use is for the sole purpose of
+//programming logic devices manufactured by Altera and sold by
+//Altera or its authorized distributors.  Please refer to the
 //applicable agreement for further details.
 
 
@@ -3854,7 +3854,7 @@ reg [7:0] addr,inverse_addr;
 reg [0:8] prim_polyn;
 reg gf_flag;
 
-integer i,j,k;
+reg[31:0] i,j,k;
 
 always @(posedge reset)
 begin
@@ -3881,7 +3881,7 @@ alpha_to[255]=alpha_to[0];
 gf_flag=1'b1;
 decode_strobe=gf_flag;
 end
-	
+
 always @(posedge clock)
 begin
 gf_table_ready = 1'b0;
@@ -3916,7 +3916,7 @@ endmodule
 // megafunction wizard: %LPM_RAM_DP%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: altsyncram 
+// MODULE: altsyncram
 
 // ============================================================
 // File Name: input_buffer.v
@@ -3931,17 +3931,17 @@ endmodule
 
 
 //Copyright (C) 1991-2005 Altera Corporation
-//Your use of Altera Corporation's design tools, logic functions 
-//and other software and tools, and its AMPP partner logic       
-//functions, and any output files any of the foregoing           
-//(including device programming or simulation files), and any    
-//associated documentation or information are expressly subject  
-//to the terms and conditions of the Altera Program License      
-//Subscription Agreement, Altera MegaCore Function License       
-//Agreement, or other applicable license agreement, including,   
-//without limitation, that your use is for the sole purpose of   
-//programming logic devices manufactured by Altera and sold by   
-//Altera or its authorized distributors.  Please refer to the    
+//Your use of Altera Corporation's design tools, logic functions
+//and other software and tools, and its AMPP partner logic
+//functions, and any output files any of the foregoing
+//(including device programming or simulation files), and any
+//associated documentation or information are expressly subject
+//to the terms and conditions of the Altera Program License
+//Subscription Agreement, Altera MegaCore Function License
+//Agreement, or other applicable license agreement, including,
+//without limitation, that your use is for the sole purpose of
+//programming logic devices manufactured by Altera and sold by
+//Altera or its authorized distributors.  Please refer to the
 //applicable agreement for further details.
 
 
@@ -3968,55 +3968,32 @@ module input_buffer (
 	wire [9:0] sub_wire0;
 	wire [9:0] q = sub_wire0[9:0];
 
-	altsyncram	altsyncram_component (
-				.wren_a (wren),
-				.clock0 (clock),
-				.address_a (wraddress),
-				.address_b (rdaddress),
-				.rden_b (rden),
-				.data_a (data),
-				.q_b (sub_wire0)
-				// synopsys translate_off
-				,
-				.aclr0 (),
-				.aclr1 (),
-				.addressstall_a (),
-				.addressstall_b (),
-				.byteena_a (),
-				.byteena_b (),
-				.clock1 (),
-				.clocken0 (),
-				.clocken1 (),
-				.data_b (),
-				.q_a (),
-				.wren_b ()
-				// synopsys translate_on
-				);
-	defparam
-		altsyncram_component.intended_device_family = "Stratix",
-		altsyncram_component.operation_mode = "DUAL_PORT",
-		altsyncram_component.width_a = 10,
-		altsyncram_component.widthad_a = 11,
-		altsyncram_component.numwords_a = 2048,
-		altsyncram_component.width_b = 10,
-		altsyncram_component.widthad_b = 11,
-		altsyncram_component.numwords_b = 2048,
-		altsyncram_component.lpm_type = "altsyncram",
-		altsyncram_component.width_byteena_a = 1,
-		altsyncram_component.outdata_reg_b = "UNREGISTERED",
-		altsyncram_component.indata_aclr_a = "NONE",
-		altsyncram_component.wrcontrol_aclr_a = "NONE",
-		altsyncram_component.address_aclr_a = "NONE",
-		altsyncram_component.address_reg_b = "CLOCK0",
-		altsyncram_component.rdcontrol_reg_b = "CLOCK0",
-		altsyncram_component.rdcontrol_aclr_b = "NONE",
-		altsyncram_component.address_aclr_b = "NONE",
-		altsyncram_component.outdata_aclr_b = "NONE",
-		altsyncram_component.read_during_write_mode_mixed_ports = "DONT_CARE",
-		altsyncram_component.power_up_uninitialized = "FALSE",
-		altsyncram_component.init_file = "erasure_generator.mif";
+	RAMB18E1 altsyncram_component(
+		.DOBDO(sub_wire0),
+		.DOADO(),
+		.DOPBDOP(),
+		.DOPADOP(),
+		.DIBDI(),
+		.DIADI(data),
+		.DIPBDIP(),
+		.DIPADIP(),
 
+		.ADDRARDADDR(rdaddress),
+		.CLKARDCLK(clock),
+		.ENARDEN(rden),
+		.REGCEAREGCE(),
+		.RSTRAMARSTRAM(),
+		.RSTREGARSTREG(),
+		.WEA(),
 
+		.ADDRBWRADDR(wraddress),
+		.CLKBWRCLK(clock),
+		.ENBWREN(wren),
+		.REGCEB(),
+		.RSTRAMB(),
+		.RSTREGB(),
+		.WEBWE()
+	);
 endmodule
 
 // ============================================================
@@ -4124,7 +4101,7 @@ endmodule
 // megafunction wizard: %LPM_RAM_DP%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: altsyncram 
+// MODULE: altsyncram
 
 // ============================================================
 // File Name: L_buffer_1.v
@@ -4139,17 +4116,17 @@ endmodule
 
 
 //Copyright (C) 1991-2005 Altera Corporation
-//Your use of Altera Corporation's design tools, logic functions 
-//and other software and tools, and its AMPP partner logic       
-//functions, and any output files any of the foregoing           
-//(including device programming or simulation files), and any    
-//associated documentation or information are expressly subject  
-//to the terms and conditions of the Altera Program License      
-//Subscription Agreement, Altera MegaCore Function License       
-//Agreement, or other applicable license agreement, including,   
-//without limitation, that your use is for the sole purpose of   
-//programming logic devices manufactured by Altera and sold by   
-//Altera or its authorized distributors.  Please refer to the    
+//Your use of Altera Corporation's design tools, logic functions
+//and other software and tools, and its AMPP partner logic
+//functions, and any output files any of the foregoing
+//(including device programming or simulation files), and any
+//associated documentation or information are expressly subject
+//to the terms and conditions of the Altera Program License
+//Subscription Agreement, Altera MegaCore Function License
+//Agreement, or other applicable license agreement, including,
+//without limitation, that your use is for the sole purpose of
+//programming logic devices manufactured by Altera and sold by
+//Altera or its authorized distributors.  Please refer to the
 //applicable agreement for further details.
 
 
@@ -4176,7 +4153,33 @@ module L_buffer_1 (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
-	altsyncram	altsyncram_component (
+	RAMB18E1 altsyncram_component(
+		.DOBDO(sub_wire0),
+		.DOADO(),
+		.DOPBDOP(),
+		.DOPADOP(),
+		.DIBDI(),
+		.DIADI(data),
+		.DIPBDIP(),
+		.DIPADIP(),
+
+		.ADDRARDADDR(rdaddress),
+		.CLKARDCLK(clock),
+		.ENARDEN(rden),
+		.REGCEAREGCE(),
+		.RSTRAMARSTRAM(),
+		.RSTREGARSTREG(),
+		.WEA(),
+
+		.ADDRBWRADDR(wraddress),
+		.CLKBWRCLK(clock),
+		.ENBWREN(wren),
+		.REGCEB(),
+		.RSTRAMB(),
+		.RSTREGB(),
+		.WEBWE()
+	);
+	/*altsyncram	altsyncram_component (
 				.wren_a (wren),
 				.clock0 (clock),
 				.address_a (wraddress),
@@ -4222,7 +4225,7 @@ module L_buffer_1 (
 		altsyncram_component.outdata_aclr_b = "NONE",
 		altsyncram_component.read_during_write_mode_mixed_ports = "DONT_CARE",
 		altsyncram_component.power_up_uninitialized = "FALSE",
-		altsyncram_component.init_file = "mea_buffers.mif";
+		altsyncram_component.init_file = "mea_buffers.mif";*/
 
 
 endmodule
@@ -4332,7 +4335,7 @@ endmodule
 // megafunction wizard: %LPM_RAM_DP%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: altsyncram 
+// MODULE: altsyncram
 
 // ============================================================
 // File Name: L_buffer_2.v
@@ -4347,17 +4350,17 @@ endmodule
 
 
 //Copyright (C) 1991-2005 Altera Corporation
-//Your use of Altera Corporation's design tools, logic functions 
-//and other software and tools, and its AMPP partner logic       
-//functions, and any output files any of the foregoing           
-//(including device programming or simulation files), and any    
-//associated documentation or information are expressly subject  
-//to the terms and conditions of the Altera Program License      
-//Subscription Agreement, Altera MegaCore Function License       
-//Agreement, or other applicable license agreement, including,   
-//without limitation, that your use is for the sole purpose of   
-//programming logic devices manufactured by Altera and sold by   
-//Altera or its authorized distributors.  Please refer to the    
+//Your use of Altera Corporation's design tools, logic functions
+//and other software and tools, and its AMPP partner logic
+//functions, and any output files any of the foregoing
+//(including device programming or simulation files), and any
+//associated documentation or information are expressly subject
+//to the terms and conditions of the Altera Program License
+//Subscription Agreement, Altera MegaCore Function License
+//Agreement, or other applicable license agreement, including,
+//without limitation, that your use is for the sole purpose of
+//programming logic devices manufactured by Altera and sold by
+//Altera or its authorized distributors.  Please refer to the
 //applicable agreement for further details.
 
 
@@ -4384,7 +4387,34 @@ module L_buffer_2 (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
-	altsyncram	altsyncram_component (
+	RAMB18E1 altsyncram_component(
+		.DOBDO(sub_wire0),
+		.DOADO(),
+		.DOPBDOP(),
+		.DOPADOP(),
+		.DIBDI(),
+		.DIADI(data),
+		.DIPBDIP(),
+		.DIPADIP(),
+
+		.ADDRARDADDR(rdaddress),
+		.CLKARDCLK(clock),
+		.ENARDEN(rden),
+		.REGCEAREGCE(),
+		.RSTRAMARSTRAM(),
+		.RSTREGARSTREG(),
+		.WEA(),
+
+		.ADDRBWRADDR(wraddress),
+		.CLKBWRCLK(clock),
+		.ENBWREN(wren),
+		.REGCEB(),
+		.RSTRAMB(),
+		.RSTREGB(),
+		.WEBWE()
+	);
+
+	/*altsyncram	altsyncram_component (
 				.wren_a (wren),
 				.clock0 (clock),
 				.address_a (wraddress),
@@ -4430,7 +4460,7 @@ module L_buffer_2 (
 		altsyncram_component.outdata_aclr_b = "NONE",
 		altsyncram_component.read_during_write_mode_mixed_ports = "DONT_CARE",
 		altsyncram_component.power_up_uninitialized = "FALSE",
-		altsyncram_component.init_file = "mea_buffers.mif";
+		altsyncram_component.init_file = "mea_buffers.mif";*/
 
 
 endmodule
@@ -4540,7 +4570,7 @@ endmodule
 // megafunction wizard: %LPM_RAM_DP%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: altsyncram 
+// MODULE: altsyncram
 
 // ============================================================
 // File Name: L_buffer.v
@@ -4555,17 +4585,17 @@ endmodule
 
 
 //Copyright (C) 1991-2005 Altera Corporation
-//Your use of Altera Corporation's design tools, logic functions 
-//and other software and tools, and its AMPP partner logic       
-//functions, and any output files any of the foregoing           
-//(including device programming or simulation files), and any    
-//associated documentation or information are expressly subject  
-//to the terms and conditions of the Altera Program License      
-//Subscription Agreement, Altera MegaCore Function License       
-//Agreement, or other applicable license agreement, including,   
-//without limitation, that your use is for the sole purpose of   
-//programming logic devices manufactured by Altera and sold by   
-//Altera or its authorized distributors.  Please refer to the    
+//Your use of Altera Corporation's design tools, logic functions
+//and other software and tools, and its AMPP partner logic
+//functions, and any output files any of the foregoing
+//(including device programming or simulation files), and any
+//associated documentation or information are expressly subject
+//to the terms and conditions of the Altera Program License
+//Subscription Agreement, Altera MegaCore Function License
+//Agreement, or other applicable license agreement, including,
+//without limitation, that your use is for the sole purpose of
+//programming logic devices manufactured by Altera and sold by
+//Altera or its authorized distributors.  Please refer to the
 //applicable agreement for further details.
 
 
@@ -4591,7 +4621,34 @@ module L_buffer (
 
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
+	RAMB18E1 altsyncram_component(
+		.DOBDO(sub_wire0),
+		.DOADO(),
+		.DOPBDOP(),
+		.DOPADOP(),
+		.DIBDI(),
+		.DIADI(data),
+		.DIPBDIP(),
+		.DIPADIP(),
 
+		.ADDRARDADDR(rdaddress),
+		.CLKARDCLK(clock),
+		.ENARDEN(rden),
+		.REGCEAREGCE(),
+		.RSTRAMARSTRAM(),
+		.RSTREGARSTREG(),
+		.WEA(),
+
+		.ADDRBWRADDR(wraddress),
+		.CLKBWRCLK(clock),
+		.ENBWREN(wren),
+		.REGCEB(),
+		.RSTRAMB(),
+		.RSTREGB(),
+		.WEBWE()
+	);
+
+/*
 	altsyncram	altsyncram_component (
 				.wren_a (wren),
 				.clock0 (clock),
@@ -4638,7 +4695,7 @@ module L_buffer (
 		altsyncram_component.outdata_aclr_b = "NONE",
 		altsyncram_component.read_during_write_mode_mixed_ports = "DONT_CARE",
 		altsyncram_component.power_up_uninitialized = "FALSE",
-		altsyncram_component.init_file = "mea_buffers.mif";
+		altsyncram_component.init_file = "mea_buffers.mif";*/
 
 
 endmodule
@@ -4748,7 +4805,7 @@ endmodule
 // megafunction wizard: %LPM_RAM_DP%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: altsyncram 
+// MODULE: altsyncram
 
 // ============================================================
 // File Name: L_Polynomial_1.v
@@ -4763,17 +4820,17 @@ endmodule
 
 
 //Copyright (C) 1991-2005 Altera Corporation
-//Your use of Altera Corporation's design tools, logic functions 
-//and other software and tools, and its AMPP partner logic       
-//functions, and any output files any of the foregoing           
-//(including device programming or simulation files), and any    
-//associated documentation or information are expressly subject  
-//to the terms and conditions of the Altera Program License      
-//Subscription Agreement, Altera MegaCore Function License       
-//Agreement, or other applicable license agreement, including,   
-//without limitation, that your use is for the sole purpose of   
-//programming logic devices manufactured by Altera and sold by   
-//Altera or its authorized distributors.  Please refer to the    
+//Your use of Altera Corporation's design tools, logic functions
+//and other software and tools, and its AMPP partner logic
+//functions, and any output files any of the foregoing
+//(including device programming or simulation files), and any
+//associated documentation or information are expressly subject
+//to the terms and conditions of the Altera Program License
+//Subscription Agreement, Altera MegaCore Function License
+//Agreement, or other applicable license agreement, including,
+//without limitation, that your use is for the sole purpose of
+//programming logic devices manufactured by Altera and sold by
+//Altera or its authorized distributors.  Please refer to the
 //applicable agreement for further details.
 
 
@@ -4800,6 +4857,33 @@ module L_Polynomial_1 (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
+	RAMB18E1 altsyncram_component(
+		.DOBDO(sub_wire0),
+		.DOADO(),
+		.DOPBDOP(),
+		.DOPADOP(),
+		.DIBDI(),
+		.DIADI(data),
+		.DIPBDIP(),
+		.DIPADIP(),
+
+		.ADDRARDADDR(rdaddress),
+		.CLKARDCLK(clock),
+		.ENARDEN(rden),
+		.REGCEAREGCE(),
+		.RSTRAMARSTRAM(),
+		.RSTREGARSTREG(),
+		.WEA(),
+
+		.ADDRBWRADDR(wraddress),
+		.CLKBWRCLK(clock),
+		.ENBWREN(wren),
+		.REGCEB(),
+		.RSTRAMB(),
+		.RSTREGB(),
+		.WEBWE()
+	);
+	/*
 	altsyncram	altsyncram_component (
 				.wren_a (wren),
 				.clock0 (clock),
@@ -4846,7 +4930,7 @@ module L_Polynomial_1 (
 		altsyncram_component.outdata_aclr_b = "NONE",
 		altsyncram_component.read_during_write_mode_mixed_ports = "DONT_CARE",
 		altsyncram_component.power_up_uninitialized = "FALSE",
-		altsyncram_component.init_file = "mea_buffers.mif";
+		altsyncram_component.init_file = "mea_buffers.mif";*/
 
 
 endmodule
@@ -4956,7 +5040,7 @@ endmodule
 // megafunction wizard: %LPM_RAM_DP%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: altsyncram 
+// MODULE: altsyncram
 
 // ============================================================
 // File Name: L_Polynomial_2.v
@@ -4971,17 +5055,17 @@ endmodule
 
 
 //Copyright (C) 1991-2005 Altera Corporation
-//Your use of Altera Corporation's design tools, logic functions 
-//and other software and tools, and its AMPP partner logic       
-//functions, and any output files any of the foregoing           
-//(including device programming or simulation files), and any    
-//associated documentation or information are expressly subject  
-//to the terms and conditions of the Altera Program License      
-//Subscription Agreement, Altera MegaCore Function License       
-//Agreement, or other applicable license agreement, including,   
-//without limitation, that your use is for the sole purpose of   
-//programming logic devices manufactured by Altera and sold by   
-//Altera or its authorized distributors.  Please refer to the    
+//Your use of Altera Corporation's design tools, logic functions
+//and other software and tools, and its AMPP partner logic
+//functions, and any output files any of the foregoing
+//(including device programming or simulation files), and any
+//associated documentation or information are expressly subject
+//to the terms and conditions of the Altera Program License
+//Subscription Agreement, Altera MegaCore Function License
+//Agreement, or other applicable license agreement, including,
+//without limitation, that your use is for the sole purpose of
+//programming logic devices manufactured by Altera and sold by
+//Altera or its authorized distributors.  Please refer to the
 //applicable agreement for further details.
 
 
@@ -5007,7 +5091,33 @@ module L_Polynomial_2 (
 
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
+	RAMB18E1 altsyncram_component(
+		.DOBDO(sub_wire0),
+		.DOADO(),
+		.DOPBDOP(),
+		.DOPADOP(),
+		.DIBDI(),
+		.DIADI(data),
+		.DIPBDIP(),
+		.DIPADIP(),
 
+		.ADDRARDADDR(rdaddress),
+		.CLKARDCLK(clock),
+		.ENARDEN(rden),
+		.REGCEAREGCE(),
+		.RSTRAMARSTRAM(),
+		.RSTREGARSTREG(),
+		.WEA(),
+
+		.ADDRBWRADDR(wraddress),
+		.CLKBWRCLK(clock),
+		.ENBWREN(wren),
+		.REGCEB(),
+		.RSTRAMB(),
+		.RSTREGB(),
+		.WEBWE()
+	);
+	/*
 	altsyncram	altsyncram_component (
 				.wren_a (wren),
 				.clock0 (clock),
@@ -5031,7 +5141,7 @@ module L_Polynomial_2 (
 				.q_a (),
 				.wren_b ()
 				// synopsys translate_on
-				);
+				);*/
 	defparam
 		altsyncram_component.intended_device_family = "Stratix",
 		altsyncram_component.operation_mode = "DUAL_PORT",
@@ -5164,7 +5274,7 @@ endmodule
 // megafunction wizard: %LPM_RAM_DP%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: altsyncram 
+// MODULE: altsyncram
 
 // ============================================================
 // File Name: L_Polynomial.v
@@ -5179,17 +5289,17 @@ endmodule
 
 
 //Copyright (C) 1991-2005 Altera Corporation
-//Your use of Altera Corporation's design tools, logic functions 
-//and other software and tools, and its AMPP partner logic       
-//functions, and any output files any of the foregoing           
-//(including device programming or simulation files), and any    
-//associated documentation or information are expressly subject  
-//to the terms and conditions of the Altera Program License      
-//Subscription Agreement, Altera MegaCore Function License       
-//Agreement, or other applicable license agreement, including,   
-//without limitation, that your use is for the sole purpose of   
-//programming logic devices manufactured by Altera and sold by   
-//Altera or its authorized distributors.  Please refer to the    
+//Your use of Altera Corporation's design tools, logic functions
+//and other software and tools, and its AMPP partner logic
+//functions, and any output files any of the foregoing
+//(including device programming or simulation files), and any
+//associated documentation or information are expressly subject
+//to the terms and conditions of the Altera Program License
+//Subscription Agreement, Altera MegaCore Function License
+//Agreement, or other applicable license agreement, including,
+//without limitation, that your use is for the sole purpose of
+//programming logic devices manufactured by Altera and sold by
+//Altera or its authorized distributors.  Please refer to the
 //applicable agreement for further details.
 
 
@@ -5216,6 +5326,33 @@ module L_Polynomial (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
+	RAMB18E1 altsyncram_component(
+		.DOBDO(sub_wire0),
+		.DOADO(),
+		.DOPBDOP(),
+		.DOPADOP(),
+		.DIBDI(),
+		.DIADI(data),
+		.DIPBDIP(),
+		.DIPADIP(),
+
+		.ADDRARDADDR(rdaddress),
+		.CLKARDCLK(clock),
+		.ENARDEN(rden),
+		.REGCEAREGCE(),
+		.RSTRAMARSTRAM(),
+		.RSTREGARSTREG(),
+		.WEA(),
+
+		.ADDRBWRADDR(wraddress),
+		.CLKBWRCLK(clock),
+		.ENBWREN(wren),
+		.REGCEB(),
+		.RSTRAMB(),
+		.RSTREGB(),
+		.WEBWE()
+	);
+	/*
 	altsyncram	altsyncram_component (
 				.wren_a (wren),
 				.clock0 (clock),
@@ -5262,7 +5399,7 @@ module L_Polynomial (
 		altsyncram_component.outdata_aclr_b = "NONE",
 		altsyncram_component.read_during_write_mode_mixed_ports = "DONT_CARE",
 		altsyncram_component.power_up_uninitialized = "FALSE",
-		altsyncram_component.init_file = "mea_buffers.mif";
+		altsyncram_component.init_file = "mea_buffers.mif";*/
 
 
 endmodule
@@ -5406,7 +5543,7 @@ module modified_euclid_alg_0(
 						locator_degree,
 						errata_magnitude_coefs,errata_loc_coefs,
 						errata_magnitude_coef_ready,errata_loc_coef_ready,
-						erase_coef_addr,modified_syndr_coef_addr,unmodified_syndr_coef_addr,	
+						erase_coef_addr,modified_syndr_coef_addr,unmodified_syndr_coef_addr,
 						errata_loc_addr,errata_magnitude_addr,
 						//deactivate_chien_serach,
 						erasures_absent,
@@ -5417,17 +5554,17 @@ module modified_euclid_alg_0(
 						L_dpram_addr,U_dpram_addr,Q_dpram_addr,R_dpram_addr
 						//m_counter,test_Q,test_R,test_L,test_U
 						);
-						
+
 parameter width = 5;
 parameter number_of_coefs = 16;
-							
+
 input clock,reset,erasure_polyn_compute_done,modified_syndr_polyn_compute_done;
 input erasure_coef_ready,syndr_coef_ready,unmodified_syndrome_ready;
 input send_magnitude_errata_coefs,send_loc_errata_coefs;
 input erasures_absent;//when the recieved codeword has no erasure flags asserted
 input chien_regs_initialized;
 input[width-1:0] no_of_erasure_coefs,no_of_parity;
-input [width-1:0] erase_coef_addr,modified_syndr_coef_addr,unmodified_syndr_coef_addr;	
+input [width-1:0] erase_coef_addr,modified_syndr_coef_addr,unmodified_syndr_coef_addr;
 input[7:0] modified_syndr_polyn,erasure_polyn,unmodified_syndr_polyn;
 
 output [7:0] magnitue_polyn,locator_polyn;
@@ -5457,7 +5594,7 @@ wire [7:0] R_out,Q_out,L_out,U_out;
 wire [7:0] R_polyn_out,Q_polyn_out,L_polyn_out,U_polyn_out;
 
 //define galois field multiplier
-task gf_multiplier;
+task gf_multiplier_euclid_alg_0;
 
 input[7:0] a,b;
 output[7:0] y;
@@ -5541,7 +5678,7 @@ reg [7:0] in_R,in_Q,in_L,in_U;
 reg swap_signal;
 reg [7:0] U_least_coef;//,zero_coef;
 reg [width-1:0] U_least_coef_addr;//;
-integer i,j,k,l;
+reg[31:0] i,j,k,l;
 
 Q_buffer		buffer0(
 							.wraddress		(wraddress_shifted),
@@ -5560,9 +5697,9 @@ R_buffer		buffer1(
 							.rden			(rden),
 							.rdaddress		(rdaddress),
 							.clock			(clock),
-							.q				(R_out)  
+							.q				(R_out)
 							);
-							
+
 L_buffer		buffer2(
 							.wraddress		(wraddress),
 							.wren			(wren),
@@ -5570,8 +5707,8 @@ L_buffer		buffer2(
 							.rden			(rden),
 							.rdaddress		(rdaddress),
 							.clock			(clock),
-							.q				(L_out)  
-							);														
+							.q				(L_out)
+							);
 U_buffer		buffer3(
 							.wraddress		(wraddress_shifted),
 							.wren			(wren),
@@ -5579,8 +5716,8 @@ U_buffer		buffer3(
 							.rden			(rden),
 							.rdaddress		(rdaddress),
 							.clock			(clock),
-							.q				(U_out)  
-							);											
+							.q				(U_out)
+							);
 Q_Polynomial		Dpram0(
 							.wraddress		(Q_dpram_addr),
 							.wren			(wren_polyn),
@@ -5598,9 +5735,9 @@ R_Polynomial		Dpram1(
 							.rden			(rden_polyn),
 							.rdaddress		(rdaddress_R),
 							.clock			(clock),
-							.q				(R_polyn_out)  
+							.q				(R_polyn_out)
 							);
-							
+
 L_Polynomial		Dpram2(
 							.wraddress		(L_dpram_addr),
 							.wren			(wren_polyn),
@@ -5608,8 +5745,8 @@ L_Polynomial		Dpram2(
 							.rden			(rden_polyn),
 							.rdaddress		(rdaddress_L),
 							.clock			(clock),
-							.q				(L_polyn_out)  
-							);														
+							.q				(L_polyn_out)
+							);
 U_Polynomial		Dpram3(
 							.wraddress		(U_dpram_addr),
 							.wren			(wren_polyn),
@@ -5617,8 +5754,8 @@ U_Polynomial		Dpram3(
 							.rden			(rden_polyn),
 							.rdaddress		(rdaddress_U),
 							.clock			(clock),
-							.q				(U_polyn_out)  
-							);					
+							.q				(U_polyn_out)
+							);
 /*****Handshaking for the transfer the coefficints of erasure polynomial****/
 always @(posedge clock)
 begin
@@ -5706,7 +5843,7 @@ end
 	U(x) = erasure polynomial(if erasures present) OR 1 (if erasures absent);
 	Q(x) = modified syndrome polynoial (if erasures present) OR unmodified syndrome polynomial (if erasures absent);
 	R(x) = x^(number of parity)
-	L(x) = 0; 
+	L(x) = 0;
 */
 always @( posedge clock)
 begin
@@ -5742,7 +5879,7 @@ begin
 end
 
 if(syndr_coef_ready==1'b1 && modified_syndr_coef_addr < no_of_parity)//loading the coefficients of modified syndrome polynomial
-begin	
+begin
 	if(modified_syndr_coef_addr == no_of_parity-1 || modified_syndr_coef_addr == no_of_parity)
 		begin R_dpram_addr = no_of_parity; magnitude_polyn_R = 8'd1;end
 	else magnitude_polyn_R = 8'd0;
@@ -5761,7 +5898,7 @@ begin
 end
 
 if(((load_modified_syndr_coef_done==1'b1 && load_erasure_coef_done==1'b1)||(load_unmodified_syndr_coef_done==1'b1))&&(reg_init ==1'b0))
-begin	
+begin
 		degree_R<=no_of_parity;
 		degree_Q<=no_of_parity-8'd1;
 		degree_L<= 0;
@@ -5769,7 +5906,7 @@ begin
 		reg_initialization_complete <= 1'b1;
 		rden_polyn <= 1'b1;
 		wren_polyn = 1'b0;
-		
+
 end
 else begin  reg_initialization_complete <= 1'b0; end
 
@@ -5779,14 +5916,14 @@ if(chien_regs_initialized==1'b1)
 	syndr_and_erasure_polyn_output <= 1'b0;
 	end
 
-/*Modified Euclidean Algorithm (MEA) is an iterative algorithm. States 0-6 are performed 
+/*Modified Euclidean Algorithm (MEA) is an iterative algorithm. States 0-6 are performed
 until the stop condition (degree_R<degree_L ) is met, then the algorithm extis at State 3 outputting:
 			1. errata_loc_coefs = L(x)
 			2. errata_magnitude_coefs = R(x)
 			3. Locator deree = degree of L(x) -->expected number of erroneous bytes in the codeword
-The maximum number of iterations  = number of parity bytes. If max iterations is reached and 
+The maximum number of iterations  = number of parity bytes. If max iterations is reached and
 stop condition isn't met, exit at State 3 anyway.
-*/	
+*/
 
 if (MEA_iteration == 1'b1)
 	begin
@@ -5799,13 +5936,13 @@ if (MEA_iteration == 1'b1)
 				L_dpram_addr <= {width{1'b1}};
 				U_dpram_addr <= {width{1'b1}};
 				Q_dpram_addr <= {width{1'b1}};
-				R_dpram_addr <= {width{1'b1}};			
+				R_dpram_addr <= {width{1'b1}};
 				state <=1;
 			end
 
 		1:	begin
 					if(L_polyn_out==8'd0 && degree_L!=0)
-						begin 
+						begin
 							rdaddress_L <= rdaddress_L - 1; //8'd Update degree of L(x)
 							degree_L <= rdaddress_L;
 							wraddress_shifted = clear_mem ;
@@ -5813,7 +5950,7 @@ if (MEA_iteration == 1'b1)
 							in_Q = 8'd0;
 							clear_mem = clear_mem + 1;
 							state <=1;
-			 			end 
+			 			end
 					else begin
 						state<=2;
 						wren = 0;
@@ -5823,11 +5960,11 @@ if (MEA_iteration == 1'b1)
 
 		2:	begin
 					if(Q_polyn_out==8'd0 && degree_Q!=1)//8'd
-			 			begin 
+			 			begin
 							rdaddress_Q <= rdaddress_Q - 1;
-							degree_Q <= rdaddress_Q; 
+							degree_Q <= rdaddress_Q;
 				 			state<=2;
-			 			end 
+			 			end
 					else begin
 						state <= 3;
 						leading_coef_Q <= Q_polyn_out;
@@ -5839,13 +5976,13 @@ if (MEA_iteration == 1'b1)
 							rdaddress_R <= rdaddress_R - 1;
 							degree_R <= rdaddress_R;
 			   				state <=3;
-			 			end 
+			 			end
 					else begin
 						state<=4;
 						leading_coef_R <= R_polyn_out;
-					end 
+					end
 			end
-		4:						 
+		4:
 			if(degree_R<degree_L || max_mea_iterations_reached ==1'b1)//stop_signal==1'b1 therefore output the magnitude and locator polynomial
 				begin
 					rdaddress_R <= 0;
@@ -5853,7 +5990,7 @@ if (MEA_iteration == 1'b1)
 					magnitude_and_locator_polyn_output <= 1'b1;
 					MEA_compute_done<=1'b1;
 					locator_degree <= degree_L;
-				end 
+				end
 			else if(no_of_erasure_coefs > degree_Q)//erasure generator has captured all errors
 				begin
 					rdaddress_U <= 0;
@@ -5864,30 +6001,30 @@ if (MEA_iteration == 1'b1)
 				end
 			//else if(error_free_codeword==1'b1) error_free_cw =1'b1;//codeword contains no errors
 			else state<=5;
-					
-		5:	
+
+		5:
 			if(degree_R>=degree_L)//stop_signal==1'b0
 				begin
-					MEA_compute_done= 1'b0;	
+					MEA_compute_done= 1'b0;
 					if(degree_R < degree_Q)//swap before computation
 						begin
 							swap_signal = 1;
 							degree_shift = degree_Q - degree_R;
-						end 			
+						end
 					else if(degree_R >= degree_Q)//no swap just go ahead with computation of L(X) and R(X);  Q(x) and U(X) remain same
  						begin
 							swap_signal = 0;
 							degree_shift = degree_R - degree_Q;
-					end	
+					end
 				//if (degree_shift == number_of_coefs)//syndrome ==0 therefore codeword is error-free
-				//	begin 
+				//	begin
 				//		state<=4;
 				//		error_free_codeword=1'b1;
-				//	end	
+				//	end
 				state<=6;
- 			end//end of degree_R>=degree_L loop	
-		
-		6:				
+ 			end//end of degree_R>=degree_L loop
+
+		6:
 			if (polynomial_compute == 1'b1)
 				begin
 					rdaddress_Q <= multiplier_counter;
@@ -5903,26 +6040,26 @@ if (MEA_iteration == 1'b1)
 						begin
 							if(swap_signal == 1'b1)
 								begin
-									gf_multiplier(leading_coef_R,Q_polyn_out,in_R);					
-									gf_multiplier(leading_coef_R,U_polyn_out,in_L);																			
-									gf_multiplier(leading_coef_Q,R_polyn_out,in_Q);					
-									gf_multiplier(leading_coef_Q,L_polyn_out,in_U);	
-								
+									gf_multiplier_euclid_alg_0(leading_coef_R,Q_polyn_out,in_R);
+									gf_multiplier_euclid_alg_0(leading_coef_R,U_polyn_out,in_L);
+									gf_multiplier_euclid_alg_0(leading_coef_Q,R_polyn_out,in_Q);
+									gf_multiplier_euclid_alg_0(leading_coef_Q,L_polyn_out,in_U);
+
 									Q_dpram_addr <= multiplier_counter - 2;
 									U_dpram_addr <= multiplier_counter - 2;
 									mod_syndr_polyn_Q <= R_polyn_out;
 									erasure_polyn_U <= L_polyn_out;
 								end
 								else begin
-									gf_multiplier(leading_coef_Q,R_polyn_out,in_R);					
-									gf_multiplier(leading_coef_Q,L_polyn_out,in_L);					
-									gf_multiplier(leading_coef_R,Q_polyn_out,in_Q);					
-									gf_multiplier(leading_coef_R,U_polyn_out,in_U);					
+									gf_multiplier_euclid_alg_0(leading_coef_Q,R_polyn_out,in_R);
+									gf_multiplier_euclid_alg_0(leading_coef_Q,L_polyn_out,in_L);
+									gf_multiplier_euclid_alg_0(leading_coef_R,Q_polyn_out,in_Q);
+									gf_multiplier_euclid_alg_0(leading_coef_R,U_polyn_out,in_U);
 								end
 							wraddress_shifted <= degree_shift + (multiplier_counter-2);
 							wraddress <= multiplier_counter-2;
 							rden <= 1'b1;//rd enable mult buffers
-						end 
+						end
 					multiplier_counter = multiplier_counter + 1;
 					if (multiplier_counter >=4)//gf_mult o/p available
 						begin
@@ -5937,12 +6074,12 @@ if (MEA_iteration == 1'b1)
 						end
 					if (multiplier_counter == number_of_coefs + 7) state<=7;//6'd39
 
-					end//end of polynomial_compute = 1'b1	
+					end//end of polynomial_compute = 1'b1
 		7:
 						begin
 							no_of_mea_iterations <= no_of_mea_iterations + 1;
 							if(no_of_mea_iterations>no_of_parity)
-								begin 
+								begin
 									state<=4;
 									max_mea_iterations_reached =1'b1;
 								end
@@ -5956,12 +6093,12 @@ if (MEA_iteration == 1'b1)
 							multiplier_counter =6'd0;
 							swap_signal <= 0;
 							state<=0;
-						end		
+						end
 
 		endcase
 
 	end//MEA_iteration = 1'b1
-	
+
 /****Sending out the coefficients of errata (errors-&-erasure) magnitude polynomial -->omega(x)*****/
 
 if(send_magnitude_errata_coefs==1'b1)
@@ -5970,7 +6107,7 @@ if(send_magnitude_errata_coefs==1'b1)
 			begin
 				rdaddress_R <= errata_magnitude_addr_to_chien +1;
 				errata_magnitude_coefs <= R_polyn_out;
-				
+
 				if(rdaddress_R>=1)errata_magnitude_addr = errata_magnitude_addr_to_chien-1;
 				errata_magnitude_addr_to_chien = errata_magnitude_addr_to_chien + 1;
 				errata_magnitude_coef_ready=1'b1;
@@ -5979,7 +6116,7 @@ if(send_magnitude_errata_coefs==1'b1)
 			begin
 				rdaddress_Q <= errata_magnitude_addr_to_chien +1;
 				errata_magnitude_coefs <= Q_polyn_out;
-				
+
 				if(rdaddress_Q>=1)errata_magnitude_addr = errata_magnitude_addr_to_chien-1;
 				errata_magnitude_addr_to_chien = errata_magnitude_addr_to_chien + 1;
 				errata_magnitude_coef_ready=1'b1;
@@ -5995,7 +6132,7 @@ if(send_loc_errata_coefs==1'b1)
 			begin
 			rdaddress_L <= errata_loc_addr_to_chien+1;
 			errata_loc_coefs <= L_polyn_out;
-			
+
 			if(rdaddress_L>=1)errata_loc_addr = errata_loc_addr_to_chien-1;
 			errata_loc_addr_to_chien = errata_loc_addr_to_chien + 1;
 			errata_loc_coef_ready=1'b1;
@@ -6004,10 +6141,10 @@ if(send_loc_errata_coefs==1'b1)
 			begin
 			rdaddress_U <= errata_loc_addr_to_chien+1;
 			errata_loc_coefs <= U_polyn_out;
-			
+
 			if(rdaddress_U >= 1)errata_loc_addr = errata_loc_addr_to_chien-1;
 			errata_loc_addr_to_chien = errata_loc_addr_to_chien + 1;
-			errata_loc_coef_ready=1'b1;			
+			errata_loc_coef_ready=1'b1;
 			end
 	end
 	else if(send_loc_errata_coefs==1'b0)errata_loc_coef_ready=1'b0;
@@ -6019,7 +6156,7 @@ assign magnitue_polyn = magnitude_polyn_R;
 assign locator_polyn = locator_polyn_L;
 assign state_case = state;
 assign R_degree = degree_R;
-assign Q_degree = degree_Q;	
+assign Q_degree = degree_Q;
 assign L_degree = degree_L;
 //assign m_counter =multiplier_counter;
 //assign R = R_polyn_out;
@@ -6069,7 +6206,7 @@ module modified_euclid_alg_1(
 						locator_degree,
 						errata_magnitude_coefs,errata_loc_coefs,
 						errata_magnitude_coef_ready,errata_loc_coef_ready,
-						erase_coef_addr,modified_syndr_coef_addr,unmodified_syndr_coef_addr,	
+						erase_coef_addr,modified_syndr_coef_addr,unmodified_syndr_coef_addr,
 						errata_loc_addr,errata_magnitude_addr,
 						//deactivate_chien_serach,
 						erasures_absent,
@@ -6080,17 +6217,17 @@ module modified_euclid_alg_1(
 						L_dpram_addr,U_dpram_addr,Q_dpram_addr,R_dpram_addr
 						//m_counter,test_Q,test_R,test_L,test_U
 						);
-						
+
 parameter width = 5;
 parameter number_of_coefs = 16;
-							
+
 input clock,reset,erasure_polyn_compute_done,modified_syndr_polyn_compute_done;
 input erasure_coef_ready,syndr_coef_ready,unmodified_syndrome_ready;
 input send_magnitude_errata_coefs,send_loc_errata_coefs;
 input erasures_absent;//when the recieved codeword has no erasure flags asserted
 input chien_regs_initialized;
 input[width-1:0] no_of_erasure_coefs,no_of_parity;
-input [width-1:0] erase_coef_addr,modified_syndr_coef_addr,unmodified_syndr_coef_addr;	
+input [width-1:0] erase_coef_addr,modified_syndr_coef_addr,unmodified_syndr_coef_addr;
 input[7:0] modified_syndr_polyn,erasure_polyn,unmodified_syndr_polyn;
 
 output [7:0] magnitue_polyn,locator_polyn;
@@ -6120,7 +6257,7 @@ wire [7:0] R_out,Q_out,L_out,U_out;
 wire [7:0] R_polyn_out,Q_polyn_out,L_polyn_out,U_polyn_out;
 
 //define galois field multiplier
-task gf_multiplier;
+task gf_multiplier_euclid_alg_1;
 
 input[7:0] a,b;
 output[7:0] y;
@@ -6204,7 +6341,7 @@ reg [7:0] in_R,in_Q,in_L,in_U;
 reg swap_signal;
 reg [7:0] U_least_coef;//,zero_coef;
 reg [width-1:0] U_least_coef_addr;//;
-integer i,j,k,l;
+reg[31:0] i,j,k,l;
 
 Q_buffer_1		buffer0(
 							.wraddress		(wraddress_shifted),
@@ -6223,9 +6360,9 @@ R_buffer_1		buffer1(
 							.rden			(rden),
 							.rdaddress		(rdaddress),
 							.clock			(clock),
-							.q				(R_out)  
+							.q				(R_out)
 							);
-							
+
 L_buffer_1		buffer2(
 							.wraddress		(wraddress),
 							.wren			(wren),
@@ -6233,8 +6370,8 @@ L_buffer_1		buffer2(
 							.rden			(rden),
 							.rdaddress		(rdaddress),
 							.clock			(clock),
-							.q				(L_out)  
-							);														
+							.q				(L_out)
+							);
 U_buffer_1		buffer3(
 							.wraddress		(wraddress_shifted),
 							.wren			(wren),
@@ -6242,8 +6379,8 @@ U_buffer_1		buffer3(
 							.rden			(rden),
 							.rdaddress		(rdaddress),
 							.clock			(clock),
-							.q				(U_out)  
-							);											
+							.q				(U_out)
+							);
 Q_Polynomial_1		Dpram0(
 							.wraddress		(Q_dpram_addr),
 							.wren			(wren_polyn),
@@ -6261,9 +6398,9 @@ R_Polynomial_1		Dpram1(
 							.rden			(rden_polyn),
 							.rdaddress		(rdaddress_R),
 							.clock			(clock),
-							.q				(R_polyn_out)  
+							.q				(R_polyn_out)
 							);
-							
+
 L_Polynomial_1		Dpram2(
 							.wraddress		(L_dpram_addr),
 							.wren			(wren_polyn),
@@ -6271,8 +6408,8 @@ L_Polynomial_1		Dpram2(
 							.rden			(rden_polyn),
 							.rdaddress		(rdaddress_L),
 							.clock			(clock),
-							.q				(L_polyn_out)  
-							);														
+							.q				(L_polyn_out)
+							);
 U_Polynomial_1		Dpram3(
 							.wraddress		(U_dpram_addr),
 							.wren			(wren_polyn),
@@ -6280,8 +6417,8 @@ U_Polynomial_1		Dpram3(
 							.rden			(rden_polyn),
 							.rdaddress		(rdaddress_U),
 							.clock			(clock),
-							.q				(U_polyn_out)  
-							);					
+							.q				(U_polyn_out)
+							);
 /*****Handshaking for the transfer the coefficints of erasure polynomial****/
 always @(posedge clock)
 begin
@@ -6369,7 +6506,7 @@ end
 	U(x) = erasure polynomial(if erasures present) OR 1 (if erasures absent);
 	Q(x) = modified syndrome polynoial (if erasures present) OR unmodified syndrome polynomial (if erasures absent);
 	R(x) = x^(number of parity)
-	L(x) = 0; 
+	L(x) = 0;
 */
 always @( posedge clock)
 begin
@@ -6405,7 +6542,7 @@ begin
 end
 
 if(syndr_coef_ready==1'b1 && modified_syndr_coef_addr < no_of_parity)//loading the coefficients of modified syndrome polynomial
-begin	
+begin
 	if(modified_syndr_coef_addr == no_of_parity-1 || modified_syndr_coef_addr == no_of_parity)
 		begin R_dpram_addr = no_of_parity; magnitude_polyn_R = 8'd1;end
 	else magnitude_polyn_R = 8'd0;
@@ -6424,7 +6561,7 @@ begin
 end
 
 if(((load_modified_syndr_coef_done==1'b1 && load_erasure_coef_done==1'b1)||(load_unmodified_syndr_coef_done==1'b1))&&(reg_init ==1'b0))
-begin	
+begin
 		degree_R<=no_of_parity;
 		degree_Q<=no_of_parity-8'd1;
 		degree_L<= 0;
@@ -6432,7 +6569,7 @@ begin
 		reg_initialization_complete <= 1'b1;
 		rden_polyn <= 1'b1;
 		wren_polyn = 1'b0;
-		
+
 end
 else begin  reg_initialization_complete <= 1'b0; end
 
@@ -6442,14 +6579,14 @@ if(chien_regs_initialized==1'b1)
 	syndr_and_erasure_polyn_output <= 1'b0;
 	end
 
-/*Modified Euclidean Algorithm (MEA) is an iterative algorithm. States 0-6 are performed 
+/*Modified Euclidean Algorithm (MEA) is an iterative algorithm. States 0-6 are performed
 until the stop condition (degree_R<degree_L ) is met, then the algorithm extis at State 3 outputting:
 			1. errata_loc_coefs = L(x)
 			2. errata_magnitude_coefs = R(x)
 			3. Locator deree = degree of L(x) -->expected number of erroneous bytes in the codeword
-The maximum number of iterations  = number of parity bytes. If max iterations is reached and 
+The maximum number of iterations  = number of parity bytes. If max iterations is reached and
 stop condition isn't met, exit at State 3 anyway.
-*/	
+*/
 
 if (MEA_iteration == 1'b1)
 	begin
@@ -6462,13 +6599,13 @@ if (MEA_iteration == 1'b1)
 				L_dpram_addr <= {width{1'b1}};
 				U_dpram_addr <= {width{1'b1}};
 				Q_dpram_addr <= {width{1'b1}};
-				R_dpram_addr <= {width{1'b1}};			
+				R_dpram_addr <= {width{1'b1}};
 				state <=1;
 			end
 
 		1:	begin
 					if(L_polyn_out==8'd0 && degree_L!=0)
-						begin 
+						begin
 							rdaddress_L <= rdaddress_L - 1; //8'd Update degree of L(x)
 							degree_L <= rdaddress_L;
 							wraddress_shifted = clear_mem ;
@@ -6476,7 +6613,7 @@ if (MEA_iteration == 1'b1)
 							in_Q = 8'd0;
 							clear_mem = clear_mem + 1;
 							state <=1;
-			 			end 
+			 			end
 					else begin
 						state<=2;
 						wren = 0;
@@ -6486,11 +6623,11 @@ if (MEA_iteration == 1'b1)
 
 		2:	begin
 					if(Q_polyn_out==8'd0 && degree_Q!=1)//8'd
-			 			begin 
+			 			begin
 							rdaddress_Q <= rdaddress_Q - 1;
-							degree_Q <= rdaddress_Q; 
+							degree_Q <= rdaddress_Q;
 				 			state<=2;
-			 			end 
+			 			end
 					else begin
 						state <= 3;
 						leading_coef_Q <= Q_polyn_out;
@@ -6502,13 +6639,13 @@ if (MEA_iteration == 1'b1)
 							rdaddress_R <= rdaddress_R - 1;
 							degree_R <= rdaddress_R;
 			   				state <=3;
-			 			end 
+			 			end
 					else begin
 						state<=4;
 						leading_coef_R <= R_polyn_out;
-					end 
+					end
 			end
-		4:						 
+		4:
 			if(degree_R<degree_L || max_mea_iterations_reached ==1'b1)//stop_signal==1'b1 therefore output the magnitude and locator polynomial
 				begin
 					rdaddress_R <= 0;
@@ -6516,7 +6653,7 @@ if (MEA_iteration == 1'b1)
 					magnitude_and_locator_polyn_output <= 1'b1;
 					MEA_compute_done<=1'b1;
 					locator_degree <= degree_L;
-				end 
+				end
 			else if(no_of_erasure_coefs > degree_Q)//erasure generator has captured all errors
 				begin
 					rdaddress_U <= 0;
@@ -6527,30 +6664,30 @@ if (MEA_iteration == 1'b1)
 				end
 			//else if(error_free_codeword==1'b1) error_free_cw =1'b1;//codeword contains no errors
 			else state<=5;
-					
-		5:	
+
+		5:
 			if(degree_R>=degree_L)//stop_signal==1'b0
 				begin
-					MEA_compute_done= 1'b0;	
+					MEA_compute_done= 1'b0;
 					if(degree_R < degree_Q)//swap before computation
 						begin
 							swap_signal = 1;
 							degree_shift = degree_Q - degree_R;
-						end 			
+						end
 					else if(degree_R >= degree_Q)//no swap just go ahead with computation of L(X) and R(X);  Q(x) and U(X) remain same
  						begin
 							swap_signal = 0;
 							degree_shift = degree_R - degree_Q;
-					end	
+					end
 				//if (degree_shift == number_of_coefs)//syndrome ==0 therefore codeword is error-free
-				//	begin 
+				//	begin
 				//		state<=4;
 				//		error_free_codeword=1'b1;
-				//	end	
+				//	end
 				state<=6;
- 			end//end of degree_R>=degree_L loop	
-		
-		6:				
+ 			end//end of degree_R>=degree_L loop
+
+		6:
 			if (polynomial_compute == 1'b1)
 				begin
 					rdaddress_Q <= multiplier_counter;
@@ -6566,26 +6703,26 @@ if (MEA_iteration == 1'b1)
 						begin
 							if(swap_signal == 1'b1)
 								begin
-									gf_multiplier(leading_coef_R,Q_polyn_out,in_R);					
-									gf_multiplier(leading_coef_R,U_polyn_out,in_L);																			
-									gf_multiplier(leading_coef_Q,R_polyn_out,in_Q);					
-									gf_multiplier(leading_coef_Q,L_polyn_out,in_U);	
-								
+									gf_multiplier_euclid_alg_1(leading_coef_R,Q_polyn_out,in_R);
+									gf_multiplier_euclid_alg_1(leading_coef_R,U_polyn_out,in_L);
+									gf_multiplier_euclid_alg_1(leading_coef_Q,R_polyn_out,in_Q);
+									gf_multiplier_euclid_alg_1(leading_coef_Q,L_polyn_out,in_U);
+
 									Q_dpram_addr <= multiplier_counter - 2;
 									U_dpram_addr <= multiplier_counter - 2;
 									mod_syndr_polyn_Q <= R_polyn_out;
 									erasure_polyn_U <= L_polyn_out;
 								end
 								else begin
-									gf_multiplier(leading_coef_Q,R_polyn_out,in_R);					
-									gf_multiplier(leading_coef_Q,L_polyn_out,in_L);					
-									gf_multiplier(leading_coef_R,Q_polyn_out,in_Q);					
-									gf_multiplier(leading_coef_R,U_polyn_out,in_U);					
+									gf_multiplier_euclid_alg_1(leading_coef_Q,R_polyn_out,in_R);
+									gf_multiplier_euclid_alg_1(leading_coef_Q,L_polyn_out,in_L);
+									gf_multiplier_euclid_alg_1(leading_coef_R,Q_polyn_out,in_Q);
+									gf_multiplier_euclid_alg_1(leading_coef_R,U_polyn_out,in_U);
 								end
 							wraddress_shifted <= degree_shift + (multiplier_counter-2);
 							wraddress <= multiplier_counter-2;
 							rden <= 1'b1;//rd enable mult buffers
-						end 
+						end
 					multiplier_counter = multiplier_counter + 1;
 					if (multiplier_counter >=4)//gf_mult o/p available
 						begin
@@ -6600,12 +6737,12 @@ if (MEA_iteration == 1'b1)
 						end
 					if (multiplier_counter == number_of_coefs + 7) state<=7;//6'd39
 
-					end//end of polynomial_compute = 1'b1	
+					end//end of polynomial_compute = 1'b1
 		7:
 						begin
 							no_of_mea_iterations <= no_of_mea_iterations + 1;
 							if(no_of_mea_iterations>no_of_parity)
-								begin 
+								begin
 									state<=4;
 									max_mea_iterations_reached =1'b1;
 								end
@@ -6619,12 +6756,12 @@ if (MEA_iteration == 1'b1)
 							multiplier_counter =6'd0;
 							swap_signal <= 0;
 							state<=0;
-						end		
+						end
 
 		endcase
 
 	end//MEA_iteration = 1'b1
-	
+
 /****Sending out the coefficients of errata (errors-&-erasure) magnitude polynomial -->omega(x)*****/
 
 if(send_magnitude_errata_coefs==1'b1)
@@ -6633,7 +6770,7 @@ if(send_magnitude_errata_coefs==1'b1)
 			begin
 				rdaddress_R <= errata_magnitude_addr_to_chien +1;
 				errata_magnitude_coefs <= R_polyn_out;
-				
+
 				if(rdaddress_R>=1)errata_magnitude_addr = errata_magnitude_addr_to_chien-1;
 				errata_magnitude_addr_to_chien = errata_magnitude_addr_to_chien + 1;
 				errata_magnitude_coef_ready=1'b1;
@@ -6642,7 +6779,7 @@ if(send_magnitude_errata_coefs==1'b1)
 			begin
 				rdaddress_Q <= errata_magnitude_addr_to_chien +1;
 				errata_magnitude_coefs <= Q_polyn_out;
-				
+
 				if(rdaddress_Q>=1)errata_magnitude_addr = errata_magnitude_addr_to_chien-1;
 				errata_magnitude_addr_to_chien = errata_magnitude_addr_to_chien + 1;
 				errata_magnitude_coef_ready=1'b1;
@@ -6658,7 +6795,7 @@ if(send_loc_errata_coefs==1'b1)
 			begin
 			rdaddress_L <= errata_loc_addr_to_chien+1;
 			errata_loc_coefs <= L_polyn_out;
-			
+
 			if(rdaddress_L>=1)errata_loc_addr = errata_loc_addr_to_chien-1;
 			errata_loc_addr_to_chien = errata_loc_addr_to_chien + 1;
 			errata_loc_coef_ready=1'b1;
@@ -6667,10 +6804,10 @@ if(send_loc_errata_coefs==1'b1)
 			begin
 			rdaddress_U <= errata_loc_addr_to_chien+1;
 			errata_loc_coefs <= U_polyn_out;
-			
+
 			if(rdaddress_U >= 1)errata_loc_addr = errata_loc_addr_to_chien-1;
 			errata_loc_addr_to_chien = errata_loc_addr_to_chien + 1;
-			errata_loc_coef_ready=1'b1;			
+			errata_loc_coef_ready=1'b1;
 			end
 	end
 	else if(send_loc_errata_coefs==1'b0)errata_loc_coef_ready=1'b0;
@@ -6682,7 +6819,7 @@ assign magnitue_polyn = magnitude_polyn_R;
 assign locator_polyn = locator_polyn_L;
 assign state_case = state;
 assign R_degree = degree_R;
-assign Q_degree = degree_Q;	
+assign Q_degree = degree_Q;
 assign L_degree = degree_L;
 //assign m_counter =multiplier_counter;
 //assign R = R_polyn_out;
@@ -6732,7 +6869,7 @@ module modified_euclid_alg_2(
 						locator_degree,
 						errata_magnitude_coefs,errata_loc_coefs,
 						errata_magnitude_coef_ready,errata_loc_coef_ready,
-						erase_coef_addr,modified_syndr_coef_addr,unmodified_syndr_coef_addr,	
+						erase_coef_addr,modified_syndr_coef_addr,unmodified_syndr_coef_addr,
 						errata_loc_addr,errata_magnitude_addr,
 						//deactivate_chien_serach,
 						erasures_absent,
@@ -6743,17 +6880,17 @@ module modified_euclid_alg_2(
 						L_dpram_addr,U_dpram_addr,Q_dpram_addr,R_dpram_addr
 						//m_counter,test_Q,test_R,test_L,test_U
 						);
-						
+
 parameter width = 5;
 parameter number_of_coefs = 16;
-							
+
 input clock,reset,erasure_polyn_compute_done,modified_syndr_polyn_compute_done;
 input erasure_coef_ready,syndr_coef_ready,unmodified_syndrome_ready;
 input send_magnitude_errata_coefs,send_loc_errata_coefs;
 input erasures_absent;//when the recieved codeword has no erasure flags asserted
 input chien_regs_initialized;
 input[width-1:0] no_of_erasure_coefs,no_of_parity;
-input [width-1:0] erase_coef_addr,modified_syndr_coef_addr,unmodified_syndr_coef_addr;	
+input [width-1:0] erase_coef_addr,modified_syndr_coef_addr,unmodified_syndr_coef_addr;
 input[7:0] modified_syndr_polyn,erasure_polyn,unmodified_syndr_polyn;
 
 output [7:0] magnitue_polyn,locator_polyn;
@@ -6761,7 +6898,7 @@ output [7:0] leading_Q,leading_R;
 output reg [7:0] errata_magnitude_coefs,errata_loc_coefs;
 output [2:0] state_case;
 output [width-1:0] R_degree,Q_degree,L_degree;
-output [width-1:0] locator_degree; 
+output [width-1:0] locator_degree;
 reg [width-1:0] locator_degree;
 output reg [width-1:0] errata_loc_addr,errata_magnitude_addr;
 output reg errata_magnitude_coef_ready,errata_loc_coef_ready;//load_chien_regs,
@@ -6784,7 +6921,7 @@ wire [7:0] R_out,Q_out,L_out,U_out;
 wire [7:0] R_polyn_out,Q_polyn_out,L_polyn_out,U_polyn_out;
 
 //define galois field multiplier
-task gf_multiplier;
+task gf_multiplier_euclid_alg_2;
 
 input[7:0] a,b;
 output[7:0] y;
@@ -6868,7 +7005,7 @@ reg [7:0] in_R,in_Q,in_L,in_U;
 reg swap_signal;
 reg [7:0] U_least_coef;//,zero_coef;
 reg [width-1:0] U_least_coef_addr;//;
-integer i,j,k,l;
+reg[31:0] i,j,k,l;
 
 Q_buffer_2		buffer0(
 							.wraddress		(wraddress_shifted),
@@ -6887,9 +7024,9 @@ R_buffer_2		buffer1(
 							.rden			(rden),
 							.rdaddress		(rdaddress),
 							.clock			(clock),
-							.q				(R_out)  
+							.q				(R_out)
 							);
-							
+
 L_buffer_2		buffer2(
 							.wraddress		(wraddress),
 							.wren			(wren),
@@ -6897,8 +7034,8 @@ L_buffer_2		buffer2(
 							.rden			(rden),
 							.rdaddress		(rdaddress),
 							.clock			(clock),
-							.q				(L_out)  
-							);														
+							.q				(L_out)
+							);
 U_buffer_2		buffer3(
 							.wraddress		(wraddress_shifted),
 							.wren			(wren),
@@ -6906,8 +7043,8 @@ U_buffer_2		buffer3(
 							.rden			(rden),
 							.rdaddress		(rdaddress),
 							.clock			(clock),
-							.q				(U_out)  
-							);											
+							.q				(U_out)
+							);
 Q_Polynomial_2		Dpram0(
 							.wraddress		(Q_dpram_addr),
 							.wren			(wren_polyn),
@@ -6925,9 +7062,9 @@ R_Polynomial_2		Dpram1(
 							.rden			(rden_polyn),
 							.rdaddress		(rdaddress_R),
 							.clock			(clock),
-							.q				(R_polyn_out)  
+							.q				(R_polyn_out)
 							);
-							
+
 L_Polynomial_2		Dpram2(
 							.wraddress		(L_dpram_addr),
 							.wren			(wren_polyn),
@@ -6935,8 +7072,8 @@ L_Polynomial_2		Dpram2(
 							.rden			(rden_polyn),
 							.rdaddress		(rdaddress_L),
 							.clock			(clock),
-							.q				(L_polyn_out)  
-							);														
+							.q				(L_polyn_out)
+							);
 U_Polynomial_2		Dpram3(
 							.wraddress		(U_dpram_addr),
 							.wren			(wren_polyn),
@@ -6944,8 +7081,8 @@ U_Polynomial_2		Dpram3(
 							.rden			(rden_polyn),
 							.rdaddress		(rdaddress_U),
 							.clock			(clock),
-							.q				(U_polyn_out)  
-							);					
+							.q				(U_polyn_out)
+							);
 /*****Handshaking for the transfer the coefficints of erasure polynomial****/
 always @(posedge clock)
 begin
@@ -7033,7 +7170,7 @@ end
 	U(x) = erasure polynomial(if erasures present) OR 1 (if erasures absent);
 	Q(x) = modified syndrome polynoial (if erasures present) OR unmodified syndrome polynomial (if erasures absent);
 	R(x) = x^(number of parity)
-	L(x) = 0; 
+	L(x) = 0;
 */
 always @( posedge clock)
 begin
@@ -7069,7 +7206,7 @@ begin
 end
 
 if(syndr_coef_ready==1'b1 && modified_syndr_coef_addr < no_of_parity)//loading the coefficients of modified syndrome polynomial
-begin	
+begin
 	if(modified_syndr_coef_addr == no_of_parity-1 || modified_syndr_coef_addr == no_of_parity)
 		begin R_dpram_addr = no_of_parity; magnitude_polyn_R = 8'd1;end
 	else magnitude_polyn_R = 8'd0;
@@ -7088,7 +7225,7 @@ begin
 end
 
 if(((load_modified_syndr_coef_done==1'b1 && load_erasure_coef_done==1'b1)||(load_unmodified_syndr_coef_done==1'b1))&&(reg_init ==1'b0))
-begin	
+begin
 		degree_R<=no_of_parity;
 		degree_Q<=no_of_parity-8'd1;
 		degree_L<= 0;
@@ -7096,7 +7233,7 @@ begin
 		reg_initialization_complete <= 1'b1;
 		rden_polyn <= 1'b1;
 		wren_polyn = 1'b0;
-		
+
 end
 else begin  reg_initialization_complete <= 1'b0; end
 
@@ -7106,14 +7243,14 @@ if(chien_regs_initialized==1'b1)
 	syndr_and_erasure_polyn_output <= 1'b0;
 	end
 
-/*Modified Euclidean Algorithm (MEA) is an iterative algorithm. States 0-6 are performed 
+/*Modified Euclidean Algorithm (MEA) is an iterative algorithm. States 0-6 are performed
 until the stop condition (degree_R<degree_L ) is met, then the algorithm extis at State 3 outputting:
 			1. errata_loc_coefs = L(x)
 			2. errata_magnitude_coefs = R(x)
 			3. Locator deree = degree of L(x) -->expected number of erroneous bytes in the codeword
-The maximum number of iterations  = number of parity bytes. If max iterations is reached and 
+The maximum number of iterations  = number of parity bytes. If max iterations is reached and
 stop condition isn't met, exit at State 3 anyway.
-*/	
+*/
 
 if (MEA_iteration == 1'b1)
 	begin
@@ -7126,13 +7263,13 @@ if (MEA_iteration == 1'b1)
 				L_dpram_addr <= {width{1'b1}};
 				U_dpram_addr <= {width{1'b1}};
 				Q_dpram_addr <= {width{1'b1}};
-				R_dpram_addr <= {width{1'b1}};			
+				R_dpram_addr <= {width{1'b1}};
 				state <=1;
 			end
 
 		1:	begin
 					if(L_polyn_out==8'd0 && degree_L!=0)
-						begin 
+						begin
 							rdaddress_L <= rdaddress_L - 1; //8'd Update degree of L(x)
 							degree_L <= rdaddress_L;
 							wraddress_shifted = clear_mem ;
@@ -7140,7 +7277,7 @@ if (MEA_iteration == 1'b1)
 							in_Q = 8'd0;
 							clear_mem = clear_mem + 1;
 							state <=1;
-			 			end 
+			 			end
 					else begin
 						state<=2;
 						wren = 0;
@@ -7150,11 +7287,11 @@ if (MEA_iteration == 1'b1)
 
 		2:	begin
 					if(Q_polyn_out==8'd0 && degree_Q!=1)//8'd
-			 			begin 
+			 			begin
 							rdaddress_Q <= rdaddress_Q - 1;
-							degree_Q <= rdaddress_Q; 
+							degree_Q <= rdaddress_Q;
 				 			state<=2;
-			 			end 
+			 			end
 					else begin
 						state <= 3;
 						leading_coef_Q <= Q_polyn_out;
@@ -7166,13 +7303,13 @@ if (MEA_iteration == 1'b1)
 							rdaddress_R <= rdaddress_R - 1;
 							degree_R <= rdaddress_R;
 			   				state <=3;
-			 			end 
+			 			end
 					else begin
 						state<=4;
 						leading_coef_R <= R_polyn_out;
-					end 
+					end
 			end
-		4:						 
+		4:
 			if(degree_R<degree_L || max_mea_iterations_reached ==1'b1)//stop_signal==1'b1 therefore output the magnitude and locator polynomial
 				begin
 					rdaddress_R <= 0;
@@ -7180,7 +7317,7 @@ if (MEA_iteration == 1'b1)
 					magnitude_and_locator_polyn_output <= 1'b1;
 					MEA_compute_done<=1'b1;
 					locator_degree <= degree_L;
-				end 
+				end
 			else if(no_of_erasure_coefs > degree_Q)//erasure generator has captured all errors
 				begin
 					rdaddress_U <= 0;
@@ -7191,30 +7328,30 @@ if (MEA_iteration == 1'b1)
 				end
 			//else if(error_free_codeword==1'b1) error_free_cw =1'b1;//codeword contains no errors
 			else state<=5;
-					
-		5:	
+
+		5:
 			if(degree_R>=degree_L)//stop_signal==1'b0
 				begin
-					MEA_compute_done= 1'b0;	
+					MEA_compute_done= 1'b0;
 					if(degree_R < degree_Q)//swap before computation
 						begin
 							swap_signal = 1;
 							degree_shift = degree_Q - degree_R;
-						end 			
+						end
 					else if(degree_R >= degree_Q)//no swap just go ahead with computation of L(X) and R(X);  Q(x) and U(X) remain same
  						begin
 							swap_signal = 0;
 							degree_shift = degree_R - degree_Q;
-					end	
+					end
 				//if (degree_shift == number_of_coefs)//syndrome ==0 therefore codeword is error-free
-				//	begin 
+				//	begin
 				//		state<=4;
 				//		error_free_codeword=1'b1;
-				//	end	
+				//	end
 				state<=6;
- 			end//end of degree_R>=degree_L loop	
-		
-		6:				
+ 			end//end of degree_R>=degree_L loop
+
+		6:
 			if (polynomial_compute == 1'b1)
 				begin
 					rdaddress_Q <= multiplier_counter;
@@ -7230,26 +7367,26 @@ if (MEA_iteration == 1'b1)
 						begin
 							if(swap_signal == 1'b1)
 								begin
-									gf_multiplier(leading_coef_R,Q_polyn_out,in_R);					
-									gf_multiplier(leading_coef_R,U_polyn_out,in_L);																			
-									gf_multiplier(leading_coef_Q,R_polyn_out,in_Q);					
-									gf_multiplier(leading_coef_Q,L_polyn_out,in_U);	
-								
+									gf_multiplier_euclid_alg_2(leading_coef_R,Q_polyn_out,in_R);
+									gf_multiplier_euclid_alg_2(leading_coef_R,U_polyn_out,in_L);
+									gf_multiplier_euclid_alg_2(leading_coef_Q,R_polyn_out,in_Q);
+									gf_multiplier_euclid_alg_2(leading_coef_Q,L_polyn_out,in_U);
+
 									Q_dpram_addr <= multiplier_counter - 2;
 									U_dpram_addr <= multiplier_counter - 2;
 									mod_syndr_polyn_Q <= R_polyn_out;
 									erasure_polyn_U <= L_polyn_out;
 								end
 								else begin
-									gf_multiplier(leading_coef_Q,R_polyn_out,in_R);					
-									gf_multiplier(leading_coef_Q,L_polyn_out,in_L);					
-									gf_multiplier(leading_coef_R,Q_polyn_out,in_Q);					
-									gf_multiplier(leading_coef_R,U_polyn_out,in_U);					
+									gf_multiplier_euclid_alg_2(leading_coef_Q,R_polyn_out,in_R);
+									gf_multiplier_euclid_alg_2(leading_coef_Q,L_polyn_out,in_L);
+									gf_multiplier_euclid_alg_2(leading_coef_R,Q_polyn_out,in_Q);
+									gf_multiplier_euclid_alg_2(leading_coef_R,U_polyn_out,in_U);
 								end
 							wraddress_shifted <= degree_shift + (multiplier_counter-2);
 							wraddress <= multiplier_counter-2;
 							rden <= 1'b1;//rd enable mult buffers
-						end 
+						end
 					multiplier_counter = multiplier_counter + 1;
 					if (multiplier_counter >=4)//gf_mult o/p available
 						begin
@@ -7264,12 +7401,12 @@ if (MEA_iteration == 1'b1)
 						end
 					if (multiplier_counter == number_of_coefs + 7) state<=7;//6'd39
 
-					end//end of polynomial_compute = 1'b1	
+					end//end of polynomial_compute = 1'b1
 		7:
 						begin
 							no_of_mea_iterations <= no_of_mea_iterations + 1;
 							if(no_of_mea_iterations>no_of_parity)
-								begin 
+								begin
 									state<=4;
 									max_mea_iterations_reached =1'b1;
 								end
@@ -7283,12 +7420,12 @@ if (MEA_iteration == 1'b1)
 							multiplier_counter =6'd0;
 							swap_signal <= 0;
 							state<=0;
-						end		
+						end
 
 		endcase
 
 	end//MEA_iteration = 1'b1
-	
+
 /****Sending out the coefficients of errata (errors-&-erasure) magnitude polynomial -->omega(x)*****/
 
 if(send_magnitude_errata_coefs==1'b1)
@@ -7297,7 +7434,7 @@ if(send_magnitude_errata_coefs==1'b1)
 			begin
 				rdaddress_R <= errata_magnitude_addr_to_chien +1;
 				errata_magnitude_coefs <= R_polyn_out;
-				
+
 				if(rdaddress_R>=1)errata_magnitude_addr = errata_magnitude_addr_to_chien-1;
 				errata_magnitude_addr_to_chien = errata_magnitude_addr_to_chien + 1;
 				errata_magnitude_coef_ready=1'b1;
@@ -7306,7 +7443,7 @@ if(send_magnitude_errata_coefs==1'b1)
 			begin
 				rdaddress_Q <= errata_magnitude_addr_to_chien +1;
 				errata_magnitude_coefs <= Q_polyn_out;
-				
+
 				if(rdaddress_Q>=1)errata_magnitude_addr = errata_magnitude_addr_to_chien-1;
 				errata_magnitude_addr_to_chien = errata_magnitude_addr_to_chien + 1;
 				errata_magnitude_coef_ready=1'b1;
@@ -7322,7 +7459,7 @@ if(send_loc_errata_coefs==1'b1)
 			begin
 			rdaddress_L <= errata_loc_addr_to_chien+1;
 			errata_loc_coefs <= L_polyn_out;
-			
+
 			if(rdaddress_L>=1)errata_loc_addr = errata_loc_addr_to_chien-1;
 			errata_loc_addr_to_chien = errata_loc_addr_to_chien + 1;
 			errata_loc_coef_ready=1'b1;
@@ -7331,10 +7468,10 @@ if(send_loc_errata_coefs==1'b1)
 			begin
 			rdaddress_U <= errata_loc_addr_to_chien+1;
 			errata_loc_coefs <= U_polyn_out;
-			
+
 			if(rdaddress_U >= 1)errata_loc_addr = errata_loc_addr_to_chien-1;
 			errata_loc_addr_to_chien = errata_loc_addr_to_chien + 1;
-			errata_loc_coef_ready=1'b1;			
+			errata_loc_coef_ready=1'b1;
 			end
 	end
 	else if(send_loc_errata_coefs==1'b0)errata_loc_coef_ready=1'b0;
@@ -7346,7 +7483,7 @@ assign magnitue_polyn = magnitude_polyn_R;
 assign locator_polyn = locator_polyn_L;
 assign state_case = state;
 assign R_degree = degree_R;
-assign Q_degree = degree_Q;	
+assign Q_degree = degree_Q;
 assign L_degree = degree_L;
 
 endmodule
@@ -7354,7 +7491,7 @@ endmodule
 // megafunction wizard: %LPM_MULT%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: lpm_mult 
+// MODULE: lpm_mult
 
 // ============================================================
 // File Name: mult_by_32_2.v
@@ -7449,7 +7586,7 @@ endmodule
 // megafunction wizard: %LPM_MULT%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: lpm_mult 
+// MODULE: lpm_mult
 
 // ============================================================
 // File Name: mult_by_32.v
@@ -7544,7 +7681,7 @@ endmodule
 // megafunction wizard: %LPM_RAM_DP%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: altsyncram 
+// MODULE: altsyncram
 
 // ============================================================
 // File Name: omega_buffer.v
@@ -7597,6 +7734,34 @@ module omega_buffer (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
+	RAMB18E1 altsyncram_component(
+		.DOBDO(sub_wire0),
+		.DOADO(),
+		.DOPBDOP(),
+		.DOPADOP(),
+		.DIBDI(),
+		.DIADI(data),
+		.DIPBDIP(),
+		.DIPADIP(),
+
+		.ADDRARDADDR(rdaddress),
+		.CLKARDCLK(clock),
+		.ENARDEN(rden),
+		.REGCEAREGCE(),
+		.RSTRAMARSTRAM(),
+		.RSTREGARSTREG(),
+		.WEA(),
+
+		.ADDRBWRADDR(wraddress),
+		.CLKBWRCLK(clock),
+		.ENBWREN(wren),
+		.REGCEB(),
+		.RSTRAMB(),
+		.RSTREGB(),
+		.WEBWE()
+	);
+
+	/*
 	altsyncram	altsyncram_component (
 				.wren_a (wren),
 				.clock0 (clock),
@@ -7626,7 +7791,7 @@ module omega_buffer (
 		altsyncram_component.address_aclr_b = "NONE",
 		altsyncram_component.outdata_aclr_b = "NONE",
 		altsyncram_component.read_during_write_mode_mixed_ports = "DONT_CARE",
-		altsyncram_component.ram_block_type = "AUTO";
+		altsyncram_component.ram_block_type = "AUTO";*/
 
 
 endmodule
@@ -7719,7 +7884,7 @@ endmodule
 // megafunction wizard: %LPM_RAM_DP%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: altsyncram 
+// MODULE: altsyncram
 
 // ============================================================
 // File Name: Q_buffer_1.v
@@ -7734,17 +7899,17 @@ endmodule
 
 
 //Copyright (C) 1991-2005 Altera Corporation
-//Your use of Altera Corporation's design tools, logic functions 
-//and other software and tools, and its AMPP partner logic       
-//functions, and any output files any of the foregoing           
-//(including device programming or simulation files), and any    
-//associated documentation or information are expressly subject  
-//to the terms and conditions of the Altera Program License      
-//Subscription Agreement, Altera MegaCore Function License       
-//Agreement, or other applicable license agreement, including,   
-//without limitation, that your use is for the sole purpose of   
-//programming logic devices manufactured by Altera and sold by   
-//Altera or its authorized distributors.  Please refer to the    
+//Your use of Altera Corporation's design tools, logic functions
+//and other software and tools, and its AMPP partner logic
+//functions, and any output files any of the foregoing
+//(including device programming or simulation files), and any
+//associated documentation or information are expressly subject
+//to the terms and conditions of the Altera Program License
+//Subscription Agreement, Altera MegaCore Function License
+//Agreement, or other applicable license agreement, including,
+//without limitation, that your use is for the sole purpose of
+//programming logic devices manufactured by Altera and sold by
+//Altera or its authorized distributors.  Please refer to the
 //applicable agreement for further details.
 
 
@@ -7771,6 +7936,33 @@ module Q_buffer_1 (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
+	RAMB18E1 altsyncram_component(
+		.DOBDO(sub_wire0),
+		.DOADO(),
+		.DOPBDOP(),
+		.DOPADOP(),
+		.DIBDI(),
+		.DIADI(data),
+		.DIPBDIP(),
+		.DIPADIP(),
+
+		.ADDRARDADDR(rdaddress),
+		.CLKARDCLK(clock),
+		.ENARDEN(rden),
+		.REGCEAREGCE(),
+		.RSTRAMARSTRAM(),
+		.RSTREGARSTREG(),
+		.WEA(),
+
+		.ADDRBWRADDR(wraddress),
+		.CLKBWRCLK(clock),
+		.ENBWREN(wren),
+		.REGCEB(),
+		.RSTRAMB(),
+		.RSTREGB(),
+		.WEBWE()
+	);
+	/*
 	altsyncram	altsyncram_component (
 				.wren_a (wren),
 				.clock0 (clock),
@@ -7817,7 +8009,7 @@ module Q_buffer_1 (
 		altsyncram_component.outdata_aclr_b = "NONE",
 		altsyncram_component.read_during_write_mode_mixed_ports = "DONT_CARE",
 		altsyncram_component.power_up_uninitialized = "FALSE",
-		altsyncram_component.init_file = "mea_buffers.mif";
+		altsyncram_component.init_file = "mea_buffers.mif";*/
 
 
 endmodule
@@ -7927,7 +8119,7 @@ endmodule
 // megafunction wizard: %LPM_RAM_DP%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: altsyncram 
+// MODULE: altsyncram
 
 // ============================================================
 // File Name: Q_buffer_2.v
@@ -7942,17 +8134,17 @@ endmodule
 
 
 //Copyright (C) 1991-2005 Altera Corporation
-//Your use of Altera Corporation's design tools, logic functions 
-//and other software and tools, and its AMPP partner logic       
-//functions, and any output files any of the foregoing           
-//(including device programming or simulation files), and any    
-//associated documentation or information are expressly subject  
-//to the terms and conditions of the Altera Program License      
-//Subscription Agreement, Altera MegaCore Function License       
-//Agreement, or other applicable license agreement, including,   
-//without limitation, that your use is for the sole purpose of   
-//programming logic devices manufactured by Altera and sold by   
-//Altera or its authorized distributors.  Please refer to the    
+//Your use of Altera Corporation's design tools, logic functions
+//and other software and tools, and its AMPP partner logic
+//functions, and any output files any of the foregoing
+//(including device programming or simulation files), and any
+//associated documentation or information are expressly subject
+//to the terms and conditions of the Altera Program License
+//Subscription Agreement, Altera MegaCore Function License
+//Agreement, or other applicable license agreement, including,
+//without limitation, that your use is for the sole purpose of
+//programming logic devices manufactured by Altera and sold by
+//Altera or its authorized distributors.  Please refer to the
 //applicable agreement for further details.
 
 
@@ -7979,6 +8171,33 @@ module Q_buffer_2 (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
+	RAMB18E1 altsyncram_component(
+		.DOBDO(sub_wire0),
+		.DOADO(),
+		.DOPBDOP(),
+		.DOPADOP(),
+		.DIBDI(),
+		.DIADI(data),
+		.DIPBDIP(),
+		.DIPADIP(),
+
+		.ADDRARDADDR(rdaddress),
+		.CLKARDCLK(clock),
+		.ENARDEN(rden),
+		.REGCEAREGCE(),
+		.RSTRAMARSTRAM(),
+		.RSTREGARSTREG(),
+		.WEA(),
+
+		.ADDRBWRADDR(wraddress),
+		.CLKBWRCLK(clock),
+		.ENBWREN(wren),
+		.REGCEB(),
+		.RSTRAMB(),
+		.RSTREGB(),
+		.WEBWE()
+	);
+	/*
 	altsyncram	altsyncram_component (
 				.wren_a (wren),
 				.clock0 (clock),
@@ -8025,7 +8244,7 @@ module Q_buffer_2 (
 		altsyncram_component.outdata_aclr_b = "NONE",
 		altsyncram_component.read_during_write_mode_mixed_ports = "DONT_CARE",
 		altsyncram_component.power_up_uninitialized = "FALSE",
-		altsyncram_component.init_file = "mea_buffers.mif";
+		altsyncram_component.init_file = "mea_buffers.mif";*/
 
 
 endmodule
@@ -8135,7 +8354,7 @@ endmodule
 // megafunction wizard: %LPM_RAM_DP%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: altsyncram 
+// MODULE: altsyncram
 
 // ============================================================
 // File Name: Q_buffer.v
@@ -8150,17 +8369,17 @@ endmodule
 
 
 //Copyright (C) 1991-2005 Altera Corporation
-//Your use of Altera Corporation's design tools, logic functions 
-//and other software and tools, and its AMPP partner logic       
-//functions, and any output files any of the foregoing           
-//(including device programming or simulation files), and any    
-//associated documentation or information are expressly subject  
-//to the terms and conditions of the Altera Program License      
-//Subscription Agreement, Altera MegaCore Function License       
-//Agreement, or other applicable license agreement, including,   
-//without limitation, that your use is for the sole purpose of   
-//programming logic devices manufactured by Altera and sold by   
-//Altera or its authorized distributors.  Please refer to the    
+//Your use of Altera Corporation's design tools, logic functions
+//and other software and tools, and its AMPP partner logic
+//functions, and any output files any of the foregoing
+//(including device programming or simulation files), and any
+//associated documentation or information are expressly subject
+//to the terms and conditions of the Altera Program License
+//Subscription Agreement, Altera MegaCore Function License
+//Agreement, or other applicable license agreement, including,
+//without limitation, that your use is for the sole purpose of
+//programming logic devices manufactured by Altera and sold by
+//Altera or its authorized distributors.  Please refer to the
 //applicable agreement for further details.
 
 
@@ -8187,6 +8406,33 @@ module Q_buffer (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
+	RAMB18E1 altsyncram_component(
+		.DOBDO(sub_wire0),
+		.DOADO(),
+		.DOPBDOP(),
+		.DOPADOP(),
+		.DIBDI(),
+		.DIADI(data),
+		.DIPBDIP(),
+		.DIPADIP(),
+
+		.ADDRARDADDR(rdaddress),
+		.CLKARDCLK(clock),
+		.ENARDEN(rden),
+		.REGCEAREGCE(),
+		.RSTRAMARSTRAM(),
+		.RSTREGARSTREG(),
+		.WEA(),
+
+		.ADDRBWRADDR(wraddress),
+		.CLKBWRCLK(clock),
+		.ENBWREN(wren),
+		.REGCEB(),
+		.RSTRAMB(),
+		.RSTREGB(),
+		.WEBWE()
+	);
+	/*
 	altsyncram	altsyncram_component (
 				.wren_a (wren),
 				.clock0 (clock),
@@ -8233,7 +8479,7 @@ module Q_buffer (
 		altsyncram_component.outdata_aclr_b = "NONE",
 		altsyncram_component.read_during_write_mode_mixed_ports = "DONT_CARE",
 		altsyncram_component.power_up_uninitialized = "FALSE",
-		altsyncram_component.init_file = "mea_buffers.mif";
+		altsyncram_component.init_file = "mea_buffers.mif";*/
 
 
 endmodule
@@ -8343,7 +8589,7 @@ endmodule
 // megafunction wizard: %LPM_RAM_DP%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: altsyncram 
+// MODULE: altsyncram
 
 // ============================================================
 // File Name: Q_Polynomial_1.v
@@ -8358,17 +8604,17 @@ endmodule
 
 
 //Copyright (C) 1991-2005 Altera Corporation
-//Your use of Altera Corporation's design tools, logic functions 
-//and other software and tools, and its AMPP partner logic       
-//functions, and any output files any of the foregoing           
-//(including device programming or simulation files), and any    
-//associated documentation or information are expressly subject  
-//to the terms and conditions of the Altera Program License      
-//Subscription Agreement, Altera MegaCore Function License       
-//Agreement, or other applicable license agreement, including,   
-//without limitation, that your use is for the sole purpose of   
-//programming logic devices manufactured by Altera and sold by   
-//Altera or its authorized distributors.  Please refer to the    
+//Your use of Altera Corporation's design tools, logic functions
+//and other software and tools, and its AMPP partner logic
+//functions, and any output files any of the foregoing
+//(including device programming or simulation files), and any
+//associated documentation or information are expressly subject
+//to the terms and conditions of the Altera Program License
+//Subscription Agreement, Altera MegaCore Function License
+//Agreement, or other applicable license agreement, including,
+//without limitation, that your use is for the sole purpose of
+//programming logic devices manufactured by Altera and sold by
+//Altera or its authorized distributors.  Please refer to the
 //applicable agreement for further details.
 
 
@@ -8394,7 +8640,33 @@ module Q_Polynomial_1 (
 
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
+	RAMB18E1 altsyncram_component(
+		.DOBDO(sub_wire0),
+		.DOADO(),
+		.DOPBDOP(),
+		.DOPADOP(),
+		.DIBDI(),
+		.DIADI(data),
+		.DIPBDIP(),
+		.DIPADIP(),
 
+		.ADDRARDADDR(rdaddress),
+		.CLKARDCLK(clock),
+		.ENARDEN(rden),
+		.REGCEAREGCE(),
+		.RSTRAMARSTRAM(),
+		.RSTREGARSTREG(),
+		.WEA(),
+
+		.ADDRBWRADDR(wraddress),
+		.CLKBWRCLK(clock),
+		.ENBWREN(wren),
+		.REGCEB(),
+		.RSTRAMB(),
+		.RSTREGB(),
+		.WEBWE()
+	);
+	/*
 	altsyncram	altsyncram_component (
 				.wren_a (wren),
 				.clock0 (clock),
@@ -8441,7 +8713,7 @@ module Q_Polynomial_1 (
 		altsyncram_component.outdata_aclr_b = "NONE",
 		altsyncram_component.read_during_write_mode_mixed_ports = "DONT_CARE",
 		altsyncram_component.power_up_uninitialized = "FALSE",
-		altsyncram_component.init_file = "mea_buffers.mif";
+		altsyncram_component.init_file = "mea_buffers.mif";*/
 
 
 endmodule
@@ -8551,7 +8823,7 @@ endmodule
 // megafunction wizard: %LPM_RAM_DP%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: altsyncram 
+// MODULE: altsyncram
 
 // ============================================================
 // File Name: Q_Polynomial_2.v
@@ -8566,17 +8838,17 @@ endmodule
 
 
 //Copyright (C) 1991-2005 Altera Corporation
-//Your use of Altera Corporation's design tools, logic functions 
-//and other software and tools, and its AMPP partner logic       
-//functions, and any output files any of the foregoing           
-//(including device programming or simulation files), and any    
-//associated documentation or information are expressly subject  
-//to the terms and conditions of the Altera Program License      
-//Subscription Agreement, Altera MegaCore Function License       
-//Agreement, or other applicable license agreement, including,   
-//without limitation, that your use is for the sole purpose of   
-//programming logic devices manufactured by Altera and sold by   
-//Altera or its authorized distributors.  Please refer to the    
+//Your use of Altera Corporation's design tools, logic functions
+//and other software and tools, and its AMPP partner logic
+//functions, and any output files any of the foregoing
+//(including device programming or simulation files), and any
+//associated documentation or information are expressly subject
+//to the terms and conditions of the Altera Program License
+//Subscription Agreement, Altera MegaCore Function License
+//Agreement, or other applicable license agreement, including,
+//without limitation, that your use is for the sole purpose of
+//programming logic devices manufactured by Altera and sold by
+//Altera or its authorized distributors.  Please refer to the
 //applicable agreement for further details.
 
 
@@ -8603,6 +8875,33 @@ module Q_Polynomial_2 (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
+	RAMB18E1 altsyncram_component(
+		.DOBDO(sub_wire0),
+		.DOADO(),
+		.DOPBDOP(),
+		.DOPADOP(),
+		.DIBDI(),
+		.DIADI(data),
+		.DIPBDIP(),
+		.DIPADIP(),
+
+		.ADDRARDADDR(rdaddress),
+		.CLKARDCLK(clock),
+		.ENARDEN(rden),
+		.REGCEAREGCE(),
+		.RSTRAMARSTRAM(),
+		.RSTREGARSTREG(),
+		.WEA(),
+
+		.ADDRBWRADDR(wraddress),
+		.CLKBWRCLK(clock),
+		.ENBWREN(wren),
+		.REGCEB(),
+		.RSTRAMB(),
+		.RSTREGB(),
+		.WEBWE()
+	);
+	/*
 	altsyncram	altsyncram_component (
 				.wren_a (wren),
 				.clock0 (clock),
@@ -8649,7 +8948,7 @@ module Q_Polynomial_2 (
 		altsyncram_component.outdata_aclr_b = "NONE",
 		altsyncram_component.read_during_write_mode_mixed_ports = "DONT_CARE",
 		altsyncram_component.power_up_uninitialized = "FALSE",
-		altsyncram_component.init_file = "mea_buffers.mif";
+		altsyncram_component.init_file = "mea_buffers.mif";*/
 
 
 endmodule
@@ -8759,7 +9058,7 @@ endmodule
 // megafunction wizard: %LPM_RAM_DP%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: altsyncram 
+// MODULE: altsyncram
 
 // ============================================================
 // File Name: Q_Polynomial.v
@@ -8774,17 +9073,17 @@ endmodule
 
 
 //Copyright (C) 1991-2005 Altera Corporation
-//Your use of Altera Corporation's design tools, logic functions 
-//and other software and tools, and its AMPP partner logic       
-//functions, and any output files any of the foregoing           
-//(including device programming or simulation files), and any    
-//associated documentation or information are expressly subject  
-//to the terms and conditions of the Altera Program License      
-//Subscription Agreement, Altera MegaCore Function License       
-//Agreement, or other applicable license agreement, including,   
-//without limitation, that your use is for the sole purpose of   
-//programming logic devices manufactured by Altera and sold by   
-//Altera or its authorized distributors.  Please refer to the    
+//Your use of Altera Corporation's design tools, logic functions
+//and other software and tools, and its AMPP partner logic
+//functions, and any output files any of the foregoing
+//(including device programming or simulation files), and any
+//associated documentation or information are expressly subject
+//to the terms and conditions of the Altera Program License
+//Subscription Agreement, Altera MegaCore Function License
+//Agreement, or other applicable license agreement, including,
+//without limitation, that your use is for the sole purpose of
+//programming logic devices manufactured by Altera and sold by
+//Altera or its authorized distributors.  Please refer to the
 //applicable agreement for further details.
 
 
@@ -8811,6 +9110,33 @@ module Q_Polynomial (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
+	RAMB18E1 altsyncram_component(
+		.DOBDO(sub_wire0),
+		.DOADO(),
+		.DOPBDOP(),
+		.DOPADOP(),
+		.DIBDI(),
+		.DIADI(data),
+		.DIPBDIP(),
+		.DIPADIP(),
+
+		.ADDRARDADDR(rdaddress),
+		.CLKARDCLK(clock),
+		.ENARDEN(rden),
+		.REGCEAREGCE(),
+		.RSTRAMARSTRAM(),
+		.RSTREGARSTREG(),
+		.WEA(),
+
+		.ADDRBWRADDR(wraddress),
+		.CLKBWRCLK(clock),
+		.ENBWREN(wren),
+		.REGCEB(),
+		.RSTRAMB(),
+		.RSTREGB(),
+		.WEBWE()
+	);
+	/*
 	altsyncram	altsyncram_component (
 				.wren_a (wren),
 				.clock0 (clock),
@@ -8857,7 +9183,7 @@ module Q_Polynomial (
 		altsyncram_component.outdata_aclr_b = "NONE",
 		altsyncram_component.read_during_write_mode_mixed_ports = "DONT_CARE",
 		altsyncram_component.power_up_uninitialized = "FALSE",
-		altsyncram_component.init_file = "mea_buffers.mif";
+		altsyncram_component.init_file = "mea_buffers.mif";*/
 
 
 endmodule
@@ -8967,7 +9293,7 @@ endmodule
 // megafunction wizard: %LPM_RAM_DP%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: altsyncram 
+// MODULE: altsyncram
 
 // ============================================================
 // File Name: R_buffer_1.v
@@ -8982,17 +9308,17 @@ endmodule
 
 
 //Copyright (C) 1991-2005 Altera Corporation
-//Your use of Altera Corporation's design tools, logic functions 
-//and other software and tools, and its AMPP partner logic       
-//functions, and any output files any of the foregoing           
-//(including device programming or simulation files), and any    
-//associated documentation or information are expressly subject  
-//to the terms and conditions of the Altera Program License      
-//Subscription Agreement, Altera MegaCore Function License       
-//Agreement, or other applicable license agreement, including,   
-//without limitation, that your use is for the sole purpose of   
-//programming logic devices manufactured by Altera and sold by   
-//Altera or its authorized distributors.  Please refer to the    
+//Your use of Altera Corporation's design tools, logic functions
+//and other software and tools, and its AMPP partner logic
+//functions, and any output files any of the foregoing
+//(including device programming or simulation files), and any
+//associated documentation or information are expressly subject
+//to the terms and conditions of the Altera Program License
+//Subscription Agreement, Altera MegaCore Function License
+//Agreement, or other applicable license agreement, including,
+//without limitation, that your use is for the sole purpose of
+//programming logic devices manufactured by Altera and sold by
+//Altera or its authorized distributors.  Please refer to the
 //applicable agreement for further details.
 
 
@@ -9019,6 +9345,33 @@ module R_buffer_1 (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
+	RAMB18E1 altsyncram_component(
+		.DOBDO(sub_wire0),
+		.DOADO(),
+		.DOPBDOP(),
+		.DOPADOP(),
+		.DIBDI(),
+		.DIADI(data),
+		.DIPBDIP(),
+		.DIPADIP(),
+
+		.ADDRARDADDR(rdaddress),
+		.CLKARDCLK(clock),
+		.ENARDEN(rden),
+		.REGCEAREGCE(),
+		.RSTRAMARSTRAM(),
+		.RSTREGARSTREG(),
+		.WEA(),
+
+		.ADDRBWRADDR(wraddress),
+		.CLKBWRCLK(clock),
+		.ENBWREN(wren),
+		.REGCEB(),
+		.RSTRAMB(),
+		.RSTREGB(),
+		.WEBWE()
+	);
+	/*
 	altsyncram	altsyncram_component (
 				.wren_a (wren),
 				.clock0 (clock),
@@ -9065,7 +9418,7 @@ module R_buffer_1 (
 		altsyncram_component.outdata_aclr_b = "NONE",
 		altsyncram_component.read_during_write_mode_mixed_ports = "DONT_CARE",
 		altsyncram_component.power_up_uninitialized = "FALSE",
-		altsyncram_component.init_file = "mea_buffers.mif";
+		altsyncram_component.init_file = "mea_buffers.mif";*/
 
 
 endmodule
@@ -9175,7 +9528,7 @@ endmodule
 // megafunction wizard: %LPM_RAM_DP%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: altsyncram 
+// MODULE: altsyncram
 
 // ============================================================
 // File Name: R_buffer_2.v
@@ -9190,17 +9543,17 @@ endmodule
 
 
 //Copyright (C) 1991-2005 Altera Corporation
-//Your use of Altera Corporation's design tools, logic functions 
-//and other software and tools, and its AMPP partner logic       
-//functions, and any output files any of the foregoing           
-//(including device programming or simulation files), and any    
-//associated documentation or information are expressly subject  
-//to the terms and conditions of the Altera Program License      
-//Subscription Agreement, Altera MegaCore Function License       
-//Agreement, or other applicable license agreement, including,   
-//without limitation, that your use is for the sole purpose of   
-//programming logic devices manufactured by Altera and sold by   
-//Altera or its authorized distributors.  Please refer to the    
+//Your use of Altera Corporation's design tools, logic functions
+//and other software and tools, and its AMPP partner logic
+//functions, and any output files any of the foregoing
+//(including device programming or simulation files), and any
+//associated documentation or information are expressly subject
+//to the terms and conditions of the Altera Program License
+//Subscription Agreement, Altera MegaCore Function License
+//Agreement, or other applicable license agreement, including,
+//without limitation, that your use is for the sole purpose of
+//programming logic devices manufactured by Altera and sold by
+//Altera or its authorized distributors.  Please refer to the
 //applicable agreement for further details.
 
 
@@ -9227,6 +9580,33 @@ module R_buffer_2 (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
+	RAMB18E1 altsyncram_component(
+		.DOBDO(sub_wire0),
+		.DOADO(),
+		.DOPBDOP(),
+		.DOPADOP(),
+		.DIBDI(),
+		.DIADI(data),
+		.DIPBDIP(),
+		.DIPADIP(),
+
+		.ADDRARDADDR(rdaddress),
+		.CLKARDCLK(clock),
+		.ENARDEN(rden),
+		.REGCEAREGCE(),
+		.RSTRAMARSTRAM(),
+		.RSTREGARSTREG(),
+		.WEA(),
+
+		.ADDRBWRADDR(wraddress),
+		.CLKBWRCLK(clock),
+		.ENBWREN(wren),
+		.REGCEB(),
+		.RSTRAMB(),
+		.RSTREGB(),
+		.WEBWE()
+	);
+	/*
 	altsyncram	altsyncram_component (
 				.wren_a (wren),
 				.clock0 (clock),
@@ -9273,7 +9653,7 @@ module R_buffer_2 (
 		altsyncram_component.outdata_aclr_b = "NONE",
 		altsyncram_component.read_during_write_mode_mixed_ports = "DONT_CARE",
 		altsyncram_component.power_up_uninitialized = "FALSE",
-		altsyncram_component.init_file = "mea_buffers.mif";
+		altsyncram_component.init_file = "mea_buffers.mif";*/
 
 
 endmodule
@@ -9383,7 +9763,7 @@ endmodule
 // megafunction wizard: %LPM_RAM_DP%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: altsyncram 
+// MODULE: altsyncram
 
 // ============================================================
 // File Name: R_buffer.v
@@ -9398,17 +9778,17 @@ endmodule
 
 
 //Copyright (C) 1991-2005 Altera Corporation
-//Your use of Altera Corporation's design tools, logic functions 
-//and other software and tools, and its AMPP partner logic       
-//functions, and any output files any of the foregoing           
-//(including device programming or simulation files), and any    
-//associated documentation or information are expressly subject  
-//to the terms and conditions of the Altera Program License      
-//Subscription Agreement, Altera MegaCore Function License       
-//Agreement, or other applicable license agreement, including,   
-//without limitation, that your use is for the sole purpose of   
-//programming logic devices manufactured by Altera and sold by   
-//Altera or its authorized distributors.  Please refer to the    
+//Your use of Altera Corporation's design tools, logic functions
+//and other software and tools, and its AMPP partner logic
+//functions, and any output files any of the foregoing
+//(including device programming or simulation files), and any
+//associated documentation or information are expressly subject
+//to the terms and conditions of the Altera Program License
+//Subscription Agreement, Altera MegaCore Function License
+//Agreement, or other applicable license agreement, including,
+//without limitation, that your use is for the sole purpose of
+//programming logic devices manufactured by Altera and sold by
+//Altera or its authorized distributors.  Please refer to the
 //applicable agreement for further details.
 
 
@@ -9435,6 +9815,33 @@ module R_buffer (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
+	RAMB18E1 altsyncram_component(
+		.DOBDO(sub_wire0),
+		.DOADO(),
+		.DOPBDOP(),
+		.DOPADOP(),
+		.DIBDI(),
+		.DIADI(data),
+		.DIPBDIP(),
+		.DIPADIP(),
+
+		.ADDRARDADDR(rdaddress),
+		.CLKARDCLK(clock),
+		.ENARDEN(rden),
+		.REGCEAREGCE(),
+		.RSTRAMARSTRAM(),
+		.RSTREGARSTREG(),
+		.WEA(),
+
+		.ADDRBWRADDR(wraddress),
+		.CLKBWRCLK(clock),
+		.ENBWREN(wren),
+		.REGCEB(),
+		.RSTRAMB(),
+		.RSTREGB(),
+		.WEBWE()
+	);
+	/*
 	altsyncram	altsyncram_component (
 				.wren_a (wren),
 				.clock0 (clock),
@@ -9481,7 +9888,7 @@ module R_buffer (
 		altsyncram_component.outdata_aclr_b = "NONE",
 		altsyncram_component.read_during_write_mode_mixed_ports = "DONT_CARE",
 		altsyncram_component.power_up_uninitialized = "FALSE",
-		altsyncram_component.init_file = "mea_buffers.mif";
+		altsyncram_component.init_file = "mea_buffers.mif";*/
 
 
 endmodule
@@ -9591,7 +9998,7 @@ endmodule
 // megafunction wizard: %LPM_RAM_DP%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: altsyncram 
+// MODULE: altsyncram
 
 // ============================================================
 // File Name: R_Polynomial_1.v
@@ -9606,17 +10013,17 @@ endmodule
 
 
 //Copyright (C) 1991-2005 Altera Corporation
-//Your use of Altera Corporation's design tools, logic functions 
-//and other software and tools, and its AMPP partner logic       
-//functions, and any output files any of the foregoing           
-//(including device programming or simulation files), and any    
-//associated documentation or information are expressly subject  
-//to the terms and conditions of the Altera Program License      
-//Subscription Agreement, Altera MegaCore Function License       
-//Agreement, or other applicable license agreement, including,   
-//without limitation, that your use is for the sole purpose of   
-//programming logic devices manufactured by Altera and sold by   
-//Altera or its authorized distributors.  Please refer to the    
+//Your use of Altera Corporation's design tools, logic functions
+//and other software and tools, and its AMPP partner logic
+//functions, and any output files any of the foregoing
+//(including device programming or simulation files), and any
+//associated documentation or information are expressly subject
+//to the terms and conditions of the Altera Program License
+//Subscription Agreement, Altera MegaCore Function License
+//Agreement, or other applicable license agreement, including,
+//without limitation, that your use is for the sole purpose of
+//programming logic devices manufactured by Altera and sold by
+//Altera or its authorized distributors.  Please refer to the
 //applicable agreement for further details.
 
 
@@ -9643,6 +10050,33 @@ module R_Polynomial_1 (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
+	RAMB18E1 altsyncram_component(
+		.DOBDO(sub_wire0),
+		.DOADO(),
+		.DOPBDOP(),
+		.DOPADOP(),
+		.DIBDI(),
+		.DIADI(data),
+		.DIPBDIP(),
+		.DIPADIP(),
+
+		.ADDRARDADDR(rdaddress),
+		.CLKARDCLK(clock),
+		.ENARDEN(rden),
+		.REGCEAREGCE(),
+		.RSTRAMARSTRAM(),
+		.RSTREGARSTREG(),
+		.WEA(),
+
+		.ADDRBWRADDR(wraddress),
+		.CLKBWRCLK(clock),
+		.ENBWREN(wren),
+		.REGCEB(),
+		.RSTRAMB(),
+		.RSTREGB(),
+		.WEBWE()
+	);
+	/*
 	altsyncram	altsyncram_component (
 				.wren_a (wren),
 				.clock0 (clock),
@@ -9689,7 +10123,7 @@ module R_Polynomial_1 (
 		altsyncram_component.outdata_aclr_b = "NONE",
 		altsyncram_component.read_during_write_mode_mixed_ports = "DONT_CARE",
 		altsyncram_component.power_up_uninitialized = "FALSE",
-		altsyncram_component.init_file = "mea_buffers.mif";
+		altsyncram_component.init_file = "mea_buffers.mif";*/
 
 
 endmodule
@@ -9799,7 +10233,7 @@ endmodule
 // megafunction wizard: %LPM_RAM_DP%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: altsyncram 
+// MODULE: altsyncram
 
 // ============================================================
 // File Name: R_Polynomial_2.v
@@ -9814,17 +10248,17 @@ endmodule
 
 
 //Copyright (C) 1991-2005 Altera Corporation
-//Your use of Altera Corporation's design tools, logic functions 
-//and other software and tools, and its AMPP partner logic       
-//functions, and any output files any of the foregoing           
-//(including device programming or simulation files), and any    
-//associated documentation or information are expressly subject  
-//to the terms and conditions of the Altera Program License      
-//Subscription Agreement, Altera MegaCore Function License       
-//Agreement, or other applicable license agreement, including,   
-//without limitation, that your use is for the sole purpose of   
-//programming logic devices manufactured by Altera and sold by   
-//Altera or its authorized distributors.  Please refer to the    
+//Your use of Altera Corporation's design tools, logic functions
+//and other software and tools, and its AMPP partner logic
+//functions, and any output files any of the foregoing
+//(including device programming or simulation files), and any
+//associated documentation or information are expressly subject
+//to the terms and conditions of the Altera Program License
+//Subscription Agreement, Altera MegaCore Function License
+//Agreement, or other applicable license agreement, including,
+//without limitation, that your use is for the sole purpose of
+//programming logic devices manufactured by Altera and sold by
+//Altera or its authorized distributors.  Please refer to the
 //applicable agreement for further details.
 
 
@@ -9851,6 +10285,33 @@ module R_Polynomial_2 (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
+	RAMB18E1 altsyncram_component(
+		.DOBDO(sub_wire0),
+		.DOADO(),
+		.DOPBDOP(),
+		.DOPADOP(),
+		.DIBDI(),
+		.DIADI(data),
+		.DIPBDIP(),
+		.DIPADIP(),
+
+		.ADDRARDADDR(rdaddress),
+		.CLKARDCLK(clock),
+		.ENARDEN(rden),
+		.REGCEAREGCE(),
+		.RSTRAMARSTRAM(),
+		.RSTREGARSTREG(),
+		.WEA(),
+
+		.ADDRBWRADDR(wraddress),
+		.CLKBWRCLK(clock),
+		.ENBWREN(wren),
+		.REGCEB(),
+		.RSTRAMB(),
+		.RSTREGB(),
+		.WEBWE()
+	);
+	/*
 	altsyncram	altsyncram_component (
 				.wren_a (wren),
 				.clock0 (clock),
@@ -9897,7 +10358,7 @@ module R_Polynomial_2 (
 		altsyncram_component.outdata_aclr_b = "NONE",
 		altsyncram_component.read_during_write_mode_mixed_ports = "DONT_CARE",
 		altsyncram_component.power_up_uninitialized = "FALSE",
-		altsyncram_component.init_file = "mea_buffers.mif";
+		altsyncram_component.init_file = "mea_buffers.mif";*/
 
 
 endmodule
@@ -10007,7 +10468,7 @@ endmodule
 // megafunction wizard: %LPM_RAM_DP%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: altsyncram 
+// MODULE: altsyncram
 
 // ============================================================
 // File Name: R_Polynomial.v
@@ -10022,17 +10483,17 @@ endmodule
 
 
 //Copyright (C) 1991-2005 Altera Corporation
-//Your use of Altera Corporation's design tools, logic functions 
-//and other software and tools, and its AMPP partner logic       
-//functions, and any output files any of the foregoing           
-//(including device programming or simulation files), and any    
-//associated documentation or information are expressly subject  
-//to the terms and conditions of the Altera Program License      
-//Subscription Agreement, Altera MegaCore Function License       
-//Agreement, or other applicable license agreement, including,   
-//without limitation, that your use is for the sole purpose of   
-//programming logic devices manufactured by Altera and sold by   
-//Altera or its authorized distributors.  Please refer to the    
+//Your use of Altera Corporation's design tools, logic functions
+//and other software and tools, and its AMPP partner logic
+//functions, and any output files any of the foregoing
+//(including device programming or simulation files), and any
+//associated documentation or information are expressly subject
+//to the terms and conditions of the Altera Program License
+//Subscription Agreement, Altera MegaCore Function License
+//Agreement, or other applicable license agreement, including,
+//without limitation, that your use is for the sole purpose of
+//programming logic devices manufactured by Altera and sold by
+//Altera or its authorized distributors.  Please refer to the
 //applicable agreement for further details.
 
 
@@ -10059,6 +10520,33 @@ module R_Polynomial (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
+	RAMB18E1 altsyncram_component(
+		.DOBDO(sub_wire0),
+		.DOADO(),
+		.DOPBDOP(),
+		.DOPADOP(),
+		.DIBDI(),
+		.DIADI(data),
+		.DIPBDIP(),
+		.DIPADIP(),
+
+		.ADDRARDADDR(rdaddress),
+		.CLKARDCLK(clock),
+		.ENARDEN(rden),
+		.REGCEAREGCE(),
+		.RSTRAMARSTRAM(),
+		.RSTREGARSTREG(),
+		.WEA(),
+
+		.ADDRBWRADDR(wraddress),
+		.CLKBWRCLK(clock),
+		.ENBWREN(wren),
+		.REGCEB(),
+		.RSTRAMB(),
+		.RSTREGB(),
+		.WEBWE()
+	);
+	/*
 	altsyncram	altsyncram_component (
 				.wren_a (wren),
 				.clock0 (clock),
@@ -10105,7 +10593,7 @@ module R_Polynomial (
 		altsyncram_component.outdata_aclr_b = "NONE",
 		altsyncram_component.read_during_write_mode_mixed_ports = "DONT_CARE",
 		altsyncram_component.power_up_uninitialized = "FALSE",
-		altsyncram_component.init_file = "mea_buffers.mif";
+		altsyncram_component.init_file = "mea_buffers.mif";*/
 
 
 endmodule
@@ -10215,7 +10703,7 @@ endmodule
 // megafunction wizard: %LPM_RAM_DP%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: altsyncram 
+// MODULE: altsyncram
 
 // ============================================================
 // File Name: sigma_buffer_1.v
@@ -10268,6 +10756,33 @@ module sigma_buffer_1 (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
+	RAMB18E1 altsyncram_component(
+		.DOBDO(sub_wire0),
+		.DOADO(),
+		.DOPBDOP(),
+		.DOPADOP(),
+		.DIBDI(),
+		.DIADI(data),
+		.DIPBDIP(),
+		.DIPADIP(),
+
+		.ADDRARDADDR(rdaddress),
+		.CLKARDCLK(clock),
+		.ENARDEN(rden),
+		.REGCEAREGCE(),
+		.RSTRAMARSTRAM(),
+		.RSTREGARSTREG(),
+		.WEA(),
+
+		.ADDRBWRADDR(wraddress),
+		.CLKBWRCLK(clock),
+		.ENBWREN(wren),
+		.REGCEB(),
+		.RSTRAMB(),
+		.RSTREGB(),
+		.WEBWE()
+	);
+	/*
 	altsyncram	altsyncram_component (
 				.wren_a (wren),
 				.clock0 (clock),
@@ -10297,7 +10812,7 @@ module sigma_buffer_1 (
 		altsyncram_component.address_aclr_b = "NONE",
 		altsyncram_component.outdata_aclr_b = "NONE",
 		altsyncram_component.read_during_write_mode_mixed_ports = "DONT_CARE",
-		altsyncram_component.ram_block_type = "AUTO";
+		altsyncram_component.ram_block_type = "AUTO";*/
 
 
 endmodule
@@ -10390,7 +10905,7 @@ endmodule
 // megafunction wizard: %LPM_RAM_DP%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: altsyncram 
+// MODULE: altsyncram
 
 // ============================================================
 // File Name: sigma_buffer_2.v
@@ -10443,6 +10958,33 @@ module sigma_buffer_2 (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
+	RAMB18E1 altsyncram_component(
+		.DOBDO(sub_wire0),
+		.DOADO(),
+		.DOPBDOP(),
+		.DOPADOP(),
+		.DIBDI(),
+		.DIADI(data),
+		.DIPBDIP(),
+		.DIPADIP(),
+
+		.ADDRARDADDR(rdaddress),
+		.CLKARDCLK(clock),
+		.ENARDEN(rden),
+		.REGCEAREGCE(),
+		.RSTRAMARSTRAM(),
+		.RSTREGARSTREG(),
+		.WEA(),
+
+		.ADDRBWRADDR(wraddress),
+		.CLKBWRCLK(clock),
+		.ENBWREN(wren),
+		.REGCEB(),
+		.RSTRAMB(),
+		.RSTREGB(),
+		.WEBWE()
+	);
+	/*
 	altsyncram	altsyncram_component (
 				.wren_a (wren),
 				.clock0 (clock),
@@ -10472,7 +11014,7 @@ module sigma_buffer_2 (
 		altsyncram_component.address_aclr_b = "NONE",
 		altsyncram_component.outdata_aclr_b = "NONE",
 		altsyncram_component.read_during_write_mode_mixed_ports = "DONT_CARE",
-		altsyncram_component.ram_block_type = "AUTO";
+		altsyncram_component.ram_block_type = "AUTO";*/
 
 
 endmodule
@@ -10565,7 +11107,7 @@ endmodule
 // megafunction wizard: %LPM_RAM_DP%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: altsyncram 
+// MODULE: altsyncram
 
 // ============================================================
 // File Name: sigma_buffer.v
@@ -10618,6 +11160,34 @@ module sigma_buffer (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
+	RAMB18E1 altsyncram_component(
+		.DOBDO(sub_wire0),
+		.DOADO(),
+		.DOPBDOP(),
+		.DOPADOP(),
+		.DIBDI(),
+		.DIADI(data),
+		.DIPBDIP(),
+		.DIPADIP(),
+
+		.ADDRARDADDR(rdaddress),
+		.CLKARDCLK(clock),
+		.ENARDEN(rden),
+		.REGCEAREGCE(),
+		.RSTRAMARSTRAM(),
+		.RSTREGARSTREG(),
+		.WEA(),
+
+		.ADDRBWRADDR(wraddress),
+		.CLKBWRCLK(clock),
+		.ENBWREN(wren),
+		.REGCEB(),
+		.RSTRAMB(),
+		.RSTREGB(),
+		.WEBWE()
+	);
+
+    /*
 	altsyncram	altsyncram_component (
 				.wren_a (wren),
 				.clock0 (clock),
@@ -10647,7 +11217,7 @@ module sigma_buffer (
 		altsyncram_component.address_aclr_b = "NONE",
 		altsyncram_component.outdata_aclr_b = "NONE",
 		altsyncram_component.read_during_write_mode_mixed_ports = "DONT_CARE",
-		altsyncram_component.ram_block_type = "AUTO";
+		altsyncram_component.ram_block_type = "AUTO";*/
 
 
 endmodule
@@ -10740,7 +11310,7 @@ endmodule
 // megafunction wizard: %LPM_MULT%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: lpm_mult 
+// MODULE: lpm_mult
 
 // ============================================================
 // File Name: signed_multiplier2.v
@@ -10844,7 +11414,7 @@ endmodule
 // megafunction wizard: %LPM_MULT%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: lpm_mult 
+// MODULE: lpm_mult
 
 // ============================================================
 // File Name: signed_multiplier3.v
@@ -10948,7 +11518,7 @@ endmodule
 // megafunction wizard: %LPM_MULT%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: lpm_mult 
+// MODULE: lpm_mult
 
 // ============================================================
 // File Name: signed_multiplier4.v
@@ -11052,7 +11622,7 @@ endmodule
 // megafunction wizard: %LPM_MULT%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: lpm_mult 
+// MODULE: lpm_mult
 
 // ============================================================
 // File Name: signed_multiplier.v
@@ -11156,11 +11726,11 @@ endmodule
 module top_rs_decode(
 									reset,
 									ext_clk,
-									k_value,						//number of message bytes							
-									no_of_parity,					//number of parity bytes	
+									k_value,						//number of message bytes
+									no_of_parity,					//number of parity bytes
 									new_data,
-									send_data,						
-										
+									send_data,
+
 
 //signals for the Dpram storing the 10-bit quantized channel data and the fading gain
 //read by erasure generator
@@ -11168,7 +11738,7 @@ module top_rs_decode(
 									q_in, 							//10-bit sampled signal
 									rdaddress_fade,
 									q_fade, 						//10-bit fading gain
-									
+
 //erasure generator signals
 									sigma_value,					//standard deviation of gaussian noise
 									sigma_square,					//variance of gaussian noise
@@ -11180,7 +11750,7 @@ module top_rs_decode(
 									threshold_2,					//pre-determined erasure threshold value
 									cutoff_threshold_0,
 									cutoff_threshold_1,
-									cutoff_threshold_2,				
+									cutoff_threshold_2,
 									cutoff_threshold_ready,
 									new_channel_char,				// triggers sampled data to be sorted according to magnitude
 									exact_smallest,					//most-unreliable-sampled signal
@@ -11190,8 +11760,8 @@ module top_rs_decode(
 									erasure_flag_0,
 									erasure_flag_1,
 									erasure_flag_2,
-//signals for the Dpram storing the estimated recieved codeword & erasure flags 
-//written by erassure generator, read by decoder	
+//signals for the Dpram storing the estimated recieved codeword & erasure flags
+//written by erassure generator, read by decoder
 									wren_decoder_in_buffer,
 									write_addr,
 									cw_data,
@@ -11203,14 +11773,14 @@ module top_rs_decode(
 									recvd_erasure_flag_0,
 									recvd_erasure_flag_1,
 									recvd_erasure_flag_2,
-//signals for the GF(256) lookup table													
+//signals for the GF(256) lookup table
 									decode_strobe,
 //FIFO signals
 									rdaddress,
 									q,
 									wren,
 
-//Signals for erasure position calculation											
+//Signals for erasure position calculation
 									erase_position_0,
 									erase_position_1,
 									erase_position_2,
@@ -11221,12 +11791,12 @@ module top_rs_decode(
 									erasures_absent_1,
 									erasures_absent_2,
 
-//Signals for syndrome computation																				
+//Signals for syndrome computation
 									syndrome,
 									unmodified_syndr_polyn_0,		//syndrome sent sent to MEA if there are no erasures
 									unmodified_syndr_polyn_1,
 									unmodified_syndr_polyn_2,
-//Signals for erasure polynomial generation																				
+//Signals for erasure polynomial generation
 									start_erasure_polyn_compute,
 									erasure_polyn_0,
 									no_of_erasure_coefs_0,
@@ -11238,7 +11808,7 @@ module top_rs_decode(
 									no_of_erasure_coefs_2,
 									erasure_coef_ready_2,
 
-//Signals for modified syndrome polynomial generation																													
+//Signals for modified syndrome polynomial generation
 									load_non_zero_syndrome_done,
 									start_modified_syndrome_polyn_compute,
 									modified_syndr_polyn_0,
@@ -11248,7 +11818,7 @@ module top_rs_decode(
 									modified_syndr_polyn_2,
 									syndr_coef_ready_2,
 //Signals for modified Euclidean Algorithm	(MEA)
-																																			
+
 									send_erasure_polyn_0,
 									send_syndr_polyn_0,
 									send_unmodified_syndr_polyn_0,
@@ -11258,7 +11828,7 @@ module top_rs_decode(
 									state_case_0,
 									MEA_compute_done_0,
 									locator_polyn_0,
-									magnitue_polyn_0,				
+									magnitue_polyn_0,
 									errata_loc_coefs_0, 				//errors-&-erasures locator polynomial
 									errata_magnitude_coefs_0,			//errors-&-erasures magnitude polynomial
 									locator_degree_0,					//number of errors identified
@@ -11271,7 +11841,7 @@ module top_rs_decode(
 									state_case_1,
 									MEA_compute_done_1,
 									locator_polyn_1,
-									magnitue_polyn_1,				
+									magnitue_polyn_1,
 									errata_loc_coefs_1, 				//errors-&-erasures locator polynomial
 									errata_magnitude_coefs_1,			//errors-&-erasures magnitude polynomial
 									locator_degree_1,					//number of errors identified
@@ -11284,11 +11854,11 @@ module top_rs_decode(
 									state_case_2,
 									MEA_compute_done_2,
 									locator_polyn_2,
-									magnitue_polyn_2,				
+									magnitue_polyn_2,
 									errata_loc_coefs_2, 				//errors-&-erasures locator polynomial
 									errata_magnitude_coefs_2,			//errors-&-erasures magnitude polynomial
 									locator_degree_2,
-//Signals for Chien Serach algorithm, Forney algorithm and Error correction block																																													
+//Signals for Chien Serach algorithm, Forney algorithm and Error correction block
 									cycle,
 									error_location_0,
 									derivative_error_location,
@@ -11299,12 +11869,12 @@ module top_rs_decode(
 									corrected_error_count,			//number of errors corrected
 									signal_count,quotient,
 									error_location_2
-									
+
 									//Q_x,R,L,U,m_counter,test_Q,test_R,test_L,test_U,
-									//rdaddress_Q,rdaddress_R,rdaddress_L,rdaddress_U //test		
-									
+									//rdaddress_Q,rdaddress_R,rdaddress_L,rdaddress_U //test
+
 					);
-		
+
 /////////////////////////////////////////////
 //PARAMETERIZED Triple DECODER RS
 //Implements (255,k) RS Decoder
@@ -11425,7 +11995,7 @@ reg[7:0] temp_k_value;
 reg[width-1:0]temp_no_of_parity;
 reg [7:0]count,write_flag_addr;
 
-integer cw_addr;
+reg[31:0] cw_addr;
 
 //erasure generator outputs
 output wire cutoff_threshold_ready;
@@ -11463,21 +12033,21 @@ wire unmodified_syndrome_ready_0,unmodified_syndrome_ready_1,unmodified_syndrome
 
 output wire [7:0] error_location_0,derivative_error_location,error_magnitude;
 output wire [7:0] errata_loc_coefs_0,errata_magnitude_coefs_0;
-output wire [width-1:0]locator_degree_0;	
+output wire [width-1:0]locator_degree_0;
 wire [width-1:0] erase_coef_addr_0,errata_loc_addr_0,errata_magnitude_addr_0;
 wire [width-1:0] modified_syndr_coef_addr_0,unmodified_syndr_coef_addr_0;
 wire deactivate_chien_serach_0;//codeword is error-free
 
 output wire [7:0] error_location_1;
 output wire [7:0] errata_loc_coefs_1,errata_magnitude_coefs_1;
-output wire [width-1:0]locator_degree_1;	
+output wire [width-1:0]locator_degree_1;
 wire [width-1:0] erase_coef_addr_1,errata_loc_addr_1,errata_magnitude_addr_1;
 wire [width-1:0] modified_syndr_coef_addr_1,unmodified_syndr_coef_addr_1;
 wire deactivate_chien_serach_1;//codeword is error-free
 
 output wire [7:0] error_location_2;
 output wire [7:0] errata_loc_coefs_2,errata_magnitude_coefs_2;
-output wire [width-1:0]locator_degree_2;	
+output wire [width-1:0]locator_degree_2;
 wire [width-1:0] erase_coef_addr_2,errata_loc_addr_2,errata_magnitude_addr_2;
 wire [width-1:0] modified_syndr_coef_addr_2,unmodified_syndr_coef_addr_2;
 wire deactivate_chien_serach_2;//codeword is error-free
@@ -11489,9 +12059,9 @@ defparam inst0.erasure_threshold_value_2=erasure_threshold_value_2;
 erasure_generator	inst0(
 						.clk						(ext_clk),
 						.reset						(reset),
-						.rden						(rden),				
+						.rden						(rden),
 						.rdaddress					(rdaddress_in),
-						.q							(q_in),				
+						.q							(q_in),
 						.rdaddress_fade				(rdaddress_fade),
 						.q_fade						(q_fade),
 						.new_channel_char			(new_channel_char),
@@ -11500,24 +12070,24 @@ erasure_generator	inst0(
 						.norm_sigma_square			(norm_sigma_square),
 						.cutoff_threshold_0			(cutoff_threshold_0),
 						.cutoff_threshold_1			(cutoff_threshold_1),
-						.cutoff_threshold_2			(cutoff_threshold_2),						
+						.cutoff_threshold_2			(cutoff_threshold_2),
 						.exact_smallest				(exact_smallest),
 						.normalized_signal			(normalized_signal),
 						.modified_actual_distance	(modified_actual_distance),
-						.channel_char				(channel_char),	
+						.channel_char				(channel_char),
 						.threshold_0				(threshold_0),
 						.threshold_1				(threshold_1),
-						.threshold_2				(threshold_2),						
+						.threshold_2				(threshold_2),
 						.recieved_codeword			(recieved_codeword),
 						.erasure_flag_0				(erasure_flag_0),
 						.erasure_flag_1				(erasure_flag_1),
-						.erasure_flag_2				(erasure_flag_2),						
+						.erasure_flag_2				(erasure_flag_2),
 						.signal_count				(signal_count),
 						.send_data					(send_data)
 					//	.quotient					(quotient)
 						);
 //buffer used by the erasure generator to store the estimated recieved codeword.
-//buffer is read by syndrome computation block in the reed-solomon decoder						
+//buffer is read by syndrome computation block in the reed-solomon decoder
 decoder_input_buffer 	decoder_input(
 									.data				(cw_data),//gets data from erasure generator
 									.wren				(wren_decoder_in_buffer),
@@ -11528,7 +12098,7 @@ decoder_input_buffer 	decoder_input(
 									.q					(recvd_codeword)
 									);
 //buffer used by the erasure generator to store the erasures flag.
-//buffer is read by erasure_position calculation block in the reed-solomon decoder	
+//buffer is read by erasure_position calculation block in the reed-solomon decoder
 decoder_erasure_flags 	decoder_erasures_0(
 									.data				(erasure_flag_0),
 									.wren				(wren_decoder_in_buffer),
@@ -11538,7 +12108,7 @@ decoder_erasure_flags 	decoder_erasures_0(
 									.clock				(ext_clk),
 									.q					(recvd_erasure_flag_0)
 									);
-								
+
 decoder_erasure_flags_1 	decoder_erasures_1(
 									.data				(erasure_flag_1),//gets erasure flags from erasure generator
 									.wren				(wren_decoder_in_buffer),
@@ -11547,8 +12117,8 @@ decoder_erasure_flags_1 	decoder_erasures_1(
 									.rdaddress			(decoder_rd_addr),
 									.clock				(ext_clk),
 									.q					(recvd_erasure_flag_1)
-									);	
-									
+									);
+
 decoder_erasure_flags_2 	decoder_erasures_2(
 									.data				(erasure_flag_2),//gets erasure flags from erasure generator
 									.wren				(wren_decoder_in_buffer),
@@ -11557,11 +12127,11 @@ decoder_erasure_flags_2 	decoder_erasures_2(
 									.rdaddress			(decoder_rd_addr),
 									.clock				(ext_clk),
 									.q					(recvd_erasure_flag_2)
-									);									
-								
+									);
+
 //signals for the GF(256) lookup table
 GF_256_elements 			inst1(
-								.clock					(ext_clk),								
+								.clock					(ext_clk),
 								.reset					(reset),
 								.read_alpha_inverse		(read_alpha_inverse),
 								.gf_table_ready			(gf_table_ready),
@@ -11754,7 +12324,7 @@ syndromes221			inst4 (
 								.syndrome_ready					(syndrome_ready),
 								.decoder_rd_addr				(decoder_rd_addr)
 								);
-`endif	
+`endif
 
 `ifdef K217
 defparam inst4.width=width;
@@ -11783,10 +12353,10 @@ syndromes217			inst4 (
 								.syndrome_ready					(syndrome_ready),
 								.decoder_rd_addr				(decoder_rd_addr)
 								);
-`endif						
+`endif
 
 defparam inst5.width=width;
-defparam inst5.number_of_coefs=dif;																			
+defparam inst5.number_of_coefs=dif;
 modified_syndrome_polyn		inst5(
 								.clock									(ext_clk),
 								.reset									(reset),
@@ -11826,11 +12396,11 @@ modified_syndrome_polyn		inst5(
 								.number_of_erasures_1					(number_of_erasures_1),
 								.number_of_erasures_2					(number_of_erasures_2),
 								.modified_syndr_coef_addr_0				(modified_syndr_coef_addr_0),
-								.modified_syndr_coef_addr_1				(modified_syndr_coef_addr_1),								
-								.modified_syndr_coef_addr_2				(modified_syndr_coef_addr_2),								
+								.modified_syndr_coef_addr_1				(modified_syndr_coef_addr_1),
+								.modified_syndr_coef_addr_2				(modified_syndr_coef_addr_2),
 								.error_free_codeword					(deactivate_chien_serach)
 								);
-								
+
 defparam inst6a.width=width;
 defparam inst6a.number_of_coefs=dif;
 erasure_locator_polyn_0	inst6a	(
@@ -11891,7 +12461,7 @@ erasure_locator_polyn	inst6c	(
 								.erasure_coef_ready				(erasure_coef_ready_2)
 								);
 defparam inst7a.width=width;
-defparam inst7a.number_of_coefs=dif;					
+defparam inst7a.number_of_coefs=dif;
 modified_euclid_alg_0		inst7a(
 							.clock									(ext_clk),
 							.reset									(reset),
@@ -11932,7 +12502,7 @@ modified_euclid_alg_0		inst7a(
 							.erasures_absent						(erasures_absent_0),
 							.L_degree								(L_degree_0),
 							.chien_regs_initialized					(chien_regs_initialized_0)
-							);								
+							);
 
 defparam inst7b.width=width;
 defparam inst7b.number_of_coefs=dif;
@@ -11976,7 +12546,7 @@ modified_euclid_alg_1		inst7b(
 							.erasures_absent						(erasures_absent_1_1),
 							.L_degree								(L_degree_1),
 							.chien_regs_initialized					(chien_regs_initialized_1)
-							);								
+							);
 
 defparam inst7c.width=width;
 defparam inst7c.number_of_coefs=dif;
@@ -12020,7 +12590,7 @@ modified_euclid_alg_2		inst7c(
 							.erasures_absent						(erasures_absent_1_2),
 							.L_degree								(L_degree_2),
 							.chien_regs_initialized					(chien_regs_initialized_2)
-							);								
+							);
 
 //////////////
 //////////////
@@ -12392,7 +12962,7 @@ begin
 	temp_k_value=k_value;//k is the number of data bytes
 	no_of_parity=8'd255 - temp_k_value;
 	end
-	
+
 end
 
 always @(posedge ext_clk)
@@ -12450,7 +13020,7 @@ begin
  end
 else
 	begin
-		if(load_non_zero_syndrome_done==1'b1) 
+		if(load_non_zero_syndrome_done==1'b1)
 			begin
 				if(number_of_erasures_0!=6'd0 ||number_of_erasures_1!=6'd0 ||number_of_erasures_2!=6'd0)
 					begin
@@ -12469,7 +13039,7 @@ else
 						erasures_absent_2<=1'b1;
 					end
 			end
-		
+
 	end
 end
 endmodule
@@ -12478,7 +13048,7 @@ endmodule
 // megafunction wizard: %LPM_RAM_DP%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: altsyncram 
+// MODULE: altsyncram
 
 // ============================================================
 // File Name: U_buffer_1.v
@@ -12493,17 +13063,17 @@ endmodule
 
 
 //Copyright (C) 1991-2005 Altera Corporation
-//Your use of Altera Corporation's design tools, logic functions 
-//and other software and tools, and its AMPP partner logic       
-//functions, and any output files any of the foregoing           
-//(including device programming or simulation files), and any    
-//associated documentation or information are expressly subject  
-//to the terms and conditions of the Altera Program License      
-//Subscription Agreement, Altera MegaCore Function License       
-//Agreement, or other applicable license agreement, including,   
-//without limitation, that your use is for the sole purpose of   
-//programming logic devices manufactured by Altera and sold by   
-//Altera or its authorized distributors.  Please refer to the    
+//Your use of Altera Corporation's design tools, logic functions
+//and other software and tools, and its AMPP partner logic
+//functions, and any output files any of the foregoing
+//(including device programming or simulation files), and any
+//associated documentation or information are expressly subject
+//to the terms and conditions of the Altera Program License
+//Subscription Agreement, Altera MegaCore Function License
+//Agreement, or other applicable license agreement, including,
+//without limitation, that your use is for the sole purpose of
+//programming logic devices manufactured by Altera and sold by
+//Altera or its authorized distributors.  Please refer to the
 //applicable agreement for further details.
 
 
@@ -12530,6 +13100,33 @@ module U_buffer_1 (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
+	RAMB18E1 altsyncram_component(
+		.DOBDO(sub_wire0),
+		.DOADO(),
+		.DOPBDOP(),
+		.DOPADOP(),
+		.DIBDI(),
+		.DIADI(data),
+		.DIPBDIP(),
+		.DIPADIP(),
+
+		.ADDRARDADDR(rdaddress),
+		.CLKARDCLK(clock),
+		.ENARDEN(rden),
+		.REGCEAREGCE(),
+		.RSTRAMARSTRAM(),
+		.RSTREGARSTREG(),
+		.WEA(),
+
+		.ADDRBWRADDR(wraddress),
+		.CLKBWRCLK(clock),
+		.ENBWREN(wren),
+		.REGCEB(),
+		.RSTRAMB(),
+		.RSTREGB(),
+		.WEBWE()
+	);
+	/*
 	altsyncram	altsyncram_component (
 				.wren_a (wren),
 				.clock0 (clock),
@@ -12576,7 +13173,7 @@ module U_buffer_1 (
 		altsyncram_component.outdata_aclr_b = "NONE",
 		altsyncram_component.read_during_write_mode_mixed_ports = "DONT_CARE",
 		altsyncram_component.power_up_uninitialized = "FALSE",
-		altsyncram_component.init_file = "mea_buffers.mif";
+		altsyncram_component.init_file = "mea_buffers.mif";*/
 
 
 endmodule
@@ -12686,7 +13283,7 @@ endmodule
 // megafunction wizard: %LPM_RAM_DP%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: altsyncram 
+// MODULE: altsyncram
 
 // ============================================================
 // File Name: U_buffer_2.v
@@ -12701,17 +13298,17 @@ endmodule
 
 
 //Copyright (C) 1991-2005 Altera Corporation
-//Your use of Altera Corporation's design tools, logic functions 
-//and other software and tools, and its AMPP partner logic       
-//functions, and any output files any of the foregoing           
-//(including device programming or simulation files), and any    
-//associated documentation or information are expressly subject  
-//to the terms and conditions of the Altera Program License      
-//Subscription Agreement, Altera MegaCore Function License       
-//Agreement, or other applicable license agreement, including,   
-//without limitation, that your use is for the sole purpose of   
-//programming logic devices manufactured by Altera and sold by   
-//Altera or its authorized distributors.  Please refer to the    
+//Your use of Altera Corporation's design tools, logic functions
+//and other software and tools, and its AMPP partner logic
+//functions, and any output files any of the foregoing
+//(including device programming or simulation files), and any
+//associated documentation or information are expressly subject
+//to the terms and conditions of the Altera Program License
+//Subscription Agreement, Altera MegaCore Function License
+//Agreement, or other applicable license agreement, including,
+//without limitation, that your use is for the sole purpose of
+//programming logic devices manufactured by Altera and sold by
+//Altera or its authorized distributors.  Please refer to the
 //applicable agreement for further details.
 
 
@@ -12738,6 +13335,33 @@ module U_buffer_2 (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
+	RAMB18E1 altsyncram_component(
+		.DOBDO(sub_wire0),
+		.DOADO(),
+		.DOPBDOP(),
+		.DOPADOP(),
+		.DIBDI(),
+		.DIADI(data),
+		.DIPBDIP(),
+		.DIPADIP(),
+
+		.ADDRARDADDR(rdaddress),
+		.CLKARDCLK(clock),
+		.ENARDEN(rden),
+		.REGCEAREGCE(),
+		.RSTRAMARSTRAM(),
+		.RSTREGARSTREG(),
+		.WEA(),
+
+		.ADDRBWRADDR(wraddress),
+		.CLKBWRCLK(clock),
+		.ENBWREN(wren),
+		.REGCEB(),
+		.RSTRAMB(),
+		.RSTREGB(),
+		.WEBWE()
+	);
+	/*
 	altsyncram	altsyncram_component (
 				.wren_a (wren),
 				.clock0 (clock),
@@ -12784,7 +13408,7 @@ module U_buffer_2 (
 		altsyncram_component.outdata_aclr_b = "NONE",
 		altsyncram_component.read_during_write_mode_mixed_ports = "DONT_CARE",
 		altsyncram_component.power_up_uninitialized = "FALSE",
-		altsyncram_component.init_file = "mea_buffers.mif";
+		altsyncram_component.init_file = "mea_buffers.mif";*/
 
 
 endmodule
@@ -12894,7 +13518,7 @@ endmodule
 // megafunction wizard: %LPM_RAM_DP%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: altsyncram 
+// MODULE: altsyncram
 
 // ============================================================
 // File Name: U_buffer.v
@@ -12909,17 +13533,17 @@ endmodule
 
 
 //Copyright (C) 1991-2005 Altera Corporation
-//Your use of Altera Corporation's design tools, logic functions 
-//and other software and tools, and its AMPP partner logic       
-//functions, and any output files any of the foregoing           
-//(including device programming or simulation files), and any    
-//associated documentation or information are expressly subject  
-//to the terms and conditions of the Altera Program License      
-//Subscription Agreement, Altera MegaCore Function License       
-//Agreement, or other applicable license agreement, including,   
-//without limitation, that your use is for the sole purpose of   
-//programming logic devices manufactured by Altera and sold by   
-//Altera or its authorized distributors.  Please refer to the    
+//Your use of Altera Corporation's design tools, logic functions
+//and other software and tools, and its AMPP partner logic
+//functions, and any output files any of the foregoing
+//(including device programming or simulation files), and any
+//associated documentation or information are expressly subject
+//to the terms and conditions of the Altera Program License
+//Subscription Agreement, Altera MegaCore Function License
+//Agreement, or other applicable license agreement, including,
+//without limitation, that your use is for the sole purpose of
+//programming logic devices manufactured by Altera and sold by
+//Altera or its authorized distributors.  Please refer to the
 //applicable agreement for further details.
 
 
@@ -12946,6 +13570,33 @@ module U_buffer (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
+	RAMB18E1 altsyncram_component(
+		.DOBDO(sub_wire0),
+		.DOADO(),
+		.DOPBDOP(),
+		.DOPADOP(),
+		.DIBDI(),
+		.DIADI(data),
+		.DIPBDIP(),
+		.DIPADIP(),
+
+		.ADDRARDADDR(rdaddress),
+		.CLKARDCLK(clock),
+		.ENARDEN(rden),
+		.REGCEAREGCE(),
+		.RSTRAMARSTRAM(),
+		.RSTREGARSTREG(),
+		.WEA(),
+
+		.ADDRBWRADDR(wraddress),
+		.CLKBWRCLK(clock),
+		.ENBWREN(wren),
+		.REGCEB(),
+		.RSTRAMB(),
+		.RSTREGB(),
+		.WEBWE()
+	);
+	/*
 	altsyncram	altsyncram_component (
 				.wren_a (wren),
 				.clock0 (clock),
@@ -12992,7 +13643,7 @@ module U_buffer (
 		altsyncram_component.outdata_aclr_b = "NONE",
 		altsyncram_component.read_during_write_mode_mixed_ports = "DONT_CARE",
 		altsyncram_component.power_up_uninitialized = "FALSE",
-		altsyncram_component.init_file = "mea_buffers.mif";
+		altsyncram_component.init_file = "mea_buffers.mif";*/
 
 
 endmodule
@@ -13102,7 +13753,7 @@ endmodule
 // megafunction wizard: %LPM_DIVIDE%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: lpm_divide 
+// MODULE: lpm_divide
 
 // ============================================================
 // File Name: unsigned_divider.v
@@ -13200,7 +13851,7 @@ endmodule
 // megafunction wizard: %LPM_MULT%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: lpm_mult 
+// MODULE: lpm_mult
 
 // ============================================================
 // File Name: unsigned_multiplier.v
@@ -13297,7 +13948,7 @@ endmodule
 // megafunction wizard: %LPM_RAM_DP%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: altsyncram 
+// MODULE: altsyncram
 
 // ============================================================
 // File Name: U_Polynomial_1.v
@@ -13312,17 +13963,17 @@ endmodule
 
 
 //Copyright (C) 1991-2005 Altera Corporation
-//Your use of Altera Corporation's design tools, logic functions 
-//and other software and tools, and its AMPP partner logic       
-//functions, and any output files any of the foregoing           
-//(including device programming or simulation files), and any    
-//associated documentation or information are expressly subject  
-//to the terms and conditions of the Altera Program License      
-//Subscription Agreement, Altera MegaCore Function License       
-//Agreement, or other applicable license agreement, including,   
-//without limitation, that your use is for the sole purpose of   
-//programming logic devices manufactured by Altera and sold by   
-//Altera or its authorized distributors.  Please refer to the    
+//Your use of Altera Corporation's design tools, logic functions
+//and other software and tools, and its AMPP partner logic
+//functions, and any output files any of the foregoing
+//(including device programming or simulation files), and any
+//associated documentation or information are expressly subject
+//to the terms and conditions of the Altera Program License
+//Subscription Agreement, Altera MegaCore Function License
+//Agreement, or other applicable license agreement, including,
+//without limitation, that your use is for the sole purpose of
+//programming logic devices manufactured by Altera and sold by
+//Altera or its authorized distributors.  Please refer to the
 //applicable agreement for further details.
 
 
@@ -13349,6 +14000,33 @@ module U_Polynomial_1 (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
+	RAMB18E1 altsyncram_component(
+		.DOBDO(sub_wire0),
+		.DOADO(),
+		.DOPBDOP(),
+		.DOPADOP(),
+		.DIBDI(),
+		.DIADI(data),
+		.DIPBDIP(),
+		.DIPADIP(),
+
+		.ADDRARDADDR(rdaddress),
+		.CLKARDCLK(clock),
+		.ENARDEN(rden),
+		.REGCEAREGCE(),
+		.RSTRAMARSTRAM(),
+		.RSTREGARSTREG(),
+		.WEA(),
+
+		.ADDRBWRADDR(wraddress),
+		.CLKBWRCLK(clock),
+		.ENBWREN(wren),
+		.REGCEB(),
+		.RSTRAMB(),
+		.RSTREGB(),
+		.WEBWE()
+	);
+	/*
 	altsyncram	altsyncram_component (
 				.wren_a (wren),
 				.clock0 (clock),
@@ -13395,7 +14073,7 @@ module U_Polynomial_1 (
 		altsyncram_component.outdata_aclr_b = "NONE",
 		altsyncram_component.read_during_write_mode_mixed_ports = "DONT_CARE",
 		altsyncram_component.power_up_uninitialized = "FALSE",
-		altsyncram_component.init_file = "mea_buffers.mif";
+		altsyncram_component.init_file = "mea_buffers.mif";*/
 
 
 endmodule
@@ -13505,7 +14183,7 @@ endmodule
 // megafunction wizard: %LPM_RAM_DP%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: altsyncram 
+// MODULE: altsyncram
 
 // ============================================================
 // File Name: U_Polynomial_2.v
@@ -13520,17 +14198,17 @@ endmodule
 
 
 //Copyright (C) 1991-2005 Altera Corporation
-//Your use of Altera Corporation's design tools, logic functions 
-//and other software and tools, and its AMPP partner logic       
-//functions, and any output files any of the foregoing           
-//(including device programming or simulation files), and any    
-//associated documentation or information are expressly subject  
-//to the terms and conditions of the Altera Program License      
-//Subscription Agreement, Altera MegaCore Function License       
-//Agreement, or other applicable license agreement, including,   
-//without limitation, that your use is for the sole purpose of   
-//programming logic devices manufactured by Altera and sold by   
-//Altera or its authorized distributors.  Please refer to the    
+//Your use of Altera Corporation's design tools, logic functions
+//and other software and tools, and its AMPP partner logic
+//functions, and any output files any of the foregoing
+//(including device programming or simulation files), and any
+//associated documentation or information are expressly subject
+//to the terms and conditions of the Altera Program License
+//Subscription Agreement, Altera MegaCore Function License
+//Agreement, or other applicable license agreement, including,
+//without limitation, that your use is for the sole purpose of
+//programming logic devices manufactured by Altera and sold by
+//Altera or its authorized distributors.  Please refer to the
 //applicable agreement for further details.
 
 
@@ -13557,6 +14235,33 @@ module U_Polynomial_2 (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
+	RAMB18E1 altsyncram_component(
+		.DOBDO(sub_wire0),
+		.DOADO(),
+		.DOPBDOP(),
+		.DOPADOP(),
+		.DIBDI(),
+		.DIADI(data),
+		.DIPBDIP(),
+		.DIPADIP(),
+
+		.ADDRARDADDR(rdaddress),
+		.CLKARDCLK(clock),
+		.ENARDEN(rden),
+		.REGCEAREGCE(),
+		.RSTRAMARSTRAM(),
+		.RSTREGARSTREG(),
+		.WEA(),
+
+		.ADDRBWRADDR(wraddress),
+		.CLKBWRCLK(clock),
+		.ENBWREN(wren),
+		.REGCEB(),
+		.RSTRAMB(),
+		.RSTREGB(),
+		.WEBWE()
+	);
+	/*
 	altsyncram	altsyncram_component (
 				.wren_a (wren),
 				.clock0 (clock),
@@ -13603,7 +14308,7 @@ module U_Polynomial_2 (
 		altsyncram_component.outdata_aclr_b = "NONE",
 		altsyncram_component.read_during_write_mode_mixed_ports = "DONT_CARE",
 		altsyncram_component.power_up_uninitialized = "FALSE",
-		altsyncram_component.init_file = "mea_buffers.mif";
+		altsyncram_component.init_file = "mea_buffers.mif";*/
 
 
 endmodule
@@ -13713,7 +14418,7 @@ endmodule
 // megafunction wizard: %LPM_RAM_DP%
 // GENERATION: STANDARD
 // VERSION: WM1.0
-// MODULE: altsyncram 
+// MODULE: altsyncram
 
 // ============================================================
 // File Name: U_Polynomial.v
@@ -13728,17 +14433,17 @@ endmodule
 
 
 //Copyright (C) 1991-2005 Altera Corporation
-//Your use of Altera Corporation's design tools, logic functions 
-//and other software and tools, and its AMPP partner logic       
-//functions, and any output files any of the foregoing           
-//(including device programming or simulation files), and any    
-//associated documentation or information are expressly subject  
-//to the terms and conditions of the Altera Program License      
-//Subscription Agreement, Altera MegaCore Function License       
-//Agreement, or other applicable license agreement, including,   
-//without limitation, that your use is for the sole purpose of   
-//programming logic devices manufactured by Altera and sold by   
-//Altera or its authorized distributors.  Please refer to the    
+//Your use of Altera Corporation's design tools, logic functions
+//and other software and tools, and its AMPP partner logic
+//functions, and any output files any of the foregoing
+//(including device programming or simulation files), and any
+//associated documentation or information are expressly subject
+//to the terms and conditions of the Altera Program License
+//Subscription Agreement, Altera MegaCore Function License
+//Agreement, or other applicable license agreement, including,
+//without limitation, that your use is for the sole purpose of
+//programming logic devices manufactured by Altera and sold by
+//Altera or its authorized distributors.  Please refer to the
 //applicable agreement for further details.
 
 
@@ -13765,6 +14470,33 @@ module U_Polynomial (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
+	RAMB18E1 altsyncram_component(
+		.DOBDO(sub_wire0),
+		.DOADO(),
+		.DOPBDOP(),
+		.DOPADOP(),
+		.DIBDI(),
+		.DIADI(data),
+		.DIPBDIP(),
+		.DIPADIP(),
+
+		.ADDRARDADDR(rdaddress),
+		.CLKARDCLK(clock),
+		.ENARDEN(rden),
+		.REGCEAREGCE(),
+		.RSTRAMARSTRAM(),
+		.RSTREGARSTREG(),
+		.WEA(),
+
+		.ADDRBWRADDR(wraddress),
+		.CLKBWRCLK(clock),
+		.ENBWREN(wren),
+		.REGCEB(),
+		.RSTRAMB(),
+		.RSTREGB(),
+		.WEBWE()
+	);
+	/*
 	altsyncram	altsyncram_component (
 				.wren_a (wren),
 				.clock0 (clock),
@@ -13811,7 +14543,7 @@ module U_Polynomial (
 		altsyncram_component.outdata_aclr_b = "NONE",
 		altsyncram_component.read_during_write_mode_mixed_ports = "DONT_CARE",
 		altsyncram_component.power_up_uninitialized = "FALSE",
-		altsyncram_component.init_file = "mea_buffers.mif";
+		altsyncram_component.init_file = "mea_buffers.mif";*/
 
 
 endmodule
