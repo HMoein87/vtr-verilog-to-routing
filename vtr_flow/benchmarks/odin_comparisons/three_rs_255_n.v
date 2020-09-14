@@ -13816,14 +13816,14 @@ module unsigned_divider (
 	input	  clock;
 	output	[14:0]  quotient;
 
-	wire [14:0] pipeline1;
-	wire [14:0] pipeline2;
+	wire [14:0] pipeline1 = 15'b0;
+	wire [14:0] pipeline2 = 15'b0;
 
 	always @(posedge clock)
 	begin
-	    assign pipeline1 = numer / denom;
-	    assign pipeline2 = pipeline1;
-	    assign quotient = pipeline2;
+	    pipeline1 = numer / denom;
+	    pipeline2 = pipeline1;
+	    quotient = pipeline2;
 	end
 
 	/*lpm_divide	lpm_divide_component (
