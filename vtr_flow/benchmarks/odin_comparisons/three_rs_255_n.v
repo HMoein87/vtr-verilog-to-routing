@@ -1658,7 +1658,7 @@ module absolute_values (
 	input	[9:0]  data;
 	output	[9:0]  result;
 
-    assign output = data[9] ? -data : data;
+    assign result = data[9] ? (-data) : data;
 endmodule
 
 // ============================================================
