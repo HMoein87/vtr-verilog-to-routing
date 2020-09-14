@@ -5365,7 +5365,7 @@ module L_Polynomial_2 (
 				.q_a (),
 				.wren_b ()
 				// synopsys translate_on
-				);*/
+				);
 	defparam
 		altsyncram_component.intended_device_family = "Stratix",
 		altsyncram_component.operation_mode = "DUAL_PORT",
@@ -5388,7 +5388,7 @@ module L_Polynomial_2 (
 		altsyncram_component.outdata_aclr_b = "NONE",
 		altsyncram_component.read_during_write_mode_mixed_ports = "DONT_CARE",
 		altsyncram_component.power_up_uninitialized = "FALSE",
-		altsyncram_component.init_file = "mea_buffers.mif";
+		altsyncram_component.init_file = "mea_buffers.mif";*/
 
 
 endmodule
