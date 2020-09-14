@@ -1747,7 +1747,34 @@ module decoder_erasure_flags_1 (
 	wire [0:0] sub_wire0;
 	wire [0:0] q = sub_wire0[0:0];
 
-	altsyncram	altsyncram_component (
+		RAMB18E1 altsyncram_component(
+    		.DOBDO(sub_wire0),
+    		.DOADO(),
+    		.DOPBDOP(),
+    		.DOPADOP(),
+    		.DIBDI(),
+    		.DIADI(data),
+    		.DIPBDIP(),
+    		.DIPADIP(),
+
+    		.ADDRARDADDR(rdaddress),
+    		.CLKARDCLK(clock),
+    		.ENARDEN(rden),
+    		.REGCEAREGCE(),
+    		.RSTRAMARSTRAM(),
+    		.RSTREGARSTREG(),
+    		.WEA(),
+
+    		.ADDRBWRADDR(wraddress),
+    		.CLKBWRCLK(clock),
+    		.ENBWREN(wren),
+    		.REGCEB(),
+    		.RSTRAMB(),
+    		.RSTREGB(),
+    		.WEBWE()
+    	);
+
+	/*altsyncram	altsyncram_component (
 				.wren_a (wren),
 				.clock0 (clock),
 				.address_a (wraddress),
@@ -1776,7 +1803,7 @@ module decoder_erasure_flags_1 (
 		altsyncram_component.address_aclr_b = "NONE",
 		altsyncram_component.outdata_aclr_b = "NONE",
 		altsyncram_component.read_during_write_mode_mixed_ports = "DONT_CARE",
-		altsyncram_component.ram_block_type = "AUTO";
+		altsyncram_component.ram_block_type = "AUTO";*/
 
 
 endmodule
@@ -1921,7 +1948,33 @@ module decoder_erasure_flags_2 (
 
 	wire [0:0] sub_wire0;
 	wire [0:0] q = sub_wire0[0:0];
+	RAMB18E1 altsyncram_component(
+		.DOBDO(sub_wire0),
+		.DOADO(),
+		.DOPBDOP(),
+		.DOPADOP(),
+		.DIBDI(),
+		.DIADI(data),
+		.DIPBDIP(),
+		.DIPADIP(),
 
+		.ADDRARDADDR(rdaddress),
+		.CLKARDCLK(clock),
+		.ENARDEN(rden),
+		.REGCEAREGCE(),
+		.RSTRAMARSTRAM(),
+		.RSTREGARSTREG(),
+		.WEA(),
+
+		.ADDRBWRADDR(wraddress),
+		.CLKBWRCLK(clock),
+		.ENBWREN(wren),
+		.REGCEB(),
+		.RSTRAMB(),
+		.RSTREGB(),
+		.WEBWE()
+	);
+	/*
 	altsyncram	altsyncram_component (
 				.wren_a (wren),
 				.clock0 (clock),
@@ -1951,7 +2004,7 @@ module decoder_erasure_flags_2 (
 		altsyncram_component.address_aclr_b = "NONE",
 		altsyncram_component.outdata_aclr_b = "NONE",
 		altsyncram_component.read_during_write_mode_mixed_ports = "DONT_CARE",
-		altsyncram_component.ram_block_type = "AUTO";
+		altsyncram_component.ram_block_type = "AUTO";*/
 
 
 endmodule
@@ -2097,6 +2150,33 @@ module decoder_erasure_flags (
 	wire [0:0] sub_wire0;
 	wire [0:0] q = sub_wire0[0:0];
 
+	RAMB18E1 altsyncram_component(
+		.DOBDO(sub_wire0),
+		.DOADO(),
+		.DOPBDOP(),
+		.DOPADOP(),
+		.DIBDI(),
+		.DIADI(data),
+		.DIPBDIP(),
+		.DIPADIP(),
+
+		.ADDRARDADDR(rdaddress),
+		.CLKARDCLK(clock),
+		.ENARDEN(rden),
+		.REGCEAREGCE(),
+		.RSTRAMARSTRAM(),
+		.RSTREGARSTREG(),
+		.WEA(),
+
+		.ADDRBWRADDR(wraddress),
+		.CLKBWRCLK(clock),
+		.ENBWREN(wren),
+		.REGCEB(),
+		.RSTRAMB(),
+		.RSTREGB(),
+		.WEBWE()
+	);
+	/*
 	altsyncram	altsyncram_component (
 				.wren_a (wren),
 				.clock0 (clock),
@@ -2126,7 +2206,7 @@ module decoder_erasure_flags (
 		altsyncram_component.address_aclr_b = "NONE",
 		altsyncram_component.outdata_aclr_b = "NONE",
 		altsyncram_component.read_during_write_mode_mixed_ports = "DONT_CARE",
-		altsyncram_component.ram_block_type = "AUTO";
+		altsyncram_component.ram_block_type = "AUTO";*/
 
 
 endmodule
@@ -2272,6 +2352,33 @@ module decoder_input_buffer (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
+	RAMB18E1 altsyncram_component(
+		.DOBDO(sub_wire0),
+		.DOADO(),
+		.DOPBDOP(),
+		.DOPADOP(),
+		.DIBDI(),
+		.DIADI(data),
+		.DIPBDIP(),
+		.DIPADIP(),
+
+		.ADDRARDADDR(rdaddress),
+		.CLKARDCLK(clock),
+		.ENARDEN(rden),
+		.REGCEAREGCE(),
+		.RSTRAMARSTRAM(),
+		.RSTREGARSTREG(),
+		.WEA(),
+
+		.ADDRBWRADDR(wraddress),
+		.CLKBWRCLK(clock),
+		.ENBWREN(wren),
+		.REGCEB(),
+		.RSTRAMB(),
+		.RSTREGB(),
+		.WEBWE()
+	);
+	/*
 	altsyncram	altsyncram_component (
 				.wren_a (wren),
 				.clock0 (clock),
@@ -2301,7 +2408,7 @@ module decoder_input_buffer (
 		altsyncram_component.address_aclr_b = "NONE",
 		altsyncram_component.outdata_aclr_b = "NONE",
 		altsyncram_component.read_during_write_mode_mixed_ports = "DONT_CARE",
-		altsyncram_component.ram_block_type = "AUTO";
+		altsyncram_component.ram_block_type = "AUTO";*/
 
 
 endmodule
@@ -2447,6 +2554,33 @@ module delay_buffer (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
+	RAMB18E1 altsyncram_component(
+		.DOBDO(sub_wire0),
+		.DOADO(),
+		.DOPBDOP(),
+		.DOPADOP(),
+		.DIBDI(),
+		.DIADI(data),
+		.DIPBDIP(),
+		.DIPADIP(),
+
+		.ADDRARDADDR(rdaddress),
+		.CLKARDCLK(clock),
+		.ENARDEN(rden),
+		.REGCEAREGCE(),
+		.RSTRAMARSTRAM(),
+		.RSTREGARSTREG(),
+		.WEA(),
+
+		.ADDRBWRADDR(wraddress),
+		.CLKBWRCLK(clock),
+		.ENBWREN(wren),
+		.REGCEB(),
+		.RSTRAMB(),
+		.RSTREGB(),
+		.WEBWE()
+	);
+	/*
 	altsyncram	altsyncram_component (
 				.wren_a (wren),
 				.clock0 (clock),
@@ -2476,7 +2610,7 @@ module delay_buffer (
 		altsyncram_component.address_aclr_b = "NONE",
 		altsyncram_component.outdata_aclr_b = "NONE",
 		altsyncram_component.read_during_write_mode_mixed_ports = "DONT_CARE",
-		altsyncram_component.ram_block_type = "AUTO";
+		altsyncram_component.ram_block_type = "AUTO";*/
 
 
 endmodule
@@ -2621,7 +2755,33 @@ module derivative_buffer_1 (
 
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
+	RAMB18E1 altsyncram_component(
+		.DOBDO(sub_wire0),
+		.DOADO(),
+		.DOPBDOP(),
+		.DOPADOP(),
+		.DIBDI(),
+		.DIADI(data),
+		.DIPBDIP(),
+		.DIPADIP(),
 
+		.ADDRARDADDR(rdaddress),
+		.CLKARDCLK(clock),
+		.ENARDEN(rden),
+		.REGCEAREGCE(),
+		.RSTRAMARSTRAM(),
+		.RSTREGARSTREG(),
+		.WEA(),
+
+		.ADDRBWRADDR(wraddress),
+		.CLKBWRCLK(clock),
+		.ENBWREN(wren),
+		.REGCEB(),
+		.RSTRAMB(),
+		.RSTREGB(),
+		.WEBWE()
+	);
+	/*
 	altsyncram	altsyncram_component (
 				.wren_a (wren),
 				.clock0 (clock),
@@ -2651,7 +2811,7 @@ module derivative_buffer_1 (
 		altsyncram_component.address_aclr_b = "NONE",
 		altsyncram_component.outdata_aclr_b = "NONE",
 		altsyncram_component.read_during_write_mode_mixed_ports = "DONT_CARE",
-		altsyncram_component.ram_block_type = "AUTO";
+		altsyncram_component.ram_block_type = "AUTO";*/
 
 
 endmodule
@@ -2797,6 +2957,33 @@ module derivative_buffer_2 (
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
 
+	RAMB18E1 altsyncram_component(
+		.DOBDO(sub_wire0),
+		.DOADO(),
+		.DOPBDOP(),
+		.DOPADOP(),
+		.DIBDI(),
+		.DIADI(data),
+		.DIPBDIP(),
+		.DIPADIP(),
+
+		.ADDRARDADDR(rdaddress),
+		.CLKARDCLK(clock),
+		.ENARDEN(rden),
+		.REGCEAREGCE(),
+		.RSTRAMARSTRAM(),
+		.RSTREGARSTREG(),
+		.WEA(),
+
+		.ADDRBWRADDR(wraddress),
+		.CLKBWRCLK(clock),
+		.ENBWREN(wren),
+		.REGCEB(),
+		.RSTRAMB(),
+		.RSTREGB(),
+		.WEBWE()
+	);
+	/*
 	altsyncram	altsyncram_component (
 				.wren_a (wren),
 				.clock0 (clock),
@@ -2826,7 +3013,7 @@ module derivative_buffer_2 (
 		altsyncram_component.address_aclr_b = "NONE",
 		altsyncram_component.outdata_aclr_b = "NONE",
 		altsyncram_component.read_during_write_mode_mixed_ports = "DONT_CARE",
-		altsyncram_component.ram_block_type = "AUTO";
+		altsyncram_component.ram_block_type = "AUTO";*/
 
 
 endmodule
@@ -2971,7 +3158,33 @@ module derivative_buffer (
 
 	wire [7:0] sub_wire0;
 	wire [7:0] q = sub_wire0[7:0];
+	RAMB18E1 altsyncram_component(
+		.DOBDO(sub_wire0),
+		.DOADO(),
+		.DOPBDOP(),
+		.DOPADOP(),
+		.DIBDI(),
+		.DIADI(data),
+		.DIPBDIP(),
+		.DIPADIP(),
 
+		.ADDRARDADDR(rdaddress),
+		.CLKARDCLK(clock),
+		.ENARDEN(rden),
+		.REGCEAREGCE(),
+		.RSTRAMARSTRAM(),
+		.RSTREGARSTREG(),
+		.WEA(),
+
+		.ADDRBWRADDR(wraddress),
+		.CLKBWRCLK(clock),
+		.ENBWREN(wren),
+		.REGCEB(),
+		.RSTRAMB(),
+		.RSTREGB(),
+		.WEBWE()
+	);
+	/*
 	altsyncram	altsyncram_component (
 				.wren_a (wren),
 				.clock0 (clock),
@@ -3001,7 +3214,7 @@ module derivative_buffer (
 		altsyncram_component.address_aclr_b = "NONE",
 		altsyncram_component.outdata_aclr_b = "NONE",
 		altsyncram_component.read_during_write_mode_mixed_ports = "DONT_CARE",
-		altsyncram_component.ram_block_type = "AUTO";
+		altsyncram_component.ram_block_type = "AUTO";*/
 
 
 endmodule
@@ -3677,7 +3890,33 @@ module fading (
 
 	wire [9:0] sub_wire0;
 	wire [9:0] q = sub_wire0[9:0];
+	RAMB18E1 altsyncram_component(
+		.DOBDO(sub_wire0),
+		.DOADO(),
+		.DOPBDOP(),
+		.DOPADOP(),
+		.DIBDI(),
+		.DIADI(data),
+		.DIPBDIP(),
+		.DIPADIP(),
 
+		.ADDRARDADDR(rdaddress),
+		.CLKARDCLK(clock),
+		.ENARDEN(rden),
+		.REGCEAREGCE(),
+		.RSTRAMARSTRAM(),
+		.RSTREGARSTREG(),
+		.WEA(),
+
+		.ADDRBWRADDR(wraddress),
+		.CLKBWRCLK(clock),
+		.ENBWREN(wren),
+		.REGCEB(),
+		.RSTRAMB(),
+		.RSTREGB(),
+		.WEBWE()
+	);
+	/*
 	altsyncram	altsyncram_component (
 				.wren_a (wren),
 				.clock0 (clock),
@@ -3724,7 +3963,7 @@ module fading (
 		altsyncram_component.outdata_aclr_b = "NONE",
 		altsyncram_component.read_during_write_mode_mixed_ports = "DONT_CARE",
 		altsyncram_component.power_up_uninitialized = "FALSE",
-		altsyncram_component.init_file = "fade.mif";
+		altsyncram_component.init_file = "fade.mif";*/
 
 
 endmodule
