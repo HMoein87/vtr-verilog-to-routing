@@ -7530,11 +7530,9 @@ module mult_by_32_2 (
 
 	input	[9:0]  dataa;
 	output	[15:0]  result;
+    assign result = dataa * 6'h20;
 
-	wire [15:0] sub_wire0;
-	wire [5:0] sub_wire1 = 6'h20;
-	wire [15:0] result = sub_wire0[15:0];
-
+/*
 	lpm_mult	lpm_mult_component (
 				.dataa (dataa),
 				.datab (sub_wire1),
@@ -7547,7 +7545,7 @@ module mult_by_32_2 (
 		lpm_mult_component.lpm_type = "LPM_MULT",
 		lpm_mult_component.lpm_representation = "UNSIGNED",
 		lpm_mult_component.lpm_hint = "INPUT_B_IS_CONSTANT=YES,DEDICATED_MULTIPLIER_CIRCUITRY=YES,MAXIMIZE_SPEED=6";
-
+*/
 
 endmodule
 
@@ -7626,10 +7624,8 @@ module mult_by_32 (
 	input	[9:0]  dataa;
 	output	[15:0]  result;
 
-	wire [15:0] sub_wire0;
-	wire [5:0] sub_wire1 = 6'h20;
-	wire [15:0] result = sub_wire0[15:0];
-
+    assign result = dataa * 6'h20;
+/*
 	lpm_mult	lpm_mult_component (
 				.dataa (dataa),
 				.datab (sub_wire1),
@@ -7642,7 +7638,7 @@ module mult_by_32 (
 		lpm_mult_component.lpm_type = "LPM_MULT",
 		lpm_mult_component.lpm_representation = "UNSIGNED",
 		lpm_mult_component.lpm_hint = "INPUT_B_IS_CONSTANT=YES,DEDICATED_MULTIPLIER_CIRCUITRY=YES,MAXIMIZE_SPEED=6";
-
+*/
 
 endmodule
 
@@ -11353,11 +11349,16 @@ module signed_multiplier2 (
 	input	[8:0]  datab;
 	input	  clock;
 	output	[23:0]  result;
+	reg	[23:0]  pipeline= 24'b0;
 
-	wire [23:0] sub_wire0;
-	wire [23:0] result = sub_wire0[23:0];
+    always @(posedge clock)
+    begin
+        result = pipeline;
+        pipeline = $signed(dataa) * $signed(datab);
+    end
 
-	lpm_mult	lpm_mult_component (
+
+	/*lpm_mult	lpm_mult_component (
 				.dataa (dataa),
 				.datab (datab),
 				.clock (clock),
@@ -11370,7 +11371,7 @@ module signed_multiplier2 (
 		lpm_mult_component.lpm_type = "LPM_MULT",
 		lpm_mult_component.lpm_representation = "SIGNED",
 		lpm_mult_component.lpm_hint = "DEDICATED_MULTIPLIER_CIRCUITRY=YES,MAXIMIZE_SPEED=6",
-		lpm_mult_component.lpm_pipeline = 2;
+		lpm_mult_component.lpm_pipeline = 2;*/
 
 
 endmodule
@@ -11457,10 +11458,15 @@ module signed_multiplier3 (
 	input	[8:0]  datab;
 	input	  clock;
 	output	[23:0]  result;
+	reg[23:0] pipeline = 24'b0;
 
-	wire [23:0] sub_wire0;
-	wire [23:0] result = sub_wire0[23:0];
+    always @(posedge clock)
+    begin
+        result = pipeline;
+        pipeline = $signed(dataa) * $signed(datab);
+    end
 
+    /*
 	lpm_mult	lpm_mult_component (
 				.dataa (dataa),
 				.datab (datab),
@@ -11474,7 +11480,7 @@ module signed_multiplier3 (
 		lpm_mult_component.lpm_type = "LPM_MULT",
 		lpm_mult_component.lpm_representation = "SIGNED",
 		lpm_mult_component.lpm_hint = "DEDICATED_MULTIPLIER_CIRCUITRY=YES,MAXIMIZE_SPEED=6",
-		lpm_mult_component.lpm_pipeline = 2;
+		lpm_mult_component.lpm_pipeline = 2;*/
 
 
 endmodule
@@ -11564,8 +11570,15 @@ module signed_multiplier4 (
 
 	wire [23:0] sub_wire0;
 	wire [23:0] result = sub_wire0[23:0];
+	reg[23:0] pipeline = 24'b0;
 
-	lpm_mult	lpm_mult_component (
+    always @(posedge clock)
+    begin
+        result = pipeline;
+        pipeline = $signed(dataa) * $signed(datab);
+    end
+
+	/*lpm_mult	lpm_mult_component (
 				.dataa (dataa),
 				.datab (datab),
 				.clock (clock),
@@ -11578,7 +11591,7 @@ module signed_multiplier4 (
 		lpm_mult_component.lpm_type = "LPM_MULT",
 		lpm_mult_component.lpm_representation = "SIGNED",
 		lpm_mult_component.lpm_hint = "DEDICATED_MULTIPLIER_CIRCUITRY=YES,MAXIMIZE_SPEED=6",
-		lpm_mult_component.lpm_pipeline = 2;
+		lpm_mult_component.lpm_pipeline = 2*/
 
 
 endmodule
@@ -11665,10 +11678,15 @@ module signed_multiplier (
 	input	[8:0]  datab;
 	input	  clock;
 	output	[23:0]  result;
+	reg[23:0] pipeline = 24'b0;
 
-	wire [23:0] sub_wire0;
-	wire [23:0] result = sub_wire0[23:0];
+    always @(posedge clock)
+    begin
+        result = pipeline;
+        pipeline = $signed(dataa) * $signed(datab);
+    end
 
+/*
 	lpm_mult	lpm_mult_component (
 				.dataa (dataa),
 				.datab (datab),
@@ -11682,7 +11700,7 @@ module signed_multiplier (
 		lpm_mult_component.lpm_type = "LPM_MULT",
 		lpm_mult_component.lpm_representation = "SIGNED",
 		lpm_mult_component.lpm_hint = "DEDICATED_MULTIPLIER_CIRCUITRY=YES,MAXIMIZE_SPEED=6",
-		lpm_mult_component.lpm_pipeline = 2;
+		lpm_mult_component.lpm_pipeline = 2;*/
 
 
 endmodule
@@ -13790,26 +13808,29 @@ module unsigned_divider (
 	numer,
 	denom,
 	clock,
-	quotient,
-	remain);
+	quotient
+	);
 
 	input	[14:0]  numer;
 	input	[9:0]  denom;
 	input	  clock;
 	output	[14:0]  quotient;
-	output	[9:0]  remain;
 
-	wire [14:0] sub_wire0;
-	wire [9:0] sub_wire1;
-	wire [14:0] quotient = sub_wire0[14:0];
-	wire [9:0] remain = sub_wire1[9:0];
+	wire [14:0] pipeline1;
+	wire [14:0] pipeline2;
 
-	lpm_divide	lpm_divide_component (
+	always @(posedge clock)
+	begin
+	    assign pipeline1 = numer / denom;
+	    assign pipeline2 = pipeline1;
+	    assign quotient = pipeline2;
+	end
+
+	/*lpm_divide	lpm_divide_component (
 				.denom (denom),
 				.clock (clock),
 				.numer (numer),
-				.quotient (sub_wire0),
-				.remain (sub_wire1));
+				.quotient (sub_wire0));
 	defparam
 		lpm_divide_component.lpm_widthn = 15,
 		lpm_divide_component.lpm_widthd = 10,
@@ -13817,7 +13838,7 @@ module unsigned_divider (
 		lpm_divide_component.lpm_type = "LPM_DIVIDE",
 		lpm_divide_component.lpm_nrepresentation = "UNSIGNED",
 		lpm_divide_component.lpm_hint = "MAXIMIZE_SPEED=6,LPM_REMAINDERPOSITIVE=TRUE",
-		lpm_divide_component.lpm_drepresentation = "UNSIGNED";
+		lpm_divide_component.lpm_drepresentation = "UNSIGNED";*/
 
 
 endmodule
@@ -13893,10 +13914,8 @@ module unsigned_multiplier (
 	input	[4:0]  datab;
 	output	[9:0]  result;
 
-	wire [9:0] sub_wire0;
-	wire [9:0] result = sub_wire0[9:0];
-
-	lpm_mult	lpm_mult_component (
+	assign result = dataa * datab;
+	/*lpm_mult	lpm_mult_component (
 				.dataa (dataa),
 				.datab (datab),
 				.result (sub_wire0));
@@ -13907,7 +13926,7 @@ module unsigned_multiplier (
 		lpm_mult_component.lpm_widths = 10,
 		lpm_mult_component.lpm_type = "LPM_MULT",
 		lpm_mult_component.lpm_representation = "UNSIGNED",
-		lpm_mult_component.lpm_hint = "MAXIMIZE_SPEED=6";
+		lpm_mult_component.lpm_hint = "MAXIMIZE_SPEED=6";*/
 
 
 endmodule
