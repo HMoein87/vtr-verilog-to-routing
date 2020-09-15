@@ -1304,6 +1304,8 @@ void split_soft_multiplier(nnode_t* node, netlist_t* netlist) {
 bool is_ast_multiplier(ast_node_t* node) {
     bool is_mult;
     ast_node_t* instance = node->children[0];
+    if(node->children[0]->types.identifier == NULL)
+        return false;
     is_mult = (!strcmp(node->children[0]->types.identifier, "multiply"))
               && (instance->children[0]->num_children == 3);
 

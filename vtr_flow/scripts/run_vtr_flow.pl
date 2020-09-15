@@ -584,7 +584,7 @@ if ( $starting_stage <= $stage_idx_odin and !$error_code ) {
             }
 
             if (!-e $odin_output_file_path or $q ne "success") {
-                $error_status = "failed: odin";
+                $error_status = "failed: odin $odin_output_file_path" ;
                 $error_code = 1;
             }
         }
