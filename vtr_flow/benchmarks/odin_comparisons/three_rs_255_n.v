@@ -14045,9 +14045,9 @@ module unsigned_divider (
 
 	always @(posedge clock)
 	begin
-	    pipeline1 = numer / denom;
-	    pipeline2 = pipeline1;
 	    quotient = pipeline2;
+	    pipeline2 = pipeline1;
+	    pipeline1 = numer / denom;
 	end
 
 	/*lpm_divide	lpm_divide_component (
