@@ -127,7 +127,7 @@ def launch_vpr(verilog_file_name, thread_pool):
 def run_benchmarks(verilog_files):
     synthesis = {}
     vpr_runs = []
-    print("Running", multiprocessing.cpu_count(), "parallel benchmarks")
+    print("Running", multiprocessing.cpu_count(), "parallel benchmarks", flush=True)
     manager = multiprocessing.Manager()
     queue = manager.Queue(len(verilog_files))
     with multiprocessing.Pool(multiprocessing.cpu_count()) as thread_pool:
