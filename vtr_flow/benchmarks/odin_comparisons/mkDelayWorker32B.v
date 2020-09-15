@@ -4134,7 +4134,7 @@ reg			empty_r;
 reg			gb;
 reg			gb2;
 reg	[`awa:0]		cnt;
-wire			full_n, empty_n;
+wire			full, empty, full_n, empty_n;
 reg			full_n_r, empty_n_r;
 
 ////////////////////////////////////////////////////////////////////
@@ -4534,7 +4534,7 @@ reg			empty_r;
 reg			gb;
 reg			gb2;
 reg	[`awa:0]		cnt;
-wire			full_n, empty_n;
+wire			full, empty, full_n, empty_n;
 reg			full_n_r, empty_n_r;
 
 ////////////////////////////////////////////////////////////////////
@@ -4938,7 +4938,7 @@ reg			empty_r;
 reg			gb;
 reg			gb2;
 reg	[`awa:0]		cnt;
-wire			full_n, empty_n;
+wire			full, empty, full_n, empty_n;
 reg			full_n_r, empty_n_r;
 
 ////////////////////////////////////////////////////////////////////
@@ -5342,7 +5342,7 @@ reg			empty_r;
 reg			gb;
 reg			gb2;
 reg	[`awa:0]		cnt;
-wire			full_n, empty_n;
+wire			full, empty, full_n, empty_n;
 reg			full_n_r, empty_n_r;
 
 ////////////////////////////////////////////////////////////////////
@@ -5746,7 +5746,7 @@ reg			empty_r;
 reg			gb;
 reg			gb2;
 reg	[`awc:0]		cnt;
-wire			full_n, empty_n;
+wire			full, empty, full_n, empty_n;
 reg			full_n_r, empty_n_r;
 
 ////////////////////////////////////////////////////////////////////
@@ -6147,7 +6147,7 @@ reg			empty_r;
 reg			gb;
 reg			gb2;
 reg	[`awf:0]		cnt;
-wire			full_n, empty_n;
+wire			full, empty, full_n, empty_n;
 reg			full_n_r, empty_n_r;
 
 ////////////////////////////////////////////////////////////////////
@@ -6552,7 +6552,7 @@ reg			empty_r;
 reg			gb;
 reg			gb2;
 reg	[`awx:0]		cnt;
-wire			full_n, empty_n;
+wire			full, empty, full_n, empty_n;
 reg			full_n_r, empty_n_r;
 
 ////////////////////////////////////////////////////////////////////
