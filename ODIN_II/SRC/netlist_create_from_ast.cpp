@@ -552,7 +552,8 @@ signal_list_t* netlist_expand_ast_of_module(ast_node_t** node_ref, char* instanc
             /* traverse all the children */
             for (i = 0; i < node->num_children; i++) {
                 if (child_skip_list && child_skip_list[i] == false) {
-                    oassert(node->children[i]);
+                    if(!node->children[i])
+                        continue;
                     sc_hierarchy* child_ref = local_ref;
                     if (node->children[i]->types.hierarchy != NULL) {
                         child_ref = node->children[i]->types.hierarchy;
