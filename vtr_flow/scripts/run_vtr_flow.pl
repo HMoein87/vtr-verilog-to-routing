@@ -546,11 +546,10 @@ if ( $starting_stage <= $stage_idx_odin and !$error_code ) {
 
 		file_find_and_replace($yosys_script_temp, "XXX", $circuit_file_name);
 		file_find_and_replace($yosys_script_temp, "ZZZ", "$temp_dir$abc_output_file_name");
-		file_find_and_replace($circuit_file_name, "RAMB18E1_VPR",  "RAMB18E1");
 		file_find_and_replace($yosys_script_temp, "YYY", "");
 		unlink("$temp_dir$abc_output_file_name"); # Delete the old file
 
-
+		file_find_and_replace($circuit_file_path, "RAMB18E1_VPR", "RAMB18E1");
         $q = &system_with_timeout("$yosys", "yosys.out", $timeout, $temp_dir,
             "-s", $yosys_script_temp,
 			"-Q", "-T");
