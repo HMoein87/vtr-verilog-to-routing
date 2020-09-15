@@ -138,7 +138,6 @@ my $show_failures = 0;
 
 my $yosys = undef;
 my $yosys_script = undef;
-my $yosys_abc = undef;
 
 my $latch_map_script = undef;
 my $vpr_exe = undef;
@@ -556,24 +555,10 @@ if ( $starting_stage <= $stage_idx_odin and !$error_code ) {
 
 		file_find_and_replace($yosys_script_temp, "XXX", $circuit_file_name);
 		file_find_and_replace($yosys_script_temp, "ZZZ", "$temp_dir$abc_output_file_name");
-		if( defined $yosys_abc ){
-			my $yosys_abc_temp = "$temp_dir" . "yosys_abc_script";
-			copy( $yosys_abc, $yosys_abc_temp );
-			file_find_and_replace($yosys_script_temp, "YYY", "-script $yosys_abc_temp");
-
-			# Get lut size if undefined
-			if (!defined $lut_size) {
-				$lut_size = xml_find_LUT_Kvalue($xml_tree);
-			}
-			if ( $lut_size < 1 ) {
-				$error_status = "failed: cannot determine arch LUT k-value";
-				$error_code = 1;
-			}
-			file_find_and_replace($yosys_abc_temp, "XXX", "${lut_size}");
-		}else{
-			file_find_and_replace($yosys_script_temp, "YYY", "");
-		}
+		file_find_and_replace($circuit_file_name, "RAMB18E1_VPR",  "RAMB18E1");
+		file_find_and_replace($yosys_script_temp, "YYY", "");
 		unlink("$temp_dir$abc_output_file_name"); # Delete the old file
+
 
         $q = &system_with_timeout("$yosys", "yosys.out", $timeout, $temp_dir,
             "-s", $yosys_script_temp,
