@@ -520,7 +520,7 @@ output			 full_r;
 output			 empty_r;
 output			full_n_r;
 output			empty_n_r;
-output	[1:0]		level;
+wire	[1:0]		level;
 
 ////////////////////////////////////////////////////////////////////
 //
@@ -932,7 +932,7 @@ output			 full_r;
 output			 empty_r;
 output			full_n_r;
 output			empty_n_r;
-output	[1:0]		level;
+wire	[1:0]		level;
 
 ////////////////////////////////////////////////////////////////////
 //
@@ -1345,7 +1345,7 @@ output			 full_r;
 output			empty_r;
 output			full_n_r;
 output			empty_n_r;
-output	[1:0]		level;
+wire	[1:0]		level;
 
 ////////////////////////////////////////////////////////////////////
 //
