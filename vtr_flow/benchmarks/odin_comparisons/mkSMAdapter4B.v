@@ -3411,8 +3411,8 @@ output	[`dwa-1:0]	dout;
 input			re;
 output			 full_r;
 output			empty_r;
-output			full_n, full_n_r;
-output			empty_n, empty_n_r;
+output			full_n_r;
+output			empty_n_r;
 output	[1:0]		level;
 
 ////////////////////////////////////////////////////////////////////
@@ -3814,8 +3814,8 @@ output	[`dwb-1:0]	dout;
 input			re;
 output			 full_r;
 output			empty_r;
-output			full_n, full_n_r;
-output			empty_n, empty_n_r;
+output			full_n_r;
+output			empty_n_r;
 output	[1:0]		level;
 
 ////////////////////////////////////////////////////////////////////
@@ -4219,8 +4219,8 @@ output	[`dwc-1:0]	dout;
 input			re;
 output			 full_r;
 output			empty_r;
-output			full_n, full_n_r;
-output			empty_n, empty_n_r;
+output			full_n_r;
+output			empty_n_r;
 output	[1:0]		level;
 
 ////////////////////////////////////////////////////////////////////
