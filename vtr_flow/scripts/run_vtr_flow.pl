@@ -279,15 +279,6 @@ while ( scalar(@ARGV) != 0 ) { #While non-empty
 			die "Could not find yosys script"
 		}
 	}
-    elsif( $token eq "-yosys_abc" ){
-		$yosys_abc = expand_user_path(shift(@ARGV));
-		if( !-e $yosys_abc ){
-			$yosys_abc = "${vtr_flow_path}/$yosys_abc"
-		}
-		if( !-e $yosys_abc ){
-			die "Could not find yosys abc script"
-		}
-	}
     elsif( $token eq "-latch_map_script" ){
 		$latch_map_script = expand_user_path(shift(@ARGV));
 		if( !-e $latch_map_script ){
