@@ -3446,18 +3446,32 @@ reg			full_n_r, empty_n_r;
  // manually assign
  assign junk_in = 60'b000000000000000000000000000000000000000000000000000000000000;
 
-dual_port_ram   ram1(
-	.clk(		clk		),
-	.addr1(		rp		),
-	.addr2(		wp		),
-	.we1(		we		),
-	.we2(		always_zero		),
-	.out1(		dout		),
-	.out2(		junk_out		),
-	.data1(		din		),
-	.data2 (	junk_in)
-	);
+    RAMB18E1_VPR ram1(
+        .DOBDO(junk_out),
+        .DOADO(dout),
+        .DOPBDOP(),
+        .DOPADOP(),
+        .DIBDI(junk_in),
+        .DIADI(din),
+        .DIPBDIP(),
+        .DIPADIP(),
 
+        .ADDRARDADDR(rp),
+        .CLKARDCLK(clk),
+        .ENARDEN(),
+        .REGCEAREGCE(),
+        .RSTRAMARSTRAM(),
+        .RSTREGARSTREG(),
+        .WEA(we),
+
+        .ADDRBWRADDR(wp),
+        .CLKBWRCLK(clk),
+        .ENBWREN(),
+        .REGCEB(),
+        .RSTRAMB(),
+        .RSTREGB(),
+        .WEBWE(1'b0)
+    );
 ////////////////////////////////////////////////////////////////////
 //
 // Misc Logic
@@ -3835,18 +3849,32 @@ reg			full_n_r, empty_n_r;
  // manually assign
  assign junk_in = 34'b0000000000000000000000000000000000;
 
-dual_port_ram   ram1(
-	.clk(		clk		),
-	.addr1(		rp		),
-	.addr2(		wp		),
-	.we1(		we		),
-	.we2(		always_zero		),
-	.out1(		dout		),
-	.out2(		junk_out		),
-	.data1(		din		),
-	.data2 (	junk_in)
-	);
+    RAMB18E1_VPR ram1(
+        .DOBDO(junk_out),
+        .DOADO(dout),
+        .DOPBDOP(),
+        .DOPADOP(),
+        .DIBDI(junk_in),
+        .DIADI(din),
+        .DIPBDIP(),
+        .DIPADIP(),
 
+        .ADDRARDADDR(rp),
+        .CLKARDCLK(clk),
+        .ENARDEN(),
+        .REGCEAREGCE(),
+        .RSTRAMARSTRAM(),
+        .RSTREGARSTREG(),
+        .WEA(we),
+
+        .ADDRBWRADDR(wp),
+        .CLKBWRCLK(clk),
+        .ENBWREN(),
+        .REGCEB(),
+        .RSTRAMB(),
+        .RSTREGB(),
+        .WEBWE(1'b0)
+    );
 ////////////////////////////////////////////////////////////////////
 //
 // Misc Logic
@@ -4226,18 +4254,32 @@ reg			full_n_r, empty_n_r;
  // manually assign
  assign junk_in = 61'b0000000000000000000000000000000000000000000000000000000000000;
 
-dual_port_ram   ram1(
-	.clk(		clk		),
-	.addr1(		rp		),
-	.addr2(		wp		),
-	.we1(		we		),
-	.we2(		always_zero		),
-	.out1(		dout		),
-	.out2(		junk_out		),
-	.data1(		din		),
-	.data2 (	junk_in)
-	);
+    RAMB18E1_VPR ram1(
+        .DOBDO(junk_out),
+        .DOADO(dout),
+        .DOPBDOP(),
+        .DOPADOP(),
+        .DIBDI(junk_in),
+        .DIADI(din),
+        .DIPBDIP(),
+        .DIPADIP(),
 
+        .ADDRARDADDR(rp),
+        .CLKARDCLK(clk),
+        .ENARDEN(),
+        .REGCEAREGCE(),
+        .RSTRAMARSTRAM(),
+        .RSTREGARSTREG(),
+        .WEA(we),
+
+        .ADDRBWRADDR(wp),
+        .CLKBWRCLK(clk),
+        .ENBWREN(),
+        .REGCEB(),
+        .RSTRAMB(),
+        .RSTREGB(),
+        .WEBWE(1'b0)
+    );
 ////////////////////////////////////////////////////////////////////
 //
 // Misc Logic

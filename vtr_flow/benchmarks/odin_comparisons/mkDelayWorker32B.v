@@ -1503,17 +1503,32 @@ module mkDelayWorker32B(wciS0_Clk,
 wire [255:0] dp_out_not_used1;
 wire [255:0] dp_out_not_used2;
 
-  dual_port_ram dpram1 (
-						.clk(wciS0_Clk),
-					    .addr1(mesgRF_memory__ADDRA),
-					    .addr2(mesgRF_memory__ADDRB),
-					    .data1(mesgRF_memory__DIA),
-					    .data2(mesgRF_memory__DIB),
-					    .we1(mesgRF_memory__WEA),
-					    .we2(mesgRF_memory__WEB),
-					    .out1(dp_out_not_used1),
-					    .out2(mesgRF_memory__DOB)
-						);
+    RAMB18E1_VPR dpram1(
+            .DOBDO(mesgRF_memory__DOB),
+            .DOADO(dp_out_not_used1),
+            .DOPBDOP(),
+            .DOPADOP(),
+            .DIBDI(mesgRF_memory__DIB),
+            .DIADI(mesgRF_memory__DIA),
+            .DIPBDIP(),
+            .DIPADIP(),
+
+            .ADDRARDADDR(mesgRF_memory__ADDRA),
+            .CLKARDCLK(wciS0_Clk),
+            .ENARDEN(),
+            .REGCEAREGCE(),
+            .RSTRAMARSTRAM(),
+            .RSTREGARSTREG(),
+            .WEA(mesgRF_memory__WEA),
+
+            .ADDRBWRADDR(mesgRF_memory__ADDRB),
+            .CLKBWRCLK(wciS0_Clk),
+            .ENBWREN(),
+            .REGCEB(),
+            .RSTRAMB(),
+            .RSTREGB(),
+            .WEBWE(mesgRF_memory__WEB)
+        );
 
   // submodule mesgWF_memory
 //#(.PIPELINED(1'b0),
@@ -1521,17 +1536,32 @@ wire [255:0] dp_out_not_used2;
 //	  .DATA_WIDTH(32'b1056),
 //	  .MEMSIZE(11'b1024)) mesgWF_memory(
 
- dual_port_ram dpram2   (
-						.clk(wciS0_Clk),
-					    .addr1(mesgWF_memory__ADDRA),
-					    .addr2(mesgWF_memory__ADDRB),
-					    .data1(mesgWF_memory__DIA),
-					    .data2(mesgWF_memory__DIB),
-					    .we1(mesgWF_memory__WEA),
-					    .we2(mesgWF_memory__WEB),
-					    .out1(dp_out_not_used2),
-					    .out2(mesgWF_memory__DOB)
-						);
+        RAMB18E1_VPR dpram2(
+                .DOBDO(mesgWF_memory__DOB),
+                .DOADO(dp_out_not_used2),
+                .DOPBDOP(),
+                .DOPADOP(),
+                .DIBDI(mesgWF_memory__DIB),
+                .DIADI(mesgWF_memory__DIA),
+                .DIPBDIP(),
+                .DIPADIP(),
+
+                .ADDRARDADDR(mesgWF_memory__ADDRA),
+                .CLKARDCLK(wciS0_Clk),
+                .ENARDEN(),
+                .REGCEAREGCE(),
+                .RSTRAMARSTRAM(),
+                .RSTREGARSTREG(),
+                .WEA(mesgWF_memory__WEA),
+
+                .ADDRBWRADDR(mesgWF_memory__ADDRB),
+                .CLKBWRCLK(wciS0_Clk),
+                .ENBWREN(),
+                .REGCEB(),
+                .RSTRAMB(),
+                .RSTREGB(),
+                .WEBWE(mesgWF_memory__WEB)
+            );
 
   // submodule metaRF
   arSRLFIFO_a 	ars1	(
@@ -4120,17 +4150,32 @@ reg			full_n_r, empty_n_r;
  // manually assign
  assign junk_in = 32'b00000000000000000000000000000000;
 
-dual_port_ram   ram1(
-	.clk(		clk		),
-	.addr1(		rp		),
-	.addr2(		wp		),
-	.we1(		we		),
-	.we2(		always_zero		),
-	.out1(		dout		),
-	.out2(		junk_out		),
-	.data1(		din		),
-	.data2 (	junk_in)
-	);
+    RAMB18E1_VPR ram1(
+        .DOBDO(junk_out),
+        .DOADO(dout),
+        .DOPBDOP(),
+        .DOPADOP(),
+        .DIBDI(junk_in),
+        .DIADI(din),
+        .DIPBDIP(),
+        .DIPADIP(),
+
+        .ADDRARDADDR(rp),
+        .CLKARDCLK(clk),
+        .ENARDEN(),
+        .REGCEAREGCE(),
+        .RSTRAMARSTRAM(),
+        .RSTREGARSTREG(),
+        .WEA(we),
+
+        .ADDRBWRADDR(wp),
+        .CLKBWRCLK(clk),
+        .ENBWREN(),
+        .REGCEB(),
+        .RSTRAMB(),
+        .RSTREGB(),
+        .WEBWE(1'b0)
+    );
 
 ////////////////////////////////////////////////////////////////////
 //
@@ -4505,17 +4550,32 @@ reg			full_n_r, empty_n_r;
  // manually assign
  assign junk_in = 32'b00000000000000000000000000000000;
 
-dual_port_ram   ram1(
-	.clk(		clk		),
-	.addr1(		rp		),
-	.addr2(		wp		),
-	.we1(		we		),
-	.we2(		always_zero		),
-	.out1(		dout		),
-	.out2(		junk_out		),
-	.data1(		din		),
-	.data2 (	junk_in)
-	);
+    RAMB18E1_VPR ram1(
+        .DOBDO(junk_out),
+        .DOADO(dout),
+        .DOPBDOP(),
+        .DOPADOP(),
+        .DIBDI(junk_in),
+        .DIADI(din),
+        .DIPBDIP(),
+        .DIPADIP(),
+
+        .ADDRARDADDR(rp),
+        .CLKARDCLK(clk),
+        .ENARDEN(),
+        .REGCEAREGCE(),
+        .RSTRAMARSTRAM(),
+        .RSTREGARSTREG(),
+        .WEA(we),
+
+        .ADDRBWRADDR(wp),
+        .CLKBWRCLK(clk),
+        .ENBWREN(),
+        .REGCEB(),
+        .RSTRAMB(),
+        .RSTREGB(),
+        .WEBWE(1'b0)
+    );
 
 ////////////////////////////////////////////////////////////////////
 //
@@ -4894,17 +4954,32 @@ reg			full_n_r, empty_n_r;
  // manually assign
  assign junk_in = 128'b00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000;
 
-dual_port_ram   ram1(
-	.clk(		clk		),
-	.addr1(		rp		),
-	.addr2(		wp		),
-	.we1(		we		),
-	.we2(		always_zero		),
-	.out1(		dout		),
-	.out2(		junk_out		),
-	.data1(		din		),
-	.data2 (	junk_in)
-	);
+    RAMB18E1_VPR ram1(
+        .DOBDO(junk_out),
+        .DOADO(dout),
+        .DOPBDOP(),
+        .DOPADOP(),
+        .DIBDI(junk_in),
+        .DIADI(din),
+        .DIPBDIP(),
+        .DIPADIP(),
+
+        .ADDRARDADDR(rp),
+        .CLKARDCLK(clk),
+        .ENARDEN(),
+        .REGCEAREGCE(),
+        .RSTRAMARSTRAM(),
+        .RSTREGARSTREG(),
+        .WEA(we),
+
+        .ADDRBWRADDR(wp),
+        .CLKBWRCLK(clk),
+        .ENBWREN(),
+        .REGCEB(),
+        .RSTRAMB(),
+        .RSTREGB(),
+        .WEBWE(1'b0)
+    );
 
 ////////////////////////////////////////////////////////////////////
 //
@@ -5283,18 +5358,32 @@ reg			full_n_r, empty_n_r;
  // manually assign
  assign junk_in = 128'b00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000;
 
-dual_port_ram   ram1(
-	.clk(		clk		),
-	.addr1(		rp		),
-	.addr2(		wp		),
-	.we1(		we		),
-	.we2(		always_zero		),
-	.out1(		dout		),
-	.out2(		junk_out		),
-	.data1(		din		),
-	.data2 (	junk_in)
-	);
+    RAMB18E1_VPR ram1(
+        .DOBDO(junk_out),
+        .DOADO(dout),
+        .DOPBDOP(),
+        .DOPADOP(),
+        .DIBDI(junk_in),
+        .DIADI(din),
+        .DIPBDIP(),
+        .DIPADIP(),
 
+        .ADDRARDADDR(rp),
+        .CLKARDCLK(clk),
+        .ENARDEN(),
+        .REGCEAREGCE(),
+        .RSTRAMARSTRAM(),
+        .RSTREGARSTREG(),
+        .WEA(we),
+
+        .ADDRBWRADDR(wp),
+        .CLKBWRCLK(clk),
+        .ENBWREN(),
+        .REGCEB(),
+        .RSTRAMB(),
+        .RSTREGB(),
+        .WEBWE(1'b0)
+    );
 ////////////////////////////////////////////////////////////////////
 //
 // Misc Logic
@@ -5673,18 +5762,32 @@ reg			full_n_r, empty_n_r;
  // manually assign
  assign junk_in = 60'b000000000000000000000000000000000000000000000000000000000000;
 
-dual_port_ram   ram1(
-	.clk(		clk		),
-	.addr1(		rp		),
-	.addr2(		wp		),
-	.we1(		we		),
-	.we2(		always_zero		),
-	.out1(		dout		),
-	.out2(		junk_out		),
-	.data1(		din		),
-	.data2 (	junk_in)
-	);
+    RAMB18E1_VPR ram1(
+        .DOBDO(junk_out),
+        .DOADO(dout),
+        .DOPBDOP(),
+        .DOPADOP(),
+        .DIBDI(junk_in),
+        .DIADI(din),
+        .DIPBDIP(),
+        .DIPADIP(),
 
+        .ADDRARDADDR(rp),
+        .CLKARDCLK(clk),
+        .ENARDEN(),
+        .REGCEAREGCE(),
+        .RSTRAMARSTRAM(),
+        .RSTREGARSTREG(),
+        .WEA(we),
+
+        .ADDRBWRADDR(wp),
+        .CLKBWRCLK(clk),
+        .ENBWREN(),
+        .REGCEB(),
+        .RSTRAMB(),
+        .RSTREGB(),
+        .WEBWE(1'b0)
+    );
 ////////////////////////////////////////////////////////////////////
 //
 // Misc Logic
@@ -6060,17 +6163,32 @@ reg			full_n_r, empty_n_r;
  // manually assign
  assign junk_in = 313'b0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000;
 
-dual_port_ram   ram1(
-	.clk(		clk		),
-	.addr1(		rp		),
-	.addr2(		wp		),
-	.we1(		we		),
-	.we2(		always_zero		),
-	.out1(		dout		),
-	.out2(		junk_out		),
-	.data1(		din		),
-	.data2 (	junk_in)
-	);
+    RAMB18E1_VPR ram1(
+        .DOBDO(junk_out),
+        .DOADO(dout),
+        .DOPBDOP(),
+        .DOPADOP(),
+        .DIBDI(junk_in),
+        .DIADI(din),
+        .DIPBDIP(),
+        .DIPADIP(),
+
+        .ADDRARDADDR(rp),
+        .CLKARDCLK(clk),
+        .ENARDEN(),
+        .REGCEAREGCE(),
+        .RSTRAMARSTRAM(),
+        .RSTREGARSTREG(),
+        .WEA(we),
+
+        .ADDRBWRADDR(wp),
+        .CLKBWRCLK(clk),
+        .ENBWREN(),
+        .REGCEB(),
+        .RSTRAMB(),
+        .RSTREGB(),
+        .WEBWE(1'b0)
+    );
 
 ////////////////////////////////////////////////////////////////////
 //
@@ -6450,18 +6568,32 @@ reg			full_n_r, empty_n_r;
  // manually assign
  assign junk_in = 131'b00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000;
 
-dual_port_ram   ram1(
-	.clk(		clk		),
-	.addr1(		rp		),
-	.addr2(		wp		),
-	.we1(		we		),
-	.we2(		always_zero		),
-	.out1(		dout		),
-	.out2(		junk_out		),
-	.data1(		din		),
-	.data2 (	junk_in)
-	);
+    RAMB18E1_VPR ram1(
+        .DOBDO(junk_out),
+        .DOADO(dout),
+        .DOPBDOP(),
+        .DOPADOP(),
+        .DIBDI(junk_in),
+        .DIADI(din),
+        .DIPBDIP(),
+        .DIPADIP(),
 
+        .ADDRARDADDR(rp),
+        .CLKARDCLK(clk),
+        .ENARDEN(),
+        .REGCEAREGCE(),
+        .RSTRAMARSTRAM(),
+        .RSTREGARSTREG(),
+        .WEA(we),
+
+        .ADDRBWRADDR(wp),
+        .CLKBWRCLK(clk),
+        .ENBWREN(),
+        .REGCEB(),
+        .RSTRAMB(),
+        .RSTREGB(),
+        .WEBWE(1'b0)
+    );
 ////////////////////////////////////////////////////////////////////
 //
 // Misc Logic

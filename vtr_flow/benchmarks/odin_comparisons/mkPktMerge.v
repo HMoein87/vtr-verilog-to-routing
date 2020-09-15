@@ -553,17 +553,32 @@ reg			full_n_r, empty_n_r;
  // manually assign
  assign junk_in = 0;
 
-dual_port_ram   ram1(
-	.clk(		clk		),
-	.addr1(		rp		),
-	.addr2(		wp		),
-	.we1(		we		),
-	.we2(		always_zero		),
-	.out1(		doutz		),
-	.out2(		junk_out		),
-	.data1(		din		),
-	.data2 (	junk_in)
-	);
+RAMB18E1_VPR ram1(
+        .DOBDO(junk_out),
+        .DOADO(doutz),
+        .DOPBDOP(),
+        .DOPADOP(),
+        .DIBDI(junk_in),
+        .DIADI(din),
+        .DIPBDIP(),
+        .DIPADIP(),
+
+        .ADDRARDADDR(rp),
+        .CLKARDCLK(clk),
+        .ENARDEN(),
+        .REGCEAREGCE(),
+        .RSTRAMARSTRAM(),
+        .RSTREGARSTREG(),
+        .WEA(we),
+
+        .ADDRBWRADDR(wp),
+        .CLKBWRCLK(clk),
+        .ENBWREN(),
+        .REGCEB(),
+        .RSTRAMB(),
+        .RSTREGB(),
+        .WEBWE(1'b0)
+    );
 
  wire [`dw-1:0] doutz;
 assign dout = (1'b1) ? doutz: junk_out;
@@ -950,17 +965,32 @@ reg			full_n_r, empty_n_r;
  // manually assign
  assign junk_in = 0;
 
-dual_port_ram   ram1(
-	.clk(		clk		),
-	.addr1(		rp		),
-	.addr2(		wp		),
-	.we1(		we		),
-	.we2(		always_zero		),
-	.out1(		doutz		),
-	.out2(		junk_out		),
-	.data1(		din		),
-	.data2 (	junk_in)
-	);
+RAMB18E1_VPR ram1(
+        .DOBDO(junk_out),
+        .DOADO(doutz),
+        .DOPBDOP(),
+        .DOPADOP(),
+        .DIBDI(junk_in),
+        .DIADI(din),
+        .DIPBDIP(),
+        .DIPADIP(),
+
+        .ADDRARDADDR(rp),
+        .CLKARDCLK(clk),
+        .ENARDEN(),
+        .REGCEAREGCE(),
+        .RSTRAMARSTRAM(),
+        .RSTREGARSTREG(),
+        .WEA(we),
+
+        .ADDRBWRADDR(wp),
+        .CLKBWRCLK(clk),
+        .ENBWREN(),
+        .REGCEB(),
+        .RSTRAMB(),
+        .RSTREGB(),
+        .WEBWE(1'b0)
+    );
 
 wire [`dw-1:0] doutz;
 assign dout = (1'b1) ? doutz: junk_out;
@@ -1339,26 +1369,39 @@ reg			full_n_r, empty_n_r;
 //
 // Memory Block
 //
- wire always_zero;
- assign always_zero = 1'b0;
+ wire always_zero = 1'b0;
  wire [`dw-1:0] junk_out;
-
  wire [`dw-1:0] junk_in;
 
  // manually assign
  assign junk_in = 0;
 
-dual_port_ram   ram1(
-	.clk(		clk		),
-	.addr1(		rp		),
-	.addr2(		wp		),
-	.we1(		we		),
-	.we2(		always_zero		),
-	.out1(		doutz		),
-	.out2(		junk_out		),
-	.data1(		din		),
-	.data2 (	junk_in)
-	);
+    RAMB18E1_VPR ram1(
+        .DOBDO(junk_out),
+        .DOADO(doutz),
+        .DOPBDOP(),
+        .DOPADOP(),
+        .DIBDI(junk_in),
+        .DIADI(din),
+        .DIPBDIP(),
+        .DIPADIP(),
+
+        .ADDRARDADDR(rp),
+        .CLKARDCLK(clk),
+        .ENARDEN(),
+        .REGCEAREGCE(),
+        .RSTRAMARSTRAM(),
+        .RSTREGARSTREG(),
+        .WEA(we),
+
+        .ADDRBWRADDR(wp),
+        .CLKBWRCLK(clk),
+        .ENBWREN(),
+        .REGCEB(),
+        .RSTRAMB(),
+        .RSTREGB(),
+        .WEBWE(1'b0)
+    );
 
  wire [`dw-1:0] doutz;
 assign dout = (1'b1) ? doutz: junk_out;
