@@ -148,8 +148,8 @@ output [17:0] data_out;
 //Data Type Declarations for IO
 wire clk;
 wire reset;
-wire [7:0] data_in = 8'b0;
-wire [7:0] coef_in = 8'b0;
+wire [7:0] data_in;
+wire [7:0] coef_in;
 wire load_c;
 reg [17:0] temp;
 
