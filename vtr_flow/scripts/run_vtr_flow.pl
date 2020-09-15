@@ -556,7 +556,9 @@ if ( $starting_stage <= $stage_idx_odin and !$error_code ) {
         if (!-e "$temp_dir$abc_output_file_name" or $q ne "success") {
             $error_status = "failed: yosys";
             $error_code = 1;
-        }
+        }else{
+			file_find_and_replace("$temp_dir$abc_output_file_name", "CARRY4", "CARRY4_VPR");
+		}
     } else {
         file_find_and_replace($odin_config_file_path, "XXX", $circuit_file_name);
         file_find_and_replace($odin_config_file_path, "YYY", $architecture_file_name);
