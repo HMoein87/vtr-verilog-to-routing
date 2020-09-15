@@ -114,12 +114,12 @@ def launch_vpr(verilog_file_name, thread_pool):
     out = subprocess.run(cleanup_command.format(odin_temp), shell=True, stdout=subprocess.PIPE,
                          stderr=subprocess.STDOUT)
     if out.returncode != 0:
-        print("WARNING: Failed to cleanup temporary directory {}\n".format(odin_temp) + out.stdout.decode("utf-8"))
+        print("WARNING: Failed to cleanup temporary directory {}\n".format(odin_temp) + out.stdout.decode("utf-8"), flush=True)
 
     out = subprocess.run(cleanup_command.format(yosys_temp), shell=True, stdout=subprocess.PIPE,
                          stderr=subprocess.STDOUT)
     if out.returncode != 0:
-        print("WARNING: Failed to cleanup temporary directory {}".format(yosys_temp) + out.stdout.decode("utf-8"))
+        print("WARNING: Failed to cleanup temporary directory {}".format(yosys_temp) + out.stdout.decode("utf-8"), flush=True)
 
     return processes, errors
 
@@ -133,17 +133,17 @@ def run_benchmarks(verilog_files):
     with multiprocessing.Pool(multiprocessing.cpu_count()) as thread_pool:
         for verilog_file in verilog_files:
             line = "Running synthesis for " + verilog_file
-            print(line)
-            print("=" * len(line), "\n")
+            print(line, flush=True)
+            print("=" * len(line), "\n", flush=True)
             verilog_file_name = verilog_file.split("/")[-1]
             if verilog_file_name in synthesis.keys():
                 print("ERROR: Duplicate names for Verilog file detected. Aborting.")
-                print("Please ensure all input Verilog files have distinct names")
+                print("Please ensure all input Verilog files have distinct names", flush=True)
                 exit(1)
             synthesis[verilog_file_name] = thread_pool.apply_async(func=run_synthesis, args=(verilog_file, queue))
 
         print("Waiting for synthesis to complete")
-        print("=================================\n")
+        print("=================================\n", flush=True)
 
         errors = []
         for i in range(len(verilog_files)):
@@ -164,14 +164,14 @@ def run_benchmarks(verilog_files):
             print("="*len(line), "\n")
 
         print("All files synthesised. Waiting for VPR")
-        print("======================================\n")
+        print("======================================\n", flush=True)
 
         for res in vpr_runs:
             func_res = res.get()
             errors.append(func_res)
 
         print("All files completed. Exiting")
-        print("============================\n")
+        print("============================\n", flush=True)
         return errors
 
 
@@ -183,14 +183,14 @@ if errors != 0:
         if error[2] != 0:
             print(error[0], end=' ')
             if error[1] != -1:
-                print("failed on VPR iteration", error[1], end=' ')
+                print("failed on VPR iteration", error[1], end=' ', flush=True)
             else:
-                print("failed during synthesis", end=' ')
-            print("with error code", error[2], "giving the following messages:\n\n" + "\n\n".join(error[3]))
+                print("failed during synthesis", end=' ', flush=True)
+            print("with error code", error[2], "giving the following messages:\n\n" + "\n\n".join(error[3]), flush=True)
         else:
             if error[0] not in successes.keys():
                 successes[error[0]] = 0
             successes[error[0]] += 1
             if successes[error[0]] == iters * 2:
-                print(error[0], "completed successfully\n")
+                print(error[0], "completed successfully\n", flush=True)
     exit(-1)
