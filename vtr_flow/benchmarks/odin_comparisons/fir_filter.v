@@ -134,7 +134,6 @@ module fir_filter(
 	coef_in,
 	load_c
 );
-genvar j;
 parameter TAPS = 25;
 //Input Ports
 input clk;
@@ -149,8 +148,8 @@ output [17:0] data_out;
 //Data Type Declarations for IO
 wire clk;
 wire reset;
-wire [7:0] data_in;
-wire [7:0] coef_in;
+wire [7:0] data_in = 8'b0;
+wire [7:0] coef_in = 8'b0;
 wire load_c;
 reg [17:0] temp;
 
@@ -159,16 +158,9 @@ reg [17:0] data_out;
 //Other Declarations
 reg [7:0] r_storage [TAPS-1:0];
 reg [7:0] coef_storage [TAPS-1:0];
-integer i;
+reg[32:0] i;
 reg [15:0] product_array [TAPS-1:0];
 
-generate
-	for(j=0;j<TAPS;j=j+1)
-		begin:mpy_struct
-			lpm_mult0 m (r_storage[j],coef_storage[j],clk,product_array[j]);
-		end
-endgenerate
-/*
 lpm_mult0 m0(r_storage[0],coef_storage[0],clk,product_array[0]);
 lpm_mult0 m1(r_storage[1],coef_storage[1],clk,product_array[1]);
 lpm_mult0 m2(r_storage[2],coef_storage[2],clk,product_array[2]);
@@ -194,7 +186,7 @@ lpm_mult0 m21(r_storage[21],coef_storage[21],clk,product_array[21]);
 lpm_mult0 m22(r_storage[22],coef_storage[22],clk,product_array[22]);
 lpm_mult0 m23(r_storage[23],coef_storage[23],clk,product_array[23]);
 lpm_mult0 m24(r_storage[24],coef_storage[24],clk,product_array[24]);
-*/
+
 //par_add0 parallel_add(product_array[0],product_array[1],product_array[2],product_array[3],data_out);
 
 
@@ -210,13 +202,13 @@ begin
 		end
 	end
 	else if(load_c==1'b1)begin	//load coeficients
-		for(i=TAPS-1;i>0;i=i-1)begin
+		for(i=24;i>0;i=i-1)begin
 			coef_storage[i] = coef_storage[i-1];
 		end
 		coef_storage[0]=coef_in;
 	end
 	else begin
-		for(i=TAPS-1;i>0;i=i-1)begin
+		for(i=24;i>0;i=i-1)begin
 			r_storage[i] = r_storage[i-1];
 		end
 		r_storage[0]=data_in;
