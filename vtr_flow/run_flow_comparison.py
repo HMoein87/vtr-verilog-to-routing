@@ -19,7 +19,7 @@ def run_synthesis(verilog_file, queue):
         arch = "~/symbiflow-arch-defs/build/xc/xc7/archs/artix7_100t/devices/xc7a100t-virt/arch.timing.xml"
         odin_command = "./scripts/run_vtr_flow.pl {} {} -ending_stage prevpr -latch_map_script ./scripts/latch_map.py".format(
             verilog_file, arch)
-        yosys_command = odin_command + " -yosys ~/yosys/build/yosys -yosys_script ./yosys_script.ys"
+        yosys_command = odin_command + " -yosys ~/symbiflow-arch-defs/env/conda/envs/symbiflow_arch_def_base/bin/yosys -yosys_script ./yosys_script.ys"
 
         output_prefix = sys.argv[2]
         odin_temp = output_prefix + "/temp_" + verilog_file_name + "_odin"
