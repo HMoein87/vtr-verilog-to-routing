@@ -16,10 +16,10 @@ if not os.path.exists(output_prefix):
 def run_synthesis(verilog_file, queue):
     verilog_file_name = verilog_file.split("/")[-1]
     try:
-        arch = "~/symbiflow-arch-defs/build/xc/xc7/archs/artix7_100t/devices/xc7a100t-virt/arch.timing.xml"
+        arch = "/mnt/comparison_results/symbiflow-arch-defs/build/xc/xc7/archs/artix7_100t/devices/xc7a100t-virt/arch.timing.xml"
         odin_command = "./scripts/run_vtr_flow.pl {} {} -delete_intermediate_files -ending_stage prevpr -latch_map_script ./scripts/latch_map.py".format(
             verilog_file, arch)
-        yosys_command = odin_command + " -yosys ~/symbiflow-arch-defs/env/conda/envs/symbiflow_arch_def_base/bin/yosys -yosys_script ./yosys_script.ys"
+        yosys_command = odin_command + " -yosys /mnt/comparison_results/symbiflow-arch-defs/env/conda/envs/symbiflow_arch_def_base/bin/yosys -yosys_script ./yosys_script.ys"
 
         output_prefix = sys.argv[2]
         odin_temp = output_prefix + "/temp_" + verilog_file_name + "_odin"
@@ -51,16 +51,16 @@ def run_vpr(temp_dir, i):
     split_dir_name = dir_name.split("_")
     verilog_file_name = "_".join(split_dir_name[1:-2])
     try:
-        vpr_args = "--device xc7a100t-test --read_rr_graph /home/ubuntu/symbiflow-arch-defs/build/xc/xc7/archs/artix7_100t/devices/rr_graph_xc7a100t_test.rr_graph.real.bin \
+        vpr_args = "--device xc7a100t-test --read_rr_graph /mnt/comparison_results/symbiflow-arch-defs/build/xc/xc7/archs/artix7_100t/devices/rr_graph_xc7a100t_test.rr_graph.real.bin \
                     --max_router_iterations 500 --routing_failure_predictor off --router_high_fanout_threshold -1 --constant_net_method route --route_chan_width 500 \
                      --router_heap bucket --clock_modeling route --place_delta_delay_matrix_calculation_method dijkstra --place_delay_model delta_override --router_lookahead connection_box_map \
                      --check_route quick --strict_checks off --allow_dangling_combinational_nodes on --disable_errors check_unbuffered_edges:check_route --congested_routing_iteration_threshold 0.8 \
                      --incremental_reroute_delay_ripup off --base_cost_type delay_normalized_length_bounded --bb_factor 10 --initial_pres_fac 4.0 --check_rr_graph off \
                      --suppress_warnings sum_pin_class:check_unbuffered_edges:load_rr_indexed_data_T_values:check_rr_node:trans_per_R:check_route:set_rr_graph_tool_comment:calculate_average_switch \
-                     --read_router_lookahead /home/ubuntu/symbiflow-arch-defs/build/xc/xc7/archs/artix7_100t/devices/rr_graph_xc7a100t_test.lookahead.bin \
-                     --read_placement_delay_lookup /home/ubuntu/symbiflow-arch-defs/build/xc/xc7/archs/artix7_100t/devices/rr_graph_xc7a100t_test.place_delay.bin"
-        arch = "~/symbiflow-arch-defs/build/xc/xc7/archs/artix7_100t/devices/xc7a100t-virt/arch.timing.xml"
-        vpr_exe = "~/symbiflow-arch-defs/env/conda/envs/symbiflow_arch_def_base/bin/vpr"
+                     --read_router_lookahead /mnt/comparison_results/symbiflow-arch-defs/build/xc/xc7/archs/artix7_100t/devices/rr_graph_xc7a100t_test.lookahead.bin \
+                     --read_placement_delay_lookup /mnt/comparison_results/symbiflow-arch-defs/build/xc/xc7/archs/artix7_100t/devices/rr_graph_xc7a100t_test.place_delay.bin"
+        arch = "/mnt/comparison_results/symbiflow-arch-defs/build/xc/xc7/archs/artix7_100t/devices/xc7a100t-virt/arch.timing.xml"
+        vpr_exe = "/mnt/comparison_results/symbiflow-arch-defs/env/conda/envs/symbiflow_arch_def_base/bin/vpr"
 
         blif_name = "{}/{}.pre-vpr.blif".format(temp_dir, verilog_file_name.rsplit(".", maxsplit=1)[0])
         command = "./scripts/run_vtr_flow.pl {} {} -starting_stage vpr -delete_intermediate_files -temp_dir {} -vpr_exe {}  {} --seed {}".format(
