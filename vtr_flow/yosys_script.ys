@@ -8,20 +8,14 @@ read_verilog -lib /home/ubuntu/symbiflow-arch-defs/xc/xc7/techmap/iobs.v
 
 hierarchy -check -auto-top
 
-#synth_xilinx -flatten -nosrl -noclkbuf -nodsp -iopad -nowidelut -run prepare:map_cells
-#abc -luts 2:2,3,6:5 YYY
-#techmap -map +/xilinx/lut_map.v -map +/xilinx/ff_map.v -map +/xilinx/cells_map.v -D LUT_WIDTH=6
-#dffinit -ff FDRE Q INIT -ff FDCE Q INIT -ff FDPE Q INIT -ff FDSE Q INIT -ff FDRE_1 Q INIT -ff FDCE_1 Q INIT -ff FDPE_1 Q INIT -ff FDSE_1 Q INIT
-#clean
-
-synth_xilinx -flatten -nosrl -noclkbuf -nodsp -iopad -nowidelut -run prepare:check
+synth_xilinx -vpr -flatten -abc9 -nosrl -noclkbuf -nodsp -iopad -nowidelut -run prepare:check
 
 hierarchy -check
 stat -tech xilinx
 check -noinit
 
 read_verilog -lib /home/ubuntu/symbiflow-arch-defs/xc/xc7/techmap/cells_sim.v
-techmap -map  /home/ubuntu/symbiflow-arch-defs/xc/xc7/techmap/cells_map.v
+techmap -map /home/ubuntu/symbiflow-arch-defs/xc/xc7/techmap/cells_map.v
 
 opt_expr -undriven
 opt_clean
@@ -31,6 +25,6 @@ stat
 
 attrmap -remove hdlname
 
-#opt -full
+opt_clean
 
-write_blif ZZZ
+write_blif -attr -cname -param -true VCC VCC -false GND GND -undef VCC VCC ZZZ

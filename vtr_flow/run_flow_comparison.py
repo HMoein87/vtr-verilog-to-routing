@@ -17,7 +17,7 @@ def run_synthesis(verilog_file, queue):
     verilog_file_name = verilog_file.split("/")[-1]
     try:
         arch = "~/symbiflow-arch-defs/build/xc/xc7/archs/artix7_100t/devices/xc7a100t-virt/arch.timing.xml"
-        odin_command = "./scripts/run_vtr_flow.pl {} {} -ending_stage prevpr -latch_map_script ./scripts/latch_map.py".format(
+        odin_command = "./scripts/run_vtr_flow.pl {} {} -delete_intermediate_files -ending_stage prevpr -latch_map_script ./scripts/latch_map.py".format(
             verilog_file, arch)
         yosys_command = odin_command + " -yosys ~/symbiflow-arch-defs/env/conda/envs/symbiflow_arch_def_base/bin/yosys -yosys_script ./yosys_script.ys"
 
@@ -63,7 +63,7 @@ def run_vpr(temp_dir, i):
         vpr_exe = "~/symbiflow-arch-defs/env/conda/envs/symbiflow_arch_def_base/bin/vpr"
 
         blif_name = "{}/{}.pre-vpr.blif".format(temp_dir, verilog_file_name.rsplit(".", maxsplit=1)[0])
-        command = "./scripts/run_vtr_flow.pl {} {} -starting_stage vpr -temp_dir {} -vpr_exe {}  {} --seed {}".format(
+        command = "./scripts/run_vtr_flow.pl {} {} -starting_stage vpr -delete_intermediate_files -temp_dir {} -vpr_exe {}  {} --seed {}".format(
             blif_name, arch, temp_dir, vpr_exe, vpr_args, i)
 
         error = 0

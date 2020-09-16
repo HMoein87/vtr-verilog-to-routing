@@ -63,6 +63,5 @@ with open(sys.argv[1], "r") as in_blif:
                 continue
             if ".latch" in cur_line:
                 cur_line = process_line(cur_line)
-            print(cur_line, end='')
             out_blif.write(cur_line)
             cur_line = ""
