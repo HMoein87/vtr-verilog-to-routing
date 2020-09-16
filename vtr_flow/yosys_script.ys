@@ -8,7 +8,7 @@ read_verilog -lib /home/ubuntu/symbiflow-arch-defs/xc/xc7/techmap/iobs.v
 
 hierarchy -check -auto-top
 
-synth_xilinx -vpr -flatten -abc9 -nosrl -noclkbuf -nodsp -iopad -nowidelut -run prepare:check
+synth_xilinx -vpr -flatten -abc9 -nosrl -noclkbuf -nodsp -iopad -nobram -nodram -nowidelut -run prepare:check
 
 hierarchy -check
 stat -tech xilinx
