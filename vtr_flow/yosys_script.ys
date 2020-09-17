@@ -4,18 +4,17 @@ read_verilog XXX
 
 read_verilog -lib -specify -D_EXPLICIT_CARRY +/xilinx/cells_sim.v
 read_verilog -lib +/xilinx/cells_xtra.v
-read_verilog -lib /home/ubuntu/symbiflow-arch-defs/xc/xc7/techmap/iobs.v
+read_verilog -lib /mnt/comparison_results/symbiflow-arch-defs/xc/xc7/techmap/iobs.v
 
 hierarchy -check -auto-top
 
 synth_xilinx -vpr -flatten -abc9 -nosrl -noclkbuf -nodsp -iopad -nobram -nodram -nowidelut -run prepare:check
 
-hierarchy -check
-stat -tech xilinx
-check -noinit
+select -set obufds t:OSERDESE2 %co2:+\[OQ,I\] t:OBUFDS t:OBUFTDS %u  %i
+setparam -set HAS_OSERDES 1 @obufds
 
-read_verilog -lib /home/ubuntu/symbiflow-arch-defs/xc/xc7/techmap/cells_sim.v
-techmap -map /home/ubuntu/symbiflow-arch-defs/xc/xc7/techmap/cells_map.v
+read_verilog -lib /mnt/comparison_results/symbiflow-arch-defs/xc/xc7/techmap/cells_sim.v
+techmap -map /mnt/comparison_results/symbiflow-arch-defs/xc/xc7/techmap/cells_map.v
 
 opt_expr -undriven
 opt_clean
