@@ -877,7 +877,7 @@ if (    $starting_stage <= $stage_idx_abc
 		if($rv ne 0) {
 			die "Failed to create temp latch map script"
 		}
-		$q = &system_with_timeout($latch_map_script_temp, "latch_map.out", $timeout, $temp_dir, $abc_clock_restore_file_path, $abc_output_file_path);
+		$q = &system_with_timeout($latch_map_script_temp, "latch_map.out", $timeout, $temp_dir, $abc_clock_restore_file_name, $abc_output_file_name);
 		if ($q ne "success") {
 			$error_status = "failed: to map latches.\n";
 			$error_code = 1;

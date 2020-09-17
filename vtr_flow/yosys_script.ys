@@ -26,4 +26,4 @@ attrmap -remove hdlname
 
 opt_clean
 
-write_blif -attr -cname -param -true VCC VCC -false GND GND -undef VCC VCC ZZZ
+write_blif -attr -param -true VCC VCC -false GND GND -undef VCC VCC ZZZ
