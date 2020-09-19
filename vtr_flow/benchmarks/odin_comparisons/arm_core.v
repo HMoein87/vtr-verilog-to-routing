@@ -5239,7 +5239,7 @@ assign pc_wen       = (i_pc_wen || !execute) && !i_conflict;
 
 // only update register bank if current instruction executes
 //assign reg_bank_wen = {{15{execute}} & i_reg_bank_wen};
- assign reg_bank_wen = execute == 1'd1 ? {15'b111111111111111 & i_reg_bank_wen}   :
+ assign reg_bank_wen = (execute == 1'd1) ? {15'b111111111111111 & i_reg_bank_wen}   :
 					{15'b0 & i_reg_bank_wen};
 
 // ========================================================
@@ -5272,10 +5272,10 @@ assign iaddress_valid_nxt = i_decode_iaccess || !execute;
 // ========================================================
 // Use read value from data memory instead of from register
 // ========================================================
-assign rn = i_rn_use_read && i_rn_sel == load_rd_c ? read_data_filtered_c : reg_bank_rn;
-assign rm = i_rm_use_read && i_rm_sel == load_rd_c ? read_data_filtered_c : reg_bank_rm;
-assign rs = i_rs_use_read && i_rs_sel == load_rd_c ? read_data_filtered_c : reg_bank_rs;
-assign rd = i_rd_use_read && i_rs_sel == load_rd_c ? read_data_filtered_c : reg_bank_rd;
+assign rn = (i_rn_use_read && i_rn_sel == load_rd_c) ? read_data_filtered_c : reg_bank_rn;
+assign rm = (i_rm_use_read && i_rm_sel == load_rd_c) ? read_data_filtered_c : reg_bank_rm;
+assign rs = (i_rs_use_read && i_rs_sel == load_rd_c) ? read_data_filtered_c : reg_bank_rs;
+assign rd = (i_rd_use_read && i_rs_sel == load_rd_c) ? read_data_filtered_c : reg_bank_rd;
 
 
 always@( posedge i_clk )
@@ -5449,26 +5449,26 @@ a25_register_bank u_register_bank(
 wire    [(2*8)-1:0]    xCONDITION;
 wire    [(4*8)-1:0]    xMODE;
 
-assign  xCONDITION           = i_condition == EQ ? "EQ"  :
-                               i_condition == NE ? "NE"  :
-                               i_condition == CS ? "CS"  :
-                               i_condition == CC ? "CC"  :
-                               i_condition == MI ? "MI"  :
-                               i_condition == PL ? "PL"  :
-                               i_condition == VS ? "VS"  :
-                               i_condition == VC ? "VC"  :
-                               i_condition == HI ? "HI"  :
-                               i_condition == LS ? "LS"  :
-                               i_condition == GE ? "GE"  :
-                               i_condition == LT ? "LT"  :
-                               i_condition == GT ? "GT"  :
-                               i_condition == LE ? "LE"  :
-                               i_condition == AL ? "AL"  :
+assign  xCONDITION           = (i_condition == EQ) ? "EQ"  :
+                               (i_condition == NE) ? "NE"  :
+                               (i_condition == CS) ? "CS"  :
+                               (i_condition == CC) ? "CC"  :
+                               (i_condition == MI) ? "MI"  :
+                               (i_condition == PL) ? "PL"  :
+                               (i_condition == VS) ? "VS"  :
+                               (i_condition == VC) ? "VC"  :
+                               (i_condition == HI) ? "HI"  :
+                               (i_condition == LS) ? "LS"  :
+                               (i_condition == GE) ? "GE"  :
+                               (i_condition == LT) ? "LT"  :
+                               (i_condition == GT) ? "GT"  :
+                               (i_condition == LE) ? "LE"  :
+                               (i_condition == AL) ? "AL"  :
                                                    "NV " ;
 
-assign  xMODE  =  status_bits_mode == SVC  ? "SVC"  :
-                  status_bits_mode == IRQ  ? "IRQ"  :
-                  status_bits_mode == FIRQ ? "FIRQ" :
+assign  xMODE  =  (status_bits_mode == SVC ) ? "SVC"  :
+                  (status_bits_mode == IRQ ) ? "IRQ"  :
+                  (status_bits_mode == FIRQ) ? "FIRQ" :
                   			     "USR"  ;
 
 
