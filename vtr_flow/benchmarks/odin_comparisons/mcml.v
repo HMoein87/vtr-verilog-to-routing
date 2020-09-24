@@ -9952,13 +9952,7 @@ end
 endmodule
 
 
-module rng(clk, en, resetn,loadseed_i,seed_i,number_o);
-input clk;
-input en;
-input resetn;
-input loadseed_i;
-input [31:0] seed_i;
-output [31:0] number_o;
+module rng(input clk, input en, input resetn, input loadseed_i, input[31:0] seed_i, output[31:0] number_o);
 
 reg [31:0] c_b1, c_b2, c_b3;
 reg [31:0] c_s1, c_s2, c_s3;
