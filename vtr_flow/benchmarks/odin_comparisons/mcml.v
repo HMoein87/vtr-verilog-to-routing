@@ -9981,10 +9981,9 @@ begin
 end
 
 
-//combinate:
 always @(posedge clk or negedge resetn)
    begin
-   if (!resetn )
+   if (resetn == 0)
       begin
       r_s1 <= 32'b0;
 	  r_s2 <= 32'b0;
