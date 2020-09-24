@@ -9979,7 +9979,7 @@ begin
           r;
 end
 
-always @(loadseed_i or seed_i or r)
+always @*
 begin
     c_b1 = (loadseed_i) ? 32'b0 :
             (((r[31:0] << 13) ^ r[31:0]) >> 19);
