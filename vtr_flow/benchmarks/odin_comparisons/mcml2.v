@@ -161,12 +161,12 @@ input				reset;
 input				clk;
 input [31:0]		constants;
 input				read_constants;
+output [31:0]		result;
 input				inc_result;
 
 output				calc_in_progress;
-output [31:0]		result;
-reg					calc_in_progress;
 reg [31:0]			result;
+reg					calc_in_progress;
 
 
 //integer i;
