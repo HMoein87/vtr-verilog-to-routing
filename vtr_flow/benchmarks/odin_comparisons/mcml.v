@@ -10488,6 +10488,10 @@ reg [31:0] r_s1;
 reg [31:0] r_s2;
 reg [31:0] r_s3;
 
+wire [31:0] number_o;
+
+assign number_o = r_s1 ^ r_s2 ^ r_s3;
+
 always @(loadseed_i or seed_i or r_s1 or r_s2 or r_s3)
 begin
 	if(loadseed_i)
@@ -10509,10 +10513,6 @@ begin
 		c_s3 = (((r_s3 & 32'd4294967280) << 17) ^ c_b3);
 	end
 end
-
-wire [31:0] number_o;
-
-assign number_o = r_s1 ^ r_s2 ^ r_s3;
 
 //combinate:
 always @(posedge clk)
