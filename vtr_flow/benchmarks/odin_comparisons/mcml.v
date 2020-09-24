@@ -10522,9 +10522,9 @@ always @(posedge clk or negedge resetn)
       end
    else
       begin
-		  r_s1 <= (en) ? c_s1 : r_s1;
-		  r_s2 <= (en) ? c_s2 : r_s2;
-		  r_s3 <= (en) ? c_s3 : r_s3;
+		  r_s1 = (en) ? c_s1 : r_s1;
+		  r_s2 = (en) ? c_s2 : r_s2;
+		  r_s3 = (en) ? c_s3 : r_s3;
 	  end
    end
 
