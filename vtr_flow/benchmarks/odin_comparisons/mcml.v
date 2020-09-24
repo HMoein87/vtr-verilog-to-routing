@@ -10521,7 +10521,7 @@ always @(posedge clk or negedge resetn)
     r_s3 <= (!resetn) ? 32'b0 :
             (en) ? c_s3 :
             r_s3;
-
+    end
 endmodule
 
 
