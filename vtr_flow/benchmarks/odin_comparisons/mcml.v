@@ -10510,18 +10510,24 @@ begin
 	end
 end
 
+
+//combinate:
 always @(posedge clk or negedge resetn)
    begin
-     r_s1 = (!resetn) ? 32'b0 :
-              (en) ? c_s1 :
-              r_s1;
-     r_s2 = (!resetn) ? 32'b0 :
-              (en) ? c_s2 :
-               r_s2;
-     r_s3 = (!resetn) ? 32'b0 :
-            (en) ? c_s3 :
-            r_s3;
-    end
+   if (!resetn )
+      begin
+      r_s1 <= 32'b0;
+	  r_s2 <= 32'b0;
+	  r_s3 <= 32'b0;
+      end
+   else if (en)   //Originally else only
+      begin
+		  r_s1 <= c_s1;
+		  r_s2 <= c_s2;
+		  r_s3 <= c_s3;
+	  end
+   end
+
 endmodule
 
 
