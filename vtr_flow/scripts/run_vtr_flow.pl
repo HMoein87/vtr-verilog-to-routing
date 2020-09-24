@@ -141,6 +141,7 @@ my $yosys_script = undef;
 
 my $latch_map_script = undef;
 my $vpr_exe = undef;
+my $abc_exe = undef;
 
 
 ##########
@@ -294,7 +295,16 @@ while ( scalar(@ARGV) != 0 ) { #While non-empty
 			$vpr_exe = "${vtr_flow_path}/$vpr_exe"
 		}
 		if( !-e $vpr_exe ){
-			die "Could not find latch map script " . $vpr_exe;
+			die "Could not find VPR exe " . $vpr_exe;
+		}
+	}
+    elsif( $token eq "-abc_exe" ){
+		$abc_exe = expand_user_path(shift(@ARGV));
+		if( !-e $abc_exe ){
+			$abc_exe = "${vtr_flow_path}/$abc_exe"
+		}
+		if( !-e $abc_exe ){
+			die "Could not find ABC exe " . $abc_exe;
 		}
 	}
     # else forward the argument
@@ -386,7 +396,12 @@ my $abc_rc_path;
 if ( $stage_idx_abc >= $starting_stage or $stage_idx_vpr <= $ending_stage ) {
 	#Need ABC for either synthesis or post-VPR verification
     my $abc_dir_path = "$vtr_flow_path/../abc";
-    $abc_path = "$abc_dir_path/abc";
+	if(defined($abc_exe)) {
+		$abc_path = $abc_exe;
+	} else {
+		$abc_path = "$abc_dir_path/abc";
+	}
+
     $abc_rc_path = "$abc_dir_path/abc.rc";
 
 	( -e $abc_path or -e "${abc_path}.exe" )
