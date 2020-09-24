@@ -10536,32 +10536,33 @@ reg [`BIT_WIDTH - 1:0] log_x;
 //Log_mantissa u1(c_shifted_x, clock, mantissa);
 wire [31:0]blank;
 assign blank = 32'b000000000000000000000000000000;
-    RAMB18E1_VPR sram_replace0(
-        .DOBDO(),
-        .DOADO(mantissa),
-        .DOPBDOP(),
-        .DOPADOP(),
-        .DIBDI(),
-        .DIADI(blank),
-        .DIPBDIP(),
-        .DIPADIP(),
+wire [31:0] junk;
+RAMB18E1_VPR sram_replace0(
+    .DOBDO(junk),
+    .DOADO(mantissa),
+    .DOPBDOP(),
+    .DOPADOP(),
+    .DIBDI(32'b0),
+    .DIADI(blank),
+    .DIPBDIP(),
+    .DIPADIP(),
 
-        .ADDRARDADDR(c_shifted_x),
-        .CLKARDCLK(clock),
-        .ENARDEN(),
-        .REGCEAREGCE(),
-        .RSTRAMARSTRAM(),
-        .RSTREGARSTREG(),
-        .WEA(1'b0),
+    .ADDRARDADDR(c_shifted_x),
+    .CLKARDCLK(clock),
+    .ENARDEN(),
+    .REGCEAREGCE(),
+    .RSTRAMARSTRAM(),
+    .RSTREGARSTREG(),
+    .WEA(1'b0),
 
-        .ADDRBWRADDR(),
-        .CLKBWRCLK(),
-        .ENBWREN(),
-        .REGCEB(),
-        .RSTRAMB(),
-        .RSTREGB(),
-        .WEBWE()
-    );
+    .ADDRBWRADDR(32'b0),
+    .CLKBWRCLK(clock),
+    .ENBWREN(),
+    .REGCEB(),
+    .RSTRAMB(),
+    .RSTREGB(),
+    .WEBWE(32'b0)
+);
 // priority encoder
 //integer i;
 //always @*
@@ -18403,22 +18404,19 @@ input					clock;
 //input					reset;
 input	[9:0]			pindex;
 
-
 output	[31:0]			sinp;
 output	[31:0]			cosp;
-
-//sinp_ROM sinp_MEM (.address(pindex), .clock(clock), .q(sinp));
-//cosp_ROM cosp_MEM (.address(pindex), .clock(clock), .q(cosp));
 
 //Instantiate a single port ram for odin
 wire [31:0]blank;
 assign blank = 32'b000000000000000000000000000000;
+wire [31:0] junk;
     RAMB18E1_VPR sinp_replace(
-        .DOBDO(),
+        .DOBDO(junk),
         .DOADO(sinp),
         .DOPBDOP(),
         .DOPADOP(),
-        .DIBDI(),
+        .DIBDI(32'b0),
         .DIADI(blank),
         .DIPBDIP(),
         .DIPADIP(),
@@ -18431,20 +18429,20 @@ assign blank = 32'b000000000000000000000000000000;
         .RSTREGARSTREG(),
         .WEA(1'b0),
 
-        .ADDRBWRADDR(),
-        .CLKBWRCLK(),
+        .ADDRBWRADDR(32'b0),
+        .CLKBWRCLK(clock),
         .ENBWREN(),
         .REGCEB(),
         .RSTRAMB(),
         .RSTREGB(),
-        .WEBWE()
+        .WEBWE(1'b0)
     );
     RAMB18E1_VPR cosp_replace(
-        .DOBDO(),
+        .DOBDO(junk),
         .DOADO(cosp),
         .DOPBDOP(),
         .DOPADOP(),
-        .DIBDI(),
+        .DIBDI(32'b0),
         .DIADI(blank),
         .DIPBDIP(),
         .DIPADIP(),
@@ -18457,14 +18455,15 @@ assign blank = 32'b000000000000000000000000000000;
         .RSTREGARSTREG(),
         .WEA(1'b0),
 
-        .ADDRBWRADDR(),
-        .CLKBWRCLK(),
+        .ADDRBWRADDR(32'b0),
+        .CLKBWRCLK(clock),
         .ENBWREN(),
         .REGCEB(),
         .RSTRAMB(),
         .RSTREGB(),
-        .WEBWE()
+        .WEBWE(1'b0)
     );
+
 
 
 endmodule
