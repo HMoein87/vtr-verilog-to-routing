@@ -10495,7 +10495,6 @@ begin
      r <= (!resetn) ? 96'h0 :
           (en) ? {c_s3, c_s2, c_s1} :
           r;
-  end
 end
 
 always @(loadseed_i or seed_i or r)
