@@ -35,10 +35,11 @@ def run_synthesis(verilog_file, queue):
             msgs.append("Error running Odin II:\n" + out.stdout.decode("utf-8"))
             error |= 1
 
-        out = subprocess.run(yosys_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        if out.returncode != 0:
-            msgs.append("Error running Yosys:\n" + out.stdout.decode("utf-8"))
-            error |= 2
+        if error == 0:
+            out = subprocess.run(yosys_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            if out.returncode != 0:
+                msgs.append("Error running Yosys:\n" + out.stdout.decode("utf-8"))
+                error |= 2
 
         queue.put(verilog_file_name)
         return (verilog_file_name, -1, error, msgs)
