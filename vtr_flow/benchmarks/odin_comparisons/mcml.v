@@ -10482,7 +10482,9 @@ wire [31:0] number_o;
 reg [31:0] c_b1, c_b2, c_b3;
 reg [31:0] c_s1, c_s2, c_s3;
 
-reg [31:0] r_s1, r_s2, r_s3;
+reg [31:0] r_s1;
+reg [31:0] r_s2;
+reg [31:0] r_s3;
 
 assign number_o = r_s1 ^ r_s2 ^ r_s3;
 
@@ -10508,23 +10510,17 @@ begin
 	end
 end
 
-
-//combinate:
 always @(posedge clk or negedge resetn)
    begin
-   if (!resetn )
-      begin
-      r_s1 <= 32'b0;
-	  r_s2 <= 32'b0;
-	  r_s3 <= 32'b0;
-      end
-   else if (en)   //Originally else only
-      begin
-		  r_s1 <= c_s1;
-		  r_s2 <= c_s2;
-		  r_s3 <= c_s3;
-	  end
-   end
+     r_s1 <= (!resetn) ? 32'b0 :
+              (en) ? c_s1 :
+              r_s1;
+      r_s2 <= (!resetn) ? 32'b0 :
+              (en) ? c_s2 :
+               r_s2;
+    r_s3 <= (!resetn) ? 32'b0 :
+            (en) ? c_s3 :
+            r_s3;
 
 endmodule
 
@@ -10561,7 +10557,7 @@ reg [`BIT_WIDTH - 1:0] log_x;
 wire [31:0]blank;
 assign blank = 32'b000000000000000000000000000000;
 //single_port_ram sram_replace0 (.clk (clock), .addr (c_shifted_x), .data (blank), .we (1'b0), .out (mantissa));
-    RAMB18E1_VPR altsyncram_component(
+    RAMB18E1_VPR sram_replace0(
         .DOBDO(),
         .DOADO(mantissa),
         .DOPBDOP(),
