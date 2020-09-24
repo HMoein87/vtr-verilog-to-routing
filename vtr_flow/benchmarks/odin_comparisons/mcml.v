@@ -10492,13 +10492,9 @@ assign number_o = r[31:0] ^ r[63:32] ^ r[95:64];
 
 always @(posedge clk or negedge resetn)
 begin
-   if (!resetn)
-   begin
-     r <= 96'h0;
-  end
- else if(en)
-  begin
-      r <= {c_s3, c_s2, c_s1};
+     r <= (!resetn) ? 96'h0 :
+          (en) ? {c_s3, c_s2, c_s1} :
+          r;
   end
 end
 
