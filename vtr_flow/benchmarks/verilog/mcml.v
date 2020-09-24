@@ -24730,7 +24730,7 @@ module Sqrt_64b (clk, num_, res);
          end else if (one__13 == 0) begin
              res = res__13[31:0];
          end else if (one__14 == 0) begin
-             res = res__14[31:0];q
+             res = res__14[31:0];
          end else if (one__15_q == 0) begin
              res = res__15_q[31:0];
          end else if (one__16 == 0) begin
