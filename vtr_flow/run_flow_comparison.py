@@ -164,7 +164,7 @@ def run_benchmarks(verilog_files):
                 vpr_runs.extend(procs)
                 errors.extend(errs)
             print(line)
-            print("="*len(line), "\n")
+            print("="*len(line), "\n", flush=True)
 
         print("All files synthesised. Waiting for VPR")
         print("======================================\n", flush=True)
