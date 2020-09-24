@@ -10479,8 +10479,13 @@ output [31:0] number_o;
 
 wire [31:0] number_o;
 
-reg [31:0] c_b1, c_b2, c_b3;
-reg [31:0] c_s1, c_s2, c_s3;
+
+reg [31:0] c_b1;
+reg [31:0] c_b2;
+reg [31:0] c_b3;
+reg [31:0] c_s1;
+reg [31:0] c_s2;
+reg [31:0] c_s3;
 
 reg [31:0] r_s1;
 reg [31:0] r_s2;
