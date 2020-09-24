@@ -9960,8 +9960,6 @@ input loadseed_i;
 input [31:0] seed_i;
 output [31:0] number_o;
 
-wire [31:0] number_o;
-
 reg [31:0] c_b1, c_b2, c_b3;
 reg [31:0] c_s1, c_s2, c_s3;
 
