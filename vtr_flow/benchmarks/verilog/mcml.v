@@ -12,10 +12,10 @@
 
 //From Roulette
 //`define BIT_WIDTH 7'b0100000
-//`define LAYER_WIDTH 6'b000011 
+//`define LAYER_WIDTH 6'b000011
 `define LEFTSHIFT 6'b000011         // 2^3=8=1/0.125 where 0.125 = CHANCE of roulette
 `define INTCHANCE 32'b00100000000000000000000000000000 //Based on 32 bit rand num generator
-`define MIN_WEIGHT 9'b011001000 
+`define MIN_WEIGHT 9'b011001000
 
 // From Boundary
 `define BIT_WIDTH 7'b0100000
@@ -49,8 +49,8 @@
 `define LOG2 28'b0101100010111001000010111111
 
 //From DropSpinWrapper
-`define NR 10'b0100000000             
-`define NZ 10'b0100000000              
+`define NR 10'b0100000000
+`define NZ 10'b0100000000
 
 `define NR_EXP 5'b01000              //meaning `NR=2^`NR_exp or 2^8=256
 `define RGRID_SCLAE_EXP 6'b010101    //2^21 = RGRID_SCALE
@@ -79,12 +79,12 @@
 
 module mcml (
 	reset,
-	clk,	
+	clk,
 
 	constants,
 	read_constants,
 
-	result, 
+	result,
 	inc_result,
 
 	calc_in_progress
@@ -375,19 +375,19 @@ reg [3:0]			r_state;
 reg	r_toggle;
 
 // Skeleton program states
-parameter [3:0] ERROR_ST = 4'b0000, 
-				READ1_ST = 4'b0001, 
-				READ2_ST = 4'b0010, 
-				READ3_ST = 4'b0011, 
-				READ4_ST = 4'b0100, 
-				READ5_ST = 4'b0101, 
+parameter [3:0] ERROR_ST = 4'b0000,
+				READ1_ST = 4'b0001,
+				READ2_ST = 4'b0010,
+				READ3_ST = 4'b0011,
+				READ4_ST = 4'b0100,
+				READ5_ST = 4'b0101,
 				RESET_MEM_ST = 4'b0110,
-				CALC_ST = 4'b1000, 
-				DONE1_ST = 4'b1001, 
-				DONE2_ST = 4'b1010, 
-				DONE3_ST = 4'b1011, 
-				DONE4_ST = 4'b1100, 
-				DONE5_ST = 4'b1101, 
+				CALC_ST = 4'b1000,
+				DONE1_ST = 4'b1001,
+				DONE2_ST = 4'b1010,
+				DONE3_ST = 4'b1011,
+				DONE4_ST = 4'b1100,
+				DONE5_ST = 4'b1101,
 				DONE6_ST = 4'b1110;
 
 // Instantiate lookup memories
@@ -397,33 +397,33 @@ dual_port_mem_xx u_sint(clk, constants, tindex, {mem_layer, r_counter[9:0]}, wre
 dual_port_mem_ww u_cost(clk, constants, tindex, {mem_layer, r_counter[9:0]}, wren_cost, mem_cost);
 
 // Reduce size of absorption matrix
-dual absorptionMatrix(   .clk (clk), .data(absorb_data_mux[35:0]), 
-                         .rdaddress(absorb_rdaddress_mux), .wraddress(absorb_wraddress_mux), 
+dual absorptionMatrix(   .clk (clk), .data(absorb_data_mux[35:0]),
+                         .rdaddress(absorb_rdaddress_mux), .wraddress(absorb_wraddress_mux),
                          .wren(absorb_wren_mux), .q(absorb_q[35:0]));
-dual2 absorptionMatrix2(   .clk (clk), .data(absorb_data_mux[53:36]), 
-                         .rdaddress(absorb_rdaddress_mux), .wraddress(absorb_wraddress_mux), 
+dual2 absorptionMatrix2(   .clk (clk), .data(absorb_data_mux[53:36]),
+                         .rdaddress(absorb_rdaddress_mux), .wraddress(absorb_wraddress_mux),
                          .wren(absorb_wren_mux), .q(absorb_q[53:36]));
-dual3 absorptionMatrix3(   .clk (clk), .data(absorb_data_mux[61:54]), 
-                         .rdaddress(absorb_rdaddress_mux), .wraddress(absorb_wraddress_mux), 
+dual3 absorptionMatrix3(   .clk (clk), .data(absorb_data_mux[61:54]),
+                         .rdaddress(absorb_rdaddress_mux), .wraddress(absorb_wraddress_mux),
                          .wren(absorb_wren_mux), .q(absorb_q[61:54]));
 
-						 
+
 						 //
 						 //peter m test since absorb_q not defined for 63:62
 						 assign absorb_q[63:62] = 2'b00;
-						 
-						 
+
+
 PhotonCalculator u_calc (
 	.clock(clk), .reset(reset_calculator), .enable(enable),
 
 	// CONSTANTS
 	.total_photons(r_const__0),
-	
+
 	.randseed1(r_const__19), .randseed2(r_const__20), .randseed3(r_const__21), .randseed4(r_const__22), .randseed5(r_const__23),
 
 	//Because it is in the module:
 	.initialWeight(32'b00000000000111010100101111111111),
-	
+
 	//   Mover
 	.OneOver_MutMaxrad_0(r_const__32), .OneOver_MutMaxrad_1(r_const__33), .OneOver_MutMaxrad_2(r_const__34), .OneOver_MutMaxrad_3(r_const__35), .OneOver_MutMaxrad_4(r_const__36), .OneOver_MutMaxrad_5(r_const__37),
 	.OneOver_MutMaxdep_0(r_const__38), .OneOver_MutMaxdep_1(r_const__39), .OneOver_MutMaxdep_2(r_const__40), .OneOver_MutMaxdep_3(r_const__41), .OneOver_MutMaxdep_4(r_const__42), .OneOver_MutMaxdep_5(r_const__43),
@@ -454,7 +454,7 @@ PhotonCalculator u_calc (
 	// DeadOrAlive (no Constants)
 
 	// Absorber
-	.absorb_data(absorb_data), .absorb_rdaddress(absorb_rdaddress), .absorb_wraddress(absorb_wraddress), 
+	.absorb_data(absorb_data), .absorb_rdaddress(absorb_rdaddress), .absorb_wraddress(absorb_wraddress),
 	.absorb_wren(absorb_wren), .absorb_q(absorb_q),
 
 	// Done signal
@@ -720,14 +720,14 @@ c_const__0 = r_const__0;
 		wren_cost = 1'b0;
 		c_absorb_write_counter = r_absorb_write_counter;
 		c_toggle = r_toggle;
-		
+
 		mem_layer = r_counter[12:10];
 */
 		// Determine next state and which data changes
 		case(r_state)
 			//ERROR_ST:
 			READ1_ST:
-				begin			
+				begin
 					if(read_constants)
 						begin
 						// peter m redoing this to a shift register r_const 104 will shift to r_const 103 etc etc
@@ -751,12 +751,12 @@ c_const__0 = r_const__0;
 					else
 						begin
 						c_const__103 = r_const__103;
-							if(r_counter >= 104) 
+							if(r_counter >= 104)
 								begin
 									c_counter = 13'b0000000000000;
 									c_state = READ2_ST;
 									//preventing latches
-									
+
 									c_absorb_read_counter = r_absorb_read_counter;
 									c_result = result;
 									c_calc_in_progress = 1'b0;
@@ -767,13 +767,13 @@ c_const__0 = r_const__0;
 									c_absorb_write_counter = r_absorb_write_counter;
 									c_toggle = r_toggle;
 									mem_layer = r_counter[12:10];
-									
+
 								end
 								else
 								begin
 								c_counter = r_counter;
 								c_state = r_state;
-								
+
 								//preventing latches
 								c_absorb_read_counter = r_absorb_read_counter;
 								c_result = result;
@@ -789,14 +789,14 @@ c_const__0 = r_const__0;
 						end
 				end
 			READ2_ST:
-				begin		
+				begin
 					mem_layer = r_counter[9:7];
 					if(read_constants)
 						begin
 							wren_fres_up = 1'b1;
 							c_counter = r_counter + 13'b00000000000001;
 						//prevent latches
-						
+
 						c_const__103 = r_const__103;
 						c_absorb_read_counter = r_absorb_read_counter;
 						c_result = result;
@@ -807,35 +807,35 @@ c_const__0 = r_const__0;
 						wren_cost = 1'b0;
 						c_absorb_write_counter = r_absorb_write_counter;
 						c_toggle = r_toggle;
-		
-		
+
+
 						end
 					else
 						begin
-							if(r_counter >= 5*128) 
+							if(r_counter >= 5*128)
 								begin
 									c_counter = 13'b0000000000000;
 									c_state = READ3_ST;
-									
+
 					c_const__103 = r_const__103;
-				
+
 		c_absorb_read_counter = r_absorb_read_counter;
 		c_result = result;
 		c_calc_in_progress = 1'b0;
-	
+
 		wren_fres_up = 1'b0;
 		wren_fres_down = 1'b0;
 		wren_sint = 1'b0;
 		wren_cost = 1'b0;
 		c_absorb_write_counter = r_absorb_write_counter;
 		c_toggle = r_toggle;
-	
+
 								end
 								else
 								begin
 		c_counter = r_counter;
 		c_const__103 = r_const__103;
-		
+
 		c_absorb_read_counter = r_absorb_read_counter;
 		c_result = result;
 		c_calc_in_progress = 1'b0;
@@ -846,8 +846,8 @@ c_const__0 = r_const__0;
 		wren_cost = 1'b0;
 		c_absorb_write_counter = r_absorb_write_counter;
 		c_toggle = r_toggle;
-		
-	
+
+
 								end
 						end
 				end
@@ -855,18 +855,18 @@ c_const__0 = r_const__0;
 				begin
 			mem_layer = r_counter[9:7];
 			 c_const__103 = r_const__103;
-	
+
 		c_absorb_read_counter = r_absorb_read_counter;
 		c_result = result;
 		c_calc_in_progress = 1'b0;
-		
+
 		wren_fres_up = 1'b0;
-		
+
 		wren_sint = 1'b0;
 		wren_cost = 1'b0;
 		c_absorb_write_counter = r_absorb_write_counter;
 		c_toggle = r_toggle;
-		
+
 	//	mem_layer = r_counter[12:10];
 					if(read_constants)
 						begin
@@ -876,7 +876,7 @@ c_const__0 = r_const__0;
 						end
 					else
 						begin
-							if(r_counter >= 5*128) 
+							if(r_counter >= 5*128)
 								begin
 									c_counter = 13'b0000000000000;
 									c_state = READ4_ST;
@@ -904,10 +904,10 @@ c_const__0 = r_const__0;
 		//wren_cost = 1'b0;
 		c_absorb_write_counter = r_absorb_write_counter;
 		c_toggle = r_toggle;
-		
+
 		mem_layer = r_counter[12:10];
-		
-		
+
+
 					if(read_constants)
 						begin
 							wren_cost = 1'b1;
@@ -931,7 +931,7 @@ c_const__0 = r_const__0;
 						end
 				end
 			READ5_ST:
-				begin			
+				begin
 		c_const__103 = r_const__103;
 		//c_counter = r_counter;
 		//c_absorb_read_counter = r_absorb_read_counter;
@@ -944,10 +944,10 @@ c_const__0 = r_const__0;
 		wren_cost = 1'b0;
 		c_absorb_write_counter = r_absorb_write_counter;
 		c_toggle = r_toggle;
-		
+
 		mem_layer = r_counter[12:10];
-		
-		
+
+
 					if(read_constants)
 						begin
 							wren_sint = 1'b1;
@@ -987,14 +987,14 @@ c_const__0 = r_const__0;
 		wren_cost = 1'b0;
 		//c_absorb_write_counter = r_absorb_write_counter;
 		//c_toggle = r_toggle;
-		
-		mem_layer = r_counter[12:10];
-				
 
-				
-				
+		mem_layer = r_counter[12:10];
+
+
+
+
 				c_counter = r_counter;
-				
+
 				    c_toggle = 1'b0;
 					c_calc_in_progress = 1'b1;
 					c_absorb_write_counter = r_absorb_write_counter + 16'b0000000000000001;
@@ -1005,7 +1005,7 @@ c_const__0 = r_const__0;
 					else
 					begin
 					c_state = r_state;
-					
+
 					end
 				end
 			CALC_ST:
@@ -1022,18 +1022,18 @@ c_const__0 = r_const__0;
 		wren_cost = 1'b0;
 		c_absorb_write_counter = r_absorb_write_counter;
 		//c_toggle = r_toggle;
-		
+
 		mem_layer = r_counter[12:10];
-				
-				
-				
+
+
+
 					if(done == 1'b0)
 						begin
 							c_calc_in_progress = 1'b1;
 							c_toggle = 1'b0;
 							c_counter = r_counter;
 							c_state = r_state;
-								
+
 						end
 					else
 						begin
@@ -1044,7 +1044,7 @@ c_const__0 = r_const__0;
 						end
 				end
 		// DEBUG STATES BEGIN
-		
+
 			DONE1_ST:
 				begin
 		c_const__103 = r_const__103;
@@ -1059,11 +1059,11 @@ c_const__0 = r_const__0;
 		wren_cost = 1'b0;
 		c_absorb_write_counter = r_absorb_write_counter;
 		c_toggle = r_toggle;
-		
+
 		mem_layer = r_counter[12:10];
-				
-				
-					c_result = r_const__103;				
+
+
+					c_result = r_const__103;
 					//original -c_result = {32'b0,r_const[r_counter]};
 					if(inc_result)
 						begin
@@ -1078,7 +1078,7 @@ c_const__0 = r_const__0;
 								c_state = DONE1_ST;
 							end
 						end
-							
+
 						else
 						begin
 						if(r_counter >= 13'b0000010001100) //104
@@ -1107,10 +1107,10 @@ c_const__0 = r_const__0;
 		wren_cost = 1'b0;
 		c_absorb_write_counter = r_absorb_write_counter;
 		c_toggle = r_toggle;
-		
+
 		//mem_layer = r_counter[12:10];
-			
-				
+
+
 					mem_layer = r_counter[9:7];
 					//c_result = {32'b00000000000000000000000000000000,mem_fres_up};
 					c_result = 32'b0;
@@ -1147,23 +1147,23 @@ c_const__0 = r_const__0;
 		wren_cost = 1'b0;
 		c_absorb_write_counter = r_absorb_write_counter;
 		c_toggle = r_toggle;
-		
+
 		//mem_layer = r_counter[12:10];
-			
-				
-				
-				
+
+
+
+
 					mem_layer = r_counter[9:7];
 					//c_result = {32'b00000000000000000000000000000000,mem_fres_down};
 					c_result = 32'b0;
-					
+
 					if(inc_result)
 						begin
 							// stub, write constants back to see if read in properly
 							c_counter = r_counter + 13'b0000000000001;
 							c_state = DONE3_ST;
 						end
-						
+
 					else
 						begin
 						if(r_counter >= 13'b0001010000000) //5*128 = 640
@@ -1176,17 +1176,17 @@ c_const__0 = r_const__0;
 								c_counter = r_counter;
 								c_state = DONE3_ST;
 							end
-						
-						
-						
-						
+
+
+
+
 						end
 				end
 			DONE4_ST:
 				begin
-				
-				
-				
+
+
+
 						c_const__103 = r_const__103;
 		//c_counter = r_counter;
 		c_absorb_read_counter = r_absorb_read_counter;
@@ -1199,13 +1199,13 @@ c_const__0 = r_const__0;
 		wren_cost = 1'b0;
 		c_absorb_write_counter = r_absorb_write_counter;
 		c_toggle = r_toggle;
-		
+
 		mem_layer = r_counter[12:10];
-		
-		
-		
+
+
+
 					c_result = mem_cost;
-					
+
 				if(inc_result)
 						begin
 							// stub, write constants back to see if read in properly
@@ -1219,7 +1219,7 @@ c_const__0 = r_const__0;
 							c_counter = 13'b0000000000000;
 							c_state = DONE5_ST;
 						end
-						
+
 						else
 						begin
 							c_state = DONE4_ST;
@@ -1229,7 +1229,7 @@ c_const__0 = r_const__0;
 				end
 			DONE5_ST:
 				begin
-				
+
 		c_const__103 = r_const__103;
 		//c_counter = r_counter;
 		c_absorb_read_counter = r_absorb_read_counter;
@@ -1242,12 +1242,12 @@ c_const__0 = r_const__0;
 		wren_cost = 1'b0;
 		c_absorb_write_counter = r_absorb_write_counter;
 		c_toggle = r_toggle;
-		
+
 		mem_layer = r_counter[12:10];
-		
-			
+
+
 					c_result = mem_sint;
-				
+
 					if(r_counter >= 13'b1010000000000) //5*1024 = 5120
 						begin
 							c_counter = 13'b0000000000000;
@@ -1283,13 +1283,13 @@ c_const__0 = r_const__0;
 		wren_cost = 1'b0;
 		c_absorb_write_counter = r_absorb_write_counter;
 		//c_toggle = r_toggle;
-		
+
 		mem_layer = r_counter[12:10];
-				
-				
+
+
 									c_state = DONE6_ST;
 
-				
+
 					if(r_toggle == 1'b0)
 					begin
 						c_result = absorb_q[63:32];
@@ -1322,7 +1322,7 @@ c_const__0 = r_const__0;
 					end
 				//	c_state = DONE6_ST;
 					end
-				
+
 			default:
 				begin
 			c_state = ERROR_ST;
@@ -1338,7 +1338,7 @@ c_const__0 = r_const__0;
 		wren_cost = 1'b0;
 		c_absorb_write_counter = r_absorb_write_counter;
 		c_toggle = r_toggle;
-		
+
 		mem_layer = r_counter[12:10];
 				end
 		endcase
@@ -1470,15 +1470,15 @@ r_const__0 <= 32'b00000000000000000000000000000000;
 			begin
 					r_counter <= c_counter;
 			if (c_state == READ1_ST)
-				
+
 				//for(i = 0; i < 104; i = i + 1) begin
 				//	r_const[i] <= c_const[i];
 				//end
 				begin
-				
+
 				//shift register implementation for read-in constant state
 
-//first one is from counter				
+//first one is from counter
 r_const__103 <= c_const__103;
 // all others shift
 r_const__102 <= r_const__103;
@@ -1696,14 +1696,14 @@ end
 
 
 
-				
+
 				r_state <= c_state;
 				result <= c_result;
 				calc_in_progress <= c_calc_in_progress;
 				r_absorb_read_counter <= c_absorb_read_counter;
 				r_absorb_write_counter <= c_absorb_write_counter;
 				r_toggle <= c_toggle;
-				//if(c_state == CALC_ST) 
+				//if(c_state == CALC_ST)
 				//begin
 					enable <= 1'b1;
 				//end
@@ -1711,7 +1711,7 @@ end
 				//begin
 				//	enable = 1'b0;
 				//end
-				if(c_state == RESET_MEM_ST) 
+				if(c_state == RESET_MEM_ST)
 				begin
 					reset_calculator <= 1'b1;
 				end
@@ -1723,13 +1723,13 @@ end
 	end
 
 endmodule
-			
-			
-			
 
 
-			
-			
+
+
+
+
+
 module dual_port_mem_zz (clk, data, rdaddress, wraddress , wren, q);
 
 // 32bit wide
@@ -1750,8 +1750,8 @@ wire [31:0] dont_care_out;
 assign const_zero = 1'b0;
 assign const_zero_data = 32'b00000000000000000000000000000000;
 assign dont_care_out = 32'b00000000000000000000000000000000;
-	
-dual_port_ram dpram1(	
+
+dual_port_ram dpram1(
   .clk (clk),
   .we1(wren),
   .we2(const_zero),
@@ -1761,10 +1761,10 @@ dual_port_ram dpram1(
   .out2 (q),
   .addr1(wraddress),
   .addr2(rdaddress));
-  
-  
+
+
   endmodule
-  
+
 module dual_port_mem_yy (clk, data, rdaddress, wraddress , wren, q);
 
 // 32bit wide
@@ -1785,8 +1785,8 @@ wire [31:0] dont_care_out;
 assign const_zero = 1'b0;
 assign const_zero_data = 32'b00000000000000000000000000000000;
 assign dont_care_out = 32'b00000000000000000000000000000000;
-	
-dual_port_ram dpram1(	
+
+dual_port_ram dpram1(
   .clk (clk),
   .we1(wren),
   .we2(const_zero),
@@ -1796,10 +1796,10 @@ dual_port_ram dpram1(
   .out2 (q),
   .addr1(wraddress),
   .addr2(rdaddress));
-  
-  
+
+
   endmodule
-  
+
 module dual_port_mem_xx (clk, data, rdaddress, wraddress , wren, q);
 
 // 32bit wide
@@ -1820,8 +1820,8 @@ wire [31:0] dont_care_out;
 assign const_zero = 1'b0;
 assign const_zero_data = 32'b00000000000000000000000000000000;
 assign dont_care_out = 32'b00000000000000000000000000000000;
-	
-dual_port_ram dpram1(	
+
+dual_port_ram dpram1(
   .clk (clk),
   .we1(wren),
   .we2(const_zero),
@@ -1831,8 +1831,8 @@ dual_port_ram dpram1(
   .out2 (q),
   .addr1(wraddress),
   .addr2(rdaddress));
-  
-  
+
+
   endmodule
 
 module dual_port_mem_ww (clk, data, rdaddress, wraddress , wren, q);
@@ -1855,8 +1855,8 @@ wire [31:0] dont_care_out;
 assign const_zero = 1'b0;
 assign const_zero_data = 32'b00000000000000000000000000000000;
 assign dont_care_out = 32'b00000000000000000000000000000000;
-	
-dual_port_ram dpram1(	
+
+dual_port_ram dpram1(
   .clk (clk),
   .we1(wren),
   .we2(const_zero),
@@ -1866,8 +1866,8 @@ dual_port_ram dpram1(
   .out2 (q),
   .addr1(wraddress),
   .addr2(rdaddress));
-  
-  
+
+
   endmodule
   module dual (clk, data, rdaddress, wraddress , wren, q);
 
@@ -1889,8 +1889,8 @@ wire [35:0] dont_care_out;
 assign const_zero = 1'b0;
 assign const_zero_data = 36'b000000000000000000000000000000000000;
 assign dont_care_out = 36'b000000000000000000000000000000000000;
-	
-dual_port_ram dpram1(	
+
+dual_port_ram dpram1(
   .clk (clk),
   .we1(wren),
   .we2(const_zero),
@@ -1900,8 +1900,8 @@ dual_port_ram dpram1(
   .out2 (q),
   .addr1(wraddress),
   .addr2(rdaddress));
-  
-  
+
+
   endmodule
    module dual2 (clk, data, rdaddress, wraddress , wren, q);
 
@@ -1923,8 +1923,8 @@ wire [17:0] dont_care_out;
 assign const_zero = 1'b0;
 assign const_zero_data = 18'b000000000000000000;
 assign dont_care_out = 18'b000000000000000000;
-	
-dual_port_ram dpram1(	
+
+dual_port_ram dpram1(
   .clk (clk),
   .we1(wren),
   .we2(const_zero),
@@ -1934,8 +1934,8 @@ dual_port_ram dpram1(
   .out2 (q),
   .addr1(wraddress),
   .addr2(rdaddress));
-  
-  
+
+
   endmodule
    module dual3 (clk, data, rdaddress, wraddress , wren, q);
 
@@ -1957,8 +1957,8 @@ wire [7:0] dont_care_out;
 assign const_zero = 1'b0;
 assign const_zero_data = 8'b00000000;
 assign dont_care_out = 8'b00000000;
-	
-dual_port_ram dpram1(	
+
+dual_port_ram dpram1(
   .clk (clk),
   .we1(wren),
   .we2(const_zero),
@@ -1968,12 +1968,12 @@ dual_port_ram dpram1(
   .out2 (q),
   .addr1(wraddress),
   .addr2(rdaddress));
-  
-  
+
+
   endmodule
 
- 
- 
+
+
  //  Photon Calculator
 // Note: Use the same random number for fresnel (reflect) as for scatterer because they are mutually exclusive blocks
 //       Also scatterer needs two
@@ -1986,7 +1986,7 @@ module PhotonCalculator (
 	total_photons,
 
 	randseed1, randseed2, randseed3, randseed4, randseed5,
-	
+
 	initialWeight,
 
 	//   Mover
@@ -2019,7 +2019,7 @@ module PhotonCalculator (
 	// Roulette (no Constants)
 
 	// Absorber
-	absorb_data, absorb_rdaddress, absorb_wraddress, 
+	absorb_data, absorb_rdaddress, absorb_wraddress,
 	absorb_wren, absorb_q,
 
 	// Done signal
@@ -2314,12 +2314,12 @@ DropSpinWrapper dropSpin (
 	.i_weight(weight_hop),
 	.i_layer(layer_hop),
 	.i_dead(dead_hop),
-	.i_hit(hit_hop),	
-	
+	.i_hit(hit_hop),
+
 	//From System Register File (5 layers)- Absorber
 	.muaFraction1(muaFraction1), .muaFraction2(muaFraction2), .muaFraction3(muaFraction3), .muaFraction4(muaFraction4), .muaFraction5(muaFraction5),
- 
- 	//From System Register File - ScattererReflector 
+
+ 	//From System Register File - ScattererReflector
 	.down_niOverNt_1(down_niOverNt_1),
 	.down_niOverNt_2(down_niOverNt_2),
 	.down_niOverNt_3(down_niOverNt_3),
@@ -2350,9 +2350,9 @@ DropSpinWrapper dropSpin (
 	.upCritAngle_2(upCritAngle_2),
 	.upCritAngle_3(upCritAngle_3),
 	.upCritAngle_4(upCritAngle_4),
- 
+
 	// port to memory
-	 .data(absorb_data), .rdaddress(absorb_rdaddress), .wraddress(absorb_wraddress), 
+	 .data(absorb_data), .rdaddress(absorb_rdaddress), .wraddress(absorb_wraddress),
 	 .wren(absorb_wren), .q(absorb_q),
 
  //Generated by random number generators controlled by skeleton
@@ -2368,7 +2368,7 @@ DropSpinWrapper dropSpin (
 	.fresIndex(fresIndex),
 
 
-	 
+
    //To Roulette Module
 	.o_x(x_dropSpin),
 	.o_y(y_dropSpin),
@@ -2384,9 +2384,9 @@ DropSpinWrapper dropSpin (
 	.o_layer(layer_dropSpin),
 	.o_dead(dead_dropSpin),
 	.o_hit(hit_dropSpin)
-                    
+
 	);
-	
+
 // Determine how many photons left
 always @(r_num_photons_left or dead_Roulette or r_done or r_counter)
 begin
@@ -2405,7 +2405,7 @@ begin
 			c_counter = r_counter + 1;
 			c_num_photons_left = r_num_photons_left;
 		end
-	end 
+	end
 	else
 	begin
 		c_num_photons_left = r_num_photons_left;
@@ -2426,8 +2426,8 @@ begin
 end
 
 // Create mux to mover
-always @(dead_Roulette or initialWeight or r_num_photons_left or x_Roulette or y_Roulette or z_Roulette or 
-			ux_Roulette or uy_Roulette or uz_Roulette or sz_Roulette or sr_Roulette or sleftz_Roulette or 
+always @(dead_Roulette or initialWeight or r_num_photons_left or x_Roulette or y_Roulette or z_Roulette or
+			ux_Roulette or uy_Roulette or uz_Roulette or sz_Roulette or sr_Roulette or sleftz_Roulette or
 			sleftr_Roulette or layer_Roulette or weight_Roulette or dead_Roulette)
 begin
 	if(dead_Roulette)
@@ -2616,18 +2616,18 @@ reg	dead_mover;
 
 //Need this to deal with 'unused' inputs for ODIN II
 wire bigOr;
-assign bigOr = sr_moverMux[0] | sr_moverMux[1] | sr_moverMux[2] | sr_moverMux[3] | sr_moverMux[4] | sr_moverMux[5] | 
-					sr_moverMux[6] | sr_moverMux[7] | sr_moverMux[8] | sr_moverMux[9] | sr_moverMux[10] | sr_moverMux[11] | 
-					sr_moverMux[12] | sr_moverMux[13] | sr_moverMux[14] | sr_moverMux[15] | sr_moverMux[16] | sr_moverMux[17] | 
-					sr_moverMux[18] | sr_moverMux[19] | sr_moverMux[20] | sr_moverMux[21] | sr_moverMux[22] | sr_moverMux[23] | 
-					sr_moverMux[24] | sr_moverMux[25] | sr_moverMux[26] | sr_moverMux[27] | sr_moverMux[28] | sr_moverMux[29] | 
-					sr_moverMux[30] | sr_moverMux[31] | 
-					sz_moverMux[0] | sz_moverMux[1] | sz_moverMux[2] | sz_moverMux[3] | sz_moverMux[4] | sz_moverMux[5] | 
-					sz_moverMux[6] | sz_moverMux[7] | sz_moverMux[8] | sz_moverMux[9] | sz_moverMux[10] | sz_moverMux[11] | 
-					sz_moverMux[12] | sz_moverMux[13] | sz_moverMux[14] | sz_moverMux[15] | sz_moverMux[16] | sz_moverMux[17] | 
-					sz_moverMux[18] | sz_moverMux[19] | sz_moverMux[20] | sz_moverMux[21] | sz_moverMux[22] | sz_moverMux[23] | 
-					sz_moverMux[24] | sz_moverMux[25] | sz_moverMux[26] | sz_moverMux[27] | sz_moverMux[28] | sz_moverMux[29] | 
-					sz_moverMux[30] | sz_moverMux[31] | 
+assign bigOr = sr_moverMux[0] | sr_moverMux[1] | sr_moverMux[2] | sr_moverMux[3] | sr_moverMux[4] | sr_moverMux[5] |
+					sr_moverMux[6] | sr_moverMux[7] | sr_moverMux[8] | sr_moverMux[9] | sr_moverMux[10] | sr_moverMux[11] |
+					sr_moverMux[12] | sr_moverMux[13] | sr_moverMux[14] | sr_moverMux[15] | sr_moverMux[16] | sr_moverMux[17] |
+					sr_moverMux[18] | sr_moverMux[19] | sr_moverMux[20] | sr_moverMux[21] | sr_moverMux[22] | sr_moverMux[23] |
+					sr_moverMux[24] | sr_moverMux[25] | sr_moverMux[26] | sr_moverMux[27] | sr_moverMux[28] | sr_moverMux[29] |
+					sr_moverMux[30] | sr_moverMux[31] |
+					sz_moverMux[0] | sz_moverMux[1] | sz_moverMux[2] | sz_moverMux[3] | sz_moverMux[4] | sz_moverMux[5] |
+					sz_moverMux[6] | sz_moverMux[7] | sz_moverMux[8] | sz_moverMux[9] | sz_moverMux[10] | sz_moverMux[11] |
+					sz_moverMux[12] | sz_moverMux[13] | sz_moverMux[14] | sz_moverMux[15] | sz_moverMux[16] | sz_moverMux[17] |
+					sz_moverMux[18] | sz_moverMux[19] | sz_moverMux[20] | sz_moverMux[21] | sz_moverMux[22] | sz_moverMux[23] |
+					sz_moverMux[24] | sz_moverMux[25] | sz_moverMux[26] | sz_moverMux[27] | sz_moverMux[28] | sz_moverMux[29] |
+					sz_moverMux[30] | sz_moverMux[31] |
 					1'b1;
 wire reset_new;
 assign reset_new = reset & bigOr;
@@ -2795,9 +2795,9 @@ module Boundary ( //INPUTS
 				 layer_boundaryChecker, weight_boundaryChecker, dead_boundaryChecker, hit_boundaryChecker,
 
 				 //CONSTANTS
-				 z1_0, z1_1, z1_2, z1_3, z1_4, z1_5, 
+				 z1_0, z1_1, z1_2, z1_3, z1_4, z1_5,
 				 z0_0, z0_1, z0_2, z0_3, z0_4, z0_5,
-				 mut_0, mut_1, mut_2, mut_3, mut_4, mut_5, 
+				 mut_0, mut_1, mut_2, mut_3, mut_4, mut_5,
 				 maxDepth_over_maxRadius
 				 );
 
@@ -5572,7 +5572,7 @@ begin
 end
 
 // initialize uninitialized data in pipeline
-always @(x_mover or y_mover or z_mover or 
+always @(x_mover or y_mover or z_mover or
 		ux_mover or uy_mover or uz_mover or
 		sz_mover or sr_mover or sleftz_mover or sleftr_mover or
 		weight_mover or layer_mover or dead_mover)
@@ -5774,8 +5774,8 @@ always @(r_x__0 or r_y__0 or r_z__0 or r_ux__0 or r_uy__0 or r_uz__0 or r_sz__0 
 		r_weight__58 or r_layer__58 or r_dead__58 or r_hit__58 or r_diff__58 or r_dl_b__58 or r_numer__58 or r_z1__58 or r_z0__58 or r_mut__58 or
 
 		r_x__59 or r_y__59 or r_z__59 or r_ux__59 or r_uy__59 or r_uz__59 or r_sz__59 or r_sr__59 or r_sleftz__59 or r_sleftr__59 or
-		r_weight__59 or r_layer__59 or r_dead__59 or r_hit__59 or r_diff__59 or r_dl_b__59 or r_numer__59 or r_z1__59 or r_z0__59 or r_mut__59 or 
-		
+		r_weight__59 or r_layer__59 or r_dead__59 or r_hit__59 or r_diff__59 or r_dl_b__59 or r_numer__59 or r_z1__59 or r_z0__59 or r_mut__59 or
+
 		sr_big or sleftz_big or sleftr_big or quotient_div1)
 
 	// default
@@ -5827,7 +5827,7 @@ begin
 		c_z1__1 = r_z1__0;
 		c_z0__1 = r_z0__0;
 		c_mut__1 = r_mut__0;
-		
+
 		//for 2
 		c_x__2	= r_x__1;
 		c_y__2	= r_y__1;
@@ -5849,7 +5849,7 @@ begin
 		c_z1__2 = r_z1__1;
 		c_z0__2 = r_z0__1;
 		c_mut__2 = r_mut__1;
-	
+
 		//for 3
 		c_x__3	= r_x__2;
 		c_y__3	= r_y__2;
@@ -5871,7 +5871,7 @@ begin
 		c_z1__3 = r_z1__2;
 		c_z0__3 = r_z0__2;
 		c_mut__3 = r_mut__2;
-		
+
 		//for 4
 		c_x__4	= r_x__3;
 		c_y__4	= r_y__3;
@@ -5893,7 +5893,7 @@ begin
 		c_z1__4 = r_z1__3;
 		c_z0__4 = r_z0__3;
 		c_mut__4 = r_mut__3;
-		
+
 		//for 5
 		c_x__5	= r_x__4;
 		c_y__5	= r_y__4;
@@ -5915,7 +5915,7 @@ begin
 		c_z1__5 = r_z1__4;
 		c_z0__5 = r_z0__4;
 		c_mut__5 = r_mut__4;
-		
+
 		//for 6
 		c_x__6	= r_x__5;
 		c_y__6	= r_y__5;
@@ -5937,7 +5937,7 @@ begin
 		c_z1__6 = r_z1__5;
 		c_z0__6 = r_z0__5;
 		c_mut__6 = r_mut__5;
-		
+
 		//for 7
 		c_x__7	= r_x__6;
 		c_y__7	= r_y__6;
@@ -5959,7 +5959,7 @@ begin
 		c_z1__7 = r_z1__6;
 		c_z0__7 = r_z0__6;
 		c_mut__7 = r_mut__6;
-		
+
 		//for 8
 		c_x__8	= r_x__7;
 		c_y__8	= r_y__7;
@@ -5981,7 +5981,7 @@ begin
 		c_z1__8 = r_z1__7;
 		c_z0__8 = r_z0__7;
 		c_mut__8 = r_mut__7;
-		
+
 		//for 9
 		c_x__9	= r_x__8;
 		c_y__9	= r_y__8;
@@ -6003,7 +6003,7 @@ begin
 		c_z1__9 = r_z1__8;
 		c_z0__9 = r_z0__8;
 		c_mut__9 = r_mut__8;
-		
+
 		//for 10
 		c_x__10	= r_x__9;
 		c_y__10	= r_y__9;
@@ -6025,7 +6025,7 @@ begin
 		c_z1__10 = r_z1__9;
 		c_z0__10 = r_z0__9;
 		c_mut__10 = r_mut__9;
-		
+
 		//for 11
 		c_x__11	= r_x__10;
 		c_y__11	= r_y__10;
@@ -6047,7 +6047,7 @@ begin
 		c_z1__11 = r_z1__10;
 		c_z0__11 = r_z0__10;
 		c_mut__11 = r_mut__10;
-		
+
 		//for 12
 		c_x__12	= r_x__11;
 		c_y__12	= r_y__11;
@@ -6069,7 +6069,7 @@ begin
 		c_z1__12 = r_z1__11;
 		c_z0__12 = r_z0__11;
 		c_mut__12 = r_mut__11;
-		
+
 		//for 13
 		c_x__13	= r_x__12;
 		c_y__13	= r_y__12;
@@ -6091,7 +6091,7 @@ begin
 		c_z1__13 = r_z1__12;
 		c_z0__13 = r_z0__12;
 		c_mut__13 = r_mut__12;
-		
+
 		//for 14
 		c_x__14	= r_x__13;
 		c_y__14	= r_y__13;
@@ -6113,7 +6113,7 @@ begin
 		c_z1__14 = r_z1__13;
 		c_z0__14 = r_z0__13;
 		c_mut__14 = r_mut__13;
-		
+
 		//for 15
 		c_x__15	= r_x__14;
 		c_y__15	= r_y__14;
@@ -6135,7 +6135,7 @@ begin
 		c_z1__15 = r_z1__14;
 		c_z0__15 = r_z0__14;
 		c_mut__15 = r_mut__14;
-		
+
 		//for 16
 		c_x__16	= r_x__15;
 		c_y__16	= r_y__15;
@@ -6157,7 +6157,7 @@ begin
 		c_z1__16 = r_z1__15;
 		c_z0__16 = r_z0__15;
 		c_mut__16 = r_mut__15;
-		
+
 		//for 17
 		c_x__17	= r_x__16;
 		c_y__17	= r_y__16;
@@ -6179,7 +6179,7 @@ begin
 		c_z1__17 = r_z1__16;
 		c_z0__17 = r_z0__16;
 		c_mut__17 = r_mut__16;
-		
+
 		//for 18
 		c_x__18	= r_x__17;
 		c_y__18	= r_y__17;
@@ -6201,7 +6201,7 @@ begin
 		c_z1__18 = r_z1__17;
 		c_z0__18 = r_z0__17;
 		c_mut__18 = r_mut__17;
-		
+
 		//for 19
 		c_x__19	= r_x__18;
 		c_y__19	= r_y__18;
@@ -6223,7 +6223,7 @@ begin
 		c_z1__19 = r_z1__18;
 		c_z0__19 = r_z0__18;
 		c_mut__19 = r_mut__18;
-		
+
 		//for 20
 		c_x__20	= r_x__19;
 		c_y__20	= r_y__19;
@@ -6245,8 +6245,8 @@ begin
 		c_z1__20 = r_z1__19;
 		c_z0__20 = r_z0__19;
 		c_mut__20 = r_mut__19;
-		
-		
+
+
 		//for 21
 		c_x__21	= r_x__20;
 		c_y__21	= r_y__20;
@@ -6268,7 +6268,7 @@ begin
 		c_z1__21 = r_z1__20;
 		c_z0__21 = r_z0__20;
 		c_mut__21 = r_mut__20;
-		
+
 		//for 22
 		c_x__22	= r_x__21;
 		c_y__22	= r_y__21;
@@ -6290,7 +6290,7 @@ begin
 		c_z1__22 = r_z1__21;
 		c_z0__22 = r_z0__21;
 		c_mut__22 = r_mut__21;
-		
+
 		//for 23
 		c_x__23	= r_x__22;
 		c_y__23	= r_y__22;
@@ -6312,7 +6312,7 @@ begin
 		c_z1__23 = r_z1__22;
 		c_z0__23 = r_z0__22;
 		c_mut__23 = r_mut__22;
-		
+
 		//for 24
 		c_x__24	= r_x__23;
 		c_y__24	= r_y__23;
@@ -6334,7 +6334,7 @@ begin
 		c_z1__24 = r_z1__23;
 		c_z0__24 = r_z0__23;
 		c_mut__24 = r_mut__23;
-		
+
 		//for 25
 		c_x__25	= r_x__24;
 		c_y__25	= r_y__24;
@@ -6356,7 +6356,7 @@ begin
 		c_z1__25 = r_z1__24;
 		c_z0__25 = r_z0__24;
 		c_mut__25 = r_mut__24;
-		
+
 		//for 26
 		c_x__26	= r_x__25;
 		c_y__26	= r_y__25;
@@ -6378,7 +6378,7 @@ begin
 		c_z1__26 = r_z1__25;
 		c_z0__26 = r_z0__25;
 		c_mut__26 = r_mut__25;
-		
+
 		//for 27
 		c_x__27	= r_x__26;
 		c_y__27	= r_y__26;
@@ -6400,7 +6400,7 @@ begin
 		c_z1__27 = r_z1__26;
 		c_z0__27 = r_z0__26;
 		c_mut__27 = r_mut__26;
-		
+
 		//for 28
 		c_x__28	= r_x__27;
 		c_y__28	= r_y__27;
@@ -6422,7 +6422,7 @@ begin
 		c_z1__28 = r_z1__27;
 		c_z0__28 = r_z0__27;
 		c_mut__28 = r_mut__27;
-		
+
 		//for 29
 		c_x__29	= r_x__28;
 		c_y__29	= r_y__28;
@@ -6444,7 +6444,7 @@ begin
 		c_z1__29 = r_z1__28;
 		c_z0__29 = r_z0__28;
 		c_mut__29 = r_mut__28;
-		
+
 		//for 30
 		c_x__30	= r_x__29;
 		c_y__30	= r_y__29;
@@ -6461,14 +6461,14 @@ begin
 		c_dead__30	= r_dead__29;
 	//	c_hit__30	= r_hit__29;//
 	//	c_diff__30 = r_diff__29;//
-	// this value is set later, removing default - peter m	
+	// this value is set later, removing default - peter m
 	//	c_dl_b__30 = r_dl_b__29;//
 	// this one too
 		c_numer__30 = r_numer__29;
 		c_z1__30 = r_z1__29;
 		c_z0__30 = r_z0__29;
 		c_mut__30 = r_mut__29;
-		
+
 		//for 31
 		c_x__31	= r_x__30;
 		c_y__31	= r_y__30;
@@ -6490,7 +6490,7 @@ begin
 		c_z1__31 = r_z1__30;
 		c_z0__31 = r_z0__30;
 		c_mut__31 = r_mut__30;
-		
+
 		//for 32
 		c_x__32	= r_x__31;
 		c_y__32	= r_y__31;
@@ -6512,7 +6512,7 @@ begin
 		c_z1__32 = r_z1__31;
 		c_z0__32 = r_z0__31;
 		c_mut__32 = r_mut__31;
-		
+
 		//for 33
 		c_x__33	= r_x__32;
 		c_y__33	= r_y__32;
@@ -6534,7 +6534,7 @@ begin
 		c_z1__33 = r_z1__32;
 		c_z0__33 = r_z0__32;
 		c_mut__33 = r_mut__32;
-		
+
 		//for 34
 		c_x__34	= r_x__33;
 		c_y__34	= r_y__33;
@@ -6556,7 +6556,7 @@ begin
 		c_z1__34 = r_z1__33;
 		c_z0__34 = r_z0__33;
 		c_mut__34 = r_mut__33;
-		
+
 		//for 35
 		c_x__35	= r_x__34;
 		c_y__35	= r_y__34;
@@ -6578,7 +6578,7 @@ begin
 		c_z1__35 = r_z1__34;
 		c_z0__35 = r_z0__34;
 		c_mut__35 = r_mut__34;
-		
+
 		//for 36
 		c_x__36	= r_x__35;
 		c_y__36	= r_y__35;
@@ -6600,7 +6600,7 @@ begin
 		c_z1__36 = r_z1__35;
 		c_z0__36 = r_z0__35;
 		c_mut__36 = r_mut__35;
-		
+
 		//for 37
 		c_x__37	= r_x__36;
 		c_y__37	= r_y__36;
@@ -6622,7 +6622,7 @@ begin
 		c_z1__37 = r_z1__36;
 		c_z0__37 = r_z0__36;
 		c_mut__37 = r_mut__36;
-		
+
 		//for 38
 		c_x__38	= r_x__37;
 		c_y__38	= r_y__37;
@@ -6644,7 +6644,7 @@ begin
 		c_z1__38 = r_z1__37;
 		c_z0__38 = r_z0__37;
 		c_mut__38 = r_mut__37;
-		
+
 		//for 39
 		c_x__39	= r_x__38;
 		c_y__39	= r_y__38;
@@ -6666,7 +6666,7 @@ begin
 		c_z1__39 = r_z1__38;
 		c_z0__39 = r_z0__38;
 		c_mut__39 = r_mut__38;
-		
+
 		//for 40
 		c_x__40	= r_x__39;
 		c_y__40	= r_y__39;
@@ -6688,7 +6688,7 @@ begin
 		c_z1__40 = r_z1__39;
 		c_z0__40 = r_z0__39;
 		c_mut__40 = r_mut__39;
-		
+
 		//for 41
 		c_x__41	= r_x__40;
 		c_y__41	= r_y__40;
@@ -6710,7 +6710,7 @@ begin
 		c_z1__41 = r_z1__40;
 		c_z0__41 = r_z0__40;
 		c_mut__41 = r_mut__40;
-		
+
 		//for 42
 		c_x__42	= r_x__41;
 		c_y__42	= r_y__41;
@@ -6732,7 +6732,7 @@ begin
 		c_z1__42 = r_z1__41;
 		c_z0__42 = r_z0__41;
 		c_mut__42 = r_mut__41;
-		
+
 		//for 43
 		c_x__43	= r_x__42;
 		c_y__43	= r_y__42;
@@ -6754,7 +6754,7 @@ begin
 		c_z1__43 = r_z1__42;
 		c_z0__43 = r_z0__42;
 		c_mut__43 = r_mut__42;
-		
+
 		//for 44
 		c_x__44	= r_x__43;
 		c_y__44	= r_y__43;
@@ -6776,7 +6776,7 @@ begin
 		c_z1__44 = r_z1__43;
 		c_z0__44 = r_z0__43;
 		c_mut__44 = r_mut__43;
-		
+
 		//for 45
 		c_x__45	= r_x__44;
 		c_y__45	= r_y__44;
@@ -6798,7 +6798,7 @@ begin
 		c_z1__45 = r_z1__44;
 		c_z0__45 = r_z0__44;
 		c_mut__45 = r_mut__44;
-		
+
 		//for 46
 		c_x__46	= r_x__45;
 		c_y__46	= r_y__45;
@@ -6820,7 +6820,7 @@ begin
 		c_z1__46 = r_z1__45;
 		c_z0__46 = r_z0__45;
 		c_mut__46 = r_mut__45;
-		
+
 		//for 47
 		c_x__47	= r_x__46;
 		c_y__47	= r_y__46;
@@ -6842,7 +6842,7 @@ begin
 		c_z1__47 = r_z1__46;
 		c_z0__47 = r_z0__46;
 		c_mut__47 = r_mut__46;
-		
+
 		//for 48
 		c_x__48	= r_x__47;
 		c_y__48	= r_y__47;
@@ -6864,7 +6864,7 @@ begin
 		c_z1__48 = r_z1__47;
 		c_z0__48 = r_z0__47;
 		c_mut__48 = r_mut__47;
-		
+
 		//for 49
 		c_x__49	= r_x__48;
 		c_y__49	= r_y__48;
@@ -6886,7 +6886,7 @@ begin
 		c_z1__49 = r_z1__48;
 		c_z0__49 = r_z0__48;
 		c_mut__49 = r_mut__48;
-		
+
 		//for 50
 		c_x__50	= r_x__49;
 		c_y__50	= r_y__49;
@@ -6908,7 +6908,7 @@ begin
 		c_z1__50 = r_z1__49;
 		c_z0__50 = r_z0__49;
 		c_mut__50 = r_mut__49;
-		
+
 		//for 51
 		c_x__51	= r_x__50;
 		c_y__51	= r_y__50;
@@ -6930,7 +6930,7 @@ begin
 		c_z1__51 = r_z1__50;
 		c_z0__51 = r_z0__50;
 		c_mut__51 = r_mut__50;
-		
+
 		//for 52
 		c_x__52	= r_x__51;
 		c_y__52	= r_y__51;
@@ -6952,7 +6952,7 @@ begin
 		c_z1__52 = r_z1__51;
 		c_z0__52 = r_z0__51;
 		c_mut__52 = r_mut__51;
-		
+
 		//for 53
 		c_x__53	= r_x__52;
 		c_y__53	= r_y__52;
@@ -6974,7 +6974,7 @@ begin
 		c_z1__53 = r_z1__52;
 		c_z0__53 = r_z0__52;
 		c_mut__53 = r_mut__52;
-		
+
 		//for 54
 		c_x__54	= r_x__53;
 		c_y__54	= r_y__53;
@@ -6996,7 +6996,7 @@ begin
 		c_z1__54 = r_z1__53;
 		c_z0__54 = r_z0__53;
 		c_mut__54 = r_mut__53;
-		
+
 		//for 55
 		c_x__55	= r_x__54;
 		c_y__55	= r_y__54;
@@ -7018,7 +7018,7 @@ begin
 		c_z1__55 = r_z1__54;
 		c_z0__55 = r_z0__54;
 		c_mut__55 = r_mut__54;
-		
+
 		//for 56
 		c_x__56	= r_x__55;
 		c_y__56	= r_y__55;
@@ -7040,7 +7040,7 @@ begin
 		c_z1__56 = r_z1__55;
 		c_z0__56 = r_z0__55;
 		c_mut__56 = r_mut__55;
-		
+
 		//for 57
 		c_x__57	= r_x__56;
 		c_y__57	= r_y__56;
@@ -7062,7 +7062,7 @@ begin
 		c_z1__57 = r_z1__56;
 		c_z0__57 = r_z0__56;
 		c_mut__57 = r_mut__56;
-		
+
 		//for 58
 		c_x__58	= r_x__57;
 		c_y__58	= r_y__57;
@@ -7084,7 +7084,7 @@ begin
 		c_z1__58 = r_z1__57;
 		c_z0__58 = r_z0__57;
 		c_mut__58 = r_mut__57;
-		
+
 		//for 59
 		c_x__59	= r_x__58;
 		c_y__59	= r_y__58;
@@ -7106,7 +7106,7 @@ begin
 		c_z1__59 = r_z1__58;
 		c_z0__59 = r_z0__58;
 		c_mut__59 = r_mut__58;
-	
+
 
 	// Pull out and replace signals in pipe
 	/* STAGE 1: Division completed */
@@ -7130,7 +7130,7 @@ begin
 		/*step left = (original step - distance travelled) * scaling factor*/
 
 		c_sleftz__31 = sleftz_big[2*`BIT_WIDTH-2:`BIT_WIDTH - 1];
-		if(c_uz__31[`BIT_WIDTH-1] == 1'b0) 
+		if(c_uz__31[`BIT_WIDTH-1] == 1'b0)
 		begin
 			c_z__31 = c_z1__31;
 		end
@@ -7143,7 +7143,7 @@ begin
 		c_sr__31 = sr_big[2*`BIT_WIDTH-2 - `ASPECT_RATIO:`BIT_WIDTH - 1 - `ASPECT_RATIO];
 	end
 	//Remove blocking on c_sleftz_31, c_sr__31, c_sz__31, c_z__31
-	else 
+	else
 	begin
 		c_sleftz__31 = r_sleftz__30;
 		c_sr__31 = r_sr__30;
@@ -7161,7 +7161,7 @@ begin
 	else
 	begin
 		c_sleftr__32 = r_sleftr__31;
-	
+
 	end
 end
 
@@ -8461,7 +8461,7 @@ begin
 			r_z1__1 <= 32'b00000000000000000000000000000000;
 			r_z0__1 <= 32'b00000000000000000000000000000000;
 			r_mut__1 <= 32'b00000000000000000000000000000000;
-			
+
 				r_x__0	<= 32'b00000000000000000000000000000000;
 			r_y__0	<= 32'b00000000000000000000000000000000;
 			r_z__0	<= 32'b00000000000000000000000000000000;
@@ -8483,12 +8483,12 @@ begin
 			r_z0__0 <= 32'b00000000000000000000000000000000;
 			r_mut__0 <= 32'b00000000000000000000000000000000;
 	end
-	
-	else 
+
+	else
 	begin
 		if(enable)
 		begin
-		
+
 			//for 0
 		r_x__0	<=c_x__0;
 		r_y__0	<=c_y__0;
@@ -8510,9 +8510,9 @@ begin
 		r_z1__0 <=c_z1__0;
 		r_z0__0 <=c_z0__0;
 		r_mut__0 <=c_mut__0;
-		
+
 	//for 1
-	
+
 		r_x__1	<=c_x__1;
 		r_y__1	<=c_y__1;
 		r_z__1	<=c_z__1;
@@ -8533,7 +8533,7 @@ begin
 		r_z1__1 <=c_z1__1;
 		r_z0__1 <=c_z0__1;
 		r_mut__1 <=c_mut__1;
-		
+
 		//for 2
 		r_x__2	<=c_x__2;
 		r_y__2	<=c_y__2;
@@ -8555,7 +8555,7 @@ begin
 		r_z1__2 <=c_z1__2;
 		r_z0__2 <=c_z0__2;
 		r_mut__2 <=c_mut__2;
-	
+
 		//for 3
 		r_x__3	<=c_x__3;
 		r_y__3	<=c_y__3;
@@ -8577,7 +8577,7 @@ begin
 		r_z1__3 <=c_z1__3;
 		r_z0__3 <=c_z0__3;
 		r_mut__3 <=c_mut__3;
-		
+
 		//for 4
 		r_x__4	<=c_x__4;
 		r_y__4	<=c_y__4;
@@ -8599,7 +8599,7 @@ begin
 		r_z1__4 <=c_z1__4;
 		r_z0__4 <=c_z0__4;
 		r_mut__4 <=c_mut__4;
-		
+
 		//for 5
 		r_x__5	<=c_x__5;
 		r_y__5	<=c_y__5;
@@ -8621,7 +8621,7 @@ begin
 		r_z1__5 <=c_z1__5;
 		r_z0__5 <=c_z0__5;
 		r_mut__5 <=c_mut__5;
-		
+
 		//for 6
 		r_x__6	<=c_x__6;
 		r_y__6	<=c_y__6;
@@ -8643,7 +8643,7 @@ begin
 		r_z1__6 <=c_z1__6;
 		r_z0__6 <=c_z0__6;
 		r_mut__6 <=c_mut__6;
-		
+
 		//for 7
 		r_x__7	<=c_x__7;
 		r_y__7	<=c_y__7;
@@ -8665,7 +8665,7 @@ begin
 		r_z1__7 <=c_z1__7;
 		r_z0__7 <=c_z0__7;
 		r_mut__7 <=c_mut__7;
-		
+
 		//for 8
 		r_x__8	<=c_x__8;
 		r_y__8	<=c_y__8;
@@ -8687,7 +8687,7 @@ begin
 		r_z1__8 <=c_z1__8;
 		r_z0__8 <=c_z0__8;
 		r_mut__8 <=c_mut__8;
-		
+
 		//for 9
 		r_x__9	<=c_x__9;
 		r_y__9	<=c_y__9;
@@ -8709,7 +8709,7 @@ begin
 		r_z1__9 <=c_z1__9;
 		r_z0__9 <=c_z0__9;
 		r_mut__9 <=c_mut__9;
-		
+
 		//for 10
 		r_x__10	<=c_x__10;
 		r_y__10	<=c_y__10;
@@ -8731,7 +8731,7 @@ begin
 		r_z1__10 <=c_z1__10;
 		r_z0__10 <=c_z0__10;
 		r_mut__10 <=c_mut__10;
-		
+
 		//for 11
 		r_x__11	<=c_x__11;
 		r_y__11	<=c_y__11;
@@ -8753,7 +8753,7 @@ begin
 		r_z1__11 <=c_z1__11;
 		r_z0__11 <=c_z0__11;
 		r_mut__11 <=c_mut__11;
-		
+
 		//for 12
 		r_x__12	<=c_x__12;
 		r_y__12	<=c_y__12;
@@ -8775,7 +8775,7 @@ begin
 		r_z1__12 <=c_z1__12;
 		r_z0__12 <=c_z0__12;
 		r_mut__12 <=c_mut__12;
-		
+
 		//for 13
 		r_x__13	<=c_x__13;
 		r_y__13	<=c_y__13;
@@ -8797,7 +8797,7 @@ begin
 		r_z1__13 <=c_z1__13;
 		r_z0__13 <=c_z0__13;
 		r_mut__13 <=c_mut__13;
-		
+
 		//for 14
 		r_x__14	<=c_x__14;
 		r_y__14	<=c_y__14;
@@ -8819,7 +8819,7 @@ begin
 		r_z1__14 <=c_z1__14;
 		r_z0__14 <=c_z0__14;
 		r_mut__14 <=c_mut__14;
-		
+
 		//for 15
 		r_x__15	<=c_x__15;
 		r_y__15	<=c_y__15;
@@ -8841,7 +8841,7 @@ begin
 		r_z1__15 <=c_z1__15;
 		r_z0__15 <=c_z0__15;
 		r_mut__15 <=c_mut__15;
-		
+
 		//for 16
 		r_x__16	<=c_x__16;
 		r_y__16	<=c_y__16;
@@ -8863,7 +8863,7 @@ begin
 		r_z1__16 <=c_z1__16;
 		r_z0__16 <=c_z0__16;
 		r_mut__16 <=c_mut__16;
-		
+
 		//for 17
 		r_x__17	<=c_x__17;
 		r_y__17	<=c_y__17;
@@ -8885,7 +8885,7 @@ begin
 		r_z1__17 <=c_z1__17;
 		r_z0__17 <=c_z0__17;
 		r_mut__17 <=c_mut__17;
-		
+
 		//for 18
 		r_x__18	<=c_x__18;
 		r_y__18	<=c_y__18;
@@ -8907,7 +8907,7 @@ begin
 		r_z1__18 <=c_z1__18;
 		r_z0__18 <=c_z0__18;
 		r_mut__18 <=c_mut__18;
-		
+
 		//for 19
 		r_x__19	<=c_x__19;
 		r_y__19	<=c_y__19;
@@ -8929,7 +8929,7 @@ begin
 		r_z1__19 <=c_z1__19;
 		r_z0__19 <=c_z0__19;
 		r_mut__19 <=c_mut__19;
-		
+
 		//for 20
 		r_x__20	<=c_x__20;
 		r_y__20	<=c_y__20;
@@ -8951,8 +8951,8 @@ begin
 		r_z1__20 <=c_z1__20;
 		r_z0__20 <=c_z0__20;
 		r_mut__20 <=c_mut__20;
-		
-		
+
+
 		//for 21
 		r_x__21	<=c_x__21;
 		r_y__21	<=c_y__21;
@@ -8974,7 +8974,7 @@ begin
 		r_z1__21 <=c_z1__21;
 		r_z0__21 <=c_z0__21;
 		r_mut__21 <=c_mut__21;
-		
+
 		//for 22
 		r_x__22	<=c_x__22;
 		r_y__22	<=c_y__22;
@@ -8996,7 +8996,7 @@ begin
 		r_z1__22 <=c_z1__22;
 		r_z0__22 <=c_z0__22;
 		r_mut__22 <=c_mut__22;
-		
+
 		//for 23
 		r_x__23	<=c_x__23;
 		r_y__23	<=c_y__23;
@@ -9018,7 +9018,7 @@ begin
 		r_z1__23 <=c_z1__23;
 		r_z0__23 <=c_z0__23;
 		r_mut__23 <=c_mut__23;
-		
+
 		//for 24
 		r_x__24	<=c_x__24;
 		r_y__24	<=c_y__24;
@@ -9040,7 +9040,7 @@ begin
 		r_z1__24 <=c_z1__24;
 		r_z0__24 <=c_z0__24;
 		r_mut__24 <=c_mut__24;
-		
+
 		//for 25
 		r_x__25	<=c_x__25;
 		r_y__25	<=c_y__25;
@@ -9062,7 +9062,7 @@ begin
 		r_z1__25 <=c_z1__25;
 		r_z0__25 <=c_z0__25;
 		r_mut__25 <=c_mut__25;
-		
+
 		//for 26
 		r_x__26	<=c_x__26;
 		r_y__26	<=c_y__26;
@@ -9084,7 +9084,7 @@ begin
 		r_z1__26 <=c_z1__26;
 		r_z0__26 <=c_z0__26;
 		r_mut__26 <=c_mut__26;
-		
+
 		//for 27
 		r_x__27	<=c_x__27;
 		r_y__27	<=c_y__27;
@@ -9106,7 +9106,7 @@ begin
 		r_z1__27 <=c_z1__27;
 		r_z0__27 <=c_z0__27;
 		r_mut__27 <=c_mut__27;
-		
+
 		//for 28
 		r_x__28	<=c_x__28;
 		r_y__28	<=c_y__28;
@@ -9128,7 +9128,7 @@ begin
 		r_z1__28 <=c_z1__28;
 		r_z0__28 <=c_z0__28;
 		r_mut__28 <=c_mut__28;
-		
+
 		//for 29
 		r_x__29	<=c_x__29;
 		r_y__29	<=c_y__29;
@@ -9150,7 +9150,7 @@ begin
 		r_z1__29 <=c_z1__29;
 		r_z0__29 <=c_z0__29;
 		r_mut__29 <=c_mut__29;
-		
+
 		//for 30
 		r_x__30	<=c_x__30;
 		r_y__30	<=c_y__30;
@@ -9172,7 +9172,7 @@ begin
 		r_z1__30 <=c_z1__30;
 		r_z0__30 <=c_z0__30;
 		r_mut__30 <=c_mut__30;
-		
+
 		//for 31
 		r_x__31	<=c_x__31;
 		r_y__31	<=c_y__31;
@@ -9194,7 +9194,7 @@ begin
 		r_z1__31 <=c_z1__31;
 		r_z0__31 <=c_z0__31;
 		r_mut__31 <=c_mut__31;
-		
+
 		//for 32
 		r_x__32	<=c_x__32;
 		r_y__32	<=c_y__32;
@@ -9216,7 +9216,7 @@ begin
 		r_z1__32 <=c_z1__32;
 		r_z0__32 <=c_z0__32;
 		r_mut__32 <=c_mut__32;
-		
+
 		//for 33
 		r_x__33	<=c_x__33;
 		r_y__33	<=c_y__33;
@@ -9238,7 +9238,7 @@ begin
 		r_z1__33 <=c_z1__33;
 		r_z0__33 <=c_z0__33;
 		r_mut__33 <=c_mut__33;
-		
+
 		//for 34
 		r_x__34	<=c_x__34;
 		r_y__34	<=c_y__34;
@@ -9260,7 +9260,7 @@ begin
 		r_z1__34 <=c_z1__34;
 		r_z0__34 <=c_z0__34;
 		r_mut__34 <=c_mut__34;
-		
+
 		//for 35
 		r_x__35	<=c_x__35;
 		r_y__35	<=c_y__35;
@@ -9282,7 +9282,7 @@ begin
 		r_z1__35 <=c_z1__35;
 		r_z0__35 <=c_z0__35;
 		r_mut__35 <=c_mut__35;
-		
+
 		//for 36
 		r_x__36	<=c_x__36;
 		r_y__36	<=c_y__36;
@@ -9304,7 +9304,7 @@ begin
 		r_z1__36 <=c_z1__36;
 		r_z0__36 <=c_z0__36;
 		r_mut__36 <=c_mut__36;
-		
+
 		//for 37
 		r_x__37	<=c_x__37;
 		r_y__37	<=c_y__37;
@@ -9326,7 +9326,7 @@ begin
 		r_z1__37 <=c_z1__37;
 		r_z0__37 <=c_z0__37;
 		r_mut__37 <=c_mut__37;
-		
+
 		//for 38
 		r_x__38	<=c_x__38;
 		r_y__38	<=c_y__38;
@@ -9348,7 +9348,7 @@ begin
 		r_z1__38 <=c_z1__38;
 		r_z0__38 <=c_z0__38;
 		r_mut__38 <=c_mut__38;
-		
+
 		//for 39
 		r_x__39	<=c_x__39;
 		r_y__39	<=c_y__39;
@@ -9370,7 +9370,7 @@ begin
 		r_z1__39 <=c_z1__39;
 		r_z0__39 <=c_z0__39;
 		r_mut__39 <=c_mut__39;
-		
+
 		//for 40
 		r_x__40	<=c_x__40;
 		r_y__40	<=c_y__40;
@@ -9392,7 +9392,7 @@ begin
 		r_z1__40 <=c_z1__40;
 		r_z0__40 <=c_z0__40;
 		r_mut__40 <=c_mut__40;
-		
+
 		//for 41
 		r_x__41	<=c_x__41;
 		r_y__41	<=c_y__41;
@@ -9414,7 +9414,7 @@ begin
 		r_z1__41 <=c_z1__41;
 		r_z0__41 <=c_z0__41;
 		r_mut__41 <=c_mut__41;
-		
+
 		//for 42
 		r_x__42	<=c_x__42;
 		r_y__42	<=c_y__42;
@@ -9436,7 +9436,7 @@ begin
 		r_z1__42 <=c_z1__42;
 		r_z0__42 <=c_z0__42;
 		r_mut__42 <=c_mut__42;
-		
+
 		//for 43
 		r_x__43	<=c_x__43;
 		r_y__43	<=c_y__43;
@@ -9458,7 +9458,7 @@ begin
 		r_z1__43 <=c_z1__43;
 		r_z0__43 <=c_z0__43;
 		r_mut__43 <=c_mut__43;
-		
+
 		//for 44
 		r_x__44	<=c_x__44;
 		r_y__44	<=c_y__44;
@@ -9480,7 +9480,7 @@ begin
 		r_z1__44 <=c_z1__44;
 		r_z0__44 <=c_z0__44;
 		r_mut__44 <=c_mut__44;
-		
+
 		//for 45
 		r_x__45	<=c_x__45;
 		r_y__45	<=c_y__45;
@@ -9502,7 +9502,7 @@ begin
 		r_z1__45 <=c_z1__45;
 		r_z0__45 <=c_z0__45;
 		r_mut__45 <=c_mut__45;
-		
+
 		//for 46
 		r_x__46	<=c_x__46;
 		r_y__46	<=c_y__46;
@@ -9524,7 +9524,7 @@ begin
 		r_z1__46 <=c_z1__46;
 		r_z0__46 <=c_z0__46;
 		r_mut__46 <=c_mut__46;
-		
+
 		//for 47
 		r_x__47	<=c_x__47;
 		r_y__47	<=c_y__47;
@@ -9546,7 +9546,7 @@ begin
 		r_z1__47 <=c_z1__47;
 		r_z0__47 <=c_z0__47;
 		r_mut__47 <=c_mut__47;
-		
+
 		//for 48
 		r_x__48	<=c_x__48;
 		r_y__48	<=c_y__48;
@@ -9568,7 +9568,7 @@ begin
 		r_z1__48 <=c_z1__48;
 		r_z0__48 <=c_z0__48;
 		r_mut__48 <=c_mut__48;
-		
+
 		//for 49
 		r_x__49	<=c_x__49;
 		r_y__49	<=c_y__49;
@@ -9590,7 +9590,7 @@ begin
 		r_z1__49 <=c_z1__49;
 		r_z0__49 <=c_z0__49;
 		r_mut__49 <=c_mut__49;
-		
+
 		//for 50
 		r_x__50	<=c_x__50;
 		r_y__50	<=c_y__50;
@@ -9612,7 +9612,7 @@ begin
 		r_z1__50 <=c_z1__50;
 		r_z0__50 <=c_z0__50;
 		r_mut__50 <=c_mut__50;
-		
+
 		//for 51
 		r_x__51	<=c_x__51;
 		r_y__51	<=c_y__51;
@@ -9634,7 +9634,7 @@ begin
 		r_z1__51 <=c_z1__51;
 		r_z0__51 <=c_z0__51;
 		r_mut__51 <=c_mut__51;
-		
+
 		//for 52
 		r_x__52	<=c_x__52;
 		r_y__52	<=c_y__52;
@@ -9656,7 +9656,7 @@ begin
 		r_z1__52 <=c_z1__52;
 		r_z0__52 <=c_z0__52;
 		r_mut__52 <=c_mut__52;
-		
+
 		//for 53
 		r_x__53	<=c_x__53;
 		r_y__53	<=c_y__53;
@@ -9678,7 +9678,7 @@ begin
 		r_z1__53 <=c_z1__53;
 		r_z0__53 <=c_z0__53;
 		r_mut__53 <=c_mut__53;
-		
+
 		//for 54
 		r_x__54	<=c_x__54;
 		r_y__54	<=c_y__54;
@@ -9700,7 +9700,7 @@ begin
 		r_z1__54 <=c_z1__54;
 		r_z0__54 <=c_z0__54;
 		r_mut__54 <=c_mut__54;
-		
+
 		//for 55
 		r_x__55	<=c_x__55;
 		r_y__55	<=c_y__55;
@@ -9722,7 +9722,7 @@ begin
 		r_z1__55 <=c_z1__55;
 		r_z0__55 <=c_z0__55;
 		r_mut__55 <=c_mut__55;
-		
+
 		//for 56
 		r_x__56	<=c_x__56;
 		r_y__56	<=c_y__56;
@@ -9744,7 +9744,7 @@ begin
 		r_z1__56 <=c_z1__56;
 		r_z0__56 <=c_z0__56;
 		r_mut__56 <=c_mut__56;
-		
+
 		//for 57
 		r_x__57	<=c_x__57;
 		r_y__57	<=c_y__57;
@@ -9766,7 +9766,7 @@ begin
 		r_z1__57 <=c_z1__57;
 		r_z0__57 <=c_z0__57;
 		r_mut__57 <=c_mut__57;
-		
+
 		//for 58
 		r_x__58	<=c_x__58;
 		r_y__58	<=c_y__58;
@@ -9788,7 +9788,7 @@ begin
 		r_z1__58 <=c_z1__58;
 		r_z0__58 <=c_z0__58;
 		r_mut__58 <=c_mut__58;
-		
+
 		//for 59
 		r_x__59	<=c_x__59;
 		r_y__59	<=c_y__59;
@@ -9810,7 +9810,7 @@ begin
 		r_z1__59 <=c_z1__59;
 		r_z0__59 <=c_z0__59;
 		r_mut__59 <=c_mut__59;
-		
+
 		end
 	end
 end
@@ -9819,7 +9819,7 @@ endmodule
 
 
 /////////////////////////////////////////////////////////////
-//mult_signed_32_bc 
+//mult_signed_32_bc
 /////////////////////////////////////////////////////////////
 module mult_signed_32_bc ( clock, dataa, datab, result);
 
@@ -9829,48 +9829,48 @@ module mult_signed_32_bc ( clock, dataa, datab, result);
 	input [31:0] datab;
 	output [63:0] result;
 	reg [63:0] result;
-	
+
 	wire [63:0] prelim_result;
-	
-	
+
+
 	wire [31:0] opa;
 	wire [31:0] opb;
 	wire [31:0] opa_comp;
 	wire [31:0] opb_comp;
-	
+
 	assign opa_comp =  ((~dataa) + 32'b00000000000000000000000000000001);
 
 	assign opb_comp =  ((~datab) + 32'b00000000000000000000000000000001);
 
-	
+
 	wire opa_is_neg;
 	wire opb_is_neg;
 	assign opa_is_neg = dataa[31];
 	assign opb_is_neg = datab [31];
 	assign opa = (opa_is_neg== 1'b1) ? opa_comp:dataa;
 	assign opb = (opb_is_neg == 1'b1) ? opb_comp:datab;
-	
-	
+
+
 	assign prelim_result = opa * opb ;
 	wire sign;
 	assign sign = dataa[31] ^ datab[31];
-	
+
 	wire [63:0] prelim_result_comp;
 	wire [63:0] prelim_result_changed;
 	wire [63:0] result_changed;
 	assign result_changed = (sign==1'b1)? prelim_result_comp :prelim_result;
 	assign prelim_result_comp =  ((~prelim_result) + 1);
-	
+
 	always @ (posedge clock)
 	begin
 	result <= result_changed;
 	end
-	
+
 	endmodule
 
 
 /////////////////////////////////////////////////////////////
-//signed_div_30 
+//signed_div_30
 /////////////////////////////////////////////////////////////
 module signed_div_30 (clock , denom , numer, quotient, remain);
 
@@ -9886,7 +9886,7 @@ output [31:0] remain;
 
 Div_64b div_replace (.clock(clock), .denom(denom), .numer(numer), .quotient(quotient), .remain(remain));
 
-endmodule 
+endmodule
 module Hop(     //INPUTS
 				 clock, reset, enable,
 				 x_boundaryChecker, y_boundaryChecker, z_boundaryChecker,
@@ -9978,14 +9978,14 @@ mult_signed_32 u2(sr_boundaryChecker, uy_boundaryChecker, c_ymult_big);
 mult_signed_32 u3(sz_boundaryChecker, uz_boundaryChecker, c_zmult_big);
 
 // Determine new (x,y,z) coordinates
-always @(c_dead or 
-		c_x_big or c_y_big or c_z_big or 
+always @(c_dead or
+		c_x_big or c_y_big or c_z_big or
 		c_x or c_y or c_z or
 		x_boundaryChecker or y_boundaryChecker or z_boundaryChecker or
-		c_xmult_big or c_ymult_big or c_zmult_big 
+		c_xmult_big or c_ymult_big or c_zmult_big
 		or hit_boundaryChecker or dead_boundaryChecker)
 begin
-		
+
 	c_x_big = x_boundaryChecker + c_xmult_big[2*`BIT_WIDTH-2:31];
 	c_y_big = y_boundaryChecker + c_ymult_big[2*`BIT_WIDTH-2:31];
 	c_z_big = z_boundaryChecker + c_zmult_big[2*`BIT_WIDTH-2:31];
@@ -10004,13 +10004,13 @@ begin
 		//	c_dead = 1'b1;
 			c_x = `INTMIN;
 		end
-	end 
+	end
 	else
 	begin
 		c_x = c_x_big[`BIT_WIDTH-1:0];
 	end
 
-	
+
 	// Calculate y position, photon dies if outside grid
 	if(c_y_big[`BIT_WIDTH] != c_y_big[`BIT_WIDTH-1] && y_boundaryChecker[`BIT_WIDTH-1] == c_ymult_big[2*`BIT_WIDTH-2])
 	begin
@@ -10029,9 +10029,9 @@ begin
 	begin
 		c_y = c_y_big[`BIT_WIDTH-1:0];
 	end
-	
+
 	// Calculate z position, photon dies if outside grid
-	if(hit_boundaryChecker) 
+	if(hit_boundaryChecker)
 	begin
 		c_z = z_boundaryChecker;
 	end
@@ -10044,12 +10044,12 @@ begin
 	begin
 	//	c_dead = 1'b1;
 		c_z = 0;
-	end 
+	end
 	else
 	begin
 		c_z = c_z_big[`BIT_WIDTH-1:0];
 	end
-	
+
 	// Calculate c_dead (necessary because odin does not support block statements).
 	if( (c_x_big[`BIT_WIDTH] != c_x_big[`BIT_WIDTH-1] && x_boundaryChecker[`BIT_WIDTH-1] == c_xmult_big[2*`BIT_WIDTH-2])
 	   |(c_y_big[`BIT_WIDTH] != c_y_big[`BIT_WIDTH-1] && y_boundaryChecker[`BIT_WIDTH-1] == c_ymult_big[2*`BIT_WIDTH-2])
@@ -10105,7 +10105,7 @@ begin
 			y_hop <= c_y;
 			z_hop <= c_z;
 			dead_hop <= c_dead;
-		end			
+		end
 	end
 end
 
@@ -10120,7 +10120,7 @@ module mult_signed_32(a, b, c);
 	input [31:0]b;
 	output [63:0]c;
 	reg [63:0]c;
-	
+
 	reg is_neg_a;
 	reg is_neg_b;
 	reg [31:0]a_tmp;
@@ -10166,32 +10166,32 @@ endmodule
 
 
 module Roulette ( //INPUTS
-                     clock, reset, enable, 
-                     x_RouletteMux, y_RouletteMux, z_RouletteMux,  
-                     ux_RouletteMux, uy_RouletteMux, uz_RouletteMux, 
-                     sz_RouletteMux, sr_RouletteMux, 
-                     sleftz_RouletteMux, sleftr_RouletteMux, 
-                     layer_RouletteMux, weight_absorber, dead_RouletteMux, 
-			
-		     //From Random Number Generator in Skeleton.v	
+                     clock, reset, enable,
+                     x_RouletteMux, y_RouletteMux, z_RouletteMux,
+                     ux_RouletteMux, uy_RouletteMux, uz_RouletteMux,
+                     sz_RouletteMux, sr_RouletteMux,
+                     sleftz_RouletteMux, sleftr_RouletteMux,
+                     layer_RouletteMux, weight_absorber, dead_RouletteMux,
+
+		     //From Random Number Generator in Skeleton.v
 		     randnumber,
-                     
+
                      //OUTPUTS
                      x_Roulette, y_Roulette, z_Roulette,
-                     ux_Roulette, uy_Roulette, uz_Roulette, 
-                     sz_Roulette, sr_Roulette, 
-                     sleftz_Roulette, sleftr_Roulette, 
+                     ux_Roulette, uy_Roulette, uz_Roulette,
+                     sz_Roulette, sr_Roulette,
+                     sleftz_Roulette, sleftr_Roulette,
                      layer_Roulette, weight_Roulette, dead_Roulette
-                     ); 
+                     );
 
 //parameter BIT_WIDTH=32;
-//parameter LAYER_WIDTH=3; 
+//parameter LAYER_WIDTH=3;
 
 //parameter LEFTSHIFT=3;         // 2^3=8=1/0.125 where 0.125 = CHANCE of roulette
 //parameter INTCHANCE=536870912; //Based on 32 bit rand num generator
-//parameter MIN_WEIGHT=200; 
+//parameter MIN_WEIGHT=200;
 
-input clock;        
+input clock;
 input reset;
 input enable;
 
@@ -10209,7 +10209,7 @@ input [`LAYER_WIDTH-1:0] layer_RouletteMux;
 input [`BIT_WIDTH-1:0] weight_absorber;
 input [`BIT_WIDTH-1:0] randnumber;
 input dead_RouletteMux;
-              
+
 output [`BIT_WIDTH-1:0] x_Roulette;
 output [`BIT_WIDTH-1:0] y_Roulette;
 output [`BIT_WIDTH-1:0] z_Roulette;
@@ -10225,8 +10225,8 @@ output [`BIT_WIDTH-1:0] weight_Roulette;
 output dead_Roulette;
 
 //------------Local Variables------------------------
-reg dead_roulette; 
-reg [`BIT_WIDTH-1:0] weight_roulette; 
+reg dead_roulette;
+reg [`BIT_WIDTH-1:0] weight_roulette;
 reg [31:0] randBits;             //Hard-coded bitwidth because rng is 32-bit
 
 //------------REGISTERED Values------------------------
@@ -10243,18 +10243,18 @@ reg [`BIT_WIDTH-1:0] sleftr_Roulette;
 reg [`LAYER_WIDTH-1:0]layer_Roulette;
 reg [`BIT_WIDTH-1:0] weight_Roulette;
 reg dead_Roulette;
-   
-always @ (reset or enable or weight_absorber or randBits or randnumber or dead_RouletteMux) begin 
+
+always @ (reset or enable or weight_absorber or randBits or randnumber or dead_RouletteMux) begin
   	//Default case moved inside else statements for odin
 	//randBits = randnumber;   //Reading from external random num generator
 	//weight_roulette=weight_absorber;	//Avoid inferring a latch
-	//dead_roulette=dead_RouletteMux; 
-	
-	if (reset) begin 
+	//dead_roulette=dead_RouletteMux;
+
+	if (reset) begin
 		//Local variables
-		weight_roulette=0; 
-		dead_roulette=0; 
-		randBits=0; 
+		weight_roulette=0;
+		dead_roulette=0;
+		randBits=0;
 	end
 
 	else if (enable) begin
@@ -10262,37 +10262,37 @@ always @ (reset or enable or weight_absorber or randBits or randnumber or dead_R
 		randBits = randnumber;
 		//DO ROULETTE!!!
 		if (weight_absorber < `MIN_WEIGHT && !dead_RouletteMux) begin
-			//Replicate Operator (same as 32'b000000..., except more flexible)			
+			//Replicate Operator (same as 32'b000000..., except more flexible)
 			if (weight_absorber== {`BIT_WIDTH{1'b0}}) begin
 				dead_roulette = 1;
 				weight_roulette = weight_absorber;
 			end
-				
+
 			else if (randBits < `INTCHANCE) begin // survived the roulette
 				dead_roulette=0;
 				weight_roulette=weight_absorber << `LEFTSHIFT; //To avoid mult
 			end
-			
+
 			else begin
 				dead_roulette=1;
 				weight_roulette = weight_absorber;
 			end
 		end
-		
+
 		//No Roulette
 		else  begin
 			weight_roulette = weight_absorber;
 			dead_roulette = 0;
 		end
 	end
-	
+
 	else //for insurance that this is default case
 	begin
 		randBits = randnumber;
 		weight_roulette = weight_absorber;
 		dead_roulette = dead_RouletteMux;
 	end
-end 
+end
 
 always @ (posedge clock) begin
 	if (reset) begin
@@ -10310,7 +10310,7 @@ always @ (posedge clock) begin
 		weight_Roulette <= 0;
 		dead_Roulette <= 1'b1;
 	end
-	
+
 	else if (enable) begin
 		//Write through values from Roulette block
 		dead_Roulette <= (dead_RouletteMux | dead_roulette);   //OR operator ???
@@ -10338,7 +10338,7 @@ endmodule
 module rng(clk, en, resetn,loadseed_i,seed_i,number_o);
 input clk;
 input resetn;
-input en; 
+input en;
 input loadseed_i;
 input [31:0] seed_i;
 output [31:0] number_o;
@@ -10432,7 +10432,7 @@ single_port_ram sram_replace0 (.clk (clock), .addr (c_shifted_x), .data (blank),
 //integer i;
 //always @*
 //begin
-//	c_indexFirstOne = 6'b0; 
+//	c_indexFirstOne = 6'b0;
 //	for(i = 0; i < `BIT_WIDTH; i = i + 1)
 //	begin
 //		if(in_x[i])
@@ -10543,7 +10543,7 @@ begin
 	c_indexFirstOne = 6'b000000;
 	end
 end
-	
+
 // shift operation based on priority encoder results
 
 //Need constant shift
@@ -10662,7 +10662,7 @@ begin
 				log_x <= c_log_x;
 			end
 		end
-end 
+end
 
 endmodule
 
@@ -10686,12 +10686,12 @@ module DropSpinWrapper (
 	i_layer,
 	i_dead,
 	i_hit,
-	
-	
+
+
 	//From System Register File (5 layers)- Absorber
-	muaFraction1, muaFraction2, muaFraction3, muaFraction4, muaFraction5, 
- 
- 	//From System Register File - ScattererReflector 
+	muaFraction1, muaFraction2, muaFraction3, muaFraction4, muaFraction5,
+
+ 	//From System Register File - ScattererReflector
 	down_niOverNt_1,
 	down_niOverNt_2,
 	down_niOverNt_3,
@@ -10722,14 +10722,14 @@ module DropSpinWrapper (
 	upCritAngle_2,
 	upCritAngle_3,
 	upCritAngle_4,
- 
-	
- 	
+
+
+
  	//////////////////////////////////////////////////////////////////////////////
    //I/O to on-chip mem
    /////////////////////////////////////////////////////////////////////////////
 
-   data, 
+   data,
    rdaddress, wraddress,
    wren, q,
 
@@ -10745,7 +10745,7 @@ module DropSpinWrapper (
    tindex,
    fresIndex,
 
- 	
+
    //To DeadOrAlive Module
 	o_x,
 	o_y,
@@ -10761,12 +10761,12 @@ module DropSpinWrapper (
 	o_layer,
 	o_dead,
 	o_hit
-                    
+
 	);
-	
+
 //////////////////////////////////////////////////////////////////////////////
 //PARAMETERS
-//////////////////////////////////////////////////////////////////////////////	
+//////////////////////////////////////////////////////////////////////////////
 //parameter BIT_WIDTH=32;
 //parameter LAYER_WIDTH=3;
 //parameter PIPE_DEPTH = 37;
@@ -10796,9 +10796,9 @@ input					i_hit;
 
 
 //From System Register File (5 layers)- Absorber
-input	[`BIT_WIDTH-1:0] muaFraction1, muaFraction2, muaFraction3, muaFraction4, muaFraction5; 
+input	[`BIT_WIDTH-1:0] muaFraction1, muaFraction2, muaFraction3, muaFraction4, muaFraction5;
 
-//From System Register File - ScattererReflector 
+//From System Register File - ScattererReflector
 input	[`BIT_WIDTH-1:0]	down_niOverNt_1;
 input	[`BIT_WIDTH-1:0]	down_niOverNt_2;
 input	[`BIT_WIDTH-1:0]	down_niOverNt_3;
@@ -10843,7 +10843,7 @@ input	[31:0]		cost;
 input	[31:0]		up_rFresnel;
 input	[31:0]		down_rFresnel;
 
- 
+
 
 //////////////////////////////////////////////////////////////////////////////
 //OUTPUTS
@@ -10884,14 +10884,14 @@ wire					o_hit;
 //I/O to on-chip mem
 /////////////////////////////////////////////////////////////////////////////
 
-output [`WORD_WIDTH-1:0] data; 
-output [`ADDR_WIDTH-1:0] rdaddress, wraddress; 
-output wren; 
+output [`WORD_WIDTH-1:0] data;
+output [`ADDR_WIDTH-1:0] rdaddress, wraddress;
+output wren;
 input [`WORD_WIDTH-1:0] q;
 
 
 //////////////////////////////////////////////////////////////////////////////
-//Generate SHARED REGISTER PIPELINE 
+//Generate SHARED REGISTER PIPELINE
 //////////////////////////////////////////////////////////////////////////////
 //WIRES FOR CONNECTING REGISTERS
 //wire	[`BIT_WIDTH-1:0]			x	[PIPE_DEPTH:0];
@@ -11506,7 +11506,7 @@ assign dead__0 = i_dead;
 assign hit__0 = i_hit;
 
 //ASSIGNMENTS FROM PIPE TO OUTPUT
-//TODO: Assign outputs from the correct module 
+//TODO: Assign outputs from the correct module
 assign o_x =x__37;
 assign o_y =y__37;
 assign o_z =z__37;
@@ -11528,14 +11528,14 @@ assign o_hit =hit__37;
 //generate
 //	for(i=PIPE_DEPTH; i>0; i=i-1) begin: regPipe
 //		case(i)
-//		
+//
 //		default:
 //		PhotonBlock5 photon(
 //			//Inputs
 //			.clock(clock),
 //			.reset(reset),
 //			.enable(enable),
-//			
+//
 //			.i_x(x[i-1]),
 //			.i_y(y[i-1]),
 //			.i_z(z[i-1]),
@@ -11550,8 +11550,8 @@ assign o_hit =hit__37;
 //			.i_layer(layer[i-1]),
 //			.i_dead(dead[i-1]),
 //			.i_hit(hit[i-1]),
-//			
-//			//Outputs			
+//
+//			//Outputs
 //			.o_x(x[i]),
 //			.o_y(y[i]),
 //			.o_z(z[i]),
@@ -11569,14 +11569,14 @@ assign o_hit =hit__37;
 //		);
 //		endcase
 //	end
-//endgenerate	
+//endgenerate
 
 PhotonBlock5 photon37(
 //Inputs
 
-.clock(clock), 
+.clock(clock),
 .reset(reset),
-.enable(enable), 
+.enable(enable),
 .i_x(x__36),
 .i_y(y__36),
 .i_z(z__36),
@@ -11591,7 +11591,7 @@ PhotonBlock5 photon37(
 .i_layer(layer__36),
 .i_dead(dead__36),
 .i_hit(hit__36),
-//Outputs			
+//Outputs
 .o_x(x__37),
 .o_y(y__37),
 .o_z(z__37),
@@ -11606,13 +11606,13 @@ PhotonBlock5 photon37(
 .o_layer(layer__37),
 .o_dead(dead__37),
 .o_hit(hit__37)
-); 
+);
 PhotonBlock5 photon36(
 //Inputs
 
-.clock(clock), 
+.clock(clock),
 .reset(reset),
-.enable(enable), 
+.enable(enable),
 .i_x(x__35),
 .i_y(y__35),
 .i_z(z__35),
@@ -11627,7 +11627,7 @@ PhotonBlock5 photon36(
 .i_layer(layer__35),
 .i_dead(dead__35),
 .i_hit(hit__35),
-//Outputs			
+//Outputs
 .o_x(x__36),
 .o_y(y__36),
 .o_z(z__36),
@@ -11642,13 +11642,13 @@ PhotonBlock5 photon36(
 .o_layer(layer__36),
 .o_dead(dead__36),
 .o_hit(hit__36)
-); 
+);
 PhotonBlock5 photon35(
 //Inputs
 
-.clock(clock), 
+.clock(clock),
 .reset(reset),
-.enable(enable), 
+.enable(enable),
 .i_x(x__34),
 .i_y(y__34),
 .i_z(z__34),
@@ -11663,7 +11663,7 @@ PhotonBlock5 photon35(
 .i_layer(layer__34),
 .i_dead(dead__34),
 .i_hit(hit__34),
-//Outputs			
+//Outputs
 .o_x(x__35),
 .o_y(y__35),
 .o_z(z__35),
@@ -11678,13 +11678,13 @@ PhotonBlock5 photon35(
 .o_layer(layer__35),
 .o_dead(dead__35),
 .o_hit(hit__35)
-); 
+);
 PhotonBlock5 photon34(
 //Inputs
 
-.clock(clock), 
+.clock(clock),
 .reset(reset),
-.enable(enable), 
+.enable(enable),
 .i_x(x__33),
 .i_y(y__33),
 .i_z(z__33),
@@ -11699,7 +11699,7 @@ PhotonBlock5 photon34(
 .i_layer(layer__33),
 .i_dead(dead__33),
 .i_hit(hit__33),
-//Outputs			
+//Outputs
 .o_x(x__34),
 .o_y(y__34),
 .o_z(z__34),
@@ -11714,13 +11714,13 @@ PhotonBlock5 photon34(
 .o_layer(layer__34),
 .o_dead(dead__34),
 .o_hit(hit__34)
-); 
+);
 PhotonBlock5 photon33(
 //Inputs
 
-.clock(clock), 
+.clock(clock),
 .reset(reset),
-.enable(enable), 
+.enable(enable),
 .i_x(x__32),
 .i_y(y__32),
 .i_z(z__32),
@@ -11735,7 +11735,7 @@ PhotonBlock5 photon33(
 .i_layer(layer__32),
 .i_dead(dead__32),
 .i_hit(hit__32),
-//Outputs			
+//Outputs
 .o_x(x__33),
 .o_y(y__33),
 .o_z(z__33),
@@ -11750,13 +11750,13 @@ PhotonBlock5 photon33(
 .o_layer(layer__33),
 .o_dead(dead__33),
 .o_hit(hit__33)
-); 
+);
 PhotonBlock5 photon32(
 //Inputs
 
-.clock(clock), 
+.clock(clock),
 .reset(reset),
-.enable(enable), 
+.enable(enable),
 .i_x(x__31),
 .i_y(y__31),
 .i_z(z__31),
@@ -11771,7 +11771,7 @@ PhotonBlock5 photon32(
 .i_layer(layer__31),
 .i_dead(dead__31),
 .i_hit(hit__31),
-//Outputs			
+//Outputs
 .o_x(x__32),
 .o_y(y__32),
 .o_z(z__32),
@@ -11786,13 +11786,13 @@ PhotonBlock5 photon32(
 .o_layer(layer__32),
 .o_dead(dead__32),
 .o_hit(hit__32)
-); 
+);
 PhotonBlock5 photon31(
 //Inputs
 
-.clock(clock), 
+.clock(clock),
 .reset(reset),
-.enable(enable), 
+.enable(enable),
 .i_x(x__30),
 .i_y(y__30),
 .i_z(z__30),
@@ -11807,7 +11807,7 @@ PhotonBlock5 photon31(
 .i_layer(layer__30),
 .i_dead(dead__30),
 .i_hit(hit__30),
-//Outputs			
+//Outputs
 .o_x(x__31),
 .o_y(y__31),
 .o_z(z__31),
@@ -11822,13 +11822,13 @@ PhotonBlock5 photon31(
 .o_layer(layer__31),
 .o_dead(dead__31),
 .o_hit(hit__31)
-); 
+);
 PhotonBlock5 photon30(
 //Inputs
 
-.clock(clock), 
+.clock(clock),
 .reset(reset),
-.enable(enable), 
+.enable(enable),
 .i_x(x__29),
 .i_y(y__29),
 .i_z(z__29),
@@ -11843,7 +11843,7 @@ PhotonBlock5 photon30(
 .i_layer(layer__29),
 .i_dead(dead__29),
 .i_hit(hit__29),
-//Outputs			
+//Outputs
 .o_x(x__30),
 .o_y(y__30),
 .o_z(z__30),
@@ -11858,13 +11858,13 @@ PhotonBlock5 photon30(
 .o_layer(layer__30),
 .o_dead(dead__30),
 .o_hit(hit__30)
-); 
+);
 PhotonBlock5 photon29(
 //Inputs
 
-.clock(clock), 
+.clock(clock),
 .reset(reset),
-.enable(enable), 
+.enable(enable),
 .i_x(x__28),
 .i_y(y__28),
 .i_z(z__28),
@@ -11879,7 +11879,7 @@ PhotonBlock5 photon29(
 .i_layer(layer__28),
 .i_dead(dead__28),
 .i_hit(hit__28),
-//Outputs			
+//Outputs
 .o_x(x__29),
 .o_y(y__29),
 .o_z(z__29),
@@ -11894,13 +11894,13 @@ PhotonBlock5 photon29(
 .o_layer(layer__29),
 .o_dead(dead__29),
 .o_hit(hit__29)
-); 
+);
 PhotonBlock5 photon28(
 //Inputs
 
-.clock(clock), 
+.clock(clock),
 .reset(reset),
-.enable(enable), 
+.enable(enable),
 .i_x(x__27),
 .i_y(y__27),
 .i_z(z__27),
@@ -11915,7 +11915,7 @@ PhotonBlock5 photon28(
 .i_layer(layer__27),
 .i_dead(dead__27),
 .i_hit(hit__27),
-//Outputs			
+//Outputs
 .o_x(x__28),
 .o_y(y__28),
 .o_z(z__28),
@@ -11930,13 +11930,13 @@ PhotonBlock5 photon28(
 .o_layer(layer__28),
 .o_dead(dead__28),
 .o_hit(hit__28)
-); 
+);
 PhotonBlock5 photon27(
 //Inputs
 
-.clock(clock), 
+.clock(clock),
 .reset(reset),
-.enable(enable), 
+.enable(enable),
 .i_x(x__26),
 .i_y(y__26),
 .i_z(z__26),
@@ -11951,7 +11951,7 @@ PhotonBlock5 photon27(
 .i_layer(layer__26),
 .i_dead(dead__26),
 .i_hit(hit__26),
-//Outputs			
+//Outputs
 .o_x(x__27),
 .o_y(y__27),
 .o_z(z__27),
@@ -11966,13 +11966,13 @@ PhotonBlock5 photon27(
 .o_layer(layer__27),
 .o_dead(dead__27),
 .o_hit(hit__27)
-); 
+);
 PhotonBlock5 photon26(
 //Inputs
 
-.clock(clock), 
+.clock(clock),
 .reset(reset),
-.enable(enable), 
+.enable(enable),
 .i_x(x__25),
 .i_y(y__25),
 .i_z(z__25),
@@ -11987,7 +11987,7 @@ PhotonBlock5 photon26(
 .i_layer(layer__25),
 .i_dead(dead__25),
 .i_hit(hit__25),
-//Outputs			
+//Outputs
 .o_x(x__26),
 .o_y(y__26),
 .o_z(z__26),
@@ -12002,13 +12002,13 @@ PhotonBlock5 photon26(
 .o_layer(layer__26),
 .o_dead(dead__26),
 .o_hit(hit__26)
-); 
+);
 PhotonBlock5 photon25(
 //Inputs
 
-.clock(clock), 
+.clock(clock),
 .reset(reset),
-.enable(enable), 
+.enable(enable),
 .i_x(x__24),
 .i_y(y__24),
 .i_z(z__24),
@@ -12023,7 +12023,7 @@ PhotonBlock5 photon25(
 .i_layer(layer__24),
 .i_dead(dead__24),
 .i_hit(hit__24),
-//Outputs			
+//Outputs
 .o_x(x__25),
 .o_y(y__25),
 .o_z(z__25),
@@ -12038,13 +12038,13 @@ PhotonBlock5 photon25(
 .o_layer(layer__25),
 .o_dead(dead__25),
 .o_hit(hit__25)
-); 
+);
 PhotonBlock5 photon24(
 //Inputs
 
-.clock(clock), 
+.clock(clock),
 .reset(reset),
-.enable(enable), 
+.enable(enable),
 .i_x(x__23),
 .i_y(y__23),
 .i_z(z__23),
@@ -12059,7 +12059,7 @@ PhotonBlock5 photon24(
 .i_layer(layer__23),
 .i_dead(dead__23),
 .i_hit(hit__23),
-//Outputs			
+//Outputs
 .o_x(x__24),
 .o_y(y__24),
 .o_z(z__24),
@@ -12074,13 +12074,13 @@ PhotonBlock5 photon24(
 .o_layer(layer__24),
 .o_dead(dead__24),
 .o_hit(hit__24)
-); 
+);
 PhotonBlock5 photon23(
 //Inputs
 
-.clock(clock), 
+.clock(clock),
 .reset(reset),
-.enable(enable), 
+.enable(enable),
 .i_x(x__22),
 .i_y(y__22),
 .i_z(z__22),
@@ -12095,7 +12095,7 @@ PhotonBlock5 photon23(
 .i_layer(layer__22),
 .i_dead(dead__22),
 .i_hit(hit__22),
-//Outputs			
+//Outputs
 .o_x(x__23),
 .o_y(y__23),
 .o_z(z__23),
@@ -12110,13 +12110,13 @@ PhotonBlock5 photon23(
 .o_layer(layer__23),
 .o_dead(dead__23),
 .o_hit(hit__23)
-); 
+);
 PhotonBlock5 photon22(
 //Inputs
 
-.clock(clock), 
+.clock(clock),
 .reset(reset),
-.enable(enable), 
+.enable(enable),
 .i_x(x__21),
 .i_y(y__21),
 .i_z(z__21),
@@ -12131,7 +12131,7 @@ PhotonBlock5 photon22(
 .i_layer(layer__21),
 .i_dead(dead__21),
 .i_hit(hit__21),
-//Outputs			
+//Outputs
 .o_x(x__22),
 .o_y(y__22),
 .o_z(z__22),
@@ -12146,13 +12146,13 @@ PhotonBlock5 photon22(
 .o_layer(layer__22),
 .o_dead(dead__22),
 .o_hit(hit__22)
-); 
+);
 PhotonBlock5 photon21(
 //Inputs
 
-.clock(clock), 
+.clock(clock),
 .reset(reset),
-.enable(enable), 
+.enable(enable),
 .i_x(x__20),
 .i_y(y__20),
 .i_z(z__20),
@@ -12167,7 +12167,7 @@ PhotonBlock5 photon21(
 .i_layer(layer__20),
 .i_dead(dead__20),
 .i_hit(hit__20),
-//Outputs			
+//Outputs
 .o_x(x__21),
 .o_y(y__21),
 .o_z(z__21),
@@ -12182,13 +12182,13 @@ PhotonBlock5 photon21(
 .o_layer(layer__21),
 .o_dead(dead__21),
 .o_hit(hit__21)
-); 
+);
 PhotonBlock5 photon20(
 //Inputs
 
-.clock(clock), 
+.clock(clock),
 .reset(reset),
-.enable(enable), 
+.enable(enable),
 .i_x(x__19),
 .i_y(y__19),
 .i_z(z__19),
@@ -12203,7 +12203,7 @@ PhotonBlock5 photon20(
 .i_layer(layer__19),
 .i_dead(dead__19),
 .i_hit(hit__19),
-//Outputs			
+//Outputs
 .o_x(x__20),
 .o_y(y__20),
 .o_z(z__20),
@@ -12218,13 +12218,13 @@ PhotonBlock5 photon20(
 .o_layer(layer__20),
 .o_dead(dead__20),
 .o_hit(hit__20)
-); 
+);
 PhotonBlock5 photon19(
 //Inputs
 
-.clock(clock), 
+.clock(clock),
 .reset(reset),
-.enable(enable), 
+.enable(enable),
 .i_x(x__18),
 .i_y(y__18),
 .i_z(z__18),
@@ -12239,7 +12239,7 @@ PhotonBlock5 photon19(
 .i_layer(layer__18),
 .i_dead(dead__18),
 .i_hit(hit__18),
-//Outputs			
+//Outputs
 .o_x(x__19),
 .o_y(y__19),
 .o_z(z__19),
@@ -12254,13 +12254,13 @@ PhotonBlock5 photon19(
 .o_layer(layer__19),
 .o_dead(dead__19),
 .o_hit(hit__19)
-); 
+);
 PhotonBlock5 photon18(
 //Inputs
 
-.clock(clock), 
+.clock(clock),
 .reset(reset),
-.enable(enable), 
+.enable(enable),
 .i_x(x__17),
 .i_y(y__17),
 .i_z(z__17),
@@ -12275,7 +12275,7 @@ PhotonBlock5 photon18(
 .i_layer(layer__17),
 .i_dead(dead__17),
 .i_hit(hit__17),
-//Outputs			
+//Outputs
 .o_x(x__18),
 .o_y(y__18),
 .o_z(z__18),
@@ -12290,13 +12290,13 @@ PhotonBlock5 photon18(
 .o_layer(layer__18),
 .o_dead(dead__18),
 .o_hit(hit__18)
-); 
+);
 PhotonBlock5 photon17(
 //Inputs
 
-.clock(clock), 
+.clock(clock),
 .reset(reset),
-.enable(enable), 
+.enable(enable),
 .i_x(x__16),
 .i_y(y__16),
 .i_z(z__16),
@@ -12311,7 +12311,7 @@ PhotonBlock5 photon17(
 .i_layer(layer__16),
 .i_dead(dead__16),
 .i_hit(hit__16),
-//Outputs			
+//Outputs
 .o_x(x__17),
 .o_y(y__17),
 .o_z(z__17),
@@ -12326,13 +12326,13 @@ PhotonBlock5 photon17(
 .o_layer(layer__17),
 .o_dead(dead__17),
 .o_hit(hit__17)
-); 
+);
 PhotonBlock5 photon16(
 //Inputs
 
-.clock(clock), 
+.clock(clock),
 .reset(reset),
-.enable(enable), 
+.enable(enable),
 .i_x(x__15),
 .i_y(y__15),
 .i_z(z__15),
@@ -12347,7 +12347,7 @@ PhotonBlock5 photon16(
 .i_layer(layer__15),
 .i_dead(dead__15),
 .i_hit(hit__15),
-//Outputs			
+//Outputs
 .o_x(x__16),
 .o_y(y__16),
 .o_z(z__16),
@@ -12362,13 +12362,13 @@ PhotonBlock5 photon16(
 .o_layer(layer__16),
 .o_dead(dead__16),
 .o_hit(hit__16)
-); 
+);
 PhotonBlock5 photon15(
 //Inputs
 
-.clock(clock), 
+.clock(clock),
 .reset(reset),
-.enable(enable), 
+.enable(enable),
 .i_x(x__14),
 .i_y(y__14),
 .i_z(z__14),
@@ -12383,7 +12383,7 @@ PhotonBlock5 photon15(
 .i_layer(layer__14),
 .i_dead(dead__14),
 .i_hit(hit__14),
-//Outputs			
+//Outputs
 .o_x(x__15),
 .o_y(y__15),
 .o_z(z__15),
@@ -12398,13 +12398,13 @@ PhotonBlock5 photon15(
 .o_layer(layer__15),
 .o_dead(dead__15),
 .o_hit(hit__15)
-); 
+);
 PhotonBlock5 photon14(
 //Inputs
 
-.clock(clock), 
+.clock(clock),
 .reset(reset),
-.enable(enable), 
+.enable(enable),
 .i_x(x__13),
 .i_y(y__13),
 .i_z(z__13),
@@ -12419,7 +12419,7 @@ PhotonBlock5 photon14(
 .i_layer(layer__13),
 .i_dead(dead__13),
 .i_hit(hit__13),
-//Outputs			
+//Outputs
 .o_x(x__14),
 .o_y(y__14),
 .o_z(z__14),
@@ -12434,13 +12434,13 @@ PhotonBlock5 photon14(
 .o_layer(layer__14),
 .o_dead(dead__14),
 .o_hit(hit__14)
-); 
+);
 PhotonBlock5 photon13(
 //Inputs
 
-.clock(clock), 
+.clock(clock),
 .reset(reset),
-.enable(enable), 
+.enable(enable),
 .i_x(x__12),
 .i_y(y__12),
 .i_z(z__12),
@@ -12455,7 +12455,7 @@ PhotonBlock5 photon13(
 .i_layer(layer__12),
 .i_dead(dead__12),
 .i_hit(hit__12),
-//Outputs			
+//Outputs
 .o_x(x__13),
 .o_y(y__13),
 .o_z(z__13),
@@ -12470,13 +12470,13 @@ PhotonBlock5 photon13(
 .o_layer(layer__13),
 .o_dead(dead__13),
 .o_hit(hit__13)
-); 
+);
 PhotonBlock5 photon12(
 //Inputs
 
-.clock(clock), 
+.clock(clock),
 .reset(reset),
-.enable(enable), 
+.enable(enable),
 .i_x(x__11),
 .i_y(y__11),
 .i_z(z__11),
@@ -12491,7 +12491,7 @@ PhotonBlock5 photon12(
 .i_layer(layer__11),
 .i_dead(dead__11),
 .i_hit(hit__11),
-//Outputs			
+//Outputs
 .o_x(x__12),
 .o_y(y__12),
 .o_z(z__12),
@@ -12506,13 +12506,13 @@ PhotonBlock5 photon12(
 .o_layer(layer__12),
 .o_dead(dead__12),
 .o_hit(hit__12)
-); 
+);
 PhotonBlock5 photon11(
 //Inputs
 
-.clock(clock), 
+.clock(clock),
 .reset(reset),
-.enable(enable), 
+.enable(enable),
 .i_x(x__10),
 .i_y(y__10),
 .i_z(z__10),
@@ -12527,7 +12527,7 @@ PhotonBlock5 photon11(
 .i_layer(layer__10),
 .i_dead(dead__10),
 .i_hit(hit__10),
-//Outputs			
+//Outputs
 .o_x(x__11),
 .o_y(y__11),
 .o_z(z__11),
@@ -12542,13 +12542,13 @@ PhotonBlock5 photon11(
 .o_layer(layer__11),
 .o_dead(dead__11),
 .o_hit(hit__11)
-); 
+);
 PhotonBlock5 photon10(
 //Inputs
 
-.clock(clock), 
+.clock(clock),
 .reset(reset),
-.enable(enable), 
+.enable(enable),
 .i_x(x__9),
 .i_y(y__9),
 .i_z(z__9),
@@ -12563,7 +12563,7 @@ PhotonBlock5 photon10(
 .i_layer(layer__9),
 .i_dead(dead__9),
 .i_hit(hit__9),
-//Outputs			
+//Outputs
 .o_x(x__10),
 .o_y(y__10),
 .o_z(z__10),
@@ -12578,13 +12578,13 @@ PhotonBlock5 photon10(
 .o_layer(layer__10),
 .o_dead(dead__10),
 .o_hit(hit__10)
-); 
+);
 PhotonBlock5 photon9(
 //Inputs
 
-.clock(clock), 
+.clock(clock),
 .reset(reset),
-.enable(enable), 
+.enable(enable),
 .i_x(x__8),
 .i_y(y__8),
 .i_z(z__8),
@@ -12599,7 +12599,7 @@ PhotonBlock5 photon9(
 .i_layer(layer__8),
 .i_dead(dead__8),
 .i_hit(hit__8),
-//Outputs			
+//Outputs
 .o_x(x__9),
 .o_y(y__9),
 .o_z(z__9),
@@ -12614,13 +12614,13 @@ PhotonBlock5 photon9(
 .o_layer(layer__9),
 .o_dead(dead__9),
 .o_hit(hit__9)
-); 
+);
 PhotonBlock5 photon8(
 //Inputs
 
-.clock(clock), 
+.clock(clock),
 .reset(reset),
-.enable(enable), 
+.enable(enable),
 .i_x(x__7),
 .i_y(y__7),
 .i_z(z__7),
@@ -12635,7 +12635,7 @@ PhotonBlock5 photon8(
 .i_layer(layer__7),
 .i_dead(dead__7),
 .i_hit(hit__7),
-//Outputs			
+//Outputs
 .o_x(x__8),
 .o_y(y__8),
 .o_z(z__8),
@@ -12650,13 +12650,13 @@ PhotonBlock5 photon8(
 .o_layer(layer__8),
 .o_dead(dead__8),
 .o_hit(hit__8)
-); 
+);
 PhotonBlock5 photon7(
 //Inputs
 
-.clock(clock), 
+.clock(clock),
 .reset(reset),
-.enable(enable), 
+.enable(enable),
 .i_x(x__6),
 .i_y(y__6),
 .i_z(z__6),
@@ -12671,7 +12671,7 @@ PhotonBlock5 photon7(
 .i_layer(layer__6),
 .i_dead(dead__6),
 .i_hit(hit__6),
-//Outputs			
+//Outputs
 .o_x(x__7),
 .o_y(y__7),
 .o_z(z__7),
@@ -12686,13 +12686,13 @@ PhotonBlock5 photon7(
 .o_layer(layer__7),
 .o_dead(dead__7),
 .o_hit(hit__7)
-); 
+);
 PhotonBlock5 photon6(
 //Inputs
 
-.clock(clock), 
+.clock(clock),
 .reset(reset),
-.enable(enable), 
+.enable(enable),
 .i_x(x__5),
 .i_y(y__5),
 .i_z(z__5),
@@ -12707,7 +12707,7 @@ PhotonBlock5 photon6(
 .i_layer(layer__5),
 .i_dead(dead__5),
 .i_hit(hit__5),
-//Outputs			
+//Outputs
 .o_x(x__6),
 .o_y(y__6),
 .o_z(z__6),
@@ -12722,13 +12722,13 @@ PhotonBlock5 photon6(
 .o_layer(layer__6),
 .o_dead(dead__6),
 .o_hit(hit__6)
-); 
+);
 PhotonBlock5 photon5(
 //Inputs
 
-.clock(clock), 
+.clock(clock),
 .reset(reset),
-.enable(enable), 
+.enable(enable),
 .i_x(x__4),
 .i_y(y__4),
 .i_z(z__4),
@@ -12743,7 +12743,7 @@ PhotonBlock5 photon5(
 .i_layer(layer__4),
 .i_dead(dead__4),
 .i_hit(hit__4),
-//Outputs			
+//Outputs
 .o_x(x__5),
 .o_y(y__5),
 .o_z(z__5),
@@ -12758,13 +12758,13 @@ PhotonBlock5 photon5(
 .o_layer(layer__5),
 .o_dead(dead__5),
 .o_hit(hit__5)
-); 
+);
 PhotonBlock5 photon4(
 //Inputs
 
-.clock(clock), 
+.clock(clock),
 .reset(reset),
-.enable(enable), 
+.enable(enable),
 .i_x(x__3),
 .i_y(y__3),
 .i_z(z__3),
@@ -12779,7 +12779,7 @@ PhotonBlock5 photon4(
 .i_layer(layer__3),
 .i_dead(dead__3),
 .i_hit(hit__3),
-//Outputs			
+//Outputs
 .o_x(x__4),
 .o_y(y__4),
 .o_z(z__4),
@@ -12794,13 +12794,13 @@ PhotonBlock5 photon4(
 .o_layer(layer__4),
 .o_dead(dead__4),
 .o_hit(hit__4)
-); 
+);
 PhotonBlock5 photon3(
 //Inputs
 
-.clock(clock), 
+.clock(clock),
 .reset(reset),
-.enable(enable), 
+.enable(enable),
 .i_x(x__2),
 .i_y(y__2),
 .i_z(z__2),
@@ -12815,7 +12815,7 @@ PhotonBlock5 photon3(
 .i_layer(layer__2),
 .i_dead(dead__2),
 .i_hit(hit__2),
-//Outputs			
+//Outputs
 .o_x(x__3),
 .o_y(y__3),
 .o_z(z__3),
@@ -12830,13 +12830,13 @@ PhotonBlock5 photon3(
 .o_layer(layer__3),
 .o_dead(dead__3),
 .o_hit(hit__3)
-); 
+);
 PhotonBlock5 photon2(
 //Inputs
 
-.clock(clock), 
+.clock(clock),
 .reset(reset),
-.enable(enable), 
+.enable(enable),
 .i_x(x__1),
 .i_y(y__1),
 .i_z(z__1),
@@ -12851,7 +12851,7 @@ PhotonBlock5 photon2(
 .i_layer(layer__1),
 .i_dead(dead__1),
 .i_hit(hit__1),
-//Outputs			
+//Outputs
 .o_x(x__2),
 .o_y(y__2),
 .o_z(z__2),
@@ -12866,13 +12866,13 @@ PhotonBlock5 photon2(
 .o_layer(layer__2),
 .o_dead(dead__2),
 .o_hit(hit__2)
-); 
+);
 PhotonBlock5 photon1(
 //Inputs
 
-.clock(clock), 
+.clock(clock),
 .reset(reset),
-.enable(enable), 
+.enable(enable),
 .i_x(x__0),
 .i_y(y__0),
 .i_z(z__0),
@@ -12887,7 +12887,7 @@ PhotonBlock5 photon1(
 .i_layer(layer__0),
 .i_dead(dead__0),
 .i_hit(hit__0),
-//Outputs			
+//Outputs
 .o_x(x__1),
 .o_y(y__1),
 .o_z(z__1),
@@ -12902,20 +12902,20 @@ PhotonBlock5 photon1(
 .o_layer(layer__1),
 .o_dead(dead__1),
 .o_hit(hit__1)
-); 
+);
 
 
 
 //////////////////////////////////////////////////////////////////////////////
 //Tapping into the Registered Pipeline
-//***NOTE: Index must be incremented by 1 compared to SystemC version 
+//***NOTE: Index must be incremented by 1 compared to SystemC version
 //////////////////////////////////////////////////////////////////////////////
 
 //>>>>>>>>>>>>> Absorber <<<<<<<<<<<<<<<<<<
 wire	[`BIT_WIDTH-1:0]			x_pipe, y_pipe,	z_pipe;
 wire	[`LAYER_WIDTH-1:0]			layer_pipe;
-assign x_pipe=x__2; 
-assign y_pipe=y__2; 
+assign x_pipe=x__2;
+assign y_pipe=y__2;
 assign z_pipe=z__14;  //TODO: Check square-root latency and modify z[14] if needed!!!!
 assign layer_pipe=layer__4;
 
@@ -12939,25 +12939,25 @@ wire					dead_reflector;
 //>>>>>>>>>>>>> Absorber <<<<<<<<<<<<<<<<<<
 
 Absorber absorb (    //INPUTS
-                     .clock(clock) , .reset(reset), .enable(enable), 
-                     
+                     .clock(clock) , .reset(reset), .enable(enable),
+
                      //From hopper
                      .weight_hop(i_weight), .hit_hop(i_hit), .dead_hop(i_dead),
 
                      //From Shared Registers
                      .x_pipe (x_pipe), .y_pipe (y_pipe), .z_pipe(z_pipe), .layer_pipe(layer_pipe),
-                     
+
                      //From System Register File (5 layers)
-                     .muaFraction1(muaFraction1), .muaFraction2(muaFraction2), .muaFraction3(muaFraction3), .muaFraction4(muaFraction4), .muaFraction5(muaFraction5),  
-                     
+                     .muaFraction1(muaFraction1), .muaFraction2(muaFraction2), .muaFraction3(muaFraction3), .muaFraction4(muaFraction4), .muaFraction5(muaFraction5),
+
                      //Dual-port Mem
-                     .data(data), .rdaddress(rdaddress), .wraddress(wraddress), 
+                     .data(data), .rdaddress(rdaddress), .wraddress(wraddress),
                      .wren(wren), .q(q),
-                     
+
                      //OUTPUT
                      .weight_absorber(o_weight)
 
-                     ); 
+                     );
 
 //>>>>>>>>>>>>> ScattererReflectorWrapper <<<<<<<<<<<<<<<<<<
 
@@ -12967,7 +12967,7 @@ ScattererReflectorWrapper scattererReflector(
 	.reset(reset),
 	.enable(enable),
 		//Inputs
-		
+
 		//Photon values
 		.i_uz1_pipeWrapper(uz__1),
 		.i_hit2_pipeWrapper(hit__1),
@@ -12976,7 +12976,7 @@ ScattererReflectorWrapper scattererReflector(
 		.i_layer3_pipeWrapper(layer__3),
 		.i_hit4_pipeWrapper(hit__3),
 		.i_hit6_pipeWrapper(hit__5),
-		.i_hit16_pipeWrapper(hit__15), 
+		.i_hit16_pipeWrapper(hit__15),
 		.i_layer31_pipeWrapper(layer__31),
 		.i_uy32_pipeWrapper(uy__32),
 		.i_uz32_pipeWrapper(uz__32),
@@ -12994,7 +12994,7 @@ ScattererReflectorWrapper scattererReflector(
 		.i_uz36_pipeWrapper(uz__36),
 		.i_layer36_pipeWrapper(layer__36),
 		.i_dead36_pipeWrapper(dead__36),
-	
+
 		//Memory Interface
 			//Inputs
 		.rand2(rand2),
@@ -13007,7 +13007,7 @@ ScattererReflectorWrapper scattererReflector(
 			//Outputs
 		.tindex(tindex),
 		.fresIndex(fresIndex),
-		
+
 		//Constants
 		.down_niOverNt_1(down_niOverNt_1),
 		.down_niOverNt_2(down_niOverNt_2),
@@ -13039,20 +13039,20 @@ ScattererReflectorWrapper scattererReflector(
 		.upCritAngle_2(upCritAngle_2),
 		.upCritAngle_3(upCritAngle_3),
 		.upCritAngle_4(upCritAngle_4),
-		
+
 		//Outputs
 		.ux_scatterer(ux_scatterer),
 		.uy_scatterer(uy_scatterer),
 		.uz_scatterer(uz_scatterer),
-		
+
 		.ux_reflector(ux_reflector),
 		.uy_reflector(uy_reflector),
 		.uz_reflector(uz_reflector),
 		.layer_reflector(layer_reflector),
 		.dead_reflector(dead_reflector)
 	);
-	
-	
+
+
 //////////////////////////////////////////////////////////////////////
 ////  dead or alive MUX                                           ////
 ////                                                              ////
@@ -13063,13 +13063,13 @@ ScattererReflectorWrapper scattererReflector(
 
 always @ (hit__37 or ux_scatterer or uy_scatterer or uz_scatterer or layer__37 or dead__37 or
 			ux_reflector or uy_reflector or uz_reflector or layer_reflector or dead_reflector) begin
-   case (hit__37)   
+   case (hit__37)
    0: begin
        o_ux = ux_scatterer;
        o_uy = uy_scatterer;
        o_uz = uz_scatterer;
        o_layer = layer__37;
-       o_dead = dead__37;          
+       o_dead = dead__37;
    end
    1: begin
       o_ux = ux_reflector;
@@ -13077,9 +13077,9 @@ always @ (hit__37 or ux_scatterer or uy_scatterer or uz_scatterer or layer__37 o
       o_uz = uz_reflector;
       o_layer = layer_reflector;
       o_dead = dead_reflector;
-   end   
-   endcase 
-    
+   end
+   endcase
+
 end
 
 endmodule
@@ -13090,7 +13090,7 @@ module PhotonBlock5(
 	clock,
 	reset,
 	enable,
-	
+
 	i_x,
 	i_y,
 	i_z,
@@ -13234,31 +13234,31 @@ endmodule
 
 //module FluenceUpdate (    //INPUTS
 module Absorber ( 	//INPUTS
-                     clock, reset, enable, 
-                     
+                     clock, reset, enable,
+
                      //From hopper
                      weight_hop, hit_hop, dead_hop,
 
                      //From Shared Registers
                      x_pipe, y_pipe, z_pipe, layer_pipe,
-                     
+
                      //From System Register File (5 layers)
-                     muaFraction1, muaFraction2, muaFraction3, muaFraction4, muaFraction5,  
-                     
+                     muaFraction1, muaFraction2, muaFraction3, muaFraction4, muaFraction5,
+
                      //I/O to on-chip mem -- check interface
                      data, rdaddress, wraddress, wren, q,
-                     
+
                      //OUTPUT
                      weight_absorber
-                     
-                     ); 
+
+                     );
 
 
 //////////////////////////////////////////////////////////////////////////////
 //PARAMETERS
 //////////////////////////////////////////////////////////////////////////////
-//parameter `NR=256;              
-//parameter `NZ=256;              
+//parameter `NR=256;
+//parameter `NZ=256;
 //
 //parameter `NR_EXP=8;              //meaning `NR=2^`NR_exp or 2^8=256
 //parameter `RGRID_SCLAE_EXP=21;    //2^21 = RGRID_SCALE
@@ -13271,21 +13271,21 @@ module Absorber ( 	//INPUTS
 //parameter `ADDR_WIDTH=16;          //256x256=2^8*2^8=2^16
 //
 //
-//parameter `LAYER_WIDTH=3; 
-//parameter `PIPE_DEPTH = 37;        
+//parameter `LAYER_WIDTH=3;
+//parameter `PIPE_DEPTH = 37;
 
 
 //////////////////////////////////////////////////////////////////////////////
 //INPUTS
 //////////////////////////////////////////////////////////////////////////////
-input clock;        
+input clock;
 input reset;
 input enable;
 
 //From hopper
-input [`BIT_WIDTH-1:0] weight_hop; 
-input hit_hop; 
-input dead_hop; 
+input [`BIT_WIDTH-1:0] weight_hop;
+input hit_hop;
+input dead_hop;
 
 //From Shared Reg
 //input signed [`BIT_WIDTH-1:0] x_pipe;
@@ -13296,20 +13296,20 @@ input [`BIT_WIDTH-1:0] z_pipe;
 input [`LAYER_WIDTH-1:0] layer_pipe;
 
 //From System Reg File
-input [`BIT_WIDTH-1:0] muaFraction1, muaFraction2, muaFraction3, muaFraction4, muaFraction5;  
+input [`BIT_WIDTH-1:0] muaFraction1, muaFraction2, muaFraction3, muaFraction4, muaFraction5;
 
 //////////////////////////////////////////////////////////////////////////////
 //OUTPUTS
 //////////////////////////////////////////////////////////////////////////////
-output [`BIT_WIDTH-1:0] weight_absorber; 
+output [`BIT_WIDTH-1:0] weight_absorber;
 
 //////////////////////////////////////////////////////////////////////////////
 //I/O to on-chip mem -- check interface
 //////////////////////////////////////////////////////////////////////////////
-output [`WORD_WIDTH-1:0] data; 
-output [`ADDR_WIDTH-1:0] rdaddress, wraddress; 
-output wren;     
-reg wren; 
+output [`WORD_WIDTH-1:0] data;
+output [`ADDR_WIDTH-1:0] rdaddress, wraddress;
+output wren;
+reg wren;
 input [`WORD_WIDTH-1:0] q;
 
 //////////////////////////////////////////////////////////////////////////////
@@ -13322,43 +13322,43 @@ reg [`BIT_WIDTH_2-1:0] x2_temp, y2_temp;   //From mult
 reg [`BIT_WIDTH_2-1:0] x2_P, y2_P;         //Registered Value
 
 //STAGE 3
-reg [`BIT_WIDTH_2-1:0] r2_temp, r2_P;   
-wire [`BIT_WIDTH_2-1:0] r2_P_wire;  
+reg [`BIT_WIDTH_2-1:0] r2_temp, r2_P;
+wire [`BIT_WIDTH_2-1:0] r2_P_wire;
 
 //STAGE 4
-reg [`BIT_WIDTH-1:0]		fractionScaled; 
-reg [`BIT_WIDTH-1:0]		weight_P4; 
-reg [`BIT_WIDTH-1:0]		r_P; 
-wire [`BIT_WIDTH-1:0]		r_P_wire; 
+reg [`BIT_WIDTH-1:0]		fractionScaled;
+reg [`BIT_WIDTH-1:0]		weight_P4;
+reg [`BIT_WIDTH-1:0]		r_P;
+wire [`BIT_WIDTH-1:0]		r_P_wire;
 
-reg [`BIT_WIDTH_2-1:0] product64bit; 
-reg [`BIT_WIDTH-1:0] dwa_temp; 
+reg [`BIT_WIDTH_2-1:0] product64bit;
+reg [`BIT_WIDTH-1:0] dwa_temp;
 
 //STAGE 14
-reg [`BIT_WIDTH-1:0]		ir_temp; 
-reg [`BIT_WIDTH-1:0]		iz_temp; 
+reg [`BIT_WIDTH-1:0]		ir_temp;
+reg [`BIT_WIDTH-1:0]		iz_temp;
 
 //STAGE 15
-reg [`BIT_WIDTH-1:0]		ir_P; 
-reg [`BIT_WIDTH-1:0]		iz_P; 
-reg [`BIT_WIDTH-1:0]		ir_scaled; 
-reg [`ADDR_WIDTH-1:0] rADDR_temp; 
-reg [`ADDR_WIDTH-1:0] rADDR_16; 
+reg [`BIT_WIDTH-1:0]		ir_P;
+reg [`BIT_WIDTH-1:0]		iz_P;
+reg [`BIT_WIDTH-1:0]		ir_scaled;
+reg [`ADDR_WIDTH-1:0] rADDR_temp;
+reg [`ADDR_WIDTH-1:0] rADDR_16;
 
 //STAGE 16
 reg [`WORD_WIDTH-1:0] oldAbs_MEM;
-reg [`WORD_WIDTH-1:0] oldAbs_P; 
+reg [`WORD_WIDTH-1:0] oldAbs_P;
 reg [`ADDR_WIDTH-1:0] rADDR_17;
- 
+
 //STAGE 17
-reg [`BIT_WIDTH-1:0] weight_P; 
-reg [`BIT_WIDTH-1:0] dwa_P; 
-reg [`BIT_WIDTH-1:0] newWeight; 
+reg [`BIT_WIDTH-1:0] weight_P;
+reg [`BIT_WIDTH-1:0] dwa_P;
+reg [`BIT_WIDTH-1:0] newWeight;
 
-reg [`WORD_WIDTH-1:0] newAbs_P; 
-reg [`WORD_WIDTH-1:0] newAbs_temp; 
+reg [`WORD_WIDTH-1:0] newAbs_P;
+reg [`WORD_WIDTH-1:0] newAbs_temp;
 
-//reg [`ADDR_WIDTH-1:0] wADDR; 
+//reg [`ADDR_WIDTH-1:0] wADDR;
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -13504,28 +13504,28 @@ assign weight_absorber = weight__37;
 //genvar i;
 //generate
 //	for(i=`PIPE_DEPTH; i>0; i=i-1) begin: weightHitDeadPipe
-//		case(i)  
-//		
+//		case(i)
+//
 //		//REGISTER 17 on diagram!!
-//		18:   
+//		18:
 //		begin
-//		   
+//
 //		PhotonBlock2 photon(
 //			//Inputs
 //			.clock(clock),
 //			.reset(reset),
 //			.enable(enable),
-//			
+//
 //			.i_x(newWeight),
 //			.i_y(hit[17]),
 //			.i_z(dead[17]),
-//			
-//			//Outputs			
+//
+//			//Outputs
 //			.o_x(weight[18]),
 //			.o_y(hit[18]),
 //			.o_z(dead[18])
 //		);
-//		    
+//
 //		end
 //		default:
 //		begin
@@ -13534,12 +13534,12 @@ assign weight_absorber = weight__37;
 //			.clock(clock),
 //			.reset(reset),
 //			.enable(enable),
-//			
+//
 //			.i_x(weight[i-1]),
 //			.i_y(hit[i-1]),
 //			.i_z(dead[i-1]),
-//			
-//			//Outputs			
+//
+//			//Outputs
 //			.o_x(weight[i]),
 //			.o_y(hit[i]),
 //			.o_z(dead[i])
@@ -13547,7 +13547,7 @@ assign weight_absorber = weight__37;
 //		end
 //		endcase
 //	end
-//endgenerate	
+//endgenerate
 
 //Expand pipeline generation
 //special case i = 18 first
@@ -13556,17 +13556,17 @@ PhotonBlock2 photon18(
 			.clock(clock),
 			.reset(reset),
 			.enable(enable),
-			
+
 			.i_x(newWeight),
 			.i_y(hit__17),
 			.i_z(dead__17),
-			
-			//Outputs			
+
+			//Outputs
 			.o_x(weight__18),
 			.o_y(hit__18),
 			.o_z(dead__18)
 		);
-		
+
 PhotonBlock2 photon37(
 .clock(clock),
 .reset(reset),
@@ -13574,7 +13574,7 @@ PhotonBlock2 photon37(
 .i_x(weight__36),
 .i_y(hit__36),
 .i_z(dead__36),
-//Outputs		
+//Outputs
 	.o_x(weight__37),
 .o_y(hit__37),
 .o_z(dead__37)
@@ -13587,7 +13587,7 @@ PhotonBlock2 photon36(
 .i_x(weight__35),
 .i_y(hit__35),
 .i_z(dead__35),
-//Outputs		
+//Outputs
 	.o_x(weight__36),
 .o_y(hit__36),
 .o_z(dead__36)
@@ -13600,7 +13600,7 @@ PhotonBlock2 photon35(
 .i_x(weight__34),
 .i_y(hit__34),
 .i_z(dead__34),
-//Outputs		
+//Outputs
 	.o_x(weight__35),
 .o_y(hit__35),
 .o_z(dead__35)
@@ -13613,7 +13613,7 @@ PhotonBlock2 photon34(
 .i_x(weight__33),
 .i_y(hit__33),
 .i_z(dead__33),
-//Outputs		
+//Outputs
 	.o_x(weight__34),
 .o_y(hit__34),
 .o_z(dead__34)
@@ -13626,7 +13626,7 @@ PhotonBlock2 photon33(
 .i_x(weight__32),
 .i_y(hit__32),
 .i_z(dead__32),
-//Outputs		
+//Outputs
 	.o_x(weight__33),
 .o_y(hit__33),
 .o_z(dead__33)
@@ -13639,7 +13639,7 @@ PhotonBlock2 photon32(
 .i_x(weight__31),
 .i_y(hit__31),
 .i_z(dead__31),
-//Outputs		
+//Outputs
 	.o_x(weight__32),
 .o_y(hit__32),
 .o_z(dead__32)
@@ -13652,7 +13652,7 @@ PhotonBlock2 photon31(
 .i_x(weight__30),
 .i_y(hit__30),
 .i_z(dead__30),
-//Outputs		
+//Outputs
 	.o_x(weight__31),
 .o_y(hit__31),
 .o_z(dead__31)
@@ -13665,7 +13665,7 @@ PhotonBlock2 photon30(
 .i_x(weight__29),
 .i_y(hit__29),
 .i_z(dead__29),
-//Outputs		
+//Outputs
 	.o_x(weight__30),
 .o_y(hit__30),
 .o_z(dead__30)
@@ -13678,7 +13678,7 @@ PhotonBlock2 photon29(
 .i_x(weight__28),
 .i_y(hit__28),
 .i_z(dead__28),
-//Outputs		
+//Outputs
 	.o_x(weight__29),
 .o_y(hit__29),
 .o_z(dead__29)
@@ -13691,7 +13691,7 @@ PhotonBlock2 photon28(
 .i_x(weight__27),
 .i_y(hit__27),
 .i_z(dead__27),
-//Outputs		
+//Outputs
 	.o_x(weight__28),
 .o_y(hit__28),
 .o_z(dead__28)
@@ -13704,7 +13704,7 @@ PhotonBlock2 photon27(
 .i_x(weight__26),
 .i_y(hit__26),
 .i_z(dead__26),
-//Outputs		
+//Outputs
 	.o_x(weight__27),
 .o_y(hit__27),
 .o_z(dead__27)
@@ -13717,7 +13717,7 @@ PhotonBlock2 photon26(
 .i_x(weight__25),
 .i_y(hit__25),
 .i_z(dead__25),
-//Outputs		
+//Outputs
 	.o_x(weight__26),
 .o_y(hit__26),
 .o_z(dead__26)
@@ -13730,7 +13730,7 @@ PhotonBlock2 photon25(
 .i_x(weight__24),
 .i_y(hit__24),
 .i_z(dead__24),
-//Outputs		
+//Outputs
 	.o_x(weight__25),
 .o_y(hit__25),
 .o_z(dead__25)
@@ -13743,7 +13743,7 @@ PhotonBlock2 photon24(
 .i_x(weight__23),
 .i_y(hit__23),
 .i_z(dead__23),
-//Outputs		
+//Outputs
 	.o_x(weight__24),
 .o_y(hit__24),
 .o_z(dead__24)
@@ -13756,7 +13756,7 @@ PhotonBlock2 photon23(
 .i_x(weight__22),
 .i_y(hit__22),
 .i_z(dead__22),
-//Outputs		
+//Outputs
 	.o_x(weight__23),
 .o_y(hit__23),
 .o_z(dead__23)
@@ -13769,7 +13769,7 @@ PhotonBlock2 photon22(
 .i_x(weight__21),
 .i_y(hit__21),
 .i_z(dead__21),
-//Outputs		
+//Outputs
 	.o_x(weight__22),
 .o_y(hit__22),
 .o_z(dead__22)
@@ -13782,7 +13782,7 @@ PhotonBlock2 photon21(
 .i_x(weight__20),
 .i_y(hit__20),
 .i_z(dead__20),
-//Outputs		
+//Outputs
 	.o_x(weight__21),
 .o_y(hit__21),
 .o_z(dead__21)
@@ -13795,7 +13795,7 @@ PhotonBlock2 photon20(
 .i_x(weight__19),
 .i_y(hit__19),
 .i_z(dead__19),
-//Outputs		
+//Outputs
 	.o_x(weight__20),
 .o_y(hit__20),
 .o_z(dead__20)
@@ -13808,7 +13808,7 @@ PhotonBlock2 photon19(
 .i_x(weight__18),
 .i_y(hit__18),
 .i_z(dead__18),
-//Outputs		
+//Outputs
 	.o_x(weight__19),
 .o_y(hit__19),
 .o_z(dead__19)
@@ -13822,7 +13822,7 @@ PhotonBlock2 photon17(
 .i_x(weight__16),
 .i_y(hit__16),
 .i_z(dead__16),
-//Outputs		
+//Outputs
 	.o_x(weight__17),
 .o_y(hit__17),
 .o_z(dead__17)
@@ -13835,7 +13835,7 @@ PhotonBlock2 photon16(
 .i_x(weight__15),
 .i_y(hit__15),
 .i_z(dead__15),
-//Outputs		
+//Outputs
 	.o_x(weight__16),
 .o_y(hit__16),
 .o_z(dead__16)
@@ -13848,7 +13848,7 @@ PhotonBlock2 photon15(
 .i_x(weight__14),
 .i_y(hit__14),
 .i_z(dead__14),
-//Outputs		
+//Outputs
 	.o_x(weight__15),
 .o_y(hit__15),
 .o_z(dead__15)
@@ -13861,7 +13861,7 @@ PhotonBlock2 photon14(
 .i_x(weight__13),
 .i_y(hit__13),
 .i_z(dead__13),
-//Outputs		
+//Outputs
 	.o_x(weight__14),
 .o_y(hit__14),
 .o_z(dead__14)
@@ -13874,7 +13874,7 @@ PhotonBlock2 photon13(
 .i_x(weight__12),
 .i_y(hit__12),
 .i_z(dead__12),
-//Outputs		
+//Outputs
 	.o_x(weight__13),
 .o_y(hit__13),
 .o_z(dead__13)
@@ -13887,7 +13887,7 @@ PhotonBlock2 photon12(
 .i_x(weight__11),
 .i_y(hit__11),
 .i_z(dead__11),
-//Outputs		
+//Outputs
 	.o_x(weight__12),
 .o_y(hit__12),
 .o_z(dead__12)
@@ -13900,7 +13900,7 @@ PhotonBlock2 photon11(
 .i_x(weight__10),
 .i_y(hit__10),
 .i_z(dead__10),
-//Outputs		
+//Outputs
 	.o_x(weight__11),
 .o_y(hit__11),
 .o_z(dead__11)
@@ -13913,7 +13913,7 @@ PhotonBlock2 photon10(
 .i_x(weight__9),
 .i_y(hit__9),
 .i_z(dead__9),
-//Outputs		
+//Outputs
 	.o_x(weight__10),
 .o_y(hit__10),
 .o_z(dead__10)
@@ -13926,7 +13926,7 @@ PhotonBlock2 photon9(
 .i_x(weight__8),
 .i_y(hit__8),
 .i_z(dead__8),
-//Outputs		
+//Outputs
 	.o_x(weight__9),
 .o_y(hit__9),
 .o_z(dead__9)
@@ -13939,7 +13939,7 @@ PhotonBlock2 photon8(
 .i_x(weight__7),
 .i_y(hit__7),
 .i_z(dead__7),
-//Outputs		
+//Outputs
 	.o_x(weight__8),
 .o_y(hit__8),
 .o_z(dead__8)
@@ -13952,7 +13952,7 @@ PhotonBlock2 photon7(
 .i_x(weight__6),
 .i_y(hit__6),
 .i_z(dead__6),
-//Outputs		
+//Outputs
 	.o_x(weight__7),
 .o_y(hit__7),
 .o_z(dead__7)
@@ -13965,7 +13965,7 @@ PhotonBlock2 photon6(
 .i_x(weight__5),
 .i_y(hit__5),
 .i_z(dead__5),
-//Outputs		
+//Outputs
 	.o_x(weight__6),
 .o_y(hit__6),
 .o_z(dead__6)
@@ -13978,7 +13978,7 @@ PhotonBlock2 photon5(
 .i_x(weight__4),
 .i_y(hit__4),
 .i_z(dead__4),
-//Outputs		
+//Outputs
 	.o_x(weight__5),
 .o_y(hit__5),
 .o_z(dead__5)
@@ -13991,7 +13991,7 @@ PhotonBlock2 photon4(
 .i_x(weight__3),
 .i_y(hit__3),
 .i_z(dead__3),
-//Outputs		
+//Outputs
 	.o_x(weight__4),
 .o_y(hit__4),
 .o_z(dead__4)
@@ -14004,7 +14004,7 @@ PhotonBlock2 photon3(
 .i_x(weight__2),
 .i_y(hit__2),
 .i_z(dead__2),
-//Outputs		
+//Outputs
 	.o_x(weight__3),
 .o_y(hit__3),
 .o_z(dead__3)
@@ -14017,7 +14017,7 @@ PhotonBlock2 photon2(
 .i_x(weight__1),
 .i_y(hit__1),
 .i_z(dead__1),
-//Outputs		
+//Outputs
 	.o_x(weight__2),
 .o_y(hit__2),
 .o_z(dead__2)
@@ -14030,7 +14030,7 @@ PhotonBlock2 photon1(
 .i_x(weight__0),
 .i_y(hit__0),
 .i_z(dead__0),
-//Outputs		
+//Outputs
 	.o_x(weight__1),
 .o_y(hit__1),
 .o_z(dead__1)
@@ -14178,9 +14178,9 @@ assign dwa__0 = 32'b0;
 //generate
 //	for(i=`PIPE_DEPTH; i>0; i=i-1) begin: IrIzDwaPipe
 //		case(i)
-//		    
-//		//NOTE: STAGE 14 --> REGISTER 14 on diagram !!   ir, iz 
-//		15:   
+//
+//		//NOTE: STAGE 14 --> REGISTER 14 on diagram !!   ir, iz
+//		15:
 //		begin
 //
 //		PhotonBlock1 photon(
@@ -14188,55 +14188,55 @@ assign dwa__0 = 32'b0;
 //			.clock(clock),
 //			.reset(reset),
 //			.enable(enable),
-//			
+//
 //			.i_x(ir_temp),
 //			.i_y(iz_temp),
 //			.i_z(dwa[14]),
-//			
-//			//Outputs			
+//
+//			//Outputs
 //			.o_x(ir[15]),
 //			.o_y(iz[15]),
 //			.o_z(dwa[15])
-//		);		
-//		
-//		end    
-//		
-//		//NOTE: STAGE 4 --> REGISTER 4 on diagram !!   dwa  
-//		5:   
+//		);
+//
+//		end
+//
+//		//NOTE: STAGE 4 --> REGISTER 4 on diagram !!   dwa
+//		5:
 //		begin
-//		    
+//
 //		PhotonBlock1 photon(
 //			//Inputs
 //			.clock(clock),
 //			.reset(reset),
 //			.enable(enable),
-//			
+//
 //			.i_x(ir[4]),
 //			.i_y(iz[4]),
 //			.i_z(dwa_temp),
-//			
-//			//Outputs			
+//
+//			//Outputs
 //			.o_x(ir[5]),
 //			.o_y(iz[5]),
 //			.o_z(dwa[5])
-//		);		    
-//		
-//		end    
-//				
+//		);
+//
+//		end
+//
 //		default:
 //		begin
-//		    	    
+//
 //		PhotonBlock1 photon(
 //			//Inputs
 //			.clock(clock),
 //			.reset(reset),
 //			.enable(enable),
-//			
+//
 //			.i_x(ir[i-1]),
 //			.i_y(iz[i-1]),
 //			.i_z(dwa[i-1]),
-//			
-//			//Outputs			
+//
+//			//Outputs
 //			.o_x(ir[i]),
 //			.o_y(iz[i]),
 //			.o_z(dwa[i])
@@ -14244,51 +14244,51 @@ assign dwa__0 = 32'b0;
 //		end
 //		endcase
 //	end
-//endgenerate	
+//endgenerate
 
 //Expanded generation
 
 
 //special cases first peter m
 
-	
+
 
 		PhotonBlock1 photon15q(
 			//Inputs
 			.clock(clock),
 			.reset(reset),
 			.enable(enable),
-			
+
 			.i_x(ir_temp),
 			.i_y(iz_temp),
 			.i_z(dwa__14),
-			
-			//Outputs			
+
+			//Outputs
 			.o_x(ir__15),
 			.o_y(iz__15),
 			.o_z(dwa__15)
-		);		
-		
+		);
 
-		
-		//NOTE: STAGE 4 --> REGISTER 4 on diagram !!   dwa  
 
-		    
+
+		//NOTE: STAGE 4 --> REGISTER 4 on diagram !!   dwa
+
+
 		PhotonBlock1 photon5q(
 			//Inputs
 			.clock(clock),
 			.reset(reset),
 			.enable(enable),
-			
+
 			.i_x(ir__4),
 			.i_y(iz__4),
 			.i_z(dwa_temp),
-			
-			//Outputs			
+
+			//Outputs
 			.o_x(ir__5),
 			.o_y(iz__5),
 			.o_z(dwa__5)
-		);		
+		);
 
 	PhotonBlock1 photon37q(
 //Inputs
@@ -14299,7 +14299,7 @@ assign dwa__0 = 32'b0;
 .i_x(ir__36),
 .i_y(iz__36),
 .i_z(dwa__36),
-//Outputs		
+//Outputs
 	.o_x(ir__37),
 .o_y(iz__37),
 .o_z(dwa__37)
@@ -14313,7 +14313,7 @@ PhotonBlock1 photon36q(
 .i_x(ir__35),
 .i_y(iz__35),
 .i_z(dwa__35),
-//Outputs		
+//Outputs
 	.o_x(ir__36),
 .o_y(iz__36),
 .o_z(dwa__36)
@@ -14327,7 +14327,7 @@ PhotonBlock1 photon35q(
 .i_x(ir__34),
 .i_y(iz__34),
 .i_z(dwa__34),
-//Outputs		
+//Outputs
 	.o_x(ir__35),
 .o_y(iz__35),
 .o_z(dwa__35)
@@ -14341,7 +14341,7 @@ PhotonBlock1 photon34q(
 .i_x(ir__33),
 .i_y(iz__33),
 .i_z(dwa__33),
-//Outputs		
+//Outputs
 	.o_x(ir__34),
 .o_y(iz__34),
 .o_z(dwa__34)
@@ -14355,7 +14355,7 @@ PhotonBlock1 photon33q(
 .i_x(ir__32),
 .i_y(iz__32),
 .i_z(dwa__32),
-//Outputs		
+//Outputs
 	.o_x(ir__33),
 .o_y(iz__33),
 .o_z(dwa__33)
@@ -14369,7 +14369,7 @@ PhotonBlock1 photon32q(
 .i_x(ir__31),
 .i_y(iz__31),
 .i_z(dwa__31),
-//Outputs		
+//Outputs
 	.o_x(ir__32),
 .o_y(iz__32),
 .o_z(dwa__32)
@@ -14383,7 +14383,7 @@ PhotonBlock1 photon31q(
 .i_x(ir__30),
 .i_y(iz__30),
 .i_z(dwa__30),
-//Outputs		
+//Outputs
 	.o_x(ir__31),
 .o_y(iz__31),
 .o_z(dwa__31)
@@ -14397,7 +14397,7 @@ PhotonBlock1 photon30q(
 .i_x(ir__29),
 .i_y(iz__29),
 .i_z(dwa__29),
-//Outputs		
+//Outputs
 	.o_x(ir__30),
 .o_y(iz__30),
 .o_z(dwa__30)
@@ -14411,7 +14411,7 @@ PhotonBlock1 photon29q(
 .i_x(ir__28),
 .i_y(iz__28),
 .i_z(dwa__28),
-//Outputs		
+//Outputs
 	.o_x(ir__29),
 .o_y(iz__29),
 .o_z(dwa__29)
@@ -14425,7 +14425,7 @@ PhotonBlock1 photon28q(
 .i_x(ir__27),
 .i_y(iz__27),
 .i_z(dwa__27),
-//Outputs		
+//Outputs
 	.o_x(ir__28),
 .o_y(iz__28),
 .o_z(dwa__28)
@@ -14439,7 +14439,7 @@ PhotonBlock1 photon27q(
 .i_x(ir__26),
 .i_y(iz__26),
 .i_z(dwa__26),
-//Outputs		
+//Outputs
 	.o_x(ir__27),
 .o_y(iz__27),
 .o_z(dwa__27)
@@ -14453,7 +14453,7 @@ PhotonBlock1 photon26q(
 .i_x(ir__25),
 .i_y(iz__25),
 .i_z(dwa__25),
-//Outputs		
+//Outputs
 	.o_x(ir__26),
 .o_y(iz__26),
 .o_z(dwa__26)
@@ -14467,7 +14467,7 @@ PhotonBlock1 photon25q(
 .i_x(ir__24),
 .i_y(iz__24),
 .i_z(dwa__24),
-//Outputs		
+//Outputs
 	.o_x(ir__25),
 .o_y(iz__25),
 .o_z(dwa__25)
@@ -14481,7 +14481,7 @@ PhotonBlock1 photon24q(
 .i_x(ir__23),
 .i_y(iz__23),
 .i_z(dwa__23),
-//Outputs		
+//Outputs
 	.o_x(ir__24),
 .o_y(iz__24),
 .o_z(dwa__24)
@@ -14495,7 +14495,7 @@ PhotonBlock1 photon23q(
 .i_x(ir__22),
 .i_y(iz__22),
 .i_z(dwa__22),
-//Outputs		
+//Outputs
 	.o_x(ir__23),
 .o_y(iz__23),
 .o_z(dwa__23)
@@ -14509,7 +14509,7 @@ PhotonBlock1 photon22q(
 .i_x(ir__21),
 .i_y(iz__21),
 .i_z(dwa__21),
-//Outputs		
+//Outputs
 	.o_x(ir__22),
 .o_y(iz__22),
 .o_z(dwa__22)
@@ -14523,7 +14523,7 @@ PhotonBlock1 photon21q(
 .i_x(ir__20),
 .i_y(iz__20),
 .i_z(dwa__20),
-//Outputs		
+//Outputs
 	.o_x(ir__21),
 .o_y(iz__21),
 .o_z(dwa__21)
@@ -14537,7 +14537,7 @@ PhotonBlock1 photon20q(
 .i_x(ir__19),
 .i_y(iz__19),
 .i_z(dwa__19),
-//Outputs		
+//Outputs
 	.o_x(ir__20),
 .o_y(iz__20),
 .o_z(dwa__20)
@@ -14551,7 +14551,7 @@ PhotonBlock1 photon19q(
 .i_x(ir__18),
 .i_y(iz__18),
 .i_z(dwa__18),
-//Outputs		
+//Outputs
 	.o_x(ir__19),
 .o_y(iz__19),
 .o_z(dwa__19)
@@ -14565,7 +14565,7 @@ PhotonBlock1 photon18q(
 .i_x(ir__17),
 .i_y(iz__17),
 .i_z(dwa__17),
-//Outputs		
+//Outputs
 	.o_x(ir__18),
 .o_y(iz__18),
 .o_z(dwa__18)
@@ -14579,7 +14579,7 @@ PhotonBlock1 photon17q(
 .i_x(ir__16),
 .i_y(iz__16),
 .i_z(dwa__16),
-//Outputs		
+//Outputs
 	.o_x(ir__17),
 .o_y(iz__17),
 .o_z(dwa__17)
@@ -14593,7 +14593,7 @@ PhotonBlock1 photon16q(
 .i_x(ir__15),
 .i_y(iz__15),
 .i_z(dwa__15),
-//Outputs		
+//Outputs
 	.o_x(ir__16),
 .o_y(iz__16),
 .o_z(dwa__16)
@@ -14611,7 +14611,7 @@ PhotonBlock1 photon14q(
 .i_x(ir__13),
 .i_y(iz__13),
 .i_z(dwa__13),
-//Outputs		
+//Outputs
 	.o_x(ir__14),
 .o_y(iz__14),
 .o_z(dwa__14)
@@ -14625,7 +14625,7 @@ PhotonBlock1 photon13q(
 .i_x(ir__12),
 .i_y(iz__12),
 .i_z(dwa__12),
-//Outputs		
+//Outputs
 	.o_x(ir__13),
 .o_y(iz__13),
 .o_z(dwa__13)
@@ -14639,7 +14639,7 @@ PhotonBlock1 photon12q(
 .i_x(ir__11),
 .i_y(iz__11),
 .i_z(dwa__11),
-//Outputs		
+//Outputs
 	.o_x(ir__12),
 .o_y(iz__12),
 .o_z(dwa__12)
@@ -14653,7 +14653,7 @@ PhotonBlock1 photon11q(
 .i_x(ir__10),
 .i_y(iz__10),
 .i_z(dwa__10),
-//Outputs		
+//Outputs
 	.o_x(ir__11),
 .o_y(iz__11),
 .o_z(dwa__11)
@@ -14667,7 +14667,7 @@ PhotonBlock1 photon10q(
 .i_x(ir__9),
 .i_y(iz__9),
 .i_z(dwa__9),
-//Outputs		
+//Outputs
 	.o_x(ir__10),
 .o_y(iz__10),
 .o_z(dwa__10)
@@ -14681,7 +14681,7 @@ PhotonBlock1 photon9q(
 .i_x(ir__8),
 .i_y(iz__8),
 .i_z(dwa__8),
-//Outputs		
+//Outputs
 	.o_x(ir__9),
 .o_y(iz__9),
 .o_z(dwa__9)
@@ -14695,7 +14695,7 @@ PhotonBlock1 photon8q(
 .i_x(ir__7),
 .i_y(iz__7),
 .i_z(dwa__7),
-//Outputs		
+//Outputs
 	.o_x(ir__8),
 .o_y(iz__8),
 .o_z(dwa__8)
@@ -14709,7 +14709,7 @@ PhotonBlock1 photon7q(
 .i_x(ir__6),
 .i_y(iz__6),
 .i_z(dwa__6),
-//Outputs		
+//Outputs
 	.o_x(ir__7),
 .o_y(iz__7),
 .o_z(dwa__7)
@@ -14723,7 +14723,7 @@ PhotonBlock1 photon6q(
 .i_x(ir__5),
 .i_y(iz__5),
 .i_z(dwa__5),
-//Outputs		
+//Outputs
 	.o_x(ir__6),
 .o_y(iz__6),
 .o_z(dwa__6)
@@ -14740,7 +14740,7 @@ PhotonBlock1 photon4q(
 .i_x(ir__3),
 .i_y(iz__3),
 .i_z(dwa__3),
-//Outputs		
+//Outputs
 	.o_x(ir__4),
 .o_y(iz__4),
 .o_z(dwa__4)
@@ -14754,7 +14754,7 @@ PhotonBlock1 photon3q(
 .i_x(ir__2),
 .i_y(iz__2),
 .i_z(dwa__2),
-//Outputs		
+//Outputs
 	.o_x(ir__3),
 .o_y(iz__3),
 .o_z(dwa__3)
@@ -14768,7 +14768,7 @@ PhotonBlock1 photon2q(
 .i_x(ir__1),
 .i_y(iz__1),
 .i_z(dwa__1),
-//Outputs		
+//Outputs
 	.o_x(ir__2),
 .o_y(iz__2),
 .o_z(dwa__2)
@@ -14782,12 +14782,12 @@ PhotonBlock1 photon1q(
 .i_x(ir__0),
 .i_y(iz__0),
 .i_z(dwa__0),
-//Outputs		
+//Outputs
 	.o_x(ir__1),
 .o_y(iz__1),
 .o_z(dwa__1)
 );
-	
+
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -14796,226 +14796,226 @@ PhotonBlock1 photon1q(
 
 ///////////////STAGE 2 - square of x and y/////////////////////////
 always @(reset or x_pipe or y_pipe) begin
-	if (reset)	begin      
-		x2_temp=0;      
+	if (reset)	begin
+		x2_temp=0;
 		y2_temp=0;
 	end
 	else	begin
-	   x2_temp=x_pipe*x_pipe;     
+	   x2_temp=x_pipe*x_pipe;
 	   y2_temp=y_pipe*y_pipe;
-	end 
+	end
 end
 
 ///////////////STAGE 3 - square of r/////////////////////////
 always @(reset or x2_P or y2_P) begin
 	if (reset)
-		r2_temp=0; 
-	else 
-		r2_temp=x2_P+y2_P; 
+		r2_temp=0;
+	else
+		r2_temp=x2_P+y2_P;
 end
 
 ///////////////STAGE 4 - Find r and dwa/////////////////////////
 //Create MUX
-always@(layer_pipe or muaFraction1 or muaFraction2 or muaFraction3 or muaFraction4 or muaFraction5)  
-   case(layer_pipe) 
-       1: fractionScaled=muaFraction1; 
-       2: fractionScaled=muaFraction2; 
-       3: fractionScaled=muaFraction3; 
-       4: fractionScaled=muaFraction4; 
-       5: fractionScaled=muaFraction5; 
+always@(layer_pipe or muaFraction1 or muaFraction2 or muaFraction3 or muaFraction4 or muaFraction5)
+   case(layer_pipe)
+       1: fractionScaled=muaFraction1;
+       2: fractionScaled=muaFraction2;
+       3: fractionScaled=muaFraction3;
+       4: fractionScaled=muaFraction4;
+       5: fractionScaled=muaFraction5;
        default: fractionScaled=0; //Sys Reset case
    endcase
 
 
 always @(reset or weight__4 or r_P_wire or weight_P4 or fractionScaled or product64bit or dead__4 or hit__4) begin
 	if (reset) begin
-	   weight_P4=0; 
-		r_P=0;  
-      product64bit=0; 
-      dwa_temp=0; 
+	   weight_P4=0;
+		r_P=0;
+      product64bit=0;
+      dwa_temp=0;
    end
 	else begin
-	   weight_P4=weight__4;    
+	   weight_P4=weight__4;
 		r_P=r_P_wire;  //Connect to sqrt block
-      product64bit=weight_P4*fractionScaled; 
-  
+      product64bit=weight_P4*fractionScaled;
+
       //Checking corner cases
       if (dead__4==1)       //Dead photon
          dwa_temp=weight_P4;//drop all its weight
-      else if (hit__4==1)   //Hit Boundary 
+      else if (hit__4==1)   //Hit Boundary
          dwa_temp=0;        //Don't add to absorption array
       else
-         dwa_temp=product64bit[63:32]; 	  
-	end	
+         dwa_temp=product64bit[63:32];
+	end
 end
 
-assign r2_P_wire=r2_P; 
+assign r2_P_wire=r2_P;
 
 Sqrt_64b	squareRoot (
 				.clk(clock),
 				.num_(r2_P_wire),
 				.res(r_P_wire)
 			);
-			
+
 ///////////////STAGE 14 - Find ir and iz/////////////////////////
 always @(reset or r_P or z_pipe or dead__14 or hit__14 or iz_temp or ir_temp) begin
 	if (reset) begin
-		ir_temp=0; 
+		ir_temp=0;
 		iz_temp=0;
-	end	
+	end
 
 	//Checking corner cases!!!
 	else begin
-		//ir_temp=r_P>>`RGRID_SCLAE_EXP; 
+		//ir_temp=r_P>>`RGRID_SCLAE_EXP;
 		//iz_temp=z_pipe>>`ZGRID_SCLAE_EXP;
-		if (dead__14==1) begin 
-			ir_temp=`NR-1;    
-			iz_temp=`NZ-1; 
+		if (dead__14==1) begin
+			ir_temp=`NR-1;
+			iz_temp=`NZ-1;
 		end
-		else if (hit__14==1) begin 
+		else if (hit__14==1) begin
 			ir_temp=0;
-			iz_temp=0; 
-		end 
+			iz_temp=0;
+		end
 		else begin
 			if ((z_pipe>>`ZGRID_SCLAE_EXP) >=`NZ ) begin
 				iz_temp=`NZ-1;
-			end 
+			end
 			else begin
 				iz_temp=z_pipe>>`ZGRID_SCLAE_EXP;
 			end
-			
+
 			if ((r_P>>`RGRID_SCLAE_EXP) >= `NR ) begin
 				ir_temp=`NR-1;
 			end
 			else begin
-				ir_temp=r_P>>`RGRID_SCLAE_EXP; 
+				ir_temp=r_P>>`RGRID_SCLAE_EXP;
 			end
 		end
 
 //		if (iz_temp>=`NZ) begin
-//			iz_temp=`NZ-1;   
+//			iz_temp=`NZ-1;
 //		end
 //
-//  
+//
 //		if (ir_temp>=`NR) begin
-//			ir_temp=`NR-1; 
+//			ir_temp=`NR-1;
 //		end
 
-         
+
 	end
 end
 
 ///////////////STAGE 15 - Compute MEM address/////////////////////////
 always @(reset or ir__15 or iz__15 or ir_P or iz_P or ir_scaled) begin
 	if (reset) begin
-	   ir_P=0; 
-	   iz_P=0; 
-	   ir_scaled=0; 
-      rADDR_temp=0; 
+	   ir_P=0;
+	   iz_P=0;
+	   ir_scaled=0;
+      rADDR_temp=0;
    end
 	else begin
-	   ir_P=ir__15; 
-	   iz_P=iz__15; 
-	   ir_scaled=ir_P<<`NR_EXP;  
-      rADDR_temp=ir_scaled[15:0] + iz_P[15:0]; 		
+	   ir_P=ir__15;
+	   iz_P=iz__15;
+	   ir_scaled=ir_P<<`NR_EXP;
+      rADDR_temp=ir_scaled[15:0] + iz_P[15:0];
    end
 end
 
 ///////////////STAGE 16 - MEM read/////////////////////////
 always @(reset or ir__16 or ir__17 or iz__16 or iz__17 or ir__18 or iz__18 or newAbs_P or q or newAbs_temp) begin
 	if (reset) begin
-		oldAbs_MEM=0; 
+		oldAbs_MEM=0;
 	end else begin
-	   //Check Corner cases (RAW hazards) 
+	   //Check Corner cases (RAW hazards)
       if ((ir__16==ir__17) && (iz__16==iz__17)) begin
-         oldAbs_MEM=newAbs_temp; 
-      end else if ((ir__16==ir__18) && (iz__16==iz__18)) begin   
+         oldAbs_MEM=newAbs_temp;
+      end else if ((ir__16==ir__18) && (iz__16==iz__18)) begin
          oldAbs_MEM=newAbs_P;       //RAW hazard
       end else begin
-         oldAbs_MEM=q;   //Connect to REAL dual-port MEM 
+         oldAbs_MEM=q;   //Connect to REAL dual-port MEM
 		end
 	end
-	
+
 end
 
 ///////////////STAGE 17 - Update Weight/////////////////////////
 //TO BE TESTED!!!
 always @(reset or dwa__17 or weight__17 or weight_P or dwa_P or oldAbs_P) begin
 	if(reset) begin
-	   dwa_P=0;   //How to specify Base 10??? 
-		weight_P=0; 
+	   dwa_P=0;   //How to specify Base 10???
+		weight_P=0;
 		newWeight = 0;
-		newAbs_temp =0; 
+		newAbs_temp =0;
    end
 	else begin
 	   dwa_P=dwa__17;
-	   weight_P=weight__17; 
-		newWeight=weight_P-dwa_P; 
+	   weight_P=weight__17;
+		newWeight=weight_P-dwa_P;
 		newAbs_temp=oldAbs_P+dwa_P;   //Check bit width casting (64-bit<--64-bit+32-bit)
-   end 
-end    
-		
+   end
+end
+
 //////////////////////////////////////////////////////////////////////////////
 //STAGE BY STAGE - EXTRA REGISTERS
-//////////////////////////////////////////////////////////////////////////////   
-always @ (posedge clock) 
+//////////////////////////////////////////////////////////////////////////////
+always @ (posedge clock)
 begin
-	if (reset) begin	    
+	if (reset) begin
 	  //Stage 2
-	  x2_P<=0;         
+	  x2_P<=0;
 	  y2_P<=0;
-	  
-	  //Stage 3
-	  r2_P<=0;	  
-	  
-	  //Stage 15
-     rADDR_16<=0; 
 
-	  //Stage 16 
-	  oldAbs_P<=0; 
-	  rADDR_17<=0; 
-	  
+	  //Stage 3
+	  r2_P<=0;
+
+	  //Stage 15
+     rADDR_16<=0;
+
+	  //Stage 16
+	  oldAbs_P<=0;
+	  rADDR_17<=0;
+
 	  //Stage 17
-	  newAbs_P<=0; 
-	 // wADDR <=0; 
+	  newAbs_P<=0;
+	 // wADDR <=0;
 	end
-	
-	else if (enable) begin	    
+
+	else if (enable) begin
 	  //Stage 2
 	  x2_P<=x2_temp;    //From comb logic above
-	  y2_P<=y2_temp;    
-      
+	  y2_P<=y2_temp;
+
  	  //Stage 3
- 	  r2_P<=r2_temp;   
+ 	  r2_P<=r2_temp;
 
 	  //Stage 15
-     rADDR_16<=rADDR_temp; 
-     
-     //Stage 16 
-	  oldAbs_P<=oldAbs_MEM; 
-	  rADDR_17<=rADDR_16; 
-	  	     
+     rADDR_16<=rADDR_temp;
+
+     //Stage 16
+	  oldAbs_P<=oldAbs_MEM;
+	  rADDR_17<=rADDR_16;
+
      //Stage 17
-     newAbs_P<=newAbs_temp; 
-   //  wADDR <=rADDR_17; 
+     newAbs_P<=newAbs_temp;
+   //  wADDR <=rADDR_17;
 	end
 end
 
 //////////////////////////////////////////////////////////////////////////////
 //INTERFACE to on-chip MEM
-//////////////////////////////////////////////////////////////////////////////   
-always @ (posedge clock) 
+//////////////////////////////////////////////////////////////////////////////
+always @ (posedge clock)
 begin
-	if (reset) 
-		  wren <=0; 
+	if (reset)
+		  wren <=0;
 	else
-		  wren<=1;          //Memory enabled every cycle after global enable 
-end	
-	    
-assign rdaddress=rADDR_temp; 
-assign wraddress=rADDR_17; 
+		  wren<=1;          //Memory enabled every cycle after global enable
+end
 
-assign data=newAbs_temp; 
+assign rdaddress=rADDR_temp;
+assign wraddress=rADDR_17;
+
+assign data=newAbs_temp;
 
 endmodule
 
@@ -15026,10 +15026,10 @@ module PhotonBlock1(
 	clock,
 	reset,
 	enable,
-	
-   i_x, 
-   i_y, 
-   i_z, 
+
+   i_x,
+   i_y,
+   i_z,
 
 	//Outputs
 	o_x,
@@ -15086,10 +15086,10 @@ module PhotonBlock2(
 	clock,
 	reset,
 	enable,
-	
-   i_x, 
-   i_y, 
-   i_z, 
+
+   i_x,
+   i_y,
+   i_z,
 
 	//Outputs
 	o_x,
@@ -15154,7 +15154,7 @@ module ScattererReflectorWrapper (
 	//MEMORY WRAPPER
 
 		//Inputs
-		
+
 		//Photon values
 		i_uz1_pipeWrapper,
 		i_hit2_pipeWrapper,
@@ -15195,7 +15195,7 @@ module ScattererReflectorWrapper (
 			//Outputs
 		tindex,
 		fresIndex,
-		
+
 		//Constants
 		down_niOverNt_1,
 		down_niOverNt_2,
@@ -15227,19 +15227,19 @@ module ScattererReflectorWrapper (
 		upCritAngle_2,
 		upCritAngle_3,
 		upCritAngle_4,
-		
+
 		//Outputs
 		ux_scatterer,
 		uy_scatterer,
 		uz_scatterer,
-		
+
 		ux_reflector,
 		uy_reflector,
 		uz_reflector,
 		layer_reflector,
 		dead_reflector
 	);
-	
+
 //-------------------PARAMETER DEFINITION----------------------
 //
 //
@@ -15248,11 +15248,11 @@ module ScattererReflectorWrapper (
 //
 //
 //Assign values to parameters used later in the program.
-	
+
 //parameter INTMAX_2 = 64'h3FFFFFFF00000001;
 //The above parameter is never used in the ScattererReflectorWrapper module itself
-	
-	
+
+
 //-----------------------------PIN DECLARATION----------------------
 //
 //
@@ -15684,14 +15684,14 @@ Scatterer scatterer_0 (
 			.op5_36_2(op5_36_2_scatterer),
 			.op6_36_1(op6_36_1_scatterer),
 			.op6_36_2(op6_36_2_scatterer),
-			
+
 			//Final calculated values
 			.ux_scatterer(ux_scatterer),
 			.uy_scatterer(uy_scatterer),
 			.uz_scatterer(uz_scatterer)
 
 		);
-		
+
 Reflector reflector_0 (
 
 			//INPUTS
@@ -15781,11 +15781,11 @@ Reflector reflector_0 (
 			.dead_reflector(dead_reflector)
 
 );
-		
 
 
 
-	
+
+
 //Multipliers, Dividers, and Sqrts for Scatterer & Reflector
 
 assign op1_2_1 = (i_hit2_pipeWrapper == 1'b1) ? op1_2_1_reflector		:		op1_2_1_scatterer;
@@ -15796,7 +15796,7 @@ Mult_32b	multiplier1_2 (
 				.datab(op1_2_2),
 				.result(prod1_2)
 			);
-			
+
 assign op1_4_1 = (i_hit4_pipeWrapper == 1'b1) ? op1_4_1_reflector		:		op1_4_1_scatterer;
 assign op1_4_2 = (i_hit4_pipeWrapper == 1'b1) ? op1_4_2_reflector		:		op1_4_2_scatterer;
 
@@ -15805,7 +15805,7 @@ Mult_32b	multiplier1_4 (
 				.datab(op1_4_2),
 				.result(prod1_4)
 			);
-			
+
 
 
 Mult_32b	multiplier1_33 (
@@ -15870,7 +15870,7 @@ Mult_32b	multiplier2_36 (
 				.datab(op2_36_2),
 				.result(prod2_36)
 			);
-			
+
 Mult_32b	multiplier3_36 (
 				.dataa(op3_36_1_scatterer),
 				.datab(op3_36_2_scatterer),
@@ -15883,7 +15883,7 @@ Mult_32b	multiplier4_36 (
 				.datab(op4_36_2_scatterer),
 				.result(prod4_36)
 			);
-			
+
 
 Mult_32b	multiplier5_36 (
 				.dataa(op5_36_1_scatterer),
@@ -15897,7 +15897,7 @@ Mult_32b	multiplier6_36 (
 				.datab(op6_36_2_scatterer),
 				.result(prod6_36)
 			);
-			
+
 assign sqrtOperand1_6 = (i_hit6_pipeWrapper == 1'b1) ? sqrtOperand1_6_reflector	:		sqrtOperand1_6_scatterer;
 
 Sqrt_64b	squareRoot1_6 (
@@ -15915,10 +15915,10 @@ Div_64b		divide1_16 (
 				.quotient(quot1_16),
 				.remain(divRemainder)
 			);
-				
+
 
 endmodule
-			
+
 
 
 
@@ -15935,7 +15935,7 @@ module InternalsBlock_Reflector(
 	i_uz2_2,		//(uz2)^2, new uz squared.
 	i_ux_transmitted,	//new value for ux, if the photon transmits to the next layer
 	i_uy_transmitted,	//new value for uy, if the photon transmits to the next layer
-	
+
 	//Outputs
 	o_uz_2,
 	o_uz2,
@@ -16012,7 +16012,7 @@ endmodule
 
 
 module Reflector (
-	
+
 	//INPUTS
 	clock,
 	reset,
@@ -16030,7 +16030,7 @@ module Reflector (
 	i_uz36,
 	i_layer36,
 	i_dead36,
-	
+
 	//Constants
 	down_niOverNt_1,
 	down_niOverNt_2,
@@ -16062,25 +16062,25 @@ module Reflector (
 	upCritAngle_2,
 	upCritAngle_3,
 	upCritAngle_4,
-	
+
 	//Fresnels inputs
 	rnd,
 	up_rFresnel,
 	down_rFresnel,
-	
+
 	//Mathematics Results
 	prod1_2,
 	prod1_4,
 	sqrtResult1_6,
 	prod1_36,
 	prod2_36,
-	
-	
+
+
 	//OUTPUTS
-	
+
 	//Fresnels outputs
 	fresIndex,
-	
+
 	//Mathematics Operands
 	op1_2_1,
 	op1_2_2,
@@ -16092,7 +16092,7 @@ module Reflector (
 	op2_36_1,
 	op2_36_2,
 
-	
+
 	//Final Calcu`LATed Results
 	ux_reflector,
 	uy_reflector,
@@ -16109,7 +16109,7 @@ module Reflector (
 //
 //
 //Assign values to parameters used `LATer in the program.
-	
+
 //parameter `DIV = 20;
 //parameter `SQRT = 10;
 //parameter `LAT = `DIV + `SQRT + 7;
@@ -16157,16 +16157,16 @@ input		[31:0]			up_niOverNt_2;
 input		[31:0]			up_niOverNt_3;
 input		[31:0]			up_niOverNt_4;
 input		[31:0]			up_niOverNt_5;
-input		[63:0]			down_niOverNt_2_1; 
-input		[63:0]			down_niOverNt_2_2; 
-input		[63:0]			down_niOverNt_2_3; 
-input		[63:0]			down_niOverNt_2_4; 
-input		[63:0]			down_niOverNt_2_5; 
-input		[63:0]			up_niOverNt_2_1; 
-input		[63:0]			up_niOverNt_2_2; 
-input		[63:0]			up_niOverNt_2_3; 
-input		[63:0]			up_niOverNt_2_4; 
-input		[63:0]			up_niOverNt_2_5; 
+input		[63:0]			down_niOverNt_2_1;
+input		[63:0]			down_niOverNt_2_2;
+input		[63:0]			down_niOverNt_2_3;
+input		[63:0]			down_niOverNt_2_4;
+input		[63:0]			down_niOverNt_2_5;
+input		[63:0]			up_niOverNt_2_1;
+input		[63:0]			up_niOverNt_2_2;
+input		[63:0]			up_niOverNt_2_3;
+input		[63:0]			up_niOverNt_2_4;
+input		[63:0]			up_niOverNt_2_5;
 input		[31:0]			downCritAngle_0;
 input		[31:0]			downCritAngle_1;
 input		[31:0]			downCritAngle_2;
@@ -16231,7 +16231,7 @@ wire					reset;
 wire					enable;
 //Values from Photon Pipeline
 wire		[31:0]			i_uz1;
-wire		[31:0]			i_uz3; 
+wire		[31:0]			i_uz3;
 wire		[2:0]			i_layer3;
 wire		[31:0]			i_ux35;
 wire		[31:0]			i_uy35;
@@ -16254,16 +16254,16 @@ wire		[31:0]			up_niOverNt_2;
 wire		[31:0]			up_niOverNt_3;
 wire		[31:0]			up_niOverNt_4;
 wire		[31:0]			up_niOverNt_5;
-wire		[63:0]			down_niOverNt_2_1;  
-wire		[63:0]			down_niOverNt_2_2;  
-wire		[63:0]			down_niOverNt_2_3;  
-wire		[63:0]			down_niOverNt_2_4;  
-wire		[63:0]			down_niOverNt_2_5;  
-wire		[63:0]			up_niOverNt_2_1;  
-wire		[63:0]			up_niOverNt_2_2;  
-wire		[63:0]			up_niOverNt_2_3;  
-wire		[63:0]			up_niOverNt_2_4;  
-wire		[63:0]			up_niOverNt_2_5;  
+wire		[63:0]			down_niOverNt_2_1;
+wire		[63:0]			down_niOverNt_2_2;
+wire		[63:0]			down_niOverNt_2_3;
+wire		[63:0]			down_niOverNt_2_4;
+wire		[63:0]			down_niOverNt_2_5;
+wire		[63:0]			up_niOverNt_2_1;
+wire		[63:0]			up_niOverNt_2_2;
+wire		[63:0]			up_niOverNt_2_3;
+wire		[63:0]			up_niOverNt_2_4;
+wire		[63:0]			up_niOverNt_2_5;
 wire		[31:0]			downCritAngle_0;
 wire		[31:0]			downCritAngle_1;
 wire		[31:0]			downCritAngle_2;
@@ -16332,7 +16332,7 @@ wire					toAnd2_36_1;
 wire					toAnd2_36_2;
 wire					overflow2_36;
 wire					negOverflow2_36;
-	
+
 //Wiring for calcu`LATing final Results
 reg		[31:0]			new_ux;
 reg		[31:0]			new_uy;
@@ -16680,14 +16680,14 @@ reg		[31:0]			new_uy_transmitted;
 //generate
 //	for(i=`LAT; i>0; i=i-1) begin: internalPipe_Reflector
 //		case(i)
-//		
+//
 //		2:
 //		InternalsBlock_Reflector pipeReg(
 //			Inputs
 //			.clock(clock),
 //			.reset(reset),
 //			.enable(enable),
-//			
+//
 //			Changed Value
 //			.i_uz_2(new_uz_2),			//uz^2
 //			.i_uz2(uz2[i-1]),			//new uz, should the photon transmit to new layer
@@ -16706,7 +16706,7 @@ reg		[31:0]			new_uy_transmitted;
 //			.o_ux_transmitted(ux_transmitted[i]),
 //			.o_uy_transmitted(uy_transmitted[i])
 //		);
-//		
+//
 //		3:
 //		InternalsBlock_Reflector pipeReg(
 //			Inputs
@@ -16757,7 +16757,7 @@ reg		[31:0]			new_uy_transmitted;
 //			.o_ux_transmitted(ux_transmitted[i]),
 //			.o_uy_transmitted(uy_transmitted[i])
 //		);
-//		
+//
 //		5:
 //		InternalsBlock_Reflector pipeReg(
 //			Inputs
@@ -16783,7 +16783,7 @@ reg		[31:0]			new_uy_transmitted;
 //			.o_ux_transmitted(ux_transmitted[i]),
 //			.o_uy_transmitted(uy_transmitted[i])
 //		);
-//		
+//
 //		(`SQRT+6):
 //		InternalsBlock_Reflector pipeReg(
 //			Inputs
@@ -16809,7 +16809,7 @@ reg		[31:0]			new_uy_transmitted;
 //			.o_ux_transmitted(ux_transmitted[i]),
 //			.o_uy_transmitted(uy_transmitted[i])
 //		);
-//		
+//
 //		(`SQRT+`DIV+6):
 //		InternalsBlock_Reflector pipeReg(
 //			Inputs
@@ -16842,7 +16842,7 @@ reg		[31:0]			new_uy_transmitted;
 //			.clock(clock),
 //			.reset(reset),
 //			.enable(enable),
-//		
+//
 //			.i_uz_2(uz_2[i-1]),			//uz^2
 //			.i_uz2(uz2[i-1]),			//new uz, should the photon transmit to new layer
 //			.i_oneMinusUz_2(oneMinusUz_2[i-1]), 	//(1-uz)^2
@@ -16850,7 +16850,7 @@ reg		[31:0]			new_uy_transmitted;
 //			.i_uz2_2(uz2_2[i-1]),			//(uz2)^2, new uz squared.
 //			.i_ux_transmitted(ux_transmitted[i-1]), //New value for ux, if photon moves to next layer
 //			.i_uy_transmitted(uy_transmitted[i-1]),	//New value for uy, if photon moves to next layer
-//			
+//
 //			Outputs
 //			.o_uz_2(uz_2[i]),
 //			.o_uz2(uz2[i]),
@@ -16862,19 +16862,19 @@ reg		[31:0]			new_uy_transmitted;
 //		);
 //		endcase
 //	end
-//endgenerate	
+//endgenerate
 
 
 
 // special cases first
-	
+
 	//	forloop2
 		InternalsBlock_Reflector pipeReg2(
 			//Inputs
 			.clock(clock),
 			.reset(reset),
 			.enable(enable),
-			
+
 			//Changed Value
 			.i_uz_2(new_uz_2),			//uz^2
 			.i_uz2(uz2__1),			//new uz, should the photon transmit to new layer
@@ -16893,7 +16893,7 @@ reg		[31:0]			new_uy_transmitted;
 			.o_ux_transmitted(ux_transmitted__2),
 			.o_uy_transmitted(uy_transmitted__2)
 		);
-		
+
 		// for loop3:
 		InternalsBlock_Reflector pipeReg3(
 			//Inputs
@@ -16919,7 +16919,7 @@ reg		[31:0]			new_uy_transmitted;
 			.o_ux_transmitted(ux_transmitted__3),
 			.o_uy_transmitted(uy_transmitted__3)
 		);
-		
+
 		// for loop4
 		InternalsBlock_Reflector pipeReg4(
 			//Inputs
@@ -16945,7 +16945,7 @@ reg		[31:0]			new_uy_transmitted;
 			.o_ux_transmitted(ux_transmitted__4),
 			.o_uy_transmitted(uy_transmitted__4)
 		);
-		
+
 		//for loop5
 		InternalsBlock_Reflector pipeReg5(
 			//Inputs
@@ -16971,7 +16971,7 @@ reg		[31:0]			new_uy_transmitted;
 			.o_ux_transmitted(ux_transmitted__5),
 			.o_uy_transmitted(uy_transmitted__5)
 		);
-		
+
 		//for loop(10+6):
 		InternalsBlock_Reflector pipeReg16(
 			//Inputs
@@ -16997,7 +16997,7 @@ reg		[31:0]			new_uy_transmitted;
 			.o_ux_transmitted(ux_transmitted__16),
 			.o_uy_transmitted(uy_transmitted__16)
 		);
-		
+
 		//for loop (10+20+6):
 		InternalsBlock_Reflector pipeReg36(
 			//Inputs
@@ -17025,9 +17025,9 @@ reg		[31:0]			new_uy_transmitted;
 			.o_uy_transmitted(uy_transmitted__36)
 		);
 
-		
+
 		//rest of loop
-		
+
 InternalsBlock_Reflector pipeReg37(
 //Inputs
 
@@ -17856,7 +17856,7 @@ always @ (posedge clock) begin
 		uz_reflector	<= new_uz;
 		layer_reflector <= new_layer;
 		dead_reflector	<= new_dead;
-	end	
+	end
 end
 
 
@@ -17875,7 +17875,7 @@ end
 //
 //This is where the asynchronous logic takes place.  Things that
 //occur here include setting up wiring to send to the multipliers,
-//and square root unit.  Also, products brought in from the wrapper 
+//and square root unit.  Also, products brought in from the wrapper
 //are placed on the appropriate wires for placement in the pipeline.
 
 //-------------MUXES for SYNCHRONOUS LOGIC--------
@@ -17939,7 +17939,7 @@ always @ (i_uz35 or i_layer35) begin
 		endcase
 	end
 	endcase
-		
+
 end
 
 
@@ -18014,23 +18014,23 @@ always @ (i_uz35 or i_layer35 or down_niOverNt_1 or up_niOverNt_1 or
 	case (i_uz35[31])
 	0: begin//uz >= 0
 		case (i_layer35)
-			1:begin	
+			1:begin
 				op1_36_2		=	down_niOverNt_1;
 				op2_36_2		=	down_niOverNt_1;
 			end
-			2:begin	
+			2:begin
 				op1_36_2		=	down_niOverNt_2;
 				op2_36_2		=	down_niOverNt_2;
 			end
-			3:begin	
+			3:begin
 				op1_36_2		=	down_niOverNt_3;
 				op2_36_2		=	down_niOverNt_3;
 			end
-			4:begin	
+			4:begin
 				op1_36_2		=	down_niOverNt_4;
 				op2_36_2		=	down_niOverNt_4;
 			end
-			5:begin	
+			5:begin
 				op1_36_2		=	down_niOverNt_5;
 				op2_36_2		=	down_niOverNt_5;
 			end
@@ -18163,9 +18163,9 @@ always @ (overflow1_36 or negOverflow1_36 or prod1_36 or
 	//Should never occur
 	3:	new_ux_transmitted = {prod1_36[63:63], prod1_36[59:29]};
 	endcase
-	
+
 	case ({overflow2_36, negOverflow2_36})
-	
+
 	0:	new_uy_transmitted = {prod2_36[63:63], prod2_36[59:29]};
 	1:	new_uy_transmitted = `INTMIN;
 	2:	new_uy_transmitted = `INTMAX;
@@ -18191,7 +18191,7 @@ end
 //
 //
 always @ (i_uz36 or downCritAngle or upCritAngle or down_rFresnel or i_ux36 or
-			i_uy36 or i_layer36 or i_dead36 or rnd or up_rFresnel or ux_transmitted__37 or 
+			i_uy36 or i_layer36 or i_dead36 or rnd or up_rFresnel or ux_transmitted__37 or
 			uy_transmitted__37 or uz2__37) begin
 	//REFLECTED -- Due to total internal reflection while moving down
 	if (~i_uz36[31] && i_uz36 <= downCritAngle) begin
@@ -18247,7 +18247,7 @@ always @ (i_uz36 or downCritAngle or upCritAngle or down_rFresnel or i_ux36 or
 			new_uz			= -uz2__37;
 		end
 		endcase
-	
+
 	end
 end
 
@@ -18282,7 +18282,7 @@ assign blank = 32'b000000000000000000000000000000;
 single_port_ram sinp_replace(.clk (clock), .addr (pindex), .data (blank), .we (1'b0), .out (sinp));
 single_port_ram cosp_replace(.clk (clock), .addr (pindex), .data (blank), .we (1'b0), .out (cosp));
 
-			
+
 endmodule
 
 
@@ -18291,7 +18291,7 @@ module InternalsBlock(
 	clock,
 	reset,
 	enable,
-	
+
 	i_sint,
 	i_cost,
 	i_sinp,
@@ -18554,7 +18554,7 @@ module Scatterer (
 	cost_Mem,
 	sinp_Mem,
 	cosp_Mem,
-	
+
 	//OUTPUTS
 	op1_2_1,
 	op1_2_2,
@@ -18589,15 +18589,15 @@ module Scatterer (
 	op5_36_2,
 	op6_36_1,
 	op6_36_2,
-	
+
 	//Final calculated values
 	ux_scatterer,
 	uy_scatterer,
 	uz_scatterer
-	
-	
+
+
 	);
-	
+
 //-------------------PARAMETER DEFINITION----------------------
 //
 //
@@ -18606,7 +18606,7 @@ module Scatterer (
 //
 //
 //Assign values to parameters used later in the program.
-	
+
 //parameter DIV = 20;
 //parameter SQRT = 10;
 //parameter LAT = DIV + SQRT + 7;
@@ -18812,7 +18812,7 @@ wire [63:0]bigOr;
 assign bigOr = quot1_16|prod1_36|prod2_36|({32'hFFFFFFFF,32'hFFFFFFFF});
 wire reset_new;
 assign reset_new = reset & bigOr[63] & bigOr[62] & bigOr[61] & bigOr[60] & bigOr[59] & bigOr[58] & bigOr[57] & bigOr[56] & bigOr[55] & bigOr[54] & bigOr[53] & bigOr[52] & bigOr[51] & bigOr[50] & bigOr[49] & bigOr[48] & bigOr[47] & bigOr[46] & bigOr[45] & bigOr[44] & bigOr[43] & bigOr[42] & bigOr[41] & bigOr[40] & bigOr[39] & bigOr[38] & bigOr[37] & bigOr[36] & bigOr[35] & bigOr[34] & bigOr[33] & bigOr[32] & bigOr[31] & bigOr[30] & bigOr[29] & bigOr[28] & bigOr[27] & bigOr[26] & bigOr[25] & bigOr[24] & bigOr[23] & bigOr[22] & bigOr[21] & bigOr[20] & bigOr[19] & bigOr[18] & bigOr[17] & bigOr[16] & bigOr[15] & bigOr[14] & bigOr[13] & bigOr[12] & bigOr[11] & bigOr[10] & bigOr[9] & bigOr[8] & bigOr[7] & bigOr[6] & bigOr[5] & bigOr[4] & bigOr[3] & bigOr[2] & bigOr[1] & bigOr[0];
- 
+
 
 //-----------------------------END Pin Types-------------------------
 
@@ -19902,7 +19902,7 @@ wire		[31:0]		normalUz;
 wire		[31:0]		uz_sub_1;
 wire		[31:0]		uz_sub_2;
 wire					uzOverflow;
-	
+
 wire		[31:0]		new_ux;
 wire		[31:0]		new_uy;
 wire		[31:0]		new_uz;
@@ -19946,14 +19946,14 @@ wire				negOverflow2_36;
 //generate
 //	for(i=`LAT; i>0; i=i-1) begin: internalPipe
 //		case(i)
-//		
+//
 //		2:
 //		InternalsBlock pipeReg(
 //			//Inputs
 //			.clock(clock),
 //			.reset(reset),
 //			.enable(enable),
-//			
+//
 //			.i_sint(sint[i-1]),
 //			.i_cost(cost[i-1]),
 //			.i_sinp(sinp[i-1]),
@@ -19979,8 +19979,8 @@ wire				negOverflow2_36;
 //			.i_uyCost(uyCost[i-1]),
 //			.i_uxQuotient(uxQuotient[i-1]),
 //			.i_uyQuotient(uyQuotient[i-1]),
-//			
-//			//Outputs			
+//
+//			//Outputs
 //			.o_sint(sint[i]),
 //			.o_cost(cost[i]),
 //			.o_sinp(sinp[i]),
@@ -20012,7 +20012,7 @@ wire				negOverflow2_36;
 //			.clock(clock),
 //			.reset(reset),
 //			.enable(enable),
-//			
+//
 //			.i_sint(sint[i-1]),
 //			.i_cost(cost[i-1]),
 //			.i_sinp(sinp[i-1]),
@@ -20038,8 +20038,8 @@ wire				negOverflow2_36;
 //			.i_uyCost(uyCost[i-1]),
 //			.i_uxQuotient(uxQuotient[i-1]),
 //			.i_uyQuotient(uyQuotient[i-1]),
-//			
-//			//Outputs			
+//
+//			//Outputs
 //			.o_sint(sint[i]),
 //			.o_cost(cost[i]),
 //			.o_sinp(sinp[i]),
@@ -20071,7 +20071,7 @@ wire				negOverflow2_36;
 //			.clock(clock),
 //			.reset(reset),
 //			.enable(enable),
-//			
+//
 //			.i_sint(sint[i-1]),
 //			.i_cost(cost[i-1]),
 //			.i_sinp(sinp[i-1]),
@@ -20097,8 +20097,8 @@ wire				negOverflow2_36;
 //			.i_uyCost(uyCost[i-1]),
 //			.i_uxQuotient(uxQuotient[i-1]),
 //			.i_uyQuotient(uyQuotient[i-1]),
-//			
-//			//Outputs			
+//
+//			//Outputs
 //			.o_sint(sint[i]),
 //			.o_cost(cost[i]),
 //			.o_sinp(sinp[i]),
@@ -20130,7 +20130,7 @@ wire				negOverflow2_36;
 //			.clock(clock),
 //			.reset(reset),
 //			.enable(enable),
-//			
+//
 //			.i_sint(sint[i-1]),
 //			.i_cost(cost[i-1]),
 //			.i_sinp(sinp[i-1]),
@@ -20156,8 +20156,8 @@ wire				negOverflow2_36;
 //			.i_uyCost(uyCost[i-1]),
 //			.i_uxQuotient(uxQuotient[i-1]),
 //			.i_uyQuotient(uyQuotient[i-1]),
-//			
-//			//Outputs			
+//
+//			//Outputs
 //			.o_sint(sint[i]),
 //			.o_cost(cost[i]),
 //			.o_sinp(sinp[i]),
@@ -20183,14 +20183,14 @@ wire				negOverflow2_36;
 //			.o_uxQuotient(uxQuotient[i]),
 //			.o_uyQuotient(uyQuotient[i])
 //		);
-//		
+//
 //		(`SQRT+`DIV+3):
 //		InternalsBlock pipeReg(
 //			//Inputs
 //			.clock(clock),
 //			.reset(reset),
 //			.enable(enable),
-//			
+//
 //			//Changed Value
 //			.i_sint(new_sint),
 //			//Changed Value
@@ -20222,8 +20222,8 @@ wire				negOverflow2_36;
 //			.i_uyCost(uyCost[i-1]),
 //			.i_uxQuotient(uxQuotient[i-1]),
 //			.i_uyQuotient(uyQuotient[i-1]),
-//			
-//			//Outputs			
+//
+//			//Outputs
 //			.o_sint(sint[i]),
 //			.o_cost(cost[i]),
 //			.o_sinp(sinp[i]),
@@ -20249,14 +20249,14 @@ wire				negOverflow2_36;
 //			.o_uxQuotient(uxQuotient[i]),
 //			.o_uyQuotient(uyQuotient[i])
 //		);
-//		
+//
 //		(`SQRT+`DIV+4):
 //		InternalsBlock pipeReg(
 //			//Inputs
 //			.clock(clock),
 //			.reset(reset),
 //			.enable(enable),
-//			
+//
 //			.i_sint(sint[i-1]),
 //			.i_cost(cost[i-1]),
 //			.i_sinp(sinp[i-1]),
@@ -20285,8 +20285,8 @@ wire				negOverflow2_36;
 //			.i_uyCost(uyCost[i-1]),
 //			.i_uxQuotient(uxQuotient[i-1]),
 //			.i_uyQuotient(uyQuotient[i-1]),
-//			
-//			//Outputs			
+//
+//			//Outputs
 //			.o_sint(sint[i]),
 //			.o_cost(cost[i]),
 //			.o_sinp(sinp[i]),
@@ -20312,14 +20312,14 @@ wire				negOverflow2_36;
 //			.o_uxQuotient(uxQuotient[i]),
 //			.o_uyQuotient(uyQuotient[i])
 //		);
-//		
+//
 //		(`SQRT+`DIV+5):
 //		InternalsBlock pipeReg(
 //			//Inputs
 //			.clock(clock),
 //			.reset(reset),
 //			.enable(enable),
-//			
+//
 //			.i_sint(sint[i-1]),
 //			.i_cost(cost[i-1]),
 //			.i_sinp(sinp[i-1]),
@@ -20347,8 +20347,8 @@ wire				negOverflow2_36;
 //			.i_uyCost(uyCost[i-1]),
 //			.i_uxQuotient(uxQuotient[i-1]),
 //			.i_uyQuotient(uyQuotient[i-1]),
-//			
-//			//Outputs			
+//
+//			//Outputs
 //			.o_sint(sint[i]),
 //			.o_cost(cost[i]),
 //			.o_sinp(sinp[i]),
@@ -20374,7 +20374,7 @@ wire				negOverflow2_36;
 //			.o_uxQuotient(uxQuotient[i]),
 //			.o_uyQuotient(uyQuotient[i])
 //		);
-//		
+//
 //		(`SQRT+`DIV+6):
 //		InternalsBlock pipeReg(
 //			//Inputs
@@ -20412,8 +20412,8 @@ wire				negOverflow2_36;
 //			.i_uxQuotient(new_uxQuotient),
 //			//Changed Value
 //			.i_uyQuotient(new_uyQuotient),
-//			
-//			//Outputs			
+//
+//			//Outputs
 //			.o_sint(sint[i]),
 //			.o_cost(cost[i]),
 //			.o_sinp(sinp[i]),
@@ -20439,14 +20439,14 @@ wire				negOverflow2_36;
 //			.o_uxQuotient(uxQuotient[i]),
 //			.o_uyQuotient(uyQuotient[i])
 //		);
-//		
+//
 //		default:
 //		InternalsBlock pipeReg(
 //			//Inputs
 //			.clock(clock),
 //			.reset(reset),
 //			.enable(enable),
-//			
+//
 //			.i_sint(sint[i-1]),
 //			.i_cost(cost[i-1]),
 //			.i_sinp(sinp[i-1]),
@@ -20471,8 +20471,8 @@ wire				negOverflow2_36;
 //			.i_uyCost(uyCost[i-1]),
 //			.i_uxQuotient(uxQuotient[i-1]),
 //			.i_uyQuotient(uyQuotient[i-1]),
-//			
-//			//Outputs			
+//
+//			//Outputs
 //			.o_sint(sint[i]),
 //			.o_cost(cost[i]),
 //			.o_sinp(sinp[i]),
@@ -20500,7 +20500,7 @@ wire				negOverflow2_36;
 //		);
 //		endcase
 //	end
-//endgenerate	
+//endgenerate
 
 //Expanded generate loop:
 //special cases first
@@ -20510,7 +20510,7 @@ wire				negOverflow2_36;
 			.clock(clock),
 			.reset(reset),
 			.enable(enable),
-			
+
 			.i_sint(sint__1),
 			.i_cost(cost__1),
 			.i_sinp(sinp__1),
@@ -20536,8 +20536,8 @@ wire				negOverflow2_36;
 			.i_uyCost(uyCost__1),
 			.i_uxQuotient(uxQuotient__1),
 			.i_uyQuotient(uyQuotient__1),
-			
-			//Outputs			
+
+			//Outputs
 			.o_sint(sint__2),
 			.o_cost(cost__2),
 			.o_sinp(sinp__2),
@@ -20563,8 +20563,8 @@ wire				negOverflow2_36;
 			.o_uxQuotient(uxQuotient__2),
 			.o_uyQuotient(uyQuotient__2)
 		);
-		
-		
+
+
 	//	forloop3
 		InternalsBlock pipeReg3(
 //Inputs
@@ -20596,7 +20596,7 @@ wire				negOverflow2_36;
 .i_uyCost(uyCost__2),
 .i_uxQuotient(uxQuotient__2),
 .i_uyQuotient(uyQuotient__2),
-//Outputs			 
+//Outputs
 .o_sint(sint__3),
 .o_cost(cost__3),
 .o_sinp(sinp__3),
@@ -20621,7 +20621,7 @@ wire				negOverflow2_36;
 .o_uyCost(uyCost__3),
 .o_uxQuotient(uxQuotient__3),
 .o_uyQuotient(uyQuotient__3)
-);  
+);
 
 		//forloop4:
 		InternalsBlock pipeReg4(
@@ -20654,7 +20654,7 @@ wire				negOverflow2_36;
 .i_uyCost(uyCost__3),
 .i_uxQuotient(uxQuotient__3),
 .i_uyQuotient(uyQuotient__3),
-//Outputs			 
+//Outputs
 .o_sint(sint__4),
 .o_cost(cost__4),
 .o_sinp(sinp__4),
@@ -20679,8 +20679,8 @@ wire				negOverflow2_36;
 .o_uyCost(uyCost__4),
 .o_uxQuotient(uxQuotient__4),
 .o_uyQuotient(uyQuotient__4)
-);  
-		
+);
+
 InternalsBlock pipeReg16(
 //Inputs
 .clock(clock),
@@ -20711,7 +20711,7 @@ InternalsBlock pipeReg16(
 .i_uyCost(uyCost__15),
 .i_uxQuotient(uxQuotient__15),
 .i_uyQuotient(uyQuotient__15),
-//Outputs			 
+//Outputs
 .o_sint(sint__16),
 .o_cost(cost__16),
 .o_sinp(sinp__16),
@@ -20736,10 +20736,10 @@ InternalsBlock pipeReg16(
 .o_uyCost(uyCost__16),
 .o_uxQuotient(uxQuotient__16),
 .o_uyQuotient(uyQuotient__16)
-);  
-		
+);
+
 		//forloop 33 (10+20+3):
-		
+
 InternalsBlock pipeReg33(
 //Inputs
 .clock(clock),
@@ -20776,7 +20776,7 @@ InternalsBlock pipeReg33(
 .i_uyCost(uyCost__32),
 .i_uxQuotient(uxQuotient__32),
 .i_uyQuotient(uyQuotient__32),
-//Outputs			 
+//Outputs
 .o_sint(sint__33),
 .o_cost(cost__33),
 .o_sinp(sinp__33),
@@ -20801,10 +20801,10 @@ InternalsBlock pipeReg33(
 .o_uyCost(uyCost__33),
 .o_uxQuotient(uxQuotient__33),
 .o_uyQuotient(uyQuotient__33)
-);  
-		
+);
+
 		//forloop34 (10+20+4):
-		
+
 InternalsBlock pipeReg34(
 //Inputs
 .clock(clock),
@@ -20838,7 +20838,7 @@ InternalsBlock pipeReg34(
 .i_uyCost(uyCost__33),
 .i_uxQuotient(uxQuotient__33),
 .i_uyQuotient(uyQuotient__33),
-//Outputs			 
+//Outputs
 .o_sint(sint__34),
 .o_cost(cost__34),
 .o_sinp(sinp__34),
@@ -20863,8 +20863,8 @@ InternalsBlock pipeReg34(
 .o_uyCost(uyCost__34),
 .o_uxQuotient(uxQuotient__34),
 .o_uyQuotient(uyQuotient__34)
-);  
-		
+);
+
 		//forloop35(10+20+5):
 		InternalsBlock pipeReg35(
 //Inputs
@@ -20898,7 +20898,7 @@ InternalsBlock pipeReg34(
 .i_uyCost(uyCost__34),
 .i_uxQuotient(uxQuotient__34),
 .i_uyQuotient(uyQuotient__34),
-//Outputs			 
+//Outputs
 .o_sint(sint__35),
 .o_cost(cost__35),
 .o_sinp(sinp__35),
@@ -20923,11 +20923,11 @@ InternalsBlock pipeReg34(
 .o_uyCost(uyCost__35),
 .o_uxQuotient(uxQuotient__35),
 .o_uyQuotient(uyQuotient__35)
-);  
+);
 
-		
+
 	//forloop36	(10+20+6):
-		
+
 InternalsBlock pipeReg36(
 //Inputs
 .clock(clock),
@@ -20963,7 +20963,7 @@ InternalsBlock pipeReg36(
 .i_uxQuotient(new_uxQuotient),
 //cahgned
 .i_uyQuotient(new_uyQuotient),
-//Outputs			 
+//Outputs
 .o_sint(sint__36),
 .o_cost(cost__36),
 .o_sinp(sinp__36),
@@ -20988,7 +20988,7 @@ InternalsBlock pipeReg36(
 .o_uyCost(uyCost__36),
 .o_uxQuotient(uxQuotient__36),
 .o_uyQuotient(uyQuotient__36)
-);  
+);
 
 InternalsBlock pipeReg37(
 //Inputs
@@ -21019,7 +21019,7 @@ InternalsBlock pipeReg37(
 .i_uyCost(uyCost__36),
 .i_uxQuotient(uxQuotient__36),
 .i_uyQuotient(uyQuotient__36),
-//Outputs			 
+//Outputs
 .o_sint(sint__37),
 .o_cost(cost__37),
 .o_sinp(sinp__37),
@@ -21044,7 +21044,7 @@ InternalsBlock pipeReg37(
 .o_uyCost(uyCost__37),
 .o_uxQuotient(uxQuotient__37),
 .o_uyQuotient(uyQuotient__37)
-);  
+);
 
 
 
@@ -21077,7 +21077,7 @@ InternalsBlock pipeReg32(
 .i_uyCost(uyCost__31),
 .i_uxQuotient(uxQuotient__31),
 .i_uyQuotient(uyQuotient__31),
-//Outputs			 
+//Outputs
 .o_sint(sint__32),
 .o_cost(cost__32),
 .o_sinp(sinp__32),
@@ -21102,7 +21102,7 @@ InternalsBlock pipeReg32(
 .o_uyCost(uyCost__32),
 .o_uxQuotient(uxQuotient__32),
 .o_uyQuotient(uyQuotient__32)
-);  
+);
 
 InternalsBlock pipeReg31(
 //Inputs
@@ -21133,7 +21133,7 @@ InternalsBlock pipeReg31(
 .i_uyCost(uyCost__30),
 .i_uxQuotient(uxQuotient__30),
 .i_uyQuotient(uyQuotient__30),
-//Outputs			 
+//Outputs
 .o_sint(sint__31),
 .o_cost(cost__31),
 .o_sinp(sinp__31),
@@ -21158,7 +21158,7 @@ InternalsBlock pipeReg31(
 .o_uyCost(uyCost__31),
 .o_uxQuotient(uxQuotient__31),
 .o_uyQuotient(uyQuotient__31)
-);  
+);
 
 InternalsBlock pipeReg30(
 //Inputs
@@ -21189,7 +21189,7 @@ InternalsBlock pipeReg30(
 .i_uyCost(uyCost__29),
 .i_uxQuotient(uxQuotient__29),
 .i_uyQuotient(uyQuotient__29),
-//Outputs			 
+//Outputs
 .o_sint(sint__30),
 .o_cost(cost__30),
 .o_sinp(sinp__30),
@@ -21214,7 +21214,7 @@ InternalsBlock pipeReg30(
 .o_uyCost(uyCost__30),
 .o_uxQuotient(uxQuotient__30),
 .o_uyQuotient(uyQuotient__30)
-);  
+);
 
 InternalsBlock pipeReg29(
 //Inputs
@@ -21245,7 +21245,7 @@ InternalsBlock pipeReg29(
 .i_uyCost(uyCost__28),
 .i_uxQuotient(uxQuotient__28),
 .i_uyQuotient(uyQuotient__28),
-//Outputs			 
+//Outputs
 .o_sint(sint__29),
 .o_cost(cost__29),
 .o_sinp(sinp__29),
@@ -21270,7 +21270,7 @@ InternalsBlock pipeReg29(
 .o_uyCost(uyCost__29),
 .o_uxQuotient(uxQuotient__29),
 .o_uyQuotient(uyQuotient__29)
-);  
+);
 
 InternalsBlock pipeReg28(
 //Inputs
@@ -21301,7 +21301,7 @@ InternalsBlock pipeReg28(
 .i_uyCost(uyCost__27),
 .i_uxQuotient(uxQuotient__27),
 .i_uyQuotient(uyQuotient__27),
-//Outputs			 
+//Outputs
 .o_sint(sint__28),
 .o_cost(cost__28),
 .o_sinp(sinp__28),
@@ -21326,7 +21326,7 @@ InternalsBlock pipeReg28(
 .o_uyCost(uyCost__28),
 .o_uxQuotient(uxQuotient__28),
 .o_uyQuotient(uyQuotient__28)
-);  
+);
 
 InternalsBlock pipeReg27(
 //Inputs
@@ -21357,7 +21357,7 @@ InternalsBlock pipeReg27(
 .i_uyCost(uyCost__26),
 .i_uxQuotient(uxQuotient__26),
 .i_uyQuotient(uyQuotient__26),
-//Outputs			 
+//Outputs
 .o_sint(sint__27),
 .o_cost(cost__27),
 .o_sinp(sinp__27),
@@ -21382,7 +21382,7 @@ InternalsBlock pipeReg27(
 .o_uyCost(uyCost__27),
 .o_uxQuotient(uxQuotient__27),
 .o_uyQuotient(uyQuotient__27)
-);  
+);
 
 InternalsBlock pipeReg26(
 //Inputs
@@ -21413,7 +21413,7 @@ InternalsBlock pipeReg26(
 .i_uyCost(uyCost__25),
 .i_uxQuotient(uxQuotient__25),
 .i_uyQuotient(uyQuotient__25),
-//Outputs			 
+//Outputs
 .o_sint(sint__26),
 .o_cost(cost__26),
 .o_sinp(sinp__26),
@@ -21438,7 +21438,7 @@ InternalsBlock pipeReg26(
 .o_uyCost(uyCost__26),
 .o_uxQuotient(uxQuotient__26),
 .o_uyQuotient(uyQuotient__26)
-);  
+);
 
 InternalsBlock pipeReg25(
 //Inputs
@@ -21469,7 +21469,7 @@ InternalsBlock pipeReg25(
 .i_uyCost(uyCost__24),
 .i_uxQuotient(uxQuotient__24),
 .i_uyQuotient(uyQuotient__24),
-//Outputs			 
+//Outputs
 .o_sint(sint__25),
 .o_cost(cost__25),
 .o_sinp(sinp__25),
@@ -21494,7 +21494,7 @@ InternalsBlock pipeReg25(
 .o_uyCost(uyCost__25),
 .o_uxQuotient(uxQuotient__25),
 .o_uyQuotient(uyQuotient__25)
-);  
+);
 
 InternalsBlock pipeReg24(
 //Inputs
@@ -21525,7 +21525,7 @@ InternalsBlock pipeReg24(
 .i_uyCost(uyCost__23),
 .i_uxQuotient(uxQuotient__23),
 .i_uyQuotient(uyQuotient__23),
-//Outputs			 
+//Outputs
 .o_sint(sint__24),
 .o_cost(cost__24),
 .o_sinp(sinp__24),
@@ -21550,7 +21550,7 @@ InternalsBlock pipeReg24(
 .o_uyCost(uyCost__24),
 .o_uxQuotient(uxQuotient__24),
 .o_uyQuotient(uyQuotient__24)
-);  
+);
 
 InternalsBlock pipeReg23(
 //Inputs
@@ -21581,7 +21581,7 @@ InternalsBlock pipeReg23(
 .i_uyCost(uyCost__22),
 .i_uxQuotient(uxQuotient__22),
 .i_uyQuotient(uyQuotient__22),
-//Outputs			 
+//Outputs
 .o_sint(sint__23),
 .o_cost(cost__23),
 .o_sinp(sinp__23),
@@ -21606,7 +21606,7 @@ InternalsBlock pipeReg23(
 .o_uyCost(uyCost__23),
 .o_uxQuotient(uxQuotient__23),
 .o_uyQuotient(uyQuotient__23)
-);  
+);
 
 InternalsBlock pipeReg22(
 //Inputs
@@ -21637,7 +21637,7 @@ InternalsBlock pipeReg22(
 .i_uyCost(uyCost__21),
 .i_uxQuotient(uxQuotient__21),
 .i_uyQuotient(uyQuotient__21),
-//Outputs			 
+//Outputs
 .o_sint(sint__22),
 .o_cost(cost__22),
 .o_sinp(sinp__22),
@@ -21662,7 +21662,7 @@ InternalsBlock pipeReg22(
 .o_uyCost(uyCost__22),
 .o_uxQuotient(uxQuotient__22),
 .o_uyQuotient(uyQuotient__22)
-);  
+);
 
 InternalsBlock pipeReg21(
 //Inputs
@@ -21693,7 +21693,7 @@ InternalsBlock pipeReg21(
 .i_uyCost(uyCost__20),
 .i_uxQuotient(uxQuotient__20),
 .i_uyQuotient(uyQuotient__20),
-//Outputs			 
+//Outputs
 .o_sint(sint__21),
 .o_cost(cost__21),
 .o_sinp(sinp__21),
@@ -21718,7 +21718,7 @@ InternalsBlock pipeReg21(
 .o_uyCost(uyCost__21),
 .o_uxQuotient(uxQuotient__21),
 .o_uyQuotient(uyQuotient__21)
-);  
+);
 
 InternalsBlock pipeReg20(
 //Inputs
@@ -21749,7 +21749,7 @@ InternalsBlock pipeReg20(
 .i_uyCost(uyCost__19),
 .i_uxQuotient(uxQuotient__19),
 .i_uyQuotient(uyQuotient__19),
-//Outputs			 
+//Outputs
 .o_sint(sint__20),
 .o_cost(cost__20),
 .o_sinp(sinp__20),
@@ -21774,7 +21774,7 @@ InternalsBlock pipeReg20(
 .o_uyCost(uyCost__20),
 .o_uxQuotient(uxQuotient__20),
 .o_uyQuotient(uyQuotient__20)
-);  
+);
 
 InternalsBlock pipeReg19(
 //Inputs
@@ -21805,7 +21805,7 @@ InternalsBlock pipeReg19(
 .i_uyCost(uyCost__18),
 .i_uxQuotient(uxQuotient__18),
 .i_uyQuotient(uyQuotient__18),
-//Outputs			 
+//Outputs
 .o_sint(sint__19),
 .o_cost(cost__19),
 .o_sinp(sinp__19),
@@ -21830,7 +21830,7 @@ InternalsBlock pipeReg19(
 .o_uyCost(uyCost__19),
 .o_uxQuotient(uxQuotient__19),
 .o_uyQuotient(uyQuotient__19)
-);  
+);
 
 InternalsBlock pipeReg18(
 //Inputs
@@ -21861,7 +21861,7 @@ InternalsBlock pipeReg18(
 .i_uyCost(uyCost__17),
 .i_uxQuotient(uxQuotient__17),
 .i_uyQuotient(uyQuotient__17),
-//Outputs			 
+//Outputs
 .o_sint(sint__18),
 .o_cost(cost__18),
 .o_sinp(sinp__18),
@@ -21886,7 +21886,7 @@ InternalsBlock pipeReg18(
 .o_uyCost(uyCost__18),
 .o_uxQuotient(uxQuotient__18),
 .o_uyQuotient(uyQuotient__18)
-);  
+);
 
 InternalsBlock pipeReg17(
 //Inputs
@@ -21917,7 +21917,7 @@ InternalsBlock pipeReg17(
 .i_uyCost(uyCost__16),
 .i_uxQuotient(uxQuotient__16),
 .i_uyQuotient(uyQuotient__16),
-//Outputs			 
+//Outputs
 .o_sint(sint__17),
 .o_cost(cost__17),
 .o_sinp(sinp__17),
@@ -21942,7 +21942,7 @@ InternalsBlock pipeReg17(
 .o_uyCost(uyCost__17),
 .o_uxQuotient(uxQuotient__17),
 .o_uyQuotient(uyQuotient__17)
-);  
+);
 
 
 InternalsBlock pipeReg15(
@@ -21974,7 +21974,7 @@ InternalsBlock pipeReg15(
 .i_uyCost(uyCost__14),
 .i_uxQuotient(uxQuotient__14),
 .i_uyQuotient(uyQuotient__14),
-//Outputs			 
+//Outputs
 .o_sint(sint__15),
 .o_cost(cost__15),
 .o_sinp(sinp__15),
@@ -21999,7 +21999,7 @@ InternalsBlock pipeReg15(
 .o_uyCost(uyCost__15),
 .o_uxQuotient(uxQuotient__15),
 .o_uyQuotient(uyQuotient__15)
-);  
+);
 
 InternalsBlock pipeReg14(
 //Inputs
@@ -22030,7 +22030,7 @@ InternalsBlock pipeReg14(
 .i_uyCost(uyCost__13),
 .i_uxQuotient(uxQuotient__13),
 .i_uyQuotient(uyQuotient__13),
-//Outputs			 
+//Outputs
 .o_sint(sint__14),
 .o_cost(cost__14),
 .o_sinp(sinp__14),
@@ -22055,7 +22055,7 @@ InternalsBlock pipeReg14(
 .o_uyCost(uyCost__14),
 .o_uxQuotient(uxQuotient__14),
 .o_uyQuotient(uyQuotient__14)
-);  
+);
 
 InternalsBlock pipeReg13(
 //Inputs
@@ -22086,7 +22086,7 @@ InternalsBlock pipeReg13(
 .i_uyCost(uyCost__12),
 .i_uxQuotient(uxQuotient__12),
 .i_uyQuotient(uyQuotient__12),
-//Outputs			 
+//Outputs
 .o_sint(sint__13),
 .o_cost(cost__13),
 .o_sinp(sinp__13),
@@ -22111,7 +22111,7 @@ InternalsBlock pipeReg13(
 .o_uyCost(uyCost__13),
 .o_uxQuotient(uxQuotient__13),
 .o_uyQuotient(uyQuotient__13)
-);  
+);
 
 InternalsBlock pipeReg12(
 //Inputs
@@ -22142,7 +22142,7 @@ InternalsBlock pipeReg12(
 .i_uyCost(uyCost__11),
 .i_uxQuotient(uxQuotient__11),
 .i_uyQuotient(uyQuotient__11),
-//Outputs			 
+//Outputs
 .o_sint(sint__12),
 .o_cost(cost__12),
 .o_sinp(sinp__12),
@@ -22167,7 +22167,7 @@ InternalsBlock pipeReg12(
 .o_uyCost(uyCost__12),
 .o_uxQuotient(uxQuotient__12),
 .o_uyQuotient(uyQuotient__12)
-);  
+);
 
 InternalsBlock pipeReg11(
 //Inputs
@@ -22198,7 +22198,7 @@ InternalsBlock pipeReg11(
 .i_uyCost(uyCost__10),
 .i_uxQuotient(uxQuotient__10),
 .i_uyQuotient(uyQuotient__10),
-//Outputs			 
+//Outputs
 .o_sint(sint__11),
 .o_cost(cost__11),
 .o_sinp(sinp__11),
@@ -22223,7 +22223,7 @@ InternalsBlock pipeReg11(
 .o_uyCost(uyCost__11),
 .o_uxQuotient(uxQuotient__11),
 .o_uyQuotient(uyQuotient__11)
-);  
+);
 
 InternalsBlock pipeReg10(
 //Inputs
@@ -22254,7 +22254,7 @@ InternalsBlock pipeReg10(
 .i_uyCost(uyCost__9),
 .i_uxQuotient(uxQuotient__9),
 .i_uyQuotient(uyQuotient__9),
-//Outputs			 
+//Outputs
 .o_sint(sint__10),
 .o_cost(cost__10),
 .o_sinp(sinp__10),
@@ -22279,7 +22279,7 @@ InternalsBlock pipeReg10(
 .o_uyCost(uyCost__10),
 .o_uxQuotient(uxQuotient__10),
 .o_uyQuotient(uyQuotient__10)
-);  
+);
 
 InternalsBlock pipeReg9(
 //Inputs
@@ -22310,7 +22310,7 @@ InternalsBlock pipeReg9(
 .i_uyCost(uyCost__8),
 .i_uxQuotient(uxQuotient__8),
 .i_uyQuotient(uyQuotient__8),
-//Outputs			 
+//Outputs
 .o_sint(sint__9),
 .o_cost(cost__9),
 .o_sinp(sinp__9),
@@ -22335,7 +22335,7 @@ InternalsBlock pipeReg9(
 .o_uyCost(uyCost__9),
 .o_uxQuotient(uxQuotient__9),
 .o_uyQuotient(uyQuotient__9)
-);  
+);
 
 InternalsBlock pipeReg8(
 //Inputs
@@ -22366,7 +22366,7 @@ InternalsBlock pipeReg8(
 .i_uyCost(uyCost__7),
 .i_uxQuotient(uxQuotient__7),
 .i_uyQuotient(uyQuotient__7),
-//Outputs			 
+//Outputs
 .o_sint(sint__8),
 .o_cost(cost__8),
 .o_sinp(sinp__8),
@@ -22391,7 +22391,7 @@ InternalsBlock pipeReg8(
 .o_uyCost(uyCost__8),
 .o_uxQuotient(uxQuotient__8),
 .o_uyQuotient(uyQuotient__8)
-);  
+);
 
 InternalsBlock pipeReg7(
 //Inputs
@@ -22422,7 +22422,7 @@ InternalsBlock pipeReg7(
 .i_uyCost(uyCost__6),
 .i_uxQuotient(uxQuotient__6),
 .i_uyQuotient(uyQuotient__6),
-//Outputs			 
+//Outputs
 .o_sint(sint__7),
 .o_cost(cost__7),
 .o_sinp(sinp__7),
@@ -22447,7 +22447,7 @@ InternalsBlock pipeReg7(
 .o_uyCost(uyCost__7),
 .o_uxQuotient(uxQuotient__7),
 .o_uyQuotient(uyQuotient__7)
-);  
+);
 
 InternalsBlock pipeReg6(
 //Inputs
@@ -22478,7 +22478,7 @@ InternalsBlock pipeReg6(
 .i_uyCost(uyCost__5),
 .i_uxQuotient(uxQuotient__5),
 .i_uyQuotient(uyQuotient__5),
-//Outputs			 
+//Outputs
 .o_sint(sint__6),
 .o_cost(cost__6),
 .o_sinp(sinp__6),
@@ -22503,7 +22503,7 @@ InternalsBlock pipeReg6(
 .o_uyCost(uyCost__6),
 .o_uxQuotient(uxQuotient__6),
 .o_uyQuotient(uyQuotient__6)
-);  
+);
 
 InternalsBlock pipeReg5(
 //Inputs
@@ -22534,7 +22534,7 @@ InternalsBlock pipeReg5(
 .i_uyCost(uyCost__4),
 .i_uxQuotient(uxQuotient__4),
 .i_uyQuotient(uyQuotient__4),
-//Outputs			 
+//Outputs
 .o_sint(sint__5),
 .o_cost(cost__5),
 .o_sinp(sinp__5),
@@ -22559,7 +22559,7 @@ InternalsBlock pipeReg5(
 .o_uyCost(uyCost__5),
 .o_uxQuotient(uxQuotient__5),
 .o_uyQuotient(uyQuotient__5)
-);  
+);
 
 
 //since these will be replaced later
@@ -22619,7 +22619,7 @@ InternalsBlock pipeReg1(
 .i_uyCost(uyCost__0),
 .i_uxQuotient(uxQuotient__0),
 .i_uyQuotient(uyQuotient__0),
-//Outputs			 
+//Outputs
 .o_sint(sint__1),
 .o_cost(cost__1),
 .o_sinp(sinp__1),
@@ -22719,16 +22719,16 @@ end
 //CC 2
 assign	op1_2_1						=	i_uz1;
 assign	op1_2_2						=	i_uz1;
-	
+
 //CC 3
 //SUBTRACTION, see math results
-	
+
 //CC 4
 assign	op1_4_1						=	i_ux3;
 assign	op1_4_2						=	i_uz3;
 
 //CC 5 -- NOOP, line up with reflector
-	
+
 //CC `SQRT+5 -- Started in CC 6
 assign	sqrtOperand1_6				=	oneMinusUz2__5;
 
@@ -22889,9 +22889,9 @@ always @ (overflow1_36 or negOverflow1_36 or prod1_36 or overflow2_36 or negOver
 	//Should never occur
 	3:	new_uxQuotient = {prod1_36[63:63], prod1_36[45:15]};
 	endcase
-	
+
 	case ({overflow2_36, negOverflow2_36})
-	
+
 	0:	new_uyQuotient = {prod2_36[63:63], prod2_36[45:15]};
 	1:	new_uyQuotient = `INTMIN;
 	2:	new_uyQuotient = `INTMAX;
@@ -22982,8 +22982,8 @@ sub_32b		uz_sub(
 				.overflow(uzOverflow),
 				.result(new_uz)
 			);
-			
-				
+
+
 
 endmodule
 
@@ -23010,14 +23010,14 @@ module add_32b (dataa, datab, overflow, result);
 	output [31:0] result;
 
 	wire [32:0]computation; //one extra bit to account for overflow
-	
+
 	assign computation = dataa + datab;
 	assign overflow = computation[32];
 	assign result = computation[31:0];
 
-endmodule 
+endmodule
 
-module sub_32b (dataa, datab, overflow, result); 
+module sub_32b (dataa, datab, overflow, result);
 
 	input [31:0] dataa;
 	input [31:0] datab;
@@ -23025,21 +23025,21 @@ module sub_32b (dataa, datab, overflow, result);
 	output [31:0] result;
 
 	wire [32:0]computation; //one extra bit to account for overflow
-	
+
 	assign computation = dataa - datab;
 	assign overflow = computation[32];
 	assign result = computation[31:0];
 
-endmodule 
+endmodule
 
 module Mult_32b (dataa, datab, result); //now signed version!
 
 	input [31:0]dataa;
 	input [31:0]datab;
 	output [63:0]result;
-	
-	// assign result = dataa * datab; 
-	
+
+	// assign result = dataa * datab;
+
 	wire [31:0]a;
 	wire [31:0]b;
   assign a = dataa;
@@ -23047,7 +23047,7 @@ module Mult_32b (dataa, datab, result); //now signed version!
 
 	reg [63:0]c;
 	assign result = c;
-	
+
 	reg is_neg_a;
 	reg is_neg_b;
 	reg [31:0]a_tmp;
@@ -23102,11 +23102,11 @@ module Div_64b (clock, denom, numer, quotient, remain);
 	reg [63:0]quotient;
 	output [31:0]remain;
 	reg [31:0]remain;
-	
+
 	wire [63:0]quotient_temp;
 	wire [31:0]remain_temp;
 	Div_64b_unsigned div_temp(.clock(clock), .denom_(denom), .numer_(numer), .quotient(quotient_temp), .remain(remain_temp));
-	
+
 	always @ (numer or denom or quotient_temp or remain_temp) begin
 		if ( numer[63]^denom[31] ) begin // only one is negative
 			quotient = -quotient_temp;
@@ -23115,8 +23115,8 @@ module Div_64b (clock, denom, numer, quotient, remain);
 			quotient = quotient_temp;
 			remain = remain_temp;
 		end
-	end 
-	
+	end
+
 endmodule
 
 
@@ -23128,7 +23128,7 @@ endmodule
 	reg [63:0]quotient;
 	output [31:0]remain;
 	reg [31:0]remain; */
-	
+
 module Div_64b_unsigned (clock, denom_, numer_, quotient, remain);
 	input clock;
 	input [63:0]numer_;
@@ -23138,14 +23138,14 @@ module Div_64b_unsigned (clock, denom_, numer_, quotient, remain);
 
 	reg [63:0]numer;
 	reg [31:0]denom0;
-	
-	always @ (posedge clock) 
+
+	always @ (posedge clock)
 	begin
 		numer <= numer_;
 		denom0 <= denom_;
 	end
 
-///////////////////////////////////////////////////Unchanged starts here	
+///////////////////////////////////////////////////Unchanged starts here
 	reg [94:0]numer_temp_63; //need to add bits
 	reg [94:0]numer_temp_62;
 	reg [94:0]numer_temp_61;
@@ -23233,7 +23233,7 @@ module Div_64b_unsigned (clock, denom_, numer_, quotient, remain);
 	reg [63:0]quo17_d;
 	reg [63:0]quo18_d;
 	reg [63:0]quo19_d;
-	
+
 	reg [63:0]quo0_q;
 	reg [63:0]quo1_q;
 	reg [63:0]quo2_q;
@@ -23253,31 +23253,31 @@ module Div_64b_unsigned (clock, denom_, numer_, quotient, remain);
 	reg [63:0]quo16_q;
 	reg [63:0]quo17_q;
 	reg [63:0]quo18_q;
-	
+
 	reg [31:0]denom1;
 	reg [31:0]denom2;
-	reg [31:0]denom3;	
+	reg [31:0]denom3;
 	reg [31:0]denom4;
-	reg [31:0]denom5;	
+	reg [31:0]denom5;
 	reg [31:0]denom6;
-	reg [31:0]denom7;	
+	reg [31:0]denom7;
 	reg [31:0]denom8;
-	reg [31:0]denom9;	
+	reg [31:0]denom9;
 	reg [31:0]denom10;
-	reg [31:0]denom11;	
+	reg [31:0]denom11;
 	reg [31:0]denom12;
-	reg [31:0]denom13;	
+	reg [31:0]denom13;
 	reg [31:0]denom14;
-	reg [31:0]denom15;	
+	reg [31:0]denom15;
 	reg [31:0]denom16;
-	reg [31:0]denom17;	
+	reg [31:0]denom17;
 	reg [31:0]denom18;
 	reg [31:0]denom19;
-	
-	
+
+
 	always @(numer or denom0) begin
 		numer_temp_63 = {31'b0, numer};
-		
+
 		//quo0[63]
 		if (numer_temp_63[94:63] >= denom0 ) begin
 			quo0_d[63] = 1'b1;
@@ -23286,7 +23286,7 @@ module Div_64b_unsigned (clock, denom_, numer_, quotient, remain);
 			quo0_d[63] = 1'b0;
 			numer_temp_62 = numer_temp_63;
 		end
-		
+
 		//quo0[62]
 		if (numer_temp_62[94:62] >= denom0 ) begin
 			quo0_d[62] = 1'b1;
@@ -23305,16 +23305,16 @@ module Div_64b_unsigned (clock, denom_, numer_, quotient, remain);
 		end
 		quo0_d[60:0] = 61'b0;
 	end
-	
+
 	always @ (posedge clock) begin
 		quo0_q <= quo0_d;
 		numer_temp_60_q <= numer_temp_60_d;
 		denom1 <= denom0;
 	end
-		
+
 	always @(numer_temp_60_q or denom1 or quo0_q) begin
 		quo1_d[63:61] = quo0_q[63:61];
-	
+
 		//quo1_d[60]
 		if (numer_temp_60_q[94:60] >= denom1 ) begin
 			quo1_d[60] = 1'b1;
@@ -23347,10 +23347,10 @@ module Div_64b_unsigned (clock, denom_, numer_, quotient, remain);
 		numer_temp_57_q <= numer_temp_57_d;
 		denom2 <= denom1;
 	end
-		
+
 	always @ (numer_temp_57_q or denom2 or quo1_q) begin
 		quo2_d[63:58] = quo1_q[63:58];
-	
+
 		//quo2_d[57]
 		if (numer_temp_57_q[94:57] >= denom2 ) begin
 			quo2_d[57] = 1'b1;
@@ -23377,17 +23377,17 @@ module Div_64b_unsigned (clock, denom_, numer_, quotient, remain);
 		end
 		quo2_d[54:0] = 55'b0;
 	end
-	
-	
+
+
 	always @ (posedge clock) begin
 		quo2_q <= quo2_d;
 		numer_temp_54_q <= numer_temp_54_d;
 		denom3 <= denom2;
 	end
-	
+
 	always @ (numer_temp_54_q or denom3 or quo2_q) begin
 		quo3_d[63:55] = quo2_q[63:55];
-	
+
 		//quo3_d[54]
 		if (numer_temp_54_q[94:54] >= denom3 ) begin
 			quo3_d[54] = 1'b1;
@@ -23414,16 +23414,16 @@ module Div_64b_unsigned (clock, denom_, numer_, quotient, remain);
 		end
 		quo3_d[51:0] = 52'b0;
 	end
-		
+
 	always @ (posedge clock) begin
 		quo3_q <= quo3_d;
 		numer_temp_51_q <= numer_temp_51_d;
 		denom4 <= denom3;
 	end
-		
+
 	always @ (numer_temp_51_q or denom4 or quo3_q) begin
 		quo4_d[63:52] = quo3_q[63:52];
-	
+
 		//quo4[51]
 		if (numer_temp_51_q[94:51] >= denom4 ) begin
 			quo4_d[51] = 1'b1;
@@ -23450,13 +23450,13 @@ module Div_64b_unsigned (clock, denom_, numer_, quotient, remain);
 		end
 		quo4_d[48:0] = 49'b0;
 	end
-		
+
 	always @ (posedge clock) begin
 		quo4_q <= quo4_d;
 		numer_temp_48_q <= numer_temp_48_d;
 		denom5 <= denom4;
 	end
-		
+
 	always @ (numer_temp_48_q or denom5 or quo4_q) begin
 		quo5_d[63:49] = quo4_q[63:49];
 
@@ -23486,16 +23486,16 @@ module Div_64b_unsigned (clock, denom_, numer_, quotient, remain);
 		end
 		quo5_d[45:0] = 46'b0;
 	end
-		
+
 	always @ (posedge clock) begin
 		quo5_q <= quo5_d;
 		numer_temp_45_q <= numer_temp_45_d;
 		denom6 <= denom5;
 	end
-		
+
 	always @ (numer_temp_45_q or denom6 or quo5_q) begin
 		quo6_d[63:46] = quo5_q[63:46];
-	
+
 		//quo6_d[45]
 		if (numer_temp_45_q[94:45] >= denom6 ) begin
 			quo6_d[45] = 1'b1;
@@ -23522,16 +23522,16 @@ module Div_64b_unsigned (clock, denom_, numer_, quotient, remain);
 		end
 		quo6_d[42:0] = 43'b0;
 	end
-	
+
 	always @ (posedge clock) begin
 		quo6_q<= quo6_d;
 		numer_temp_42_q <= numer_temp_42_d;
 		denom7 <= denom6;
 	end
-	
+
 	always @ (numer_temp_42_q or denom7 or quo6_q) begin
 		quo7_d[63:43] = quo6_q[63:43];
-	
+
 		//quo7_d[42]
 		if (numer_temp_42_q[94:42] >= denom7 ) begin
 			quo7_d[42] = 1'b1;
@@ -23558,16 +23558,16 @@ module Div_64b_unsigned (clock, denom_, numer_, quotient, remain);
 		end
 		quo7_d[39:0] = 40'b0;
 	end
-		
+
 	always @ (posedge clock) begin
 		quo7_q <= quo7_d;
 		numer_temp_39_q <= numer_temp_39_d;
 		denom8 <= denom7;
 	end
-		
+
 	always @ (numer_temp_39_q or denom8 or quo7_q) begin
 		quo8_d[63:40] = quo7_q[63:40];
-	
+
 		//quo8[39]
 		if (numer_temp_39_q[94:39] >= denom8 ) begin
 			quo8_d[39] = 1'b1;
@@ -23594,16 +23594,16 @@ module Div_64b_unsigned (clock, denom_, numer_, quotient, remain);
 		end
 		quo8_d[36:0] = 37'b0;
 	end
-		
+
 	always @ (posedge clock) begin
 		quo8_q <= quo8_d;
 		numer_temp_36_q <= numer_temp_36_d;
 		denom9 <= denom8;
 	end
-		
+
 	always @ (numer_temp_36_q or denom9 or quo8_q) begin
 		quo9_d[63:37] = quo8_q[63:37];
-	
+
 		//quo9[36]
 		if (numer_temp_36_q[94:36] >= denom9 ) begin
 			quo9_d[36] = 1'b1;
@@ -23630,16 +23630,16 @@ module Div_64b_unsigned (clock, denom_, numer_, quotient, remain);
 		end
 		quo9_d[33:0] = 34'b0;
 	end
-		
+
 	always @ (posedge clock) begin
 		quo9_q <= quo9_d;
 		numer_temp_33_q <= numer_temp_33_d;
 		denom10 <= denom9;
 	end
-		
+
 	always @ (numer_temp_33_q or denom10 or quo9_q) begin
 		quo10_d[63:34] = quo9_q[63:34];
-	
+
 		//quo10_d[33]
 		if (numer_temp_33_q[94:33] >= denom10 ) begin
 			quo10_d[33] = 1'b1;
@@ -23666,16 +23666,16 @@ module Div_64b_unsigned (clock, denom_, numer_, quotient, remain);
 		end
 		quo10_d[30:0] = 31'b0;
 	end
-	
+
 	always @ (posedge clock) begin
 		quo10_q <= quo10_d;
 		numer_temp_30_q <= numer_temp_30_d;
 		denom11 <= denom10;
 	end
-		
-	always @ (numer_temp_30_q or denom11 or quo10_q) begin 
+
+	always @ (numer_temp_30_q or denom11 or quo10_q) begin
 		quo11_d[63:31] = quo10_q[63:31];
-	
+
 		//quo11[30]
 		if (numer_temp_30_q[94:30] >= denom11 ) begin
 			quo11_d[30] = 1'b1;
@@ -23702,16 +23702,16 @@ module Div_64b_unsigned (clock, denom_, numer_, quotient, remain);
 		end
 		quo11_d[27:0] = 28'b0;
 	end
-		
+
 	always @ (posedge clock) begin
 		quo11_q <= quo11_d;
 		numer_temp_27_q <= numer_temp_27_d;
 		denom12 <= denom11;
 	end
-	
+
 	always @ (numer_temp_27_q or denom12 or quo11_q) begin
 		quo12_d[63:28] = quo11_q[63:28];
-	
+
 		//quo12[27]
 		if (numer_temp_27_q[94:27] >= denom12 ) begin
 			quo12_d[27] = 1'b1;
@@ -23746,16 +23746,16 @@ module Div_64b_unsigned (clock, denom_, numer_, quotient, remain);
 		end
 		quo12_d[23:0] = 24'b0;
 	end
-		
+
 	always @ (posedge clock) begin
 		quo12_q <= quo12_d;
 		numer_temp_23_q <= numer_temp_23_d;
 		denom13 <= denom12;
 	end
-	
+
 	always @ (numer_temp_23_q or denom13 or quo12_q) begin
 		quo13_d[63:24] = quo12_q[63:24];
-	
+
 		//quo13_d[23]
 		if (numer_temp_23_q[94:23] >= denom13 ) begin
 			quo13_d[23] = 1'b1;
@@ -23790,16 +23790,16 @@ module Div_64b_unsigned (clock, denom_, numer_, quotient, remain);
 		end
 		quo13_d[19:0] = 20'b0;
 	end
-	
+
 	always @ (posedge clock) begin
 		quo13_q <= quo13_d;
 		numer_temp_19_q <= numer_temp_19_d;
 		denom14 <= denom13;
 	end
-		
+
 	always @ (numer_temp_19_q or denom14 or quo13_q) begin
 		quo14_d[63:20] = quo13_q[63:20];
-	
+
 		//quo14_d[19]
 		if (numer_temp_19_q[94:19] >= denom14 ) begin
 			quo14_d[19] = 1'b1;
@@ -23834,16 +23834,16 @@ module Div_64b_unsigned (clock, denom_, numer_, quotient, remain);
 		end
 		quo14_d[15:0] = 16'b0;
 	end
-		
+
 	always @ (posedge clock) begin
 		quo14_q <= quo14_d;
 		numer_temp_15_q <= numer_temp_15_d;
 		denom15 <= denom14;
 	end
-		
+
 	always @ (numer_temp_15_q or denom15 or quo14_q) begin
 		quo15_d[63:16] = quo14_q[63:16];
-	
+
 		//quo15_d[15]
 		if (numer_temp_15_q[94:15] >= denom15 ) begin
 			quo15_d[15] = 1'b1;
@@ -23878,16 +23878,16 @@ module Div_64b_unsigned (clock, denom_, numer_, quotient, remain);
 		end
 		quo15_d[11:0] = 12'b0;
 	end
-		
+
 	always @ (posedge clock) begin
 		quo15_q <= quo15_d;
 		numer_temp_11_q <= numer_temp_11_d;
 		denom16 <= denom15;
 	end
-		
+
 	always @ (numer_temp_11_q or denom16 or quo15_q) begin
 		quo16_d[63:12] = quo15_q[63:12];
-	
+
 		//quo16_d[11]
 		if (numer_temp_11_q[94:11] >= denom16 ) begin
 			quo16_d[11] = 1'b1;
@@ -23922,16 +23922,16 @@ module Div_64b_unsigned (clock, denom_, numer_, quotient, remain);
 		end
 		quo16_d[7:0] = 8'b0;
 	end
-	
+
 	always @ (posedge clock) begin
 		quo16_q <= quo16_d;
 		numer_temp_7_q <= numer_temp_7_d;
 		denom17 <= denom16;
 	end
-		
+
 	always @ (numer_temp_7_q or denom17 or quo16_q) begin
 		quo17_d[63:8] = quo16_q[63:8];
-	
+
 		//quo17_d[7]
 		if (numer_temp_7_q[94:7] >= denom17 ) begin
 			quo17_d[7] = 1'b1;
@@ -23966,16 +23966,16 @@ module Div_64b_unsigned (clock, denom_, numer_, quotient, remain);
 		end
 		quo17_d[3:0] = 4'b0;
 	end
-	
+
 	always @ (posedge clock) begin
 		quo17_q <= quo17_d;
 		numer_temp_3_q <= numer_temp_3_d;
 		denom18 <= denom17;
 	end
-		
+
 	always @ (numer_temp_3_q or denom18 or quo17_q) begin
 		quo18_d[63:4] = quo17_q[63:4];
-		
+
 		//quo18_d[3]
 		if (numer_temp_3_q[94:3] >= denom18 ) begin
 			quo18_d[3] = 1'b1;
@@ -23994,13 +23994,13 @@ module Div_64b_unsigned (clock, denom_, numer_, quotient, remain);
 		end
 		quo18_d[1:0] = 2'b0;
 	end
-		
-	always @ (posedge clock) begin 
+
+	always @ (posedge clock) begin
 		quo18_q <= quo18_d;
 		numer_temp_1_q <= numer_temp_1_d;
 		denom19 <= denom18;
 	end
-		
+
 	always @ (numer_temp_1_q or denom19 or quo18_q) begin
 		quo19_d[63:2] = quo18_q[63:2];
 		//quo19_d[1]
@@ -24010,7 +24010,7 @@ module Div_64b_unsigned (clock, denom_, numer_, quotient, remain);
 		end else begin
 			quo19_d[1] = 1'b0;
            numer_temp_0 = numer_temp_1_q;
-	
+
 		end
 		//quo19_d[0]
 		if (numer_temp_0[94:0] >= denom19 ) begin
@@ -24019,22 +24019,22 @@ module Div_64b_unsigned (clock, denom_, numer_, quotient, remain);
 		end else begin
 			quo19_d[0] = 1'b0;
            numer_temp = numer_temp_0;
-		end	
+		end
 	end
-	
+
 	assign quotient = quo19_d;
 	assign remain = numer_temp[31:0];
 
-	
-	
-endmodule 
+
+
+endmodule
 
 /*module sqrt_64b (clk, num, res);
 	input clk;
 	input [63:0]num;
 	output [31:0]res;
 	reg [31:0]res;*/
-	
+
 //`timescale 1 ns / 1 ps
 
 module Sqrt_64b (clk, num_, res);
@@ -24042,16 +24042,16 @@ module Sqrt_64b (clk, num_, res);
 	input [63:0]num_;
 	output [31:0]res;
 	reg [31:0]res;
-	
+
 	reg [63:0]num;
-	
+
 	always @ (posedge clk)
 	begin
 		num <= num_;
 	end
-	
+
 ///////////////////////////////////////////////////Unchanged starts here
-	
+
 //	reg [63:0] one_[32:0];
 //	reg [63:0] res_[32:0];
 //	reg [63:0] op_[32:0];
@@ -24123,7 +24123,7 @@ module Sqrt_64b (clk, num_, res);
     reg  [63:0]res__30_d, res__30_q;
     reg  [63:0]res__31;
 	reg  [63:0]res__32;
-    
+
 	wire [63:0]op__0;
 	reg  [63:0]op__1;
     reg  [63:0]op__2;
@@ -24158,12 +24158,12 @@ module Sqrt_64b (clk, num_, res);
     reg  [63:0]op__31;
 	reg  [63:0]op__32;
 
-	
+
 	reg [63:0]one; //This is the one that is selected in first expanded loop
 	reg [31:0]one_tmp;
-	
+
 	always @ (num) begin
-		
+
 		//The first for-loop:
 		//all of these will be zero no matter how 'one' is selected.
 		one[1] = 0;
@@ -24198,7 +24198,7 @@ module Sqrt_64b (clk, num_, res);
 		one[59] = 0;
 		one[61] = 0;
 		one[63] = 0;
-		
+
 		one_tmp[0] = num[0]|num[1];
 		one_tmp[1] = num[2]|num[3];
 		one_tmp[2] = num[4]|num[5];
@@ -24231,7 +24231,7 @@ module Sqrt_64b (clk, num_, res);
 		one_tmp[29] = num[58]|num[59];
 		one_tmp[30] = num[60]|num[61];
 		one_tmp[31] = num[62]|num[63];
-		
+
 		one[0] = ~one_tmp[31]&~one_tmp[30]&~one_tmp[29]&~one_tmp[28]&~one_tmp[27]&~one_tmp[26]&~one_tmp[25]&~one_tmp[24]&~one_tmp[23]&~one_tmp[22]&~one_tmp[21]&~one_tmp[20]&~one_tmp[19]&~one_tmp[18]&~one_tmp[17]&~one_tmp[16]&~one_tmp[15]&~one_tmp[14]&~one_tmp[13]&~one_tmp[12]&~one_tmp[11]&~one_tmp[10]&~one_tmp[9]&~one_tmp[8]&~one_tmp[7]&~one_tmp[6]&~one_tmp[5]&~one_tmp[4]&~one_tmp[3]&~one_tmp[2]&~one_tmp[1]&one_tmp[0];
 		one[2] = ~one_tmp[31]&~one_tmp[30]&~one_tmp[29]&~one_tmp[28]&~one_tmp[27]&~one_tmp[26]&~one_tmp[25]&~one_tmp[24]&~one_tmp[23]&~one_tmp[22]&~one_tmp[21]&~one_tmp[20]&~one_tmp[19]&~one_tmp[18]&~one_tmp[17]&~one_tmp[16]&~one_tmp[15]&~one_tmp[14]&~one_tmp[13]&~one_tmp[12]&~one_tmp[11]&~one_tmp[10]&~one_tmp[9]&~one_tmp[8]&~one_tmp[7]&~one_tmp[6]&~one_tmp[5]&~one_tmp[4]&~one_tmp[3]&~one_tmp[2]&one_tmp[1];
 		one[4] = ~one_tmp[31]&~one_tmp[30]&~one_tmp[29]&~one_tmp[28]&~one_tmp[27]&~one_tmp[26]&~one_tmp[25]&~one_tmp[24]&~one_tmp[23]&~one_tmp[22]&~one_tmp[21]&~one_tmp[20]&~one_tmp[19]&~one_tmp[18]&~one_tmp[17]&~one_tmp[16]&~one_tmp[15]&~one_tmp[14]&~one_tmp[13]&~one_tmp[12]&~one_tmp[11]&~one_tmp[10]&~one_tmp[9]&~one_tmp[8]&~one_tmp[7]&~one_tmp[6]&~one_tmp[5]&~one_tmp[4]&~one_tmp[3]&one_tmp[2];
@@ -24265,7 +24265,7 @@ module Sqrt_64b (clk, num_, res);
 		one[60] = ~one_tmp[31]&one_tmp[30];
 		one[62] = one_tmp[31];
 	end
-	
+
 //	//2nd for-loop:
 //	integer i;
 //	always @* begin
@@ -24274,13 +24274,13 @@ module Sqrt_64b (clk, num_, res);
 //		res_[0] = 64'b0;
 //		res = 63'b0;
 //		res_assigned = 1'b0;
-//	
+//
 //		for (i = 0; i <= 31; i=i+1) begin
 //			if ((one_[i] == 0) & ~res_assigned) begin
 //				res = res_[i];
 //				res_assigned = 1'b1;
 //			end
-//			
+//
 //			//Define the next stage:
 //			if (op_[i] >= res_[i] + one_[i]) begin
 //				op_[i+1] = op_[i] - res_[i] - one_[i];
@@ -24291,7 +24291,7 @@ module Sqrt_64b (clk, num_, res);
 //			end
 //			one_[i+1] = (one_[i] >> 2);
 //		end
-//	
+//
 //		//Add the part for really big numbers later:
 //		if (~res_assigned) begin
 //			res = res_[32];
@@ -24302,7 +24302,7 @@ module Sqrt_64b (clk, num_, res);
 	assign op__0 = num;
 	assign res__0 = 64'b0;
 	assign one__0 = one;
-	
+
 	always @ (res__0 or op__0 or one__0) begin
 
        //i = 0
@@ -24335,13 +24335,13 @@ module Sqrt_64b (clk, num_, res);
        end
        one__3_d = (one__2 >> 2);
 	end
-	
+
 	always @ (posedge clk) begin
 		op__3_q <= op__3_d;
 		res__3_q <= res__3_d;
 		one__3_q <= one__3_d;
 	end
-	
+
 	always @ (op__3_q or res__3_q or one__3_q) begin
        //i = 3
        if (op__3_q >= res__3_q + one__3_q) begin
@@ -24383,13 +24383,13 @@ module Sqrt_64b (clk, num_, res);
        end
        one__7_d = (one__6 >> 2);
 	end
-		 
+
 	always @ (posedge clk) begin
 		op__7_q <= op__7_d;
 		one__7_q <= one__7_d;
 		res__7_q <= res__7_d;
 	end
-	
+
 	always @ (op__7_q or res__7_q or one__7_q) begin
        //i = 7
        if (op__7_q >= res__7_q + one__7_q) begin
@@ -24431,14 +24431,14 @@ module Sqrt_64b (clk, num_, res);
        end
        one__11_d = (one__10 >> 2);
 	end
-		 
+
 	always @ (posedge clk) begin
 		op__11_q <= op__11_d;
 		one__11_q <= one__11_d;
 		res__11_q <= res__11_d;
 	end
-	
-	always @ (op__11_q or res__11_q or one__11_q) begin	 
+
+	always @ (op__11_q or res__11_q or one__11_q) begin
        //i = 11
        if (op__11_q >= res__11_q + one__11_q) begin
            op__12 = op__11_q - res__11_q - one__11_q;
@@ -24479,13 +24479,13 @@ module Sqrt_64b (clk, num_, res);
        end
        one__15_d = (one__14 >> 2);
 	end
-	
+
 	always @ (posedge clk) begin
 		op__15_q <= op__15_d;
 		one__15_q <= one__15_d;
 		res__15_q <= res__15_d;
 	end
-	
+
 	always @ (op__15_q or res__15_q or one__15_q) begin
        //i = 15
        if (op__15_q >= res__15_q + one__15_q) begin
@@ -24517,13 +24517,13 @@ module Sqrt_64b (clk, num_, res);
        end
        one__18_d = (one__17 >> 2);
 	end
-	
+
 	always @ (posedge clk) begin
 		op__18_q <= op__18_d;
 		one__18_q <= one__18_d;
 		res__18_q <= res__18_d;
 	end
-	
+
 	always @ (op__18_q or res__18_q or one__18_q) begin
        //i = 18
        if (op__18_q >= res__18_q + one__18_q) begin
@@ -24555,14 +24555,14 @@ module Sqrt_64b (clk, num_, res);
        end
        one__21_d = (one__20 >> 2);
 	end
-	
+
 	always @ (posedge clk) begin
 		op__21_q <= op__21_d;
 		one__21_q <= one__21_d;
 		res__21_q <= res__21_d;
 	end
-		 
-	always @ (op__21_q or res__21_q or one__21_q) begin 
+
+	always @ (op__21_q or res__21_q or one__21_q) begin
        //i = 21
        if (op__21_q >= res__21_q + one__21_q) begin
            op__22 = op__21_q - res__21_q - one__21_q;
@@ -24593,13 +24593,13 @@ module Sqrt_64b (clk, num_, res);
        end
        one__24_d = (one__23 >> 2);
 	end
-		 
+
 	always @ (posedge clk) begin
 		op__24_q <= op__24_d;
 		one__24_q <= one__24_d;
 		res__24_q <= res__24_d;
 	end
-		  
+
 	always @ (op__24_q or res__24_q or one__24_q) begin
        //i = 24
        if (op__24_q >= res__24_q + one__24_q) begin
@@ -24637,7 +24637,7 @@ module Sqrt_64b (clk, num_, res);
 		one__27_q <= one__27_d;
 		res__27_q <= res__27_d;
 	end
-	
+
 	always @ (op__27_q or res__27_q or one__27_q) begin
        //i = 27
        if (op__27_q >= res__27_q + one__27_q) begin
@@ -24669,13 +24669,13 @@ module Sqrt_64b (clk, num_, res);
        end
        one__30_d = (one__29 >> 2);
 	end
-	
+
 	always @ (posedge clk) begin
 		op__30_q <= op__30_d;
 		one__30_q <= one__30_d;
 		res__30_q <= res__30_d;
 	end
-	
+
 	always @* begin
        //i = 30
        if (op__30_q >= res__30_q + one__30_q) begin
@@ -24730,7 +24730,7 @@ module Sqrt_64b (clk, num_, res);
          end else if (one__13 == 0) begin
              res = res__13[31:0];
          end else if (one__14 == 0) begin
-             res = res__14[31:0];
+             res = res__14[31:0];q
          end else if (one__15_q == 0) begin
              res = res__15_q[31:0];
          end else if (one__16 == 0) begin
@@ -24768,10 +24768,10 @@ module Sqrt_64b (clk, num_, res);
 		end else begin
 			 res = res__32[31:0];
 		end
-		
+
 	end
 
-	
-endmodule 	
+
+endmodule
 
 

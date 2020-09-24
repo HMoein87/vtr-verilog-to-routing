@@ -10520,14 +10520,13 @@ always @(posedge clk or negedge resetn)
 	  r_s2 <= 32'b0;
 	  r_s3 <= 32'b0;
       end
-   else
+   else if(en)
       begin
-		  r_s1 = (en) ? c_s1 : r_s1;
-		  r_s2 = (en) ? c_s2 : r_s2;
-		  r_s3 = (en) ? c_s3 : r_s3;
+		  r_s1 = c_s1;
+		  r_s2 = c_s2;
+		  r_s3 = c_s3;
 	  end
    end
-
 endmodule
 
 
