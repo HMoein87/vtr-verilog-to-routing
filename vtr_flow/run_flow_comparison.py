@@ -17,7 +17,7 @@ def run_synthesis(verilog_file, queue):
     verilog_file_name = verilog_file.split("/")[-1]
     try:
         arch = "/mnt/comparison_results/symbiflow-arch-defs/build/xc/xc7/archs/artix7_100t/devices/xc7a100t-virt/arch.timing.xml"
-        odin_command = "./scripts/run_vtr_flow.pl {} {} -delete_intermediate_files -ending_stage prevpr -latch_map_script ./scripts/latch_map.py".format(
+        odin_command = "./scripts/run_vtr_flow.pl {} {} -delete_intermediate_files -ending_stage prevpr -abc_exe /mnt/comparison_results/symbiflow-arch-defs/env/conda/envs/symbiflow_arch_def_base/bin/yosys-abc -latch_map_script ./scripts/latch_map.py".format(
             verilog_file, arch)
         yosys_command = odin_command + " -yosys /mnt/comparison_results/symbiflow-arch-defs/env/conda/envs/symbiflow_arch_def_base/bin/yosys -yosys_script ./yosys_script.ys"
 
