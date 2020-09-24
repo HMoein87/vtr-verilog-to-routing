@@ -3,11 +3,11 @@ import os
 import subprocess
 import sys
 
-if len(sys.argv) <= 3:
-    print("Usage:", sys.argv[0], "<iterations> <output directory> <verilog files>")
+if len(sys.argv) <= 4:
+    print("Usage:", sys.argv[0], "<iterations> <num threads> <output directory> <verilog files>")
     exit(1)
 
-output_prefix = sys.argv[2]
+output_prefix = sys.argv[3]
 if not os.path.exists(output_prefix):
     print("Non existent output directory provided")
     exit(1)
@@ -21,7 +21,7 @@ def run_synthesis(verilog_file, queue):
             verilog_file, arch)
         yosys_command = odin_command + " -yosys /mnt/comparison_results/symbiflow-arch-defs/env/conda/envs/symbiflow_arch_def_base/bin/yosys -yosys_script ./yosys_script.ys"
 
-        output_prefix = sys.argv[2]
+        output_prefix = sys.argv[3]
         odin_temp = output_prefix + "/temp_" + verilog_file_name + "_odin"
         yosys_temp = output_prefix + "/temp_" + verilog_file_name + "_yosys"
 
@@ -80,7 +80,7 @@ def run_vpr(temp_dir, i):
 
 def launch_vpr(verilog_file_name, thread_pool):
     iters = int(sys.argv[1])
-    output_prefix = sys.argv[2]
+    output_prefix = sys.argv[3]
     odin_temp = output_prefix + "temp_" + verilog_file_name + "_odin"
     yosys_temp = output_prefix + "temp_" + verilog_file_name + "_yosys"
 
@@ -127,10 +127,13 @@ def launch_vpr(verilog_file_name, thread_pool):
 def run_benchmarks(verilog_files):
     synthesis = {}
     vpr_runs = []
-    print("Running", multiprocessing.cpu_count(), "parallel benchmarks", flush=True)
+    threads = int(sys.argv[2])
+    if threads <= 0:
+        threads = multiprocessing.cpu_count()
+    print("Running", threads, "parallel benchmarks", flush=True)
     manager = multiprocessing.Manager()
     queue = manager.Queue(len(verilog_files))
-    with multiprocessing.Pool(multiprocessing.cpu_count()) as thread_pool:
+    with multiprocessing.Pool(threads) as thread_pool:
         for verilog_file in verilog_files:
             line = "Running synthesis for " + verilog_file
             print(line, flush=True)
@@ -175,7 +178,7 @@ def run_benchmarks(verilog_files):
         return errors
 
 
-errors = run_benchmarks(sys.argv[3:])
+errors = run_benchmarks(sys.argv[4:])
 successes = {}
 iters = int(sys.argv[1])
 if errors != 0:
