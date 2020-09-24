@@ -9951,26 +9951,25 @@ end
 
 endmodule
 
-module rng(input clk, input en, input resetn, input loadseed_i, input [31:0] seed_i, output [31:0] number_o);
-reg [31:0] c_b1;
-reg [31:0] c_b2;
-reg [31:0] c_b3;
-reg [31:0] c_s1;
-reg [31:0] c_s2;
-reg [31:0] c_s3;
 
-reg [95:0] r;
+module rng(clk, en, resetn,loadseed_i,seed_i,number_o);
+input clk;
+input en;
+input resetn;
+input loadseed_i;
+input [31:0] seed_i;
+output [31:0] number_o;
 
-assign number_o = r[31:0] ^ r[63:32] ^ r[95:64];
+wire [31:0] number_o;
 
-always @(posedge clk or negedge resetn)
-begin
-     r <= (!resetn) ? 96'h0 :
-          (en) ? {c_s3, c_s2, c_s1} :
-          r;
-end
+reg [31:0] c_b1, c_b2, c_b3;
+reg [31:0] c_s1, c_s2, c_s3;
 
-always @(loadseed_i or seed_i or r)
+reg [31:0] r_s1, r_s2, r_s3;
+
+assign number_o = r_s1 ^ r_s2 ^ r_s3;
+
+always @(loadseed_i or seed_i or r_s1 or r_s2 or r_s3)
 begin
 	if(loadseed_i)
 	begin
@@ -9983,15 +9982,35 @@ begin
 	end
 	else
 	begin
-		c_b1 = (((r[31:0] << 13) ^ r[31:0]) >> 19);
-		c_s1 = (((r[31:0] & 32'd4294967294) << 12) ^ c_b1);
-		c_b2 = (((r[63:32] << 2) ^ r[63:32]) >> 25);
-		c_s2 = (((r[63:32] & 32'd4294967288) << 4) ^ c_b2);
-		c_b3 = (((r[95:64] << 3) ^ r[95:64]) >> 11);
-		c_s3 = (((r[95:64] & 32'd4294967280) << 17) ^ c_b3);
+		c_b1 = (((r_s1 << 13) ^ r_s1) >> 19);
+		c_s1 = (((r_s1 & 32'd4294967294) << 12) ^ c_b1);
+		c_b2 = (((r_s2 << 2) ^ r_s2) >> 25);
+		c_s2 = (((r_s2 & 32'd4294967288) << 4) ^ c_b2);
+		c_b3 = (((r_s3 << 3) ^ r_s3) >> 11);
+		c_s3 = (((r_s3 & 32'd4294967280) << 17) ^ c_b3);
 	end
 end
+
+
+//combinate:
+always @(posedge clk or negedge resetn)
+   begin
+   if (!resetn )
+      begin
+      r_s1 <= 32'b0;
+	  r_s2 <= 32'b0;
+	  r_s3 <= 32'b0;
+      end
+   else if (en)   //Originally else only
+      begin
+		  r_s1 <= c_s1;
+		  r_s2 <= c_s2;
+		  r_s3 <= c_s3;
+	  end
+   end
+
 endmodule
+
 
 
 /////////////////////////////////////////////////////////////
