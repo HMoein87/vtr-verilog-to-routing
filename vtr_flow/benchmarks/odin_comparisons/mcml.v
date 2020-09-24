@@ -10529,6 +10529,7 @@ always @(posedge clk or negedge resetn)
 		  r_s2 <= c_s2;
 		  r_s3 <= c_s3;
 	  end
+  end
 endmodule
 
 
