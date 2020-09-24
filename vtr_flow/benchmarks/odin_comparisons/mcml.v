@@ -18493,117 +18493,60 @@ endmodule
 
 module InternalsBlock(
 	//Inputs
-	clock,
-	reset,
-	enable,
+	input clock,
+	input reset,
+	input enable,
 
-	i_sint,
-	i_cost,
-	i_sinp,
-	i_cosp,
-	i_sintCosp,
-	i_sintSinp,
-	i_uz2,
-	i_uxUz,
-	i_uyUz,
-	i_uySintSinp,
-	i_oneMinusUz2,
-	i_uyUzSintCosp,
-	i_uxUzSintCosp,
-	i_uxSintSinp,
-	i_sqrtOneMinusUz2,
-	i_sintCospSqrtOneMinusUz2,
-	i_uxCost,
-	i_uzCost,
-	i_sqrtOneMinusUz2_inv,
-	i_uxNumerator,
-	i_uyNumerator,
-	i_uyCost,
-	i_uxQuotient,
-	i_uyQuotient,
+	input		[31:0]		i_sint,
+	input		[31:0]		i_cost,
+	input		[31:0]		i_sinp,
+	input		[31:0]		i_cosp,
+	input		[31:0]		i_sintCosp,
+	input		[31:0]		i_sintSinp,
+	input		[63:0]		i_uz2,
+	input		[31:0]		i_uxUz,
+	input		[31:0]		i_uyUz,
+	input		[31:0]		i_uySintSinp,
+	input		[63:0]		i_oneMinusUz2,
+	input		[31:0]		i_uyUzSintCosp,
+	input		[31:0]		i_uxUzSintCosp,
+	input		[31:0]		i_uxSintSinp,
+	input		[31:0]		i_sqrtOneMinusUz2,
+	input		[31:0]		i_sintCospSqrtOneMinusUz2,
+	input		[31:0]		i_uxCost,
+	input		[31:0]		i_uzCost,
+	input		[31:0]		i_sqrtOneMinusUz2_inv,
+	input		[31:0]		i_uxNumerator,
+	input		[31:0]		i_uyNumerator,
+	input		[31:0]		i_uyCost,
+	input		[31:0]		i_uxQuotient,
+	input		[31:0]		i_uyQuotient,
 	//Outputs
-	o_sint,
-	o_cost,
-	o_sinp,
-	o_cosp,
-	o_sintCosp,
-	o_sintSinp,
-	o_uz2,
-	o_uxUz,
-	o_uyUz,
-	o_uySintSinp,
-	o_oneMinusUz2,
-	o_uyUzSintCosp,
-	o_uxUzSintCosp,
-	o_uxSintSinp,
-	o_sqrtOneMinusUz2,
-	o_sintCospSqrtOneMinusUz2,
-	o_uxCost,
-	o_uzCost,
-	o_sqrtOneMinusUz2_inv,
-	o_uxNumerator,
-	o_uyNumerator,
-	o_uyCost,
-	o_uxQuotient,
-	o_uyQuotient
+	output		[31:0]		o_sint,
+	output		[31:0]		o_cost,
+	output		[31:0]		o_sinp,
+	output		[31:0]		o_cosp,
+	output		[31:0]		o_sintCosp,
+	output		[31:0]		o_sintSinp,
+	output		[63:0]		o_uz2,
+	output		[31:0]		o_uxUz,
+	output		[31:0]		o_uyUz,
+	output		[31:0]		o_uySintSinp,
+	output		[63:0]		o_oneMinusUz2,
+	output		[31:0]		o_uyUzSintCosp,
+	output		[31:0]		o_uxUzSintCosp,
+	output		[31:0]		o_uxSintSinp,
+	output		[31:0]		o_sqrtOneMinusUz2,
+	output		[31:0]		o_sintCospSqrtOneMinusUz2,
+	output		[31:0]		o_uxCost,
+	output		[31:0]		o_uzCost,
+	output		[31:0]		o_sqrtOneMinusUz2_inv,
+	output		[31:0]		o_uxNumerator,
+	output		[31:0]		o_uyNumerator,
+	output		[31:0]		o_uyCost,
+	output		[31:0]		o_uxQuotient,
+	output		[31:0]		o_uyQuotient
 	);
-
-input					clock;
-input					reset;
-input					enable;
-
-input		[31:0]		i_sint;
-input		[31:0]		i_cost;
-input		[31:0]		i_sinp;
-input		[31:0]		i_cosp;
-input		[31:0]		i_sintCosp;
-input		[31:0]		i_sintSinp;
-input		[63:0]		i_uz2;
-input		[31:0]		i_uxUz;
-input		[31:0]		i_uyUz;
-input		[31:0]		i_uySintSinp;
-input		[63:0]		i_oneMinusUz2;
-input		[31:0]		i_uyUzSintCosp;
-input		[31:0]		i_uxUzSintCosp;
-input		[31:0]		i_uxSintSinp;
-input		[31:0]		i_sqrtOneMinusUz2;
-input		[31:0]		i_sintCospSqrtOneMinusUz2;
-input		[31:0]		i_uxCost;
-input		[31:0]		i_uzCost;
-input		[31:0]		i_sqrtOneMinusUz2_inv;
-input		[31:0]		i_uxNumerator;
-input		[31:0]		i_uyNumerator;
-input		[31:0]		i_uyCost;
-input		[31:0]		i_uxQuotient;
-input		[31:0]		i_uyQuotient;
-
-
-output		[31:0]		o_sint;
-output		[31:0]		o_cost;
-output		[31:0]		o_sinp;
-output		[31:0]		o_cosp;
-output		[31:0]		o_sintCosp;
-output		[31:0]		o_sintSinp;
-output		[63:0]		o_uz2;
-output		[31:0]		o_uxUz;
-output		[31:0]		o_uyUz;
-output		[31:0]		o_uySintSinp;
-output		[63:0]		o_oneMinusUz2;
-output		[31:0]		o_uyUzSintCosp;
-output		[31:0]		o_uxUzSintCosp;
-output		[31:0]		o_uxSintSinp;
-output		[31:0]		o_sqrtOneMinusUz2;
-output		[31:0]		o_sintCospSqrtOneMinusUz2;
-output		[31:0]		o_uxCost;
-output		[31:0]		o_uzCost;
-output		[31:0]		o_sqrtOneMinusUz2_inv;
-output		[31:0]		o_uxNumerator;
-output		[31:0]		o_uyNumerator;
-output		[31:0]		o_uyCost;
-output		[31:0]		o_uxQuotient;
-output		[31:0]		o_uyQuotient;
-
-
 wire					clock;
 wire					reset;
 wire					enable;
