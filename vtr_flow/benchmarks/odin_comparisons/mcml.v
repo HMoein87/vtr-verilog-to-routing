@@ -10477,9 +10477,6 @@ input loadseed_i;
 input [31:0] seed_i;
 output [31:0] number_o;
 
-wire [31:0] number_o;
-
-
 reg [31:0] c_b1;
 reg [31:0] c_b2;
 reg [31:0] c_b3;
@@ -10490,6 +10487,9 @@ reg [31:0] c_s3;
 reg [31:0] r_s1;
 reg [31:0] r_s2;
 reg [31:0] r_s3;
+
+wire [31:0] number_o;
+
 
 assign number_o = r_s1 ^ r_s2 ^ r_s3;
 
