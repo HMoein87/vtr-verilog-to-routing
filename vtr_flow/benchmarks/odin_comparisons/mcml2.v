@@ -2379,14 +2379,6 @@ assign done = r_done;
 wire not_reset;
 assign not_reset = ~reset;
 
-// Connect blocks
-LogCalc log_u1(.clock(clock), .reset(reset), .enable(1'b1), .in_x(rand1), .log_x(logrand));
-rng rand_u1(.clk(clock), .en(1'b1), .resetn(not_reset), .loadseed_i(loadseed), .seed_i(randseed1), .number_o(rand1));
-rng rand_u2(.clk(clock), .en(1'b1), .resetn(not_reset), .loadseed_i(loadseed), .seed_i(randseed2), .number_o(rand2));
-rng rand_u3(.clk(clock), .en(1'b1), .resetn(not_reset), .loadseed_i(loadseed), .seed_i(randseed3), .number_o(rand3));
-rng rand_u4(.clk(clock), .en(1'b1), .resetn(not_reset), .loadseed_i(loadseed), .seed_i(randseed4), .number_o(rand4));
-rng rand_u5(.clk(clock), .en(1'b1), .resetn(not_reset), .loadseed_i(loadseed), .seed_i(randseed5), .number_o(rand5));
-
 Move mover(		 .clock(clock), .reset(reset), .enable(enable),
 				 .x_moverMux(x_moverMux), .y_moverMux(y_moverMux), .z_moverMux(z_moverMux),
 				 .ux_moverMux(ux_moverMux), .uy_moverMux(uy_moverMux), .uz_moverMux(uz_moverMux),
@@ -2555,6 +2547,14 @@ DropSpinWrapper dropSpin (
 	.o_hit(hit_dropSpin)
 
 	);
+
+// Connect blocks
+LogCalc log_u1(.clock(clock), .reset(reset), .enable(1'b1), .in_x(rand1), .log_x(logrand));
+rng rand_u1(.clk(clock), .en(1'b1), .resetn(not_reset), .loadseed_i(loadseed), .seed_i(randseed1), .number_o(rand1));
+rng rand_u2(.clk(clock), .en(1'b1), .resetn(not_reset), .loadseed_i(loadseed), .seed_i(randseed2), .number_o(rand2));
+rng rand_u3(.clk(clock), .en(1'b1), .resetn(not_reset), .loadseed_i(loadseed), .seed_i(randseed3), .number_o(rand3));
+rng rand_u4(.clk(clock), .en(1'b1), .resetn(not_reset), .loadseed_i(loadseed), .seed_i(randseed4), .number_o(rand4));
+rng rand_u5(.clk(clock), .en(1'b1), .resetn(not_reset), .loadseed_i(loadseed), .seed_i(randseed5), .number_o(rand5));
 
 // Determine how many photons left
 always @(r_num_photons_left or dead_Roulette or r_done or r_counter)
