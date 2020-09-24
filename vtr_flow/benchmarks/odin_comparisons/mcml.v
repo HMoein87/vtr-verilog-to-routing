@@ -10492,6 +10492,22 @@ wire [31:0] number_o;
 
 assign number_o = r_s1 ^ r_s2 ^ r_s3;
 
+always @(posedge clk or negedge resetn)
+begin
+   if (!resetn)
+   begin
+     r_s1 <= 32'b0;
+     r_s2 <= 32'b0;
+     r_s3 <= 32'b0;
+  end
+ else if(en)
+  begin
+      r_s1 <= c_s1;
+      r_s2 <= c_s2;
+      r_s3 <= c_s3;
+  end
+end
+
 always @(loadseed_i or seed_i or r_s1 or r_s2 or r_s3)
 begin
 	if(loadseed_i)
@@ -10513,23 +10529,6 @@ begin
 		c_s3 = (((r_s3 & 32'd4294967280) << 17) ^ c_b3);
 	end
 end
-
-//combinate:
-always @(posedge clk or negedge resetn)
-   begin
-       if (!resetn)
-       begin
-         r_s1 <= 32'b0;
-   	  r_s2 <= 32'b0;
-   	  r_s3 <= 32'b0;
-      end
-     else if(en)
-      begin
-		  r_s1 <= c_s1;
-		  r_s2 <= c_s2;
-		  r_s3 <= c_s3;
-	  end
-  end
 endmodule
 
 
