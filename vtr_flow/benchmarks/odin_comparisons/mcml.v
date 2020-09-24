@@ -10515,21 +10515,20 @@ begin
 end
 
 //combinate:
-always @(posedge clk)
+always @(posedge clk or negedge resetn)
    begin
-     if(en)
+       if (!resetn)
+       begin
+         r_s1 <= 32'b0;
+   	  r_s2 <= 32'b0;
+   	  r_s3 <= 32'b0;
+      end
+     else if(en)
       begin
 		  r_s1 <= c_s1;
 		  r_s2 <= c_s2;
 		  r_s3 <= c_s3;
 	  end
-   end
-always @(negedge resetn)
-   begin
-      r_s1 <= 32'b0;
-	  r_s2 <= 32'b0;
-	  r_s3 <= 32'b0;
-   end
 endmodule
 
 
