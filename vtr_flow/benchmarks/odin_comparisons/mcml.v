@@ -9952,12 +9952,9 @@ end
 endmodule
 
 
-module rng(input clk, input en, input resetn, input loadseed_i, input[31:0] seed_i, output[31:0] number_o);
+module rng(input clk, input en, input resetn, input loadseed_i, input[31:0] seed_i, output wire [31:0] number_o);
 
-reg [31:0] c_b1, c_b2, c_b3;
-reg [31:0] c_s1, c_s2, c_s3;
-
-reg [31:0] r_s1, r_s2, r_s3;
+reg [31:0] c_b1, c_b2, c_b3, c_s1, c_s2, c_s3, r_s1, r_s2, r_s3;
 
 assign number_o = r_s1 ^ r_s2 ^ r_s3;
 
