@@ -10484,31 +10484,25 @@ reg [31:0] c_s1;
 reg [31:0] c_s2;
 reg [31:0] c_s3;
 
-reg [31:0] r_s1;
-reg [31:0] r_s2;
-reg [31:0] r_s3;
+reg [95:0] r;
 
 wire [31:0] number_o;
 
-assign number_o = r_s1 ^ r_s2 ^ r_s3;
+assign number_o = r[31:0] ^ r[63:32] ^ r[95:64];
 
 always @(posedge clk or negedge resetn)
 begin
    if (!resetn)
    begin
-     r_s1 <= 32'b0;
-     r_s2 <= 32'b0;
-     r_s3 <= 32'b0;
+     r <= 96'h0;
   end
  else if(en)
   begin
-      r_s1 <= c_s1;
-      r_s2 <= c_s2;
-      r_s3 <= c_s3;
+      r <= {c_s3, c_s2, c_s1};
   end
 end
 
-always @(loadseed_i or seed_i or r_s1 or r_s2 or r_s3)
+always @(loadseed_i or seed_i or r)
 begin
 	if(loadseed_i)
 	begin
@@ -10521,12 +10515,12 @@ begin
 	end
 	else
 	begin
-		c_b1 = (((r_s1 << 13) ^ r_s1) >> 19);
-		c_s1 = (((r_s1 & 32'd4294967294) << 12) ^ c_b1);
-		c_b2 = (((r_s2 << 2) ^ r_s2) >> 25);
-		c_s2 = (((r_s2 & 32'd4294967288) << 4) ^ c_b2);
-		c_b3 = (((r_s3 << 3) ^ r_s3) >> 11);
-		c_s3 = (((r_s3 & 32'd4294967280) << 17) ^ c_b3);
+		c_b1 = (((r[31:0] << 13) ^ r[31:0]) >> 19);
+		c_s1 = (((r[31:0] & 32'd4294967294) << 12) ^ c_b1);
+		c_b2 = (((r[63:32] << 2) ^ r[63:32]) >> 25);
+		c_s2 = (((r[63:32] & 32'd4294967288) << 4) ^ c_b2);
+		c_b3 = (((r[95:64] << 3) ^ r[95:64]) >> 11);
+		c_s3 = (((r[95:64] & 32'd4294967280) << 17) ^ c_b3);
 	end
 end
 endmodule
@@ -24952,7 +24946,7 @@ module Sqrt_64b (clk, num_, res);
              res = res__14[31:0];
          end
          else
-         if (!one__15_q)
+         if (one__15_q == 0)
          begin
              res = res__15_q[31:0];
          end
