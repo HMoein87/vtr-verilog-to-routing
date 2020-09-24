@@ -24722,10 +24722,13 @@ module Sqrt_64b (clk, num_, res);
        one__17 = (one__16 >> 2);
 
        //i = 17
-       if (op__17 >= res__17 + one__17) begin
+       if (op__17 >= res__17 + one__17)
+       begin
            op__18_d = op__17 - res__17 - one__17;
            res__18_d = (res__17>>1) + one__17;
-       end else begin
+       end
+       else
+       begin
            op__18_d = op__17;
            res__18_d = (res__17>>1);
        end
@@ -24945,9 +24948,15 @@ module Sqrt_64b (clk, num_, res);
              res = res__13[31:0];
          end else if (one__14 == 0) begin
              res = res__14[31:0];
-         end else if (one__15_q == 0) begin
+         end
+         else
+         if (!one__15_q)
+         begin
              res = res__15_q[31:0];
-         end else if (one__16 == 0) begin
+         end
+         else
+         if (one__16 == 0)
+         begin
              res = res__16[31:0];
          end else if (one__17 == 0) begin
              res = res__17[31:0];
