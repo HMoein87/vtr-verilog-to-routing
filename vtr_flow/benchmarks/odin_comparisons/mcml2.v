@@ -1789,7 +1789,7 @@ endmodule
 
 
 
-module dual_port_mem_zz (clk, data, rdaddress, wraddress , wren, q);
+module dual_port_mem_zz (clk, data, rdaddress, wraddress, wren, q);
 
 // 32bit wide
 // 13bit address

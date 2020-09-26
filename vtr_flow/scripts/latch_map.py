@@ -22,6 +22,8 @@ def process_line(line):
     if len(parts) >= 4 and parts[3] != "NIL":
         clock = parts[3]
 
+    negate_format = ".names {} {}\n0 1\n\n"
+
     invert_line = ""
     if parts[2] == "fe":
         if clock == "unconn":
@@ -33,21 +35,26 @@ def process_line(line):
         else:
             new_clock = clock + "^^^^latch_map.py$clock_invert"
             clock_inv_list[clock] = new_clock
-            invert_line = ".names {} {}\n0 1\n\n".format(clock, new_clock)
+            invert_line = negate_format.format(clock, new_clock)
             clock = new_clock
     elif parts[2] != "re":
         print("Found {} latch".format(parts[2]))
         print("Can only handle rising edge or falling edge latches")
         exit(1)
 
+    init_line = ""
     if len(parts) >= 5:
         init = int(parts[4])
         if init == 1:
-            print("Dont support non zero initialisation")
-            exit(1)
+            temp_in = in_wire + "^^^^latch_map.py$in_invert"
+            init_line = negate_format.format(in_wire, temp_in)
+            in_wire = temp_in
+            temp_out = out_wire + "^^^^latch_map.py$out_invert"
+            init_line += negate_format.format(temp_out, out_wire)
+            out_wire = temp_out
 
     subckt_line = ".subckt {} D={} C={} CE=vcc R=gnd Q={}\n".format(subckt, in_wire, clock, out_wire)
-    return invert_line + subckt_line
+    return invert_line + subckt_line + init_line
 
 
 
