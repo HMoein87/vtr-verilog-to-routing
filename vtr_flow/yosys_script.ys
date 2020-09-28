@@ -8,7 +8,7 @@ read_verilog -lib /mnt/comparison_results/symbiflow-arch-defs/xc/xc7/techmap/iob
 
 hierarchy -check -auto-top
 
-synth_xilinx -vpr -flatten -abc9 -nosrl -noclkbuf -nodsp -iopad -nobram -nodram -nowidelut -run prepare:check
+synth_xilinx -vpr -flatten -abc9 -nosrl -noclkbuf -nodsp -iopad -nobram -nodram -nowidelut -nocarry -run prepare:check
 
 select -set obufds t:OSERDESE2 %co2:+\[OQ,I\] t:OBUFDS t:OBUFTDS %u  %i
 setparam -set HAS_OSERDES 1 @obufds
