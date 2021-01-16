@@ -3537,7 +3537,7 @@ signal_list_t* create_operation_node(ast_node_t* op, signal_list_t** input_lists
                     break;
                 }
                 case SR: 
-                    error_message(NETLIST, op->loc, "%s", "FIRST ATTEMPT!\n");
+                    error_message(NETLIST, op->loc, "%s", "SECOND ATTEMPT!\n");
                 case ASR: {
                     // This IF condition has been set to prevent showing error for SR
                     if (operation_node->type == ASR)
