@@ -187,7 +187,7 @@ ast_node_t* find_top_module(ast_t* ast) {
                     found_desired_module = true;
                     number_of_top_modules = 1;
                     break;
-                } else if (!(ast->top_modules[i]->types.module.is_instantiated)) {
+                } else if (!(ast->top_modules[i]->types.module.is_instantiated) && ast->top_modules[i]->children[0]) {
                     /**
                      * Check to see if the module is a hard block 
                      * a hard block is never the top level!
