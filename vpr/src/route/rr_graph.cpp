@@ -137,18 +137,18 @@ static void build_unidir_rr_opins(const int i,
                                   const int num_seg_types,
                                   t_opin_connections_scratchpad* scratchpad);
 
-static int get_opin_direct_connecions(int x,
-                                      int y,
-                                      e_side side,
-                                      int opin,
-                                      int from_rr_node,
-                                      t_rr_edge_info_set& rr_edges_to_create,
-                                      const t_rr_node_indices& L_rr_node_indices,
-                                      const t_rr_graph_storage& rr_nodes,
-                                      const t_direct_inf* directs,
-                                      const int num_directs,
-                                      const t_clb_to_clb_directs* clb_to_clb_directs,
-                                      t_opin_connections_scratchpad* scratchpad);
+static int get_opin_direct_connections(int x,
+                                       int y,
+                                       e_side side,
+                                       int opin,
+                                       int from_rr_node,
+                                       t_rr_edge_info_set& rr_edges_to_create,
+                                       const t_rr_node_indices& L_rr_node_indices,
+                                       const t_rr_graph_storage& rr_nodes,
+                                       const t_direct_inf* directs,
+                                       const int num_directs,
+                                       const t_clb_to_clb_directs* clb_to_clb_directs,
+                                       t_opin_connections_scratchpad* scratchpad);
 
 static std::function<void(t_chan_width*)> alloc_and_load_rr_graph(t_rr_graph_storage& L_rr_node,
                                                                   const int num_seg_types,
@@ -1328,9 +1328,9 @@ static void build_bidir_rr_opins(const int i,
         }
 
         /* Add in direct connections */
-        get_opin_direct_connecions(i, j, side, pin_index,
-                                   node_index, rr_edges_to_create, L_rr_node_indices, rr_nodes,
-                                   directs, num_directs, clb_to_clb_directs, scratchpad);
+        get_opin_direct_connections(i, j, side, pin_index,
+                                    node_index, rr_edges_to_create, L_rr_node_indices, rr_nodes,
+                                    directs, num_directs, clb_to_clb_directs, scratchpad);
     }
 }
 
@@ -1499,13 +1499,8 @@ static void build_rr_sinks_sources(const int i,
                             L_rr_node[inode].add_side(side);
 
                             // Sanity check
-                            VTR_ASSERT(1 <= L_rr_node[inode].sides().size());
-                            if (1 == L_rr_node[inode].sides().size()) {
-                                VTR_ASSERT(type->pinloc[width_offset][height_offset][L_rr_node[inode].side()][L_rr_node[inode].pin_num()]);
-                            } else {
-                                VTR_ASSERT(L_rr_node[inode].is_node_on_specific_side(side));
-                                VTR_ASSERT(type->pinloc[width_offset][height_offset][side][L_rr_node[inode].pin_num()]);
-                            }
+                            VTR_ASSERT(L_rr_node[inode].is_node_on_specific_side(side));
+                            VTR_ASSERT(type->pinloc[width_offset][height_offset][side][L_rr_node[inode].pin_num()]);
                         }
                     }
                 }
@@ -2573,8 +2568,8 @@ static void build_unidir_rr_opins(const int i, const int j, const e_side side, c
         }
 
         /* Add in direct connections */
-        get_opin_direct_connecions(i, j, side, pin_index, opin_node_index, rr_edges_to_create, L_rr_node_indices, rr_nodes,
-                                   directs, num_directs, clb_to_clb_directs, scratchpad);
+        get_opin_direct_connections(i, j, side, pin_index, opin_node_index, rr_edges_to_create, L_rr_node_indices, rr_nodes,
+                                    directs, num_directs, clb_to_clb_directs, scratchpad);
     }
 }
 
@@ -2688,18 +2683,18 @@ static t_clb_to_clb_directs* alloc_and_load_clb_to_clb_directs(const t_direct_in
  *
  * The current opin is located at (x,y) along the specified side
  */
-static int get_opin_direct_connecions(int x,
-                                      int y,
-                                      e_side side,
-                                      int opin,
-                                      int from_rr_node,
-                                      t_rr_edge_info_set& rr_edges_to_create,
-                                      const t_rr_node_indices& L_rr_node_indices,
-                                      const t_rr_graph_storage& rr_nodes,
-                                      const t_direct_inf* directs,
-                                      const int num_directs,
-                                      const t_clb_to_clb_directs* clb_to_clb_directs,
-                                      t_opin_connections_scratchpad* scratchpad) {
+static int get_opin_direct_connections(int x,
+                                       int y,
+                                       e_side side,
+                                       int opin,
+                                       int from_rr_node,
+                                       t_rr_edge_info_set& rr_edges_to_create,
+                                       const t_rr_node_indices& L_rr_node_indices,
+                                       const t_rr_graph_storage& rr_nodes,
+                                       const t_direct_inf* directs,
+                                       const int num_directs,
+                                       const t_clb_to_clb_directs* clb_to_clb_directs,
+                                       t_opin_connections_scratchpad* scratchpad) {
     auto& device_ctx = g_vpr_ctx.device();
 
     t_physical_tile_type_ptr curr_type = device_ctx.grid[x][y].type;
@@ -2731,6 +2726,7 @@ static int get_opin_direct_connecions(int x,
                 && y + directs[i].y_offset > 0) {
                 //Only add connections if the target clb type matches the type in the direct specification
                 t_physical_tile_type_ptr target_type = device_ctx.grid[x + directs[i].x_offset][y + directs[i].y_offset].type;
+
                 if (clb_to_clb_directs[i].to_clb_type == target_type
                     && z + directs[i].sub_tile_offset < int(target_type->capacity)
                     && z + directs[i].sub_tile_offset >= 0) {
@@ -2765,11 +2761,12 @@ static int get_opin_direct_connecions(int x,
                             }
                         }
 
+                        int target_sub_tile = z + directs[i].sub_tile_offset;
+                        if (relative_ipin >= target_type->sub_tiles[target_sub_tile].num_phy_pins) continue;
+
                         //If this block has capacity > 1 then the pins of z position > 0 are offset
                         //by the number of pins per capacity instance
-                        int ipin = get_physical_pin_from_capacity_location(target_type, relative_ipin, z + directs[i].sub_tile_offset);
-
-                        //if (ipin > target_type->num_pins) continue; //Invalid z-offset
+                        int ipin = get_physical_pin_from_capacity_location(target_type, relative_ipin, target_sub_tile);
 
                         /* Add new ipin edge to list of edges */
                         std::vector<int>& inodes = scratchpad->scratch[0];
@@ -2920,39 +2917,50 @@ static int pick_best_direct_connect_target_rr_node(const t_rr_graph_storage& rr_
     //This function attempts to pick the 'best/closest' of the candidates.
 
     VTR_ASSERT(rr_nodes[from_rr].type() == OPIN);
-    e_side from_side = rr_nodes[from_rr].side();
 
     float best_dist = std::numeric_limits<float>::infinity();
     int best_rr = OPEN;
 
-    for (int to_rr : candidate_rr_nodes) {
-        VTR_ASSERT(rr_nodes[to_rr].type() == IPIN);
-        float to_dist = std::abs(rr_nodes[from_rr].xlow() - rr_nodes[to_rr].xlow())
-                        + std::abs(rr_nodes[from_rr].ylow() - rr_nodes[to_rr].ylow());
-
-        e_side to_side = rr_nodes[to_rr].side();
-
-        //Include a partial unit of distance based on side alignment to ensure
-        //we preferr facing sides
-        if ((from_side == RIGHT && to_side == LEFT)
-            || (from_side == LEFT && to_side == RIGHT)
-            || (from_side == TOP && to_side == BOTTOM)
-            || (from_side == BOTTOM && to_side == TOP)) {
-            //Facing sides
-            to_dist += 0.25;
-        } else if (((from_side == RIGHT || from_side == LEFT) && (to_side == TOP || to_side == BOTTOM))
-                   || ((from_side == TOP || from_side == BOTTOM) && (to_side == RIGHT || to_side == LEFT))) {
-            //Perpendicular sides
-            to_dist += 0.5;
-
-        } else {
-            //Opposite sides
-            to_dist += 0.75;
+    for (const e_side& from_side : SIDES) {
+        /* Bypass those side where the node does not appear */
+        if (!rr_nodes[from_rr].is_node_on_specific_side(from_side)) {
+            continue;
         }
 
-        if (to_dist < best_dist) {
-            best_dist = to_dist;
-            best_rr = to_rr;
+        for (int to_rr : candidate_rr_nodes) {
+            VTR_ASSERT(rr_nodes[to_rr].type() == IPIN);
+            float to_dist = std::abs(rr_nodes[from_rr].xlow() - rr_nodes[to_rr].xlow())
+                            + std::abs(rr_nodes[from_rr].ylow() - rr_nodes[to_rr].ylow());
+
+            for (const e_side& to_side : SIDES) {
+                /* Bypass those side where the node does not appear */
+                if (!rr_nodes[to_rr].is_node_on_specific_side(to_side)) {
+                    continue;
+                }
+
+                //Include a partial unit of distance based on side alignment to ensure
+                //we preferr facing sides
+                if ((from_side == RIGHT && to_side == LEFT)
+                    || (from_side == LEFT && to_side == RIGHT)
+                    || (from_side == TOP && to_side == BOTTOM)
+                    || (from_side == BOTTOM && to_side == TOP)) {
+                    //Facing sides
+                    to_dist += 0.25;
+                } else if (((from_side == RIGHT || from_side == LEFT) && (to_side == TOP || to_side == BOTTOM))
+                           || ((from_side == TOP || from_side == BOTTOM) && (to_side == RIGHT || to_side == LEFT))) {
+                    //Perpendicular sides
+                    to_dist += 0.5;
+
+                } else {
+                    //Opposite sides
+                    to_dist += 0.75;
+                }
+
+                if (to_dist < best_dist) {
+                    best_dist = to_dist;
+                    best_rr = to_rr;
+                }
+            }
         }
     }
 

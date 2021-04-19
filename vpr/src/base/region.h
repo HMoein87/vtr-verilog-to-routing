@@ -2,6 +2,7 @@
 #define REGION_H
 
 #include <vtr_geometry.h>
+#include "vpr_types.h"
 
 /**
  * @file
@@ -49,6 +50,15 @@ class Region {
      */
     bool locked();
 
+    /**
+     * @brief Check if the location is in the region (at a valid x, y, subtile location within the region bounds, inclusive)
+     * If the region has no subtile specified, then the location subtile does not have to match. If it does, the location
+     * and region subtile must match. The location provided is assumed to be valid.
+     *
+     *   @param loc     The location to be checked
+     */
+    bool is_loc_in_reg(t_pl_loc loc);
+
   private:
     //may need to include zmin, zmax for future use in 3D FPGA designs
     vtr::Rect<int> region_bounds; ///< xmin, ymin, xmax, ymax inclusive
@@ -75,5 +85,8 @@ bool do_regions_intersect(Region r1, Region r2);
  *
  */
 Region intersection(Region r1, Region r2);
+
+///@brief Used to print data from a Region
+void print_region(FILE* fp, Region region);
 
 #endif /* REGION_H */
