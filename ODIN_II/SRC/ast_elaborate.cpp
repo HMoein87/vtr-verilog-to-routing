@@ -162,7 +162,46 @@ ast_node_t* resolve_top_parameters_defined_by_parameters2(ast_node_t* node, sc_h
 ast_node_t* find_top_module(ast_t* ast) {
     ast_node_t* top_entry = NULL;
 
-    
+    for( long j = 0; j < ast->top_modules_count; j++) {
+        long sc_spot_hard_block;
+        long sc_spot;
+        std::string module_name = ast->top_modules[j]->identifier_node->types.identifier;
+
+        if (!(ast->top_modules[j]->types.module.is_instantiated) && !(ast->top_modules[j]->children[0])) {
+            //Check to see if the module is a hard block
+            if (-1 == (sc_spot_hard_block = sc_lookup_string(hard_block_names, module_name.c_str()))) {
+                long num_defparam = ast->top_modules[j]->types.hierarchy->local_defparam_table_sc->free;
+
+                for ( long k = 0; k < num_defparam; k++) {
+                    std::string defparam_ref(ast->top_modules[j]->types.hierarchy->local_defparam_table_sc->string[k]);
+                    size_t param_loc = defparam_ref.find_first_of('.');
+                    std::string param_ref = defparam_ref.substr(0, param_loc);
+                    defparam_ref = defparam_ref.substr(param_loc + 1, std::string::npos);
+                    sc_spot = sc_lookup_string(module_names_to_idx, param_ref.c_str());
+                    
+
+                    if ( -1 != sc_spot ) {
+                        int old_num_children = (int) ast->top_modules[sc_spot]->children[1]->num_children;
+                        ast->top_modules[sc_spot]->children[1]->children[old_num_children] = ast_node_copy(ast->top_modules[j]->children[1]->children[0]);
+                        ast->top_modules[sc_spot]->children[1]->num_children++;
+                        ast->top_modules[sc_spot]->children[1]->children[old_num_children]->children = (ast_node_t**)vtr::realloc(ast->top_modules[sc_spot]->children[1]->children[old_num_children]->children, sizeof(ast_node_t*));
+                        ast->top_modules[sc_spot]->children[1]->children[old_num_children]->children[0] = ast_node_deep_copy(ast->top_modules[j]->children[1]->children[0]->children[k]);
+                        ast->top_modules[sc_spot]->children[1]->children[old_num_children]->num_children = 1;
+                        ast->top_modules[sc_spot]->children[1]->children[old_num_children]->children[0]->identifier_node->types.identifier = vtr::strdup(defparam_ref.c_str());
+                        long num_defparam_ref_module = ast->top_modules[sc_spot]->types.hierarchy->local_defparam_table_sc->free;
+
+                        ast->top_modules[sc_spot]->types.hierarchy->local_defparam_table_sc->string[num_defparam_ref_module] = vtr::strdup(defparam_ref.c_str());
+                        ast->top_modules[sc_spot]->types.hierarchy->local_defparam_table_sc->free++; 
+                        ast->top_modules[sc_spot]->types.hierarchy->local_defparam_table_sc->data[num_defparam_ref_module] = ast->top_modules[j]->types.hierarchy->local_defparam_table_sc->data[k];
+
+                        ast->top_modules[sc_spot]->types.hierarchy->top_node = ast->top_modules[sc_spot];      
+                        ast->top_modules[sc_spot]->types.hierarchy->instance_name_prefix = vtr::strdup(ast->top_modules[sc_spot]->identifier_node->types.identifier);
+                        ast->top_modules[sc_spot]->types.hierarchy->scope_id = vtr::strdup(ast->top_modules[sc_spot]->identifier_node->types.identifier);
+                    }
+                }
+            }
+        }
+    }
 
     long number_of_top_modules = 0;
 
