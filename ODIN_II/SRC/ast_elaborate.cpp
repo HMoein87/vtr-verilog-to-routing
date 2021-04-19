@@ -148,6 +148,12 @@ void verify_genvars(ast_node_t* node, sc_hierarchy* local_ref, char*** other_gen
 ast_node_t* look_for_matching_hard_block(ast_node_t* node, char* hard_block_name, sc_hierarchy* local_ref);
 ast_node_t* look_for_matching_soft_logic(ast_node_t* node, char* hard_block_name);
 
+ast_node_t* resolve_top_module_parameters2(ast_node_t* node, sc_hierarchy* top_sc_list);
+ast_node_t* resolve_top_parameters_defined_by_parameters2(ast_node_t* node, sc_hierarchy* top_sc_list, int count);
+
+#define RECURSIVE_LIMIT 256
+
+
 /*---------------------------------------------------------------------------------------------
  * (function: find_top_module)
  * 	Finds the top module based on that it is not called by anyone else
@@ -155,6 +161,47 @@ ast_node_t* look_for_matching_soft_logic(ast_node_t* node, char* hard_block_name
  *-------------------------------------------------------------------------------------------*/
 ast_node_t* find_top_module(ast_t* ast) {
     ast_node_t* top_entry = NULL;
+
+    for( long j = 0; j < ast->top_modules_count; j++) {
+        long sc_spot_hard_block;
+        long sc_spot;
+        std::string module_name = ast->top_modules[j]->identifier_node->types.identifier;
+
+        if (!(ast->top_modules[j]->types.module.is_instantiated) && !(ast->top_modules[j]->children[0])) {
+            //Check to see if the module is a hard block
+            if (-1 == (sc_spot_hard_block = sc_lookup_string(hard_block_names, module_name.c_str()))) {
+                long num_defparam = ast->top_modules[j]->types.hierarchy->local_defparam_table_sc->free;
+
+                for ( long k = 0; k < num_defparam; k++) {
+                    std::string defparam_ref(ast->top_modules[j]->types.hierarchy->local_defparam_table_sc->string[k]);
+                    size_t param_loc = defparam_ref.find_first_of('.');
+                    std::string param_ref = defparam_ref.substr(0, param_loc);
+                    defparam_ref = defparam_ref.substr(param_loc + 1, std::string::npos);
+                    sc_spot = sc_lookup_string(module_names_to_idx, param_ref.c_str());
+                    
+
+                    if ( -1 != sc_spot ) {
+                        int old_num_children = (int) ast->top_modules[sc_spot]->children[1]->num_children;
+                        ast->top_modules[sc_spot]->children[1]->children[old_num_children] = ast_node_copy(ast->top_modules[j]->children[1]->children[0]);
+                        ast->top_modules[sc_spot]->children[1]->num_children++;
+                        ast->top_modules[sc_spot]->children[1]->children[old_num_children]->children = (ast_node_t**)vtr::realloc(ast->top_modules[sc_spot]->children[1]->children[old_num_children]->children, sizeof(ast_node_t*));
+                        ast->top_modules[sc_spot]->children[1]->children[old_num_children]->children[0] = ast_node_deep_copy(ast->top_modules[j]->children[1]->children[0]->children[k]);
+                        ast->top_modules[sc_spot]->children[1]->children[old_num_children]->num_children = 1;
+                        ast->top_modules[sc_spot]->children[1]->children[old_num_children]->children[0]->identifier_node->types.identifier = vtr::strdup(defparam_ref.c_str());
+                        long num_defparam_ref_module = ast->top_modules[sc_spot]->types.hierarchy->local_defparam_table_sc->free;
+
+                        ast->top_modules[sc_spot]->types.hierarchy->local_defparam_table_sc->string[num_defparam_ref_module] = vtr::strdup(defparam_ref.c_str());
+                        ast->top_modules[sc_spot]->types.hierarchy->local_defparam_table_sc->free++; 
+                        ast->top_modules[sc_spot]->types.hierarchy->local_defparam_table_sc->data[num_defparam_ref_module] = ast->top_modules[j]->types.hierarchy->local_defparam_table_sc->data[k];
+
+                        ast->top_modules[sc_spot]->types.hierarchy->top_node = ast->top_modules[sc_spot];      
+                        ast->top_modules[sc_spot]->types.hierarchy->instance_name_prefix = vtr::strdup(ast->top_modules[sc_spot]->identifier_node->types.identifier);
+                        ast->top_modules[sc_spot]->types.hierarchy->scope_id = vtr::strdup(ast->top_modules[sc_spot]->identifier_node->types.identifier);
+                    }
+                }
+            }
+        }
+    }
 
     long number_of_top_modules = 0;
 
@@ -204,7 +251,7 @@ ast_node_t* find_top_module(ast_t* ast) {
                         number_of_top_modules += 1;
                         top_entry = ast->top_modules[i];
                     }
-                }
+                } 
             }
         }
     }
@@ -2719,6 +2766,7 @@ void create_param_table_for_scope(ast_node_t* module_items, sc_hierarchy* local_
         error_message(AST, module_items->loc, "%s", "Empty module\n");
     }
 }
+
 
 // /*---------------------------------------------------------------------------
 //  * (function: reduce_assignment_expression)
