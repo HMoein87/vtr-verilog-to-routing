@@ -2767,7 +2767,6 @@ void create_param_table_for_scope(ast_node_t* module_items, sc_hierarchy* local_
     }
 }
 
-
 // /*---------------------------------------------------------------------------
 //  * (function: reduce_assignment_expression)
 //  * reduce the number nodes which can be calculated to optimize the AST
