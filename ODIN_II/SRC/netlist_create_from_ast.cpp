@@ -132,6 +132,8 @@ signal_list_t* create_soft_dual_port_ram_block(ast_node_t* block, char* instance
 void look_for_clocks(netlist_t* netlist);
 void reorder_connections_from_name(ast_node_t* instance_node, ast_node_t* instanciated_instance, ids type);
 
+int resolve_defparam(ast_t* ast);
+
 /*---------------------------------------------------------------------------------------------
  * (function: create_netlist)
  *--------------------------------------------------------------------------*/
@@ -157,6 +159,7 @@ void create_netlist(ast_t* ast) {
 
     /* we will find the top module */
     ast_node_t* top_module = find_top_module(ast);
+    resolve_defparam(ast); 
     if (top_module) {
         top_module->types.hierarchy->top_node = top_module;
 
@@ -5521,4 +5524,60 @@ ast_node_t* resolve_top_parameters_defined_by_parameters(ast_node_t* node, sc_hi
         }
     }
     return (node);
+}
+
+int resolve_defparam(ast_t* ast) {
+    long sc_spot;
+    long sc_spot_hard_block;
+    
+    for(long i = 0; i < ast->top_modules_count; i++) {
+        std::string module_name = ast->top_modules[i]->identifier_node->types.identifier;
+
+        if (-1 == (sc_spot_hard_block = sc_lookup_string(hard_block_names, module_name.c_str()))) {
+            
+            sc_hierarchy* local_ref = ast->top_modules[i]->types.hierarchy;
+            STRING_CACHE* local_defparam_table = local_ref->local_defparam_table_sc;
+  
+
+            for (long j = 0; j < local_defparam_table->free; j++) {
+                sc_spot = i;
+                std::string defparam_ref(local_defparam_table->string[j]);
+                size_t param_loc = defparam_ref.find_first_of('.');
+
+                if (!ast->top_modules[i]->children[0]) {
+                    std::string defparam_ref_temp = defparam_ref.substr(0, param_loc);
+                    sc_spot = sc_lookup_string(module_names_to_idx, defparam_ref_temp.c_str());
+                    defparam_ref = defparam_ref.substr(param_loc + 1, std::string::npos);
+                    param_loc = defparam_ref.find_first_of('.');
+                }
+    
+                std::string param_ref = defparam_ref.substr(param_loc + 1, std::string::npos);
+                defparam_ref.erase(param_loc, std::string::npos);
+
+                for (long k = 0; k < ast->top_modules[sc_spot]->children[1]->num_children; k++) {
+                    ast_node_t* instance_node = ast->top_modules[sc_spot]->children[1]->children[k]->children[0];
+                        
+                    if ( instance_node->type ==  MODULE_INSTANCE) {
+                        std::string instance_name(instance_node->children[0]->identifier_node->types.identifier);
+
+                        if ( !strcmp(defparam_ref.c_str(), instance_name.c_str()) ) {
+                            ast_node_t* instance_param_list = instance_node->children[0]->children[1];
+                            ast_node_t* param_node = ast_node_deep_copy((ast_node_t*)local_defparam_table->data[j]);
+                            // identifier expected to be parameter name only
+                            vtr::free(param_node->identifier_node->types.identifier);
+                            param_node->identifier_node->types.identifier = vtr::strdup(param_ref.c_str());
+
+                            if (!instance_param_list) {
+                                instance_param_list = create_node_w_type(MODULE_PARAMETER_LIST, instance_node->children[0]->loc);
+                                instance_node->children[0]->children[1] = instance_param_list;
+                            }
+
+                            add_child_to_node(instance_param_list, param_node);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return 1;
 }
