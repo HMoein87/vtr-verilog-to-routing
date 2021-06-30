@@ -377,12 +377,11 @@ t_src_opin_delays compute_router_src_opin_lookahead() {
 t_chan_ipins_delays compute_router_chan_ipin_lookahead() {
     vtr::ScopedStartFinishTimer timer("Computing chan/ipin lookahead");
     auto& device_ctx = g_vpr_ctx.device();
+    const auto& node_lookup = device_ctx.rr_graph.node_lookup();
 
     t_chan_ipins_delays chan_ipins_delays;
 
     chan_ipins_delays.resize(device_ctx.physical_tile_types.size());
-
-    std::vector<int> rr_nodes_at_loc;
 
     //We assume that the routing connectivity of each instance of a physical tile is the same,
     //and so only measure one instance of each type
@@ -406,14 +405,7 @@ t_chan_ipins_delays compute_router_chan_ipin_lookahead() {
         for (int ix = min_x; ix < max_x; ix++) {
             for (int iy = min_y; iy < max_y; iy++) {
                 for (auto rr_type : {CHANX, CHANY}) {
-                    rr_nodes_at_loc.clear();
-
-                    get_rr_node_indices(device_ctx.rr_node_indices, ix, iy, rr_type, &rr_nodes_at_loc);
-                    for (int inode : rr_nodes_at_loc) {
-                        if (inode < 0) continue;
-
-                        RRNodeId node_id(inode);
-
+                    for (const RRNodeId& node_id : node_lookup.find_channel_nodes(ix, iy, rr_type)) {
                         //Find the IPINs which are reachable from the wires within the bounding box
                         //around the selected tile location
                         dijkstra_flood_to_ipins(node_id, chan_ipins_delays);
@@ -430,6 +422,7 @@ t_chan_ipins_delays compute_router_chan_ipin_lookahead() {
 
 static void dijkstra_flood_to_wires(int itile, RRNodeId node, util::t_src_opin_delays& src_opin_delays) {
     auto& device_ctx = g_vpr_ctx.device();
+    const auto& temp_rr_graph = device_ctx.rr_graph; //TODO rename to rr_graph once the variable on the next line is unneeded
     auto& rr_graph = device_ctx.rr_nodes;
 
     struct t_pq_entry {
@@ -476,7 +469,7 @@ static void dijkstra_flood_to_wires(int itile, RRNodeId node, util::t_src_opin_d
         t_pq_entry curr = pq.top();
         pq.pop();
 
-        e_rr_type curr_rr_type = rr_graph.node_type(curr.node);
+        e_rr_type curr_rr_type = temp_rr_graph.node_type(curr.node);
         if (curr_rr_type == CHANX || curr_rr_type == CHANY || curr_rr_type == SINK) {
             //We stop expansion at any CHANX/CHANY/SINK
             int seg_index;
@@ -530,6 +523,7 @@ static void dijkstra_flood_to_wires(int itile, RRNodeId node, util::t_src_opin_d
 
 static void dijkstra_flood_to_ipins(RRNodeId node, util::t_chan_ipins_delays& chan_ipins_delays) {
     auto& device_ctx = g_vpr_ctx.device();
+    const auto& temp_rr_graph = device_ctx.rr_graph; //TODO rename to rr_graph once the variable on the next line is unneeded
     auto& rr_graph = device_ctx.rr_nodes;
 
     struct t_pq_entry {
@@ -575,7 +569,7 @@ static void dijkstra_flood_to_ipins(RRNodeId node, util::t_chan_ipins_delays& ch
         t_pq_entry curr = pq.top();
         pq.pop();
 
-        e_rr_type curr_rr_type = rr_graph.node_type(curr.node);
+        e_rr_type curr_rr_type = temp_rr_graph.node_type(curr.node);
         if (curr_rr_type == IPIN) {
             int node_x = rr_graph.node_xlow(curr.node);
             int node_y = rr_graph.node_ylow(curr.node);
