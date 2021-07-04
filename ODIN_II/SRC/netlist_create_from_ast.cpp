@@ -5552,6 +5552,9 @@ ast_node_t* resolve_top_parameters_defined_by_parameters(ast_node_t* node, sc_hi
 int resolve_defparam(ast_t* ast) {
     long sc_spot;
     long sc_spot_hard_block;
+    bool done = false;
+    ast_node_t* instance_node = NULL;
+    std::string instance_name;
     
     for(long i = 0; i < ast->top_modules_count; i++) {
         std::string module_name = ast->top_modules[i]->identifier_node->types.identifier;
@@ -5576,12 +5579,37 @@ int resolve_defparam(ast_t* ast) {
     
                 std::string param_ref = defparam_ref.substr(param_loc + 1, std::string::npos);
                 defparam_ref.erase(param_loc, std::string::npos);
+                while ( done == false ) {
+                    if (param_ref.find_first_of('.') != std::string::npos){
+
+                        param_loc = param_ref.find_first_of('.');
+                        //std::string defparam_ref_temp = param_ref.substr(0 , param_loc);
+                        for (long z = 0; z < ast->top_modules[sc_spot]->children[1]->num_children; z++) {
+                            instance_node = ast->top_modules[sc_spot]->children[1]->children[z]->children[0];
+                            
+                            if ( instance_node->type ==  MODULE_INSTANCE) {
+                                instance_name = instance_node->children[0]->identifier_node->types.identifier;
+
+                                if ( !strcmp(defparam_ref.c_str(), instance_name.c_str()) ) {
+                                    std::string defparam_ref_module_name = instance_node->identifier_node->types.identifier;
+                                    sc_spot = sc_lookup_string(module_names_to_idx, defparam_ref_module_name.c_str());
+                                    if (done == false){
+                                    defparam_ref = param_ref.substr(0 , param_loc);
+                                    param_ref = param_ref.substr(param_loc + 1, std::string::npos);}
+                                }
+                            }
+
+                        }
+                    }
+                    else 
+                    done = true;
+                }
 
                 for (long k = 0; k < ast->top_modules[sc_spot]->children[1]->num_children; k++) {
-                    ast_node_t* instance_node = ast->top_modules[sc_spot]->children[1]->children[k]->children[0];
+                    instance_node = ast->top_modules[sc_spot]->children[1]->children[k]->children[0];
                         
                     if ( instance_node->type ==  MODULE_INSTANCE) {
-                        std::string instance_name(instance_node->children[0]->identifier_node->types.identifier);
+                        instance_name = instance_node->children[0]->identifier_node->types.identifier;
 
                         if ( !strcmp(defparam_ref.c_str(), instance_name.c_str()) ) {
                             ast_node_t* instance_param_list = instance_node->children[0]->children[1];
